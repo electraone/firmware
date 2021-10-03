@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [[ $OS == 'WindowsNT' ]]; then
+  PLATFORM='windows'
+else
+  UNAME="$(uname -s)"
+  case $UNAME in
+    Darwin) 
+      PLATFORM='darwin'
+      ;;
+    Linux|*BSD)
+      PLATFORM='linux'
+      ;;
+    *)
+      error "unsupported platform: $UNAME"
+      ;;
+  esac
+fi
+
+BIN_DIR=.bin
+
+SENDMIDI="${BIN_DIR}/sendmidi"
+FIRMWARELOADER="${BIN_DIR}/firmwareloader"
+HEX2K66IMG="${BIN_DIR}/hex2k66img"

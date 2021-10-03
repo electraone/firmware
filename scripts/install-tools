@@ -1,0 +1,43 @@
+#!/bin/bash -e
+
+. scripts/config
+
+# Assume we're being invoked from the project root
+TOOLS_DIR=tools
+
+mkdir -p "${BIN_DIR}"
+
+# Build firmwareloader
+FIRMWARELOADER_DIR="${TOOLS_DIR}/firmwareloader"
+printf "Installing firmwareloader..." \
+  && make -C "${FIRMWARELOADER_DIR}" >/dev/null \
+  && cp -f "${FIRMWARELOADER_DIR}/build/firmwareloader" "${FIRMWARELOADER}" \
+  && make -C "${FIRMWARELOADER_DIR}" clean \
+  && echo "done."
+
+# Build hex2k66img
+HEX2K66IMG_DIR="${TOOLS_DIR}/hex2k66img"
+printf "Installing hex2k66img..." \
+  && make -C "${HEX2K66IMG_DIR}" >/dev/null \
+  && cp -f "${HEX2K66IMG_DIR}/build/hex2k66img" "${HEX2K66IMG}" \
+  && make -C "${HEX2K66IMG_DIR}" clean \
+  && echo "done."
+
+# Install SendMIDI
+SENDMIDI_VERSION="1.0.15"
+if [[ $PLATFORM == 'linux' ]]; then
+  SENDMIDI_FILENAME="sendmidi-linux-x86-${SENDMIDI_VERSION}"
+  SENDMIDI_EXTENSION="tar.gz"
+elif [[ $PLATFORM == 'darwin' ]]; then
+  SENDMIDI_FILENAME="sendmidi-macos-${SENDMIDI_VERSION}"
+  SENDMIDI_EXTENSION="zip"
+elif [[ $PLATFORM == 'windows' ]]; then
+  SENDMIDI_FILENAME="sendmidi-windows-${SENDMIDI_VERSION}"
+  SENDMIDI_EXTENSION="zip"
+fi
+printf "Installing SendMIDI..." \
+  && curl -L -o "${SENDMIDI_FILENAME}.${SENDMIDI_EXTENSION}" "https://github.com/gbevin/SendMIDI/releases/download/${SENDMIDI_VERSION}/${SENDMIDI_FILENAME}.${SENDMIDI_EXTENSION}" \
+  && (tar xzf "${SENDMIDI_FILENAME}.${SENDMIDI_EXTENSION}" || unzip "${SENDMIDI_FILENAME}.${SENDMIDI_EXTENSION}") \
+  && cp -f "${SENDMIDI_FILENAME}/sendmidi" "${SENDMIDI}" \
+  && rm "${SENDMIDI_FILENAME}.${SENDMIDI_EXTENSION}" \
+  && rm -rf "${SENDMIDI_FILENAME}"

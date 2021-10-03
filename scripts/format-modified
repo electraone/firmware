@@ -1,0 +1,14 @@
+#!/bin/bash
+
+CLANGFORMAT=$(command -v clang-format 2>/dev/null)
+
+if [[ "$CLANGFORMAT" = "" ]]; then
+  echo "format: clang-format not found; install with 'brew install clang-format'" 1>&2
+  exit 1
+fi
+
+files=`git diff --name-only | grep -E '\.c$|\.cpp$|\.h$' `
+
+for file in $files; do
+  "$CLANGFORMAT" --verbose -i "$file";
+done

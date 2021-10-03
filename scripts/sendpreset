@@ -1,0 +1,18 @@
+#!/bin/bash
+
+. config
+
+if [[ ! $1 ]]; then
+    echo "sendpreset: file not specified" 1>&2
+    exit 1
+fi
+
+echo "sending file to Electra"
+echo -n -e "\xf0\x00\x21\x45\01\01$(cat $1)\xf7" > $1.syx
+
+if [ "$2" == "show" ]; then
+    cat $1.syx
+fi
+
+$SENDMIDI dev "Electra Controller Electra CTRL" syf $1.syx
+rm -f $1.syx

@@ -1,0 +1,28 @@
+{
+  "name": "MIDI Library",
+  "version": "4.3.1",
+  "keywords": "midi",
+  "description": "Enables MIDI I/O communications on the Arduino serial ports",
+  "license": "MIT",
+  "authors":
+  {
+    "name": "Francois Best",
+    "email": "francois.best@fortyseveneffects.com",
+    "url": "https://github.com/Franky47",
+    "maintainer": true
+  },
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/FortySevenEffects/arduino_midi_library.git",
+    "branch": "master"
+  },
+  "export": { 
+    "include": [
+      "src",
+      "examples"
+     ]
+  },
+  "frameworks": "arduino",
+  "platforms": ["atmelavr", "atmelsam", "teensy"]
+ }

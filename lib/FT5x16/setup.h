@@ -1,0 +1,11 @@
+#pragma once
+
+#define Wire Wire1
+
+#define NUM_TOUCH_POINTS 5
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 600
+#define LONGHOLD_PERIOD 500
+#define CLICK_PERIOD 250
+#define DOUBLECLICK_PERIOD 500
+#define CLICK_DISTANCE 20
