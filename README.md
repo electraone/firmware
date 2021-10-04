@@ -19,3 +19,21 @@ If you were able to compile and run the firmware with the default Demo app, you 
 1. Place the `HelloWorldApp` directory next to the `firmware` directory.
 1. Switch to the `firmware` directory and create a symlink to the app, `ln -s ../HelloWorldApp`
 1. Run `make APPPATH=HelloWorldApp upload`. This will build the firmware with the HelloWorldApp compiled in and the firmware will be uploaded to the ElectraOne controller.
+
+
+## Example applications
+
+### Hello World
+A minimal Electra One application. [HelloWorldApp](https://github.com/electraone/HelloWorldApp)
+
+### Incoming MIDI
+A demo application for processing incoming MIDI data. [IncomingMidiApp](https://github.com/electraone/IncomingMidiApp)
+
+### Outgoing MIDI
+A simple demo application for sending MIDI data out. [OutgoingMidiApp](https://github.com/electraone/OutgoingMidiApp)
+
+### Pot reading
+A simple demo of reading pot values and touch events. [PotDemoApp](https://github.com/electraone/PotDemoApp)
+
+### LCD touch reading
+A simple demo of the LCD multitouch reading. [TouchDemoApp](https://github.com/electraone/TouchDemoApp)
