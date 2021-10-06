@@ -5,22 +5,22 @@
 # Assume we're being invoked from the project root
 TOOLS_DIR=tools
 
-mkdir -p "${BIN_DIR}"
+mkdir -p ${BIN_DIR}
 
 # Build firmwareloader
-FIRMWARELOADER_DIR="${TOOLS_DIR}/firmwareloader"
+FIRMWARELOADER_DIR=${TOOLS_DIR}/firmwareloader
 printf "Installing firmwareloader..." \
-  && make -C "${FIRMWARELOADER_DIR}" >/dev/null \
-  && cp -f "${FIRMWARELOADER_DIR}/build/firmwareloader" "${FIRMWARELOADER}" \
-  && make -C "${FIRMWARELOADER_DIR}" clean \
+  && make -C ${FIRMWARELOADER_DIR} >/dev/null \
+  && cp -f ${FIRMWARELOADER_DIR}/build/firmwareloader ${FIRMWARELOADER} \
+  && make -C ${FIRMWARELOADER_DIR} clean \
   && echo "done."
 
 # Build hex2k66img
-HEX2K66IMG_DIR="${TOOLS_DIR}/hex2k66img"
+HEX2K66IMG_DIR=${TOOLS_DIR}/hex2k66img
 printf "Installing hex2k66img..." \
-  && make -C "${HEX2K66IMG_DIR}" >/dev/null \
-  && cp -f "${HEX2K66IMG_DIR}/build/hex2k66img" "${HEX2K66IMG}" \
-  && make -C "${HEX2K66IMG_DIR}" clean \
+  && make -C ${HEX2K66IMG_DIR} >/dev/null \
+  && cp -f ${HEX2K66IMG_DIR}/build/hex2k66img ${HEX2K66IMG} \
+  && make -C ${HEX2K66IMG_DIR} clean \
   && echo "done."
 
 # Install SendMIDI
