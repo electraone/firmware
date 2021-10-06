@@ -143,7 +143,7 @@ SOURCES := $(C_FILES:.c=.o) $(CPP_FILES:.cpp=.o) \
 OBJS := $(foreach x,$(SOURCES), $(BUILDDIR)/$(x))
 
 
-all:	hex
+all:	image
 
 format:
 	@$(SCRIPTSPATH)/format ./src
@@ -160,10 +160,11 @@ build:	$(BUILDDIR)/$(TARGET).elf
 
 hex:	$(BUILDDIR)/$(TARGET).hex
 
+image:	$(BUILDDIR)/$(TARGET).img
+
 upload: $(BUILDDIR)/$(TARGET).hex
-	@$(HEX2IMAGE) $< $(basename $<).img
-	@$(SENDMIDI) dev $(CTRL_PORT) syx 00h 21h 45h 7fh 7fh
-	@$(LOADER) $<
+	$(SENDMIDI) dev $(CTRL_PORT) syx 00h 21h 45h 7fh 7fh
+	$(LOADER) $<
 
 docs: $(OBJS)
 	@$(DOXYGEN)
@@ -186,6 +187,10 @@ $(BUILDDIR)/%.hex:	$(BUILDDIR)/%.elf
 	@echo -e "[HEX]\t$@"
 	@$(SIZE) "$<"
 	@$(OBJCOPY) -O ihex -R .eeprom "$<" "$@"
+
+$(BUILDDIR)/%.img:	$(BUILDDIR)/%.hex
+	@echo -e "[IMG]\t$@"
+	@$(HEX2IMAGE) $< $(basename $<).img
 
 # compiler generated dependency info
 -include $(OBJS:.o=.d)
