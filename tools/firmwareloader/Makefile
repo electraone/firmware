@@ -26,29 +26,29 @@ endif
 #USE_LIBUSB ?= YES
 
 TARGET = firmwareloader
-BUILDDIR = $(abspath $(CURDIR)/build)
+BUILDDIR = $(CURDIR)/build
 
 ifeq ($(PLATFORM), LINUX)  # also works on FreeBSD
 CC ?= gcc
 CFLAGS ?= -O2 -Wall
 firmwareloader: firmwareloader.c
-	@$(MKDIR) -p $(BUILDDIR)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -s -DUSE_LIBUSB -o $(BUILDDIR)/$(TARGET) firmwareloader.c -lusb $(LDFLAGS)
+	@$(MKDIR) -p "$(BUILDDIR)"
+	$(CC) $(CFLAGS) $(CPPFLAGS) -s -DUSE_LIBUSB -o "$(BUILDDIR)/$(TARGET)" firmwareloader.c -lusb $(LDFLAGS)
 
 else ifeq ($(PLATFORM), WINDOWS)
 CC = i586-mingw32msvc-gcc
 CFLAGS ?= -O2 -Wall
 firmwareloader.exe: firmwareloader.c
-	@$(MKDIR) -p $(BUILDDIR)
-	$(CC) $(CFLAGS) -s -DUSE_WIN32 -o $(BUILDDIR)/$(TARGET).exe firmwareloader.c -lhid -lsetupapi -lwinmm
+	@$(MKDIR) -p "$(BUILDDIR)"
+	$(CC) $(CFLAGS) -s -DUSE_WIN32 -o "$(BUILDDIR)/$(TARGET).exe" firmwareloader.c -lhid -lsetupapi -lwinmm
 
 else ifeq ($(PLATFORM), DARWIN)
 ifeq ($(USE_LIBUSB), YES)
 CC ?= gcc
 CFLAGS ?= -O2 -Wall -mmacosx-version-min=10.5
 firmwareloader: firmwareloader.c
-	@$(MKDIR) -p $(BUILDDIR)
-	$(CC) $(CFLAGS) -s -DUSE_LIBUSB -DMACOSX -o $(BUILDDIR)/$(TARGET) firmwareloader.c -lusb -I /usr/local/include -L/usr/local/lib
+	@$(MKDIR) -p "$(BUILDDIR)"
+	$(CC) $(CFLAGS) -s -DUSE_LIBUSB -DMACOSX -o "$(BUILDDIR)/$(TARGET)" firmwareloader.c -lusb -I /usr/local/include -L/usr/local/lib
 else
 CC ?= gcc
 SDK ?= $(shell xcrun --show-sdk-path)
@@ -57,19 +57,19 @@ firmwareloader: firmwareloader.c
 ifeq ($(SDK),)
 	$(error SDK was not found. To use this type of compilation please install Xcode)
 endif
-	@$(MKDIR) -p $(BUILDDIR)
-	$(CC) $(CFLAGS) -DUSE_APPLE_IOKIT -isysroot $(SDK) -o $(BUILDDIR)/$(TARGET) firmwareloader.c -Wl,-syslibroot,$(SDK) -framework IOKit -framework CoreFoundation
+	@$(MKDIR) -p "$(BUILDDIR)"
+	$(CC) $(CFLAGS) -DUSE_APPLE_IOKIT -isysroot $(SDK) -o "$(BUILDDIR)/$(TARGET)" firmwareloader.c -Wl,-syslibroot,$(SDK) -framework IOKit -framework CoreFoundation
 endif
 
 else ifeq ($(PLATFORM), BSD)  # works on NetBSD and OpenBSD
 CC ?= gcc
 CFLAGS ?= -O2 -Wall
 firmwareloader: firmwareloader.c
-	@$(MKDIR) -p $(BUILDDIR)
-	$(CC) $(CFLAGS) -s -DUSE_UHID -o $(BUILDDIR)/$(TARGET) firmwareloader.c
+	@$(MKDIR) -p "$(BUILDDIR)"
+	$(CC) $(CFLAGS) -s -DUSE_UHID -o "$(BUILDDIR)/$(TARGET)" firmwareloader.c
 endif
 
 all: firmwareloader
 
 clean:
-	@rm -rf $(BUILDDIR)
+	@rm -rf "$(BUILDDIR)"

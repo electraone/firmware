@@ -3,7 +3,7 @@
 #
 
 # Path locations for firmware Loader, firmware image tools, etc
-TOOLSPATH = $(CURDIR)/.bin
+TOOLSPATH = .bin
 HEX2IMAGE = $(TOOLSPATH)/hex2k66img
 SENDMIDI  = $(TOOLSPATH)/sendmidi
 LOADER    = $(TOOLSPATH)/firmwareloader
@@ -15,7 +15,7 @@ DOXYGEN = $(TOOLCHAINPATH)/doxygen/doxygen
 COMPILERPATH = $(TOOLCHAINPATH)/arm/bin
 
 # Location of project scripts
-SCRIPTSPATH = $(CURDIR)/scripts
+SCRIPTSPATH = scripts
 
 
 # The name of your project
@@ -31,10 +31,10 @@ BASEPATH = base
 LIBRARYPATH = lib
 
 # Directory to build in
-BUILDDIR = $(abspath $(CURDIR)/build)
+BUILDDIR = build
 
 # Directory with tests
-TESTDIR = $(abspath $(CURDIR)/tests)
+TESTDIR = tests
 
 # Path where the generated documentation will be stored
 DOCS = docs
