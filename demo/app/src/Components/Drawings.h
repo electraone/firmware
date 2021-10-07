@@ -7,6 +7,7 @@
 #include "Circle.h"
 #include "ElectraImage.h"
 #include "Indicator.h"
+#include "MidiInputCallback.h"
 
 class Drawings final : public Component, private MidiInputCallback
 {
@@ -82,15 +83,11 @@ public:
         g.setColour(ElectraColours::rgb565NumericWhite);
 
         // Line
-        g.drawRect(0,
-                   0,
-                   width,
-                   1);
+        g.drawRect(0, 0, width, 1);
 
         // Draw pixel
         for (uint16_t x = 0; x < width; x += 4) {
-            g.drawPixel(
-                x, spacing + padding);
+            g.drawPixel(x, spacing + padding);
         }
 
         // Printing text

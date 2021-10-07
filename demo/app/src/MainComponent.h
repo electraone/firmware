@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Component.h"
-#include "Slider.h"
+#include "Ui.h"
 #include "Drawings.h"
 #include "TextGraphics.h"
 #include "MidiOutput.h"

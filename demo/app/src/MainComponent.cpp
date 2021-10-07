@@ -1,23 +1,24 @@
 #include "MainComponent.h"
 #include "helpers.h"
 
-MainComponent::MainComponent() : usbDevOutput(MidiInterface::Type::MidiUsbDev, 0)
+MainComponent::MainComponent()
+    : usbDevOutput(MidiInterface::Type::MidiUsbDev, 0)
 {
     // Set the component name
     setName("mainComponent");
 
     // Set up a slider (an example of a component)
-    slider = new Slider;
+    slider = new SliderHorizontal;
     slider->setValue(0);
 
-    slider->onChange = [this](int16_t value) {
+    slider->onValueChange = [this](int16_t value) {
         logMessage("value = %d", value);
         MidiMessage cc = MidiMessage::controllerEvent(1, 1, value);
         usbDevOutput.sendMessageNow(cc);
         drawings->setValue(value);
     };
 
-    slider->onCompleted = [this](int8_t value) {
+    slider->onDragEnd = [this](int8_t value) {
         logMessage("Final value = %d", value);
     };
 
