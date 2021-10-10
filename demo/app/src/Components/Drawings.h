@@ -67,6 +67,11 @@ public:
     {
         int16_t indicatorPositionX =
             map(newValue, min, max, 0, getWidth() - indicatorWidth);
+        logMessage("indicator: %d (min=%d, max=%d value=%d)",
+                   indicatorPositionX,
+                   min,
+                   max,
+                   newValue);
         value = newValue;
         indicator->setX(indicatorPositionX);
         repaint();
@@ -75,9 +80,8 @@ public:
     void paint(Graphics &g) override
     {
         uint16_t width = getWidth();
-        uint16_t height = getHeight();
 
-        // Clear the space of component's bounds
+        // Clear the component area
         g.fillAll(ElectraColours::rgb565NumericBlack);
 
         g.setColour(ElectraColours::rgb565NumericWhite);
@@ -89,14 +93,6 @@ public:
         for (uint16_t x = 0; x < width; x += 4) {
             g.drawPixel(x, spacing + padding);
         }
-
-        // Printing text
-        g.printText(0,
-                    height - 20,
-                    "Geometry demo",
-                    TextStyle::mediumTransparent,
-                    width,
-                    TextAlign::center);
     }
 
     void onTouchDown(const TouchEvent &touchEvent) override
@@ -108,8 +104,8 @@ private:
     static const uint8_t spacing = 90;
     static const uint8_t padding = 10;
     static const uint8_t size = spacing - padding;
-    static const int16_t min = 0;
-    static const int16_t max = 127;
+    static const int16_t min = -64;
+    static const int16_t max = 63;
     static const int16_t indicatorWidth = spacing;
 
     int16_t value;

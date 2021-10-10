@@ -7,32 +7,37 @@ MainComponent::MainComponent()
     // Set the component name
     setName("mainComponent");
 
-    // Set up a slider (an example of a component)
-    slider = new SliderHorizontal;
-    slider->setValue(0);
-
-    slider->onValueChange = [this](int16_t value) {
-        logMessage("value = %d", value);
-        MidiMessage cc = MidiMessage::controllerEvent(1, 1, value);
-        usbDevOutput.sendMessageNow(cc);
-        drawings->setValue(value);
-    };
-
-    slider->onDragEnd = [this](int8_t value) {
-        logMessage("Final value = %d", value);
-    };
-
-    addAndMakeVisible(slider);
-
     // Add an example of graphics object
     drawings = new Drawings;
     addAndMakeVisible(drawings);
 
-    // Add a text object
-    addChildComponent(new TextGraphics(Rectangle(0, 340, 1024, 20),
-                                       "Mod Wheel Demo",
-                                       TextStyle::largeWhiteOnBlack,
-                                       TextAlign::center));
+    // Knobs
+    for (uint8_t i = 0; i < numKnobs; i++) {
+        knob[i] = new Knob();
+        knob[i]->setColour(Colours::olive);
+        knob[i]->assignPot(i);
+        addAndMakeVisible(knob[i]);
+    }
+
+    // Set up a slider (an example of a component)
+    for (uint8_t i = 0; i < numBars; i++) {
+        bar[i] = new BarVertical;
+        bar[i]->setColour(Colours::peru);
+        bar[i]->assignPot(i + numKnobs);
+
+        bar[i]->onValueChange = [this](int16_t value) {
+            logMessage("value = %d", value);
+            MidiMessage cc = MidiMessage::controllerEvent(1, 1, value);
+            usbDevOutput.sendMessageNow(cc);
+            drawings->setValue(value);
+        };
+
+        bar[i]->onDragEnd = [this](int8_t value) {
+            logMessage("Final value = %d", value);
+        };
+
+        addAndMakeVisible(bar[i]);
+    }
 
     assignAllPots();
 
@@ -50,8 +55,8 @@ void MainComponent::paint(Graphics &g)
 {
     g.fillAll(ElectraColours::rgb565NumericBlack);
     g.printText(0,
-                500,
-                "This is a text in the window",
+                40,
+                "Demo Application",
                 TextStyle::largeTransparent,
                 getWidth(),
                 TextAlign::center);
@@ -60,7 +65,14 @@ void MainComponent::paint(Graphics &g)
 void MainComponent::resized()
 {
     drawings->setBounds(122, 100, 780, 160);
-    slider->setBounds(337, 400, 350, 60);
+
+    for (uint8_t i = 0; i < numKnobs; i++) {
+        knob[i]->setBounds(35 + (170 * i), 285, 100, 100);
+    }
+
+    for (uint8_t i = 0; i < numBars; i++) {
+        bar[i]->setBounds(50 + (170 * i), 430, 70, 120);
+    }
 }
 
 void MainComponent::onPotChange(const PotEvent &potEvent)

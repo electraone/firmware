@@ -5,6 +5,7 @@
 
 #define COLOR_BLACK 0x0000
 #define COLOR_WHITE 0xFFFF
+#define SCREEN_BPP 16
 #define DEFAULT_BPP Bpp16
 
 #define RA8876_FONT_FLAG_XLAT_FULLWIDTH                                        \
@@ -318,17 +319,12 @@ public:
     };
 
     struct SavedState {
-      uint16_t CURH0;
-      uint16_t CURV0;
-      uint8_t AW_COLOR;
+        uint16_t CURH0;
+        uint16_t CURV0;
+        uint8_t AW_COLOR;
     };
 
-    enum MemoryMode {
-      LinearBpp8,
-      Bpp8,
-      Bpp16,
-      Bpp24
-    };
+    enum MemoryMode { LinearBpp8, Bpp8, Bpp16, Bpp24 };
 
     // Constructor
     RA8876(int csPin, int resetPin = 0);
@@ -350,18 +346,9 @@ public:
 
     // Drawing
     void drawPixel(uint16_t x, uint16_t y);
-    void drawLine(uint16_t x1,
-                  uint16_t y1,
-                  uint16_t x2,
-                  uint16_t y2);
-    void drawRect(uint16_t x1,
-                  uint16_t y1,
-                  uint16_t width,
-                  uint16_t height);
-    void fillRect(uint16_t x1,
-                  uint16_t y1,
-                  uint16_t width,
-                  uint16_t height);
+    void drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2);
+    void drawRect(uint16_t x1, uint16_t y1, uint16_t width, uint16_t height);
+    void fillRect(uint16_t x1, uint16_t y1, uint16_t width, uint16_t height);
     void drawRoundRect(uint16_t x1,
                        uint16_t y1,
                        uint16_t width,
@@ -386,18 +373,9 @@ public:
                       uint16_t y3);
     void drawCircle(uint16_t x, uint16_t y, uint16_t radius);
     void fillCircle(uint16_t x, uint16_t y, uint16_t radius);
-    void drawElipse(uint16_t x,
-                    uint16_t y,
-                    uint16_t radius1,
-                    uint16_t radius2);
-    void fillElipse(uint16_t x,
-                    uint16_t y,
-                    uint16_t radius1,
-                    uint16_t radius2);
-    void fillCurve(uint16_t x,
-                   uint16_t y,
-                   uint16_t radius,
-                   uint8_t segment);
+    void drawElipse(uint16_t x, uint16_t y, uint16_t radius1, uint16_t radius2);
+    void fillElipse(uint16_t x, uint16_t y, uint16_t radius1, uint16_t radius2);
+    void fillCurve(uint16_t x, uint16_t y, uint16_t radius, uint8_t segment);
     void clearScreen(uint32_t color);
 
     // Text cursor
@@ -514,7 +492,6 @@ public:
     // State saving for interrupt context switches
     void saveState(void);
     void restoreState(void);
-
 
 private:
     void waitForStatus(uint8_t status);
