@@ -1,9 +1,10 @@
 #include "Slider.h"
 
 Slider::Slider()
-    : min(0),
-      max(127),
+    : min(-64),
+      max(63),
       value(min),
+      colour(Colours::red),
       formatString("%d"),
       valueBoxPosition(NoValueBox)
 {
@@ -23,7 +24,7 @@ Slider::ValueBoxPosition Slider::getValueBoxPosition(void) const
 void Slider::setMinimum(int16_t newMin)
 {
     min = newMin;
-    repaint();
+    setValue(value);
 }
 
 int16_t Slider::getMinimum(void) const
@@ -33,8 +34,8 @@ int16_t Slider::getMinimum(void) const
 
 void Slider::setMaximum(int16_t newMax)
 {
-    min = newMax;
-    repaint();
+    max = newMax;
+    setValue(value);
 }
 
 int16_t Slider::getMaximum(void) const
@@ -46,12 +47,12 @@ void Slider::setRange(int16_t newMinimum, int16_t newMaximum)
 {
     min = newMinimum;
     max = newMaximum;
-    repaint();
+    setValue(value);
 }
 
 void Slider::setValue(int16_t newValue)
 {
-    value = newValue;
+    value = constrain(newValue, min, max);
     repaint();
 }
 
@@ -63,6 +64,12 @@ int16_t Slider::getValue(int16_t value) const
 void Slider::setValueFormat(const char *newValueFormat)
 {
     formatString = newValueFormat;
+    repaint();
+}
+
+void Slider::setColour(uint32_t newColour)
+{
+    colour = newColour;
     repaint();
 }
 
@@ -81,6 +88,25 @@ void Slider::onTouchDown(const TouchEvent &touchEvent)
 
 void Slider::onTouchUp(const TouchEvent &touchEvent)
 {
+}
+
+void Slider::onPotChange(const PotEvent &potEvent)
+{
+    applyRelativeChange(potEvent.getRelativeChange());
+}
+
+void Slider::onPotTouchDown(const PotEvent &potEvent)
+{
+}
+
+void Slider::onPotTouchUp(const PotEvent &potEvent)
+{
+}
+
+void Slider::applyRelativeChange(int16_t relativeChange)
+{
+    value += relativeChange;
+    setValue(value);
 }
 
 void Slider::paintValueBox(Graphics &g)

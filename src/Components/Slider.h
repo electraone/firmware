@@ -10,7 +10,8 @@ public:
         ValueBoxLeft,
         ValueBoxRight,
         ValueBoxAbove,
-        ValueBoxBelow
+        ValueBoxBelow,
+        ValueBoxCentre
     };
 
     Slider();
@@ -26,6 +27,7 @@ public:
     void setValue(int16_t newValue);
     int16_t getValue(int16_t value) const;
     void setValueFormat(const char *newValueFormat);
+    void setColour(uint32_t newColour);
 
     virtual void resized(void) override;
     virtual void paint(Graphics &g) override = 0;
@@ -33,6 +35,12 @@ public:
     virtual void onTouchMove(const TouchEvent &touchEvent) override;
     virtual void onTouchDown(const TouchEvent &touchEvent) override;
     virtual void onTouchUp(const TouchEvent &touchEvent) override;
+
+    virtual void onPotChange(const PotEvent &potEvent) override;
+    virtual void onPotTouchDown(const PotEvent &potEvent) override;
+    virtual void onPotTouchUp(const PotEvent &potEvent) override;
+
+    virtual void applyRelativeChange(int16_t relativeChange);
 
     std::function<void(int16_t value)> onValueChange;
     std::function<void(int16_t value)> onDragStart;
@@ -44,6 +52,7 @@ protected:
     int16_t min;
     int16_t max;
     int16_t value;
+    uint32_t colour;
 
     const char *formatString;
     ValueBoxPosition valueBoxPosition;

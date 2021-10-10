@@ -29,19 +29,25 @@ void BarVertical::onTouchUp(const TouchEvent &touchEvent)
 
 void BarVertical::paint(Graphics &g)
 {
+    uint32_t colourTrack = Colours::changeBrightness(SCREEN_BPP, colour, 0.3f);
+
     uint16_t barWidth = getWidth() * 1.0f;
     uint16_t padding = (getWidth() - barWidth) / 2;
 
     uint16_t barY = map(0, min, max, 0, getHeight());
     uint16_t barHeight = map(value, min, max, 0, getHeight()) - barY;
 
+    // Clear the component area
     g.fillAll(Colours::black);
 
-    // fader track background
-    g.setColour(Colours::darkgrey);
+    // Paint the track background
+    g.setColour(colourTrack);
     g.fillRect(padding, 0, barWidth, getHeight());
 
-    // fader active bar
-    g.setColour(Colours::orange);
+    // Paint the active bar
+    g.setColour(colour);
     g.fillRect(padding, getHeight() - barY, barWidth, -barHeight);
+
+    // Paint the outline
+    g.drawRect(padding, 0, barWidth, getHeight());
 }

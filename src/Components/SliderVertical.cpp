@@ -29,17 +29,20 @@ void SliderVertical::onTouchUp(const TouchEvent &touchEvent)
 
 void SliderVertical::paint(Graphics &g)
 {
+    uint32_t colourTrack = Colours::changeBrightness(SCREEN_BPP, colour, 0.3f);
+
     uint16_t padding = (getWidth() - indicatorSize) / 2;
     uint16_t indicatorY = map(value, min, max, 0, getHeight() - indicatorSize);
 
+    // Clear the component area
     g.fillAll(Colours::black);
 
     // Slider track
-    g.setColour(Colours::darkgrey);
-    g.drawRect(padding + indicatorRadius - 1, 0, 2, getHeight());
+    g.setColour(colourTrack);
+    g.fillRect(padding + indicatorRadius - 2, 0, 4, getHeight());
 
     // Indicator
-    g.setColour(Colours::white);
+    g.setColour(colour);
     g.fillElipse(padding + indicatorRadius,
                  getHeight() - indicatorY - indicatorRadius,
                  11,
