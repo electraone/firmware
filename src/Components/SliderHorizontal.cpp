@@ -27,7 +27,7 @@ void SliderHorizontal::onTouchUp(const TouchEvent &touchEvent)
 
 void SliderHorizontal::paint(Graphics &g)
 {
-    uint32_t colourTrack = Colours::changeBrightness(SCREEN_BPP, colour, 0.3f);
+    uint32_t colourTrack = Colours::darker(colour, 0.3f);
 
     uint16_t padding = (getHeight() - indicatorSize) / 2;
     uint16_t indicatorX = map(value, min, max, 0, getWidth() - indicatorSize);

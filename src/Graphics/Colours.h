@@ -202,9 +202,15 @@ namespace Colours
     extern const uint32_t yellowgreen;
 
     // Get colour with adjusted brightness
-    uint32_t
-        changeBrightness(uint8_t bpp, uint32_t originalColour, float factor);
-    uint32_t changeBrightness232(uint32_t originalColour, float factor);
-    uint32_t changeBrightness565(uint32_t originalColour, float factor);
-    uint32_t changeBrightness888(uint32_t originalColour, float factor);
+    uint32_t darker(uint32_t originalColour, float factor);
+    uint32_t darker(uint8_t bpp, uint32_t originalColour, float factor);
+    uint32_t darker332(uint32_t originalColour, float factor);
+    uint32_t darker565(uint32_t originalColour, float factor);
+    uint32_t darker888(uint32_t originalColour, float factor);
+
+    uint32_t lighter(uint32_t originalColour, float factor);
+    uint32_t lighter(uint8_t bpp, uint32_t originalColour, float factor);
+    uint32_t lighter332(uint32_t originalColour, float factor);
+    uint32_t lighter565(uint32_t originalColour, float factor);
+    uint32_t lighter888(uint32_t originalColour, float factor);
 } // namespace Colours

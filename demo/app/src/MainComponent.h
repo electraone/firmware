@@ -19,11 +19,13 @@ public:
     void onPotTouchUp(const PotEvent &potEvent) override;
 
 private:
-	static constexpr uint8_t numKnobs = 6;
-	static constexpr uint8_t numBars = 6;
+    static constexpr uint8_t numPads = 8;
+    static constexpr uint8_t numKnobs = 6;
+    static constexpr uint8_t numBars = 6;
 
+    Pad *pad[8];
     Drawings *drawings;
-	Knob *knob[numKnobs];
-	BarVertical *bar[numBars];
+    Knob *knob[numKnobs];
+    BarVertical *bar[numBars];
     MidiOutput usbDevOutput;
 };

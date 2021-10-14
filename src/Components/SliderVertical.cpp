@@ -29,7 +29,7 @@ void SliderVertical::onTouchUp(const TouchEvent &touchEvent)
 
 void SliderVertical::paint(Graphics &g)
 {
-    uint32_t colourTrack = Colours::changeBrightness(SCREEN_BPP, colour, 0.3f);
+    uint32_t colourTrack = Colours::darker(colour, 0.3f);
 
     uint16_t padding = (getWidth() - indicatorSize) / 2;
     uint16_t indicatorY = map(value, min, max, 0, getHeight() - indicatorSize);

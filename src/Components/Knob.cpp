@@ -29,8 +29,8 @@ void Knob::onTouchUp(const TouchEvent &touchEvent)
 
 void Knob::paint(Graphics &g)
 {
-    uint32_t colourTrack = Colours::changeBrightness(SCREEN_BPP, colour, 0.3f);
-    uint32_t colourCenter = Colours::changeBrightness(SCREEN_BPP, colour, 0.2f);
+    uint32_t colourTrack = Colours::darker(colour, 0.3f);
+    uint32_t colourCenter = Colours::darker(colour, 0.2f);
 
     float angle = map((float)value, min, max, angleTrackStart, angleTrackEnd);
     float angleZero =

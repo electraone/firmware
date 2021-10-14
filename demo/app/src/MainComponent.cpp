@@ -8,13 +8,23 @@ MainComponent::MainComponent()
     setName("mainComponent");
 
     // Add an example of graphics object
+
+    // Pads
+    for (uint8_t i = 0; i < numPads; i++) {
+        pad[i] = new Pad;
+        pad[i]->setColour(((i % 4) == 0) ? Colours::yellow : Colours::red);
+        pad[i]->setState(((i % 3) == 0) ? true : false);
+        addAndMakeVisible(pad[i]);
+    }
+
+    // Custom component
     drawings = new Drawings;
     addAndMakeVisible(drawings);
 
     // Knobs
     for (uint8_t i = 0; i < numKnobs; i++) {
         knob[i] = new Knob();
-        knob[i]->setColour(Colours::olive);
+        knob[i]->setColour(Colours::darkslateblue);
         knob[i]->assignPot(i);
         addAndMakeVisible(knob[i]);
     }
@@ -54,6 +64,7 @@ MainComponent::~MainComponent()
 void MainComponent::paint(Graphics &g)
 {
     g.fillAll(ElectraColours::rgb565NumericBlack);
+    return;
     g.printText(0,
                 40,
                 "Demo Application",
@@ -64,10 +75,14 @@ void MainComponent::paint(Graphics &g)
 
 void MainComponent::resized()
 {
-    drawings->setBounds(122, 100, 780, 160);
+    for (uint8_t i = 0; i < numPads; i++) {
+        pad[i]->setBounds(48 + (122 * i), 40, 70, 70);
+    }
+
+    drawings->setBounds(122, 150, 780, 140);
 
     for (uint8_t i = 0; i < numKnobs; i++) {
-        knob[i]->setBounds(35 + (170 * i), 285, 100, 100);
+        knob[i]->setBounds(35 + (170 * i), 300, 100, 100);
     }
 
     for (uint8_t i = 0; i < numBars; i++) {
