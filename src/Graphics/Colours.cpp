@@ -1,5 +1,6 @@
 #include "Colours.h"
 #include <string.h>
+#include "RA8876.h"
 
 namespace ElectraColours // For backward compatibility
 {
@@ -456,30 +457,34 @@ namespace Colours
 #endif
 
     // Get colour with adjusted brightness
-    uint32_t
-        changeBrightness(uint8_t bpp, uint32_t originalColour, float factor)
+    uint32_t darker(uint32_t originalColour, float factor)
+    {
+        return (darker(SCREEN_BPP, originalColour, factor));
+    }
+
+    uint32_t darker(uint8_t bpp, uint32_t originalColour, float factor)
     {
         if (bpp == 8) {
-            return (changeBrightness232(originalColour, factor));
+            return (darker332(originalColour, factor));
         } else if (bpp == 16) {
-            return (changeBrightness565(originalColour, factor));
+            return (darker565(originalColour, factor));
         } else {
-            return (changeBrightness888(originalColour, factor));
+            return (darker888(originalColour, factor));
         }
     }
 
-    uint32_t changeBrightness232(uint32_t originalColour, float factor)
+    uint32_t darker332(uint32_t originalColour, float factor)
     {
-        uint16_t red = (originalColour >> 5) & 0x03;
+        uint16_t red = (originalColour >> 5) & 0x07;
         uint16_t green = (originalColour >> 2) & 0x07;
         uint16_t blue = originalColour & 0x03;
-        uint16_t newRed = (uint16_t)(red * factor) & 0x03;
+        uint16_t newRed = (uint16_t)(red * factor) & 0x07;
         uint16_t newGreen = (uint16_t)(green * factor) & 0x07;
         uint16_t newBlue = (uint16_t)(blue * factor) & 0x03;
         return ((newRed << 5) | (newGreen << 2) | newBlue);
     }
 
-    uint32_t changeBrightness565(uint32_t originalColour, float factor)
+    uint32_t darker565(uint32_t originalColour, float factor)
     {
         uint16_t red = (originalColour >> 11) & 0x1f;
         uint16_t green = (originalColour >> 5) & 0x3f;
@@ -490,7 +495,7 @@ namespace Colours
         return ((newRed << 11) | (newGreen << 5) | newBlue);
     }
 
-    uint32_t changeBrightness888(uint32_t originalColour, float factor)
+    uint32_t darker888(uint32_t originalColour, float factor)
     {
         uint16_t red = (originalColour >> 16) & 0xff;
         uint16_t green = (originalColour >> 8) & 0xff;
@@ -498,6 +503,55 @@ namespace Colours
         uint16_t newRed = (uint16_t)(red * factor) & 0xff;
         uint16_t newGreen = (uint16_t)(green * factor) & 0xff;
         uint16_t newBlue = (uint16_t)(blue * factor) & 0xff;
+        return ((newRed << 16) | (newGreen << 8) | newBlue);
+    }
+
+    uint32_t lighter(uint32_t originalColour, float factor)
+    {
+        return (lighter(SCREEN_BPP, originalColour, factor));
+    }
+
+    uint32_t lighter(uint8_t bpp, uint32_t originalColour, float factor)
+    {
+        if (bpp == 8) {
+            return (lighter332(originalColour, factor));
+        } else if (bpp == 16) {
+            return (lighter565(originalColour, factor));
+        } else {
+            return (lighter888(originalColour, factor));
+        }
+    }
+
+    uint32_t lighter332(uint32_t originalColour, float factor)
+    {
+        uint16_t red = (originalColour >> 5) & 0x07;
+        uint16_t green = (originalColour >> 2) & 0x07;
+        uint16_t blue = originalColour & 0x03;
+        uint16_t newRed = (uint16_t)(red + (0x07 - red) * factor) & 0x07;
+        uint16_t newGreen = (uint16_t)(green + (0x07 - green) * factor) & 0x07;
+        uint16_t newBlue = (uint16_t)(blue + (0x03 - blue) * factor) & 0x03;
+        return ((newRed << 5) | (newGreen << 2) | newBlue);
+    }
+
+    uint32_t lighter565(uint32_t originalColour, float factor)
+    {
+        uint16_t red = (originalColour >> 11) & 0x1f;
+        uint16_t green = (originalColour >> 5) & 0x3f;
+        uint16_t blue = originalColour & 0x1f;
+        uint16_t newRed = (uint16_t)(red + (0x1f - red) * factor) & 0x1f;
+        uint16_t newGreen = (uint16_t)(green + (0x3f - green) * factor) & 0x3f;
+        uint16_t newBlue = (uint16_t)(blue + (0x1f - blue) * factor) & 0x1f;
+        return ((newRed << 11) | (newGreen << 5) | newBlue);
+    }
+
+    uint32_t lighter888(uint32_t originalColour, float factor)
+    {
+        uint16_t red = (originalColour >> 16) & 0xff;
+        uint16_t green = (originalColour >> 8) & 0xff;
+        uint16_t blue = originalColour & 0xff;
+        uint16_t newRed = (uint16_t)(red + (0xff - red) * factor) & 0xff;
+        uint16_t newGreen = (uint16_t)(green + (0xff - green) * factor) & 0xff;
+        uint16_t newBlue = (uint16_t)(blue + (0xff - blue) * factor) & 0xff;
         return ((newRed << 16) | (newGreen << 8) | newBlue);
     }
 } // namespace Colours

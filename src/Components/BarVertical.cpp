@@ -29,7 +29,7 @@ void BarVertical::onTouchUp(const TouchEvent &touchEvent)
 
 void BarVertical::paint(Graphics &g)
 {
-    uint32_t colourTrack = Colours::changeBrightness(SCREEN_BPP, colour, 0.3f);
+    uint32_t colourTrack = Colours::darker(colour, 0.3f);
 
     uint16_t barWidth = getWidth() * 1.0f;
     uint16_t padding = (getWidth() - barWidth) / 2;
