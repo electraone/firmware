@@ -15,13 +15,13 @@ public:
         g.dim(0, 0, getWidth(), 100, 0x0007);
         g.setColour(ElectraColours::rgb565NumericWhite);
         g.fillTriangle(getWidth() / 2,
-                       getHeight() - 55,
+                       getHeight() - 30,
                        getWidth() / 2 - 10,
-                       getHeight() - 45,
+                       getHeight() - 20,
                        getWidth() / 2 + 10,
-                       getHeight() - 45);
+                       getHeight() - 20);
         g.printText(0,
-                    getHeight() - 38,
+                    getHeight() - 13,
                     "Touch Me",
                     TextStyle::smallTransparent,
                     getWidth(),
