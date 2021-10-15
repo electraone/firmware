@@ -39,10 +39,17 @@ void PotBroadcaster::triggerCallbacks(PotEvent &potEvent, plFunction function)
     for (auto i = listeners.begin(); i != listeners.end(); i++) {
         auto listener = i->first;
 
-        if ((listener->potId == PotListener::AllPots)
-            || (potEvent.getPotId() == listener->potId)) {
+        if ((listener->getPotId() == PotListener::AllPots)
+            || (potEvent.getPotId() == listener->getPotId())) {
             Component *eventComponent = static_cast<Component *>(listener);
             potEvent.setEventCompoment(eventComponent);
+
+            if (listener->getNumValues() > 0) {
+                potEvent.setAcceleratedChange(
+                    listener->computeRate(potEvent.getRelativeChange()));
+            } else {
+                potEvent.setAcceleratedChange(potEvent.getRelativeChange());
+            }
 
             for (Component *c = eventComponent; c;
                  c = c->getParentComponent()) {

@@ -13,7 +13,7 @@ class Pot
 {
 public:
     Pot(uint8_t id);
-    void process(uint8_t sensitivity = 16, uint8_t multiplier = 0);
+    void process(void);
     void initialise(void);
 
     uint8_t id;
@@ -27,4 +27,6 @@ private:
     int16_t pA;
     int16_t pB;
     uint8_t address;
+
+    static constexpr uint8_t sensitivity = 16;
 };
