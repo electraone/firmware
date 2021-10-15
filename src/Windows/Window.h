@@ -3,7 +3,6 @@
 #include <vector>
 #include "TouchEvent.h"
 #include "Component.h"
-#include "Handle.h"
 
 class Window : public Component
 {
