@@ -1,10 +1,12 @@
 #pragma once
 
 #include <cstdint>
+#include <cstdlib>
+#include <math.h>
+#include "core_pins.h"
+#include "wiring.h"
 #include "PotBroadcaster.h"
 #include "PotEvent.h"
-
-typedef uint8_t handle_t;
 
 /**
  * @brief provides callbacks for handling Pot events.
@@ -15,7 +17,7 @@ public:
     /**
     * Constructor.
     */
-    PotListener() = default;
+    PotListener();
 
     /**
      * Destructor
@@ -57,31 +59,49 @@ public:
      *
      * @param an identifier of the pot. It is a number in range 0 to 11, or
      *        AllPots constant for catching events from all pots.
+	 * @param a number of distict values within the pot range.
      */
-    void assignPot(uint8_t newPotId = AllPots)
-    {
-        potId = newPotId;
-        potBroadcaster.addListener(this);
-    }
+    void assignPot(uint8_t newPotId = AllPots, uint16_t newNumValues = 0);
 
     /**
      * Assigns all pots to the listener object.
+	 *
+	 * @param a number of distict values within the pot range.
      */
-    void assignAllPots(void)
-    {
-        potId = AllPots;
-        potBroadcaster.addListener(this);
-    }
+    void assignAllPots(uint16_t newNumValues = 0);
 
     /**
      * Stops listening for assigned pots.
      */
-    void releasePot(void)
-    {
-        potBroadcaster.removeListener(this);
-    }
+    void releasePot(void);
+
+    /**
+	 * Returns currently assigned pot.
+	 */
+    uint8_t getPotId(void);
+
+    /**
+	 * Returns number of distict values that the listener uses.
+	 */
+    uint16_t getNumValues(void);
+
+    /**
+	 * Calculates accelerated rate of change of the pot value
+	 */
+    int16_t computeRate(int16_t relativeChange);
 
     static constexpr uint8_t AllPots = 255;
     static PotBroadcaster potBroadcaster;
+
+private:
+    int16_t decreaseRate(int16_t relativeChange);
+    static uint8_t getAccelerationTable(uint16_t numValues);
+    static uint8_t getIntervalBasedIndex(uint32_t interval);
+
     uint8_t potId;
+    uint32_t tsLastUpdate;
+    uint16_t numValues;
+    int8_t stepCount;
+
+    static const uint8_t accelerationTable[8][10];
 };

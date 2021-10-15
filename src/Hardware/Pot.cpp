@@ -8,9 +8,8 @@ Pot::Pot(uint8_t newId)
 {
 }
 
-void Pot::process(uint8_t sensitivity, uint8_t multiplier)
+void Pot::process(void)
 {
-    //unsigned int start = micros();
     setMuxAddress(this->address);
     MUX_ENABLE;
     A = Hardware::adc.adc0->analogRead(A0);
@@ -22,11 +21,7 @@ void Pot::process(uint8_t sensitivity, uint8_t multiplier)
     uint16_t move = max(abs(B - pB), abs(A - pA));
 
     if (move > sensitivity) {
-        if (multiplier == 0) {
-            move /= sensitivity;
-        } else {
-            move *= multiplier;
-        }
+        move /= sensitivity;
 
         if (A == 0) {
             step = ((B - pB) > 0) ? -move : move;
@@ -53,8 +48,6 @@ void Pot::process(uint8_t sensitivity, uint8_t multiplier)
     } else {
         step = 0;
     }
-    //unsigned int end = micros();
-    //logMessage("time: %d", end - start);
 }
 
 void Pot::initialise(void)

@@ -28,6 +28,16 @@ public:
         return (relativeChange);
     }
 
+    void setAcceleratedChange(int16_t newAcceleratedChange)
+    {
+        acceleratedChange = newAcceleratedChange;
+    }
+
+    int16_t getAcceleratedChange(void) const
+    {
+        return (acceleratedChange);
+    }
+
     Component *getEventComponent(void) const
     {
         return (eventComponent);
@@ -41,5 +51,6 @@ public:
 private:
     uint8_t potId;
     int16_t relativeChange;
+    int16_t acceleratedChange;
     Component *eventComponent;
 };
