@@ -7,11 +7,12 @@ class ADSR : public Envelope
 public:
     ADSR()
     {
-        points.push_back(Point(0, 0));
-        points.push_back(Point(0, 0));
-        points.push_back(Point(0, 0));
-        points.push_back(Point(0, 0));
-        points.push_back(Point(0, 0));
+        points.push_back(Point());
+        points.push_back(Point());
+        points.push_back(Point());
+        points.push_back(Point());
+        points.push_back(Point());
+
         values.push_back(Value());
         values.push_back(Value());
         values.push_back(Value());
@@ -23,25 +24,25 @@ public:
     void computePoints(void)
     {
         float segmentWidth = getWidth() / 4;
-        int16_t baseline = 0;
         int16_t sustainLevel = 0;
-        int16_t maxY = getHeight() - 1;
+        float maxY = getHeight() - 1;
 
-        baseline = map(0,
-                       std::min((int)0, (int)(values[sustain].value * 256)),
-                       values[sustain].max * 256,
-                       maxY,
-                       0);
+        // Set the baseline
+        baselineY = map(0.0f,
+                        std::min(0.0f, values[sustain].value),
+                        values[sustain].max,
+                        maxY,
+                        0.0f);
 
-        sustainLevel = map(values[sustain].value * 256,
-                           std::min((int)0, (int)(values[sustain].value * 256)),
-                           values[sustain].max * 256,
+        sustainLevel = map(values[sustain].value,
+                           std::min(0.0f, values[sustain].value),
+                           values[sustain].max,
                            maxY,
-                           0);
+                           0.0f);
 
         // Starting point
         points[0].x = 0;
-        points[0].y = baseline;
+        points[0].y = baselineY;
 
         // Attack
         points[1].x = segmentWidth * values[attack].value;

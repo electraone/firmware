@@ -2,6 +2,8 @@
 
 #include "Colours.h"
 #include "Text.h"
+#include "Point.h"
+#include "Rectangle.h"
 #include "Geometry.h"
 #include "BitmapTools.h"
 #include "BitmapReader.h"
@@ -14,15 +16,13 @@
 /**
  *
  */
-class Graphics :
-    public Text,
-    public Geometry,
-    public BitmapTools,
-    public BitmapReader,
-    public VideoRam
+class Graphics : public Text,
+                 public Geometry,
+                 public BitmapTools,
+                 public BitmapReader,
+                 public VideoRam
 {
 public:
-
     Graphics(const uint8_t CSp, const uint8_t RSTp = 255);
     ~Graphics() = default;
 

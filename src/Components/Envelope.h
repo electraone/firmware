@@ -2,25 +2,6 @@
 
 #include "Component.h"
 
-struct Point {
-    Point(uint16_t newX, uint16_t newY) : x(newX), y(newY)
-    {
-    }
-
-    uint16_t x;
-    uint16_t y;
-};
-
-struct Value {
-    Value() : value(0.0f), min(0.0f), max(1.0f)
-    {
-    }
-
-    float value;
-    float min;
-    float max;
-};
-
 class Envelope : public Component
 {
 public:
@@ -49,9 +30,19 @@ public:
 protected:
     std::vector<Point> points;
     std::vector<Value> values;
+    float boundaryMin;
+    float boundaryMax;
+    int16_t baselineY;
 
 private:
-    virtual void paintContour(Graphics &g);
+    void paintContour(Graphics &g);
+    void paintMarkers(Graphics &g);
+    void paintFills(Graphics &g);
+
+    static bool findIntersection(uint16_t lineY,
+                                 Point &C,
+                                 Point &D,
+                                 Point &intersection);
 
     uint32_t colour;
     uint8_t activeSegment;

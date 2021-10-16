@@ -1,6 +1,7 @@
 #include "Envelope.h"
 
-Envelope::Envelope() : activeSegment(1)
+Envelope::Envelope()
+    : activeSegment(1), boundaryMin(0.0f), boundaryMax(1.0f), baselineY(0)
 {
 }
 
@@ -20,12 +21,14 @@ void Envelope::setValue(uint8_t handle, float newValue)
 void Envelope::setMin(uint8_t handle, float newMin)
 {
     values[handle].min = newMin;
+    boundaryMin = (newMin < boundaryMin) ? newMin : boundaryMin;
     setValue(handle, values[handle].value);
 }
 
 void Envelope::setMax(uint8_t handle, float newMax)
 {
     values[handle].max = newMax;
+    boundaryMax = (newMax > boundaryMax) ? newMax : boundaryMax;
     setValue(handle, values[handle].value);
 }
 
@@ -66,22 +69,26 @@ void Envelope::onPotTouchUp(const PotEvent &potEvent)
 void Envelope::paint(Graphics &g)
 {
     computePoints();
+
+    // Paint the background
+    g.fillAll(Colours::black);
+
+    // Paint the envelope fills
+    paintFills(g);
+
+    // Paint the segment markers
+    paintMarkers(g);
+
+    // Paint the base line
+    g.setColour(Colours::darkgrey);
+    g.drawLine(0, baselineY, getWidth(), baselineY);
+
+    // Paint the envelope contour
     paintContour(g);
 }
 
 void Envelope::paintContour(Graphics &g)
 {
-    uint32_t lighter = Colours::lighter(colour, 0.5f);
-    uint32_t darker = Colours::darker(colour, 0.8f);
-
-    // Paint the background
-    g.fillAll(Colours::black);
-
-    // Paint the base line
-    g.setColour(Colours::darkgrey);
-    g.drawLine(0, points[0].y, getWidth(), points[0].y);
-
-    // Draw the envelope
     g.setColour(Colours::orange);
 
     for (uint8_t i = 0; i < std::max(0, (int)(points.size() - 1)); i += 1) {
@@ -89,7 +96,108 @@ void Envelope::paintContour(Graphics &g)
     }
 }
 
+void Envelope::paintMarkers(Graphics &g)
+{
+    g.setColour(Colours::black);
+
+    for (uint8_t i = 0; i < std::max(0, (int)(points.size() - 1)); i += 1) {
+        g.drawLine(points[i].x, points[i].y, points[i].x, baselineY);
+    }
+}
+
+void Envelope::paintFills(Graphics &g)
+{
+    uint32_t darker = Colours::darker(colour, 0.2f);
+
+    for (uint8_t i = 0; i < std::max(0, (int)(points.size() - 1)); i++) {
+        Point intersection(0, 0);
+
+        if (findIntersection(
+                baselineY, points[i], points[i + 1], intersection)) {
+            // The segment intersects with the baseline
+
+            g.setColour(darker);
+
+            // Paint two wedges
+            g.fillTriangle(points[i].x,
+                           points[i].y,
+                           points[i].x,
+                           intersection.y,
+                           intersection.x - 1,
+                           intersection.y);
+            g.fillTriangle(intersection.x,
+                           intersection.y,
+                           points[i + 1].x - 1,
+                           intersection.y,
+                           points[i + 1].x - 1,
+                           points[i + 1].y);
+
+        } else {
+            // The segment does not intersect with the baseline
+            uint8_t xi = 0;
+            uint8_t yi = 0;
+
+            // Set wedge points based on the quadrant
+            if (points[i].y <= baselineY) {
+                xi = (points[i].y > points[i + 1].y) ? i + 1 : i;
+                yi = (points[i].y > points[i + 1].y) ? i : i + 1;
+            } else {
+                xi = (points[i].y > points[i + 1].y) ? i : i + 1;
+                yi = (points[i].y > points[i + 1].y) ? i + 1 : i;
+            }
+
+            g.setColour(darker);
+
+            // Paint the wedge
+            g.fillTriangle(points[i].x,
+                           points[i].y,
+                           points[i + 1].x - 1,
+                           points[i + 1].y,
+                           points[xi].x,
+                           points[yi].y);
+
+            // Paint the rectangle to fill space between wedge and the baseline
+            if ((points[i].y != baselineY) && (points[i + 1].y != baselineY)) {
+                g.fillRect(points[i].x,
+                           points[yi].y,
+                           points[i + 1].x - points[i].x,
+                           baselineY - points[yi].y);
+            }
+        }
+    }
+}
+
 void Envelope::resized(void)
 {
     repaint();
+}
+
+bool Envelope::findIntersection(uint16_t lineY,
+                                Point &C,
+                                Point &D,
+                                Point &intersection)
+{
+    // Envelope baseline represented as a1x + b1y = c1
+    int a1 = 0;
+    int b1 = -1024;
+    int c1 = b1 * lineY;
+
+    // Line CD represented as a2x + b2y = c2
+    int a2 = D.y - C.y;
+    int b2 = C.x - D.x;
+    int c2 = a2 * C.x + b2 * C.y;
+
+    int determinant = a1 * b2 - a2 * b1;
+
+    if (determinant != 0) {
+        if (!(((C.y <= lineY) && (D.y <= lineY))
+              || ((C.y > lineY) && (D.y > lineY)))) {
+            uint16_t x = (b2 * c1 - b1 * c2) / determinant;
+            uint16_t y = (a1 * c2 - a2 * c1) / determinant;
+            intersection = Point(x, y);
+            return (true);
+        }
+    }
+
+    return (false);
 }

@@ -2,10 +2,10 @@
 
 #include "Envelope.h"
 
-class AHDSR : public Envelope
+class ADSSR : public Envelope
 {
 public:
-    AHDSR()
+    ADSSR()
     {
         points.push_back(Point());
         points.push_back(Point());
@@ -14,6 +14,7 @@ public:
         points.push_back(Point());
         points.push_back(Point());
 
+        values.push_back(Value());
         values.push_back(Value());
         values.push_back(Value());
         values.push_back(Value());
@@ -21,25 +22,32 @@ public:
         values.push_back(Value());
     }
 
-    virtual ~AHDSR() = default;
+    virtual ~ADSSR() = default;
 
     void computePoints(void)
     {
         float segmentWidth = getWidth() / 5;
         float maxY = getHeight() - 1;
 
+        // Find the lowest point of the envelope
+        float lowestY =
+            std::min(values[breakPoint].value, values[sustain].value);
+
         // Set the baseline
-        baselineY = map(0.0f,
-                        std::min(0.0f, values[sustain].value),
-                        values[sustain].max,
-                        maxY,
-                        0.0f);
+        baselineY =
+            map(0.0f, std::min(0.0f, lowestY), values[sustain].max, maxY, 0.0f);
 
         int16_t sustainLevel = map(values[sustain].value,
                                    std::min(0.0f, values[sustain].value),
                                    values[sustain].max,
                                    maxY,
                                    0.0f);
+
+        int16_t breakLevel = map(values[breakPoint].value,
+                                 std::min(0.0f, values[breakPoint].value),
+                                 values[breakPoint].max,
+                                 maxY,
+                                 0.0f);
 
         // Starting point
         points[0].x = 0;
@@ -49,12 +57,12 @@ public:
         points[1].x = segmentWidth * values[attack].value;
         points[1].y = 0;
 
-        // Hold
-        points[2].x = points[1].x + segmentWidth * values[hold].value;
-        points[2].y = 0;
-
         // Decay
-        points[3].x = points[2].x + segmentWidth * values[decay].value;
+        points[2].x = points[1].x + segmentWidth * values[decay].value;
+        points[2].y = breakLevel;
+
+        // Slope
+        points[3].x = points[2].x + segmentWidth * values[slope].value;
         points[3].y = sustainLevel;
 
         // Sustain
@@ -67,10 +75,11 @@ public:
     }
 
     static constexpr uint8_t attack = 0;
-    static constexpr uint8_t hold = 1;
-    static constexpr uint8_t decay = 2;
-    static constexpr uint8_t sustain = 3;
-    static constexpr uint8_t release = 4;
+    static constexpr uint8_t decay = 1;
+    static constexpr uint8_t breakPoint = 2;
+    static constexpr uint8_t slope = 3;
+    static constexpr uint8_t sustain = 4;
+    static constexpr uint8_t release = 5;
 
 private:
 };

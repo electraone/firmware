@@ -3,9 +3,9 @@
 #include <vector>
 #include <functional>
 #include "Graphics.h"
-#include "Rectangle.h"
 #include "TouchCallback.h"
 #include "PotListener.h"
+#include "Value.h"
 #include "helpers.h"
 
 class Window;
