@@ -7,3 +7,7 @@
 #include "Knob.h"
 #include "Pad.h"
 #include "List.h"
+#include "ADSR.h"
+#include "ADR.h"
+#include "AHDSR.h"
+#include "AR.h"
