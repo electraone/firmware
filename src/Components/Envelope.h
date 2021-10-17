@@ -10,6 +10,7 @@ public:
     void setColour(uint32_t newColour);
 
     virtual void setValue(uint8_t handle, float newValue);
+    virtual void applyValue(uint8_t handle, float delta);
     virtual void setMin(uint8_t handle, float newMin);
     virtual void setMax(uint8_t handle, float newMax);
 

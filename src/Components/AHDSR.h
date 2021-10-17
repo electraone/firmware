@@ -29,14 +29,14 @@ public:
 
         // Set the baseline
         baselineY = map(0.0f,
-                        std::min(0.0f, values[sustain].value),
-                        values[sustain].max,
+                        std::min(0.0f, values[sustain].get()),
+                        values[sustain].getMax(),
                         maxY,
                         0.0f);
 
-        int16_t sustainLevel = map(values[sustain].value,
-                                   std::min(0.0f, values[sustain].value),
-                                   values[sustain].max,
+        int16_t sustainLevel = map(values[sustain].get(),
+                                   std::min(0.0f, values[sustain].get()),
+                                   values[sustain].getMax(),
                                    maxY,
                                    0.0f);
 
@@ -45,19 +45,19 @@ public:
         points[0].y = baselineY;
 
         // Delay
-        points[1].x = segmentWidth * values[delay].value;
+        points[1].x = segmentWidth * values[delay].getRelative();
         points[1].y = baselineY;
 
         // Attack
-        points[2].x = points[1].x + segmentWidth * values[attack].value;
+        points[2].x = points[1].x + segmentWidth * values[attack].getRelative();
         points[2].y = 0;
 
         // Hold
-        points[3].x = points[2].x + segmentWidth * values[hold].value;
+        points[3].x = points[2].x + segmentWidth * values[hold].getRelative();
         points[3].y = 0;
 
         // Decay
-        points[4].x = points[3].x + segmentWidth * values[decay].value;
+        points[4].x = points[3].x + segmentWidth * values[decay].getRelative();
         points[4].y = sustainLevel;
 
         // Sustain
@@ -65,7 +65,8 @@ public:
         points[5].y = points[4].y;
 
         // Release
-        points[6].x = points[5].x + segmentWidth * values[release].value;
+        points[6].x =
+            points[5].x + segmentWidth * values[release].getRelative();
         points[6].y = baselineY;
     }
 

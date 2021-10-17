@@ -6,6 +6,9 @@ Knob::Knob()
 
 void Knob::onTouchMove(const TouchEvent &touchEvent)
 {
+    int16_t max = value.getMax();
+    int16_t min = value.getMin();
+
     float step = getHeight() / (float)(max - min);
     int16_t newValue =
         constrain((int16_t)ceil((getHeight() - touchEvent.getY()) / step + min),
@@ -15,7 +18,7 @@ void Knob::onTouchMove(const TouchEvent &touchEvent)
     setValue(newValue);
 
     if (onValueChange) {
-        onValueChange(value);
+        onValueChange(value.get());
     }
 }
 
@@ -29,10 +32,14 @@ void Knob::onTouchUp(const TouchEvent &touchEvent)
 
 void Knob::paint(Graphics &g)
 {
+    int16_t max = value.getMax();
+    int16_t min = value.getMin();
+    int16_t val = value.get();
+
     uint32_t colourTrack = Colours::darker(colour, 0.3f);
     uint32_t colourCenter = Colours::darker(colour, 0.2f);
 
-    float angle = map((float)value, min, max, angleTrackStart, angleTrackEnd);
+    float angle = map((float)val, min, max, angleTrackStart, angleTrackEnd);
     float angleZero =
         map((float)0.0f, min, max, angleTrackStart, angleTrackEnd);
 

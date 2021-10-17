@@ -30,21 +30,21 @@ public:
 
         // Find the lowest point of the envelope
         float lowestY =
-            std::min(values[breakPoint].value, values[sustain].value);
+            std::min(values[breakPoint].get(), values[sustain].get());
 
         // Set the baseline
-        baselineY =
-            map(0.0f, std::min(0.0f, lowestY), values[sustain].max, maxY, 0.0f);
+        baselineY = map(
+            0.0f, std::min(0.0f, lowestY), values[sustain].get(), maxY, 0.0f);
 
-        int16_t sustainLevel = map(values[sustain].value,
-                                   std::min(0.0f, values[sustain].value),
-                                   values[sustain].max,
+        int16_t sustainLevel = map(values[sustain].get(),
+                                   std::min(0.0f, values[sustain].get()),
+                                   values[sustain].getMax(),
                                    maxY,
                                    0.0f);
 
-        int16_t breakLevel = map(values[breakPoint].value,
-                                 std::min(0.0f, values[breakPoint].value),
-                                 values[breakPoint].max,
+        int16_t breakLevel = map(values[breakPoint].get(),
+                                 std::min(0.0f, values[breakPoint].get()),
+                                 values[breakPoint].getMax(),
                                  maxY,
                                  0.0f);
 
@@ -53,19 +53,19 @@ public:
         points[0].y = baselineY;
 
         // Delay
-        points[1].x = segmentWidth * values[delay].value;
+        points[1].x = segmentWidth * values[delay].getRelative();
         points[1].y = baselineY;
 
         // Attack
-        points[2].x = points[1].x + segmentWidth * values[attack].value;
+        points[2].x = points[1].x + segmentWidth * values[attack].getRelative();
         points[2].y = 0;
 
         // Decay
-        points[3].x = points[2].x + segmentWidth * values[decay].value;
+        points[3].x = points[2].x + segmentWidth * values[decay].getRelative();
         points[3].y = breakLevel;
 
         // Slope
-        points[4].x = points[3].x + segmentWidth * values[slope].value;
+        points[4].x = points[3].x + segmentWidth * values[slope].getRelative();
         points[4].y = sustainLevel;
 
         // Sustain
@@ -73,7 +73,8 @@ public:
         points[5].y = points[4].y;
 
         // Release
-        points[6].x = points[5].x + segmentWidth * values[release].value;
+        points[6].x =
+            points[5].x + segmentWidth * values[release].getRelative();
         points[6].y = baselineY;
     }
 

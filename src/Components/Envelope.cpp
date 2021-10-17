@@ -21,23 +21,26 @@ void Envelope::setColour(uint32_t newColour)
 
 void Envelope::setValue(uint8_t handle, float newValue)
 {
-    values[handle].value =
-        constrain(newValue, values[handle].min, values[handle].max);
+    values[handle].set(newValue);
+    repaint();
+}
+
+void Envelope::applyValue(uint8_t handle, float delta)
+{
+    values[handle].apply(delta);
     repaint();
 }
 
 void Envelope::setMin(uint8_t handle, float newMin)
 {
-    values[handle].min = newMin;
+    values[handle].setMin(newMin);
     boundaryMin = (newMin < boundaryMin) ? newMin : boundaryMin;
-    setValue(handle, values[handle].value);
 }
 
 void Envelope::setMax(uint8_t handle, float newMax)
 {
-    values[handle].max = newMax;
+    values[handle].setMax(newMax);
     boundaryMax = (newMax > boundaryMax) ? newMax : boundaryMax;
-    setValue(handle, values[handle].value);
 }
 
 void Envelope::setActiveSegment(uint8_t newActiveSegment)
@@ -64,10 +67,8 @@ void Envelope::onTouchUp(const TouchEvent &touchEvent)
 
 void Envelope::onPotChange(const PotEvent &potEvent)
 {
-    if (potEvent.getRelativeChange() > 0) {
-        setValue(activeSegment, values[activeSegment].value + 0.01f);
-    } else {
-        setValue(activeSegment, values[activeSegment].value - 0.01f);
+    if (potEvent.getRelativeChange()) {
+        applyValue(activeSegment, potEvent.getRelativeChange());
     }
 }
 
@@ -86,7 +87,7 @@ void Envelope::paint(Graphics &g)
 
     // If delay is disabled, set delay value to 0
     if (!delayEnabled) {
-        values[delay].value = 0.0f;
+        values[delay].set(0.0f);
     }
 
     // Compute points on the envelope contour

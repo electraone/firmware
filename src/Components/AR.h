@@ -28,15 +28,16 @@ public:
         points[0].y = baselineY;
 
         // Delay
-        points[1].x = segmentWidth * values[delay].value;
+        points[1].x = segmentWidth * values[delay].getRelative();
         points[1].y = baselineY;
 
         // Attack
-        points[2].x = points[1].x + segmentWidth * values[attack].value;
+        points[2].x = points[1].x + segmentWidth * values[attack].getRelative();
         points[2].y = 0;
 
         // Release
-        points[3].x = points[2].x + segmentWidth * values[release].value;
+        points[3].x =
+            points[2].x + segmentWidth * values[release].getRelative();
         points[3].y = baselineY;
     }
 

@@ -21,7 +21,7 @@ public:
     void computePoints(void)
     {
         uint16_t segmentWidth = getSegmentWidth(3);
-        uint16_t decayLength = segmentWidth * values[decay].value;
+        uint16_t decayLength = segmentWidth * values[decay].get();
         float factor = (float)decayLength / (float)segmentWidth;
 
         // Set the baseline
@@ -32,11 +32,11 @@ public:
         points[0].y = baselineY;
 
         // Delay
-        points[1].x = segmentWidth * values[delay].value;
+        points[1].x = segmentWidth * values[delay].getRelative();
         points[1].y = baselineY;
 
         // Attack
-        points[2].x = points[1].x + segmentWidth * values[attack].value;
+        points[2].x = points[1].x + segmentWidth * values[attack].getRelative();
         points[2].y = 0;
 
         // Decay
@@ -44,7 +44,8 @@ public:
         points[3].y = baselineY - (baselineY * factor);
 
         // Release
-        points[4].x = points[3].x + segmentWidth * values[release].value;
+        points[4].x =
+            points[3].x + segmentWidth * values[release].getRelative();
         points[4].y = points[0].y;
     }
 

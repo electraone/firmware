@@ -6,6 +6,9 @@ BarVertical::BarVertical()
 
 void BarVertical::onTouchMove(const TouchEvent &touchEvent)
 {
+    int16_t max = value.getMax();
+    int16_t min = value.getMin();
+
     float step = getHeight() / (float)(max - min);
     int16_t newValue =
         constrain((int16_t)ceil((getHeight() - touchEvent.getY()) / step + min),
@@ -15,7 +18,7 @@ void BarVertical::onTouchMove(const TouchEvent &touchEvent)
     setValue(newValue);
 
     if (onValueChange) {
-        onValueChange(value);
+        onValueChange(value.get());
     }
 }
 
@@ -29,13 +32,17 @@ void BarVertical::onTouchUp(const TouchEvent &touchEvent)
 
 void BarVertical::paint(Graphics &g)
 {
+    int16_t max = value.getMax();
+    int16_t min = value.getMin();
+    int16_t val = value.get();
+
     uint32_t colourTrack = Colours::darker(colour, 0.3f);
 
     uint16_t barWidth = getWidth() * 1.0f;
     uint16_t padding = (getWidth() - barWidth) / 2;
 
     uint16_t barY = map(0, min, max, 0, getHeight());
-    uint16_t barHeight = map(value, min, max, 0, getHeight()) - barY;
+    uint16_t barHeight = map(val, min, max, 0, getHeight()) - barY;
 
     // Clear the component area
     g.fillAll(Colours::black);
