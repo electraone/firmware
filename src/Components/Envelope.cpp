@@ -1,8 +1,16 @@
 #include "Envelope.h"
 
 Envelope::Envelope()
-    : activeSegment(1), boundaryMin(0.0f), boundaryMax(1.0f), baselineY(0)
+    : activeSegment(1),
+      boundaryMin(0.0f),
+      boundaryMax(1.0f),
+      baselineY(0),
+      delayEnabled(false)
 {
+    points.push_back(Point()); // Starting point
+    points.push_back(Point()); // Delay
+
+    values.push_back(Value()); // Delay
 }
 
 void Envelope::setColour(uint32_t newColour)
@@ -35,6 +43,11 @@ void Envelope::setMax(uint8_t handle, float newMax)
 void Envelope::setActiveSegment(uint8_t newActiveSegment)
 {
     activeSegment = newActiveSegment;
+}
+
+void Envelope::useDelay(bool shouldBeUsed)
+{
+    delayEnabled = shouldBeUsed;
 }
 
 void Envelope::onTouchMove(const TouchEvent &touchEvent)
@@ -70,6 +83,11 @@ void Envelope::paint(Graphics &g)
 {
     // Clear the envelope area
     g.fillAll(Colours::black);
+
+    // If delay is disabled, set delay value to 0
+    if (!delayEnabled) {
+        values[delay].value = 0.0f;
+    }
 
     // Compute points on the envelope contour
     computePoints();
@@ -171,6 +189,11 @@ void Envelope::paintFills(Graphics &g)
 void Envelope::resized(void)
 {
     repaint();
+}
+
+uint16_t Envelope::getSegmentWidth(uint8_t numSegments)
+{
+    return (getWidth() / (numSegments + delayEnabled));
 }
 
 bool Envelope::findIntersection(uint16_t lineY,

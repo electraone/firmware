@@ -7,25 +7,24 @@ class AHDSR : public Envelope
 public:
     AHDSR()
     {
-        points.push_back(Point());
-        points.push_back(Point());
-        points.push_back(Point());
-        points.push_back(Point());
-        points.push_back(Point());
-        points.push_back(Point());
+        points.push_back(Point()); // Attack
+        points.push_back(Point()); // Hold
+        points.push_back(Point()); // Decay
+        points.push_back(Point()); // Sustain
+        points.push_back(Point()); // Release
 
-        values.push_back(Value());
-        values.push_back(Value());
-        values.push_back(Value());
-        values.push_back(Value());
-        values.push_back(Value());
+        values.push_back(Value()); // Attack
+        values.push_back(Value()); // Hold
+        values.push_back(Value()); // Decay
+        values.push_back(Value()); // Sustain
+        values.push_back(Value()); // Release
     }
 
     virtual ~AHDSR() = default;
 
     void computePoints(void)
     {
-        float segmentWidth = getWidth() / 5;
+        uint16_t segmentWidth = getSegmentWidth(5);
         float maxY = getHeight() - 1;
 
         // Set the baseline
@@ -45,32 +44,36 @@ public:
         points[0].x = 0;
         points[0].y = baselineY;
 
-        // Attack
-        points[1].x = segmentWidth * values[attack].value;
-        points[1].y = 0;
+        // Delay
+        points[1].x = segmentWidth * values[delay].value;
+        points[1].y = baselineY;
 
-        // Hold
-        points[2].x = points[1].x + segmentWidth * values[hold].value;
+        // Attack
+        points[2].x = points[1].x + segmentWidth * values[attack].value;
         points[2].y = 0;
 
+        // Hold
+        points[3].x = points[2].x + segmentWidth * values[hold].value;
+        points[3].y = 0;
+
         // Decay
-        points[3].x = points[2].x + segmentWidth * values[decay].value;
-        points[3].y = sustainLevel;
+        points[4].x = points[3].x + segmentWidth * values[decay].value;
+        points[4].y = sustainLevel;
 
         // Sustain
-        points[4].x = points[3].x + segmentWidth;
-        points[4].y = points[3].y;
+        points[5].x = points[4].x + segmentWidth;
+        points[5].y = points[4].y;
 
         // Release
-        points[5].x = points[4].x + segmentWidth * values[release].value;
-        points[5].y = points[0].y;
+        points[6].x = points[5].x + segmentWidth * values[release].value;
+        points[6].y = baselineY;
     }
 
-    static constexpr uint8_t attack = 0;
-    static constexpr uint8_t hold = 1;
-    static constexpr uint8_t decay = 2;
-    static constexpr uint8_t sustain = 3;
-    static constexpr uint8_t release = 4;
+    static constexpr uint8_t attack = 1;
+    static constexpr uint8_t hold = 2;
+    static constexpr uint8_t decay = 3;
+    static constexpr uint8_t sustain = 4;
+    static constexpr uint8_t release = 5;
 
 private:
 };

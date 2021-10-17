@@ -14,6 +14,7 @@ public:
     virtual void setMax(uint8_t handle, float newMax);
 
     void setActiveSegment(uint8_t newActiveSegment);
+    void useDelay(bool shouldBeUsed);
 
     virtual void onTouchMove(const TouchEvent &touchEvent) override;
     virtual void onTouchDown(const TouchEvent &touchEvent) override;
@@ -27,12 +28,17 @@ public:
     virtual void resized(void) override;
     virtual void paint(Graphics &g) override;
 
+    static constexpr uint8_t delay = 0;
+
 protected:
+    uint16_t getSegmentWidth(uint8_t numSegments);
+
     std::vector<Point> points;
     std::vector<Value> values;
     float boundaryMin;
     float boundaryMax;
     int16_t baselineY;
+    bool delayEnabled;
 
 private:
     void paintContour(Graphics &g);

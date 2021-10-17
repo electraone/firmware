@@ -7,39 +7,41 @@ class AR : public Envelope
 public:
     AR()
     {
-        points.push_back(Point());
-        points.push_back(Point());
-        points.push_back(Point());
-		
-        values.push_back(Value());
-        values.push_back(Value());
+        points.push_back(Point()); // Attack
+        points.push_back(Point()); // Release (or Decay)
+
+        values.push_back(Value()); // Attack
+        values.push_back(Value()); // Release (or Decay)
     }
 
     virtual ~AR() = default;
 
     void computePoints(void)
     {
-        float segmentWidth = getWidth() / 2;
-        int16_t maxY = getHeight() - 1;
+        uint16_t segmentWidth = getSegmentWidth(2);
+
+        // Set the baseline
+        baselineY = getHeight() - 1;
 
         // Starting point
         points[0].x = 0;
-        points[0].y = maxY;
+        points[0].y = baselineY;
+
+        // Delay
+        points[1].x = segmentWidth * values[delay].value;
+        points[1].y = baselineY;
 
         // Attack
-        points[1].x = segmentWidth * values[attack].value;
-        points[1].y = 0;
+        points[2].x = points[1].x + segmentWidth * values[attack].value;
+        points[2].y = 0;
 
         // Release
-        points[2].x = points[1].x + segmentWidth * values[release].value;
-        points[2].y = maxY;
-
-        // Set the baseline
-        baselineY = points[0].y;
+        points[3].x = points[2].x + segmentWidth * values[release].value;
+        points[3].y = baselineY;
     }
 
-    static constexpr uint8_t attack = 0;
-    static constexpr uint8_t release = 1;
+    static constexpr uint8_t attack = 1;
+    static constexpr uint8_t release = 2;
 
 private:
 };
