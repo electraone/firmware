@@ -68,22 +68,15 @@ void Envelope::onPotTouchUp(const PotEvent &potEvent)
 
 void Envelope::paint(Graphics &g)
 {
-    computePoints();
-
-    // Paint the background
+    // Clear the envelope area
     g.fillAll(Colours::black);
 
-    // Paint the envelope fills
+    // Compute points on the envelope contour
+    computePoints();
+
     paintFills(g);
-
-    // Paint the segment markers
     paintMarkers(g);
-
-    // Paint the base line
-    g.setColour(Colours::darkgrey);
-    g.drawLine(0, baselineY, getWidth(), baselineY);
-
-    // Paint the envelope contour
+    paintBaseline(g);
     paintContour(g);
 }
 
@@ -94,6 +87,14 @@ void Envelope::paintContour(Graphics &g)
     for (uint8_t i = 0; i < std::max(0, (int)(points.size() - 1)); i += 1) {
         g.drawLine(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y);
     }
+}
+
+void Envelope::paintBaseline(Graphics &g)
+{
+    g.setColour(Colours::black);
+    g.drawLine(0, baselineY, getWidth(), baselineY);
+    g.setColour(Colours::darkgrey);
+    g.drawHorizontalDottedLine(0, getWidth(), baselineY);
 }
 
 void Envelope::paintMarkers(Graphics &g)

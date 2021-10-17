@@ -36,6 +36,7 @@ protected:
 
 private:
     void paintContour(Graphics &g);
+    void paintBaseline(Graphics &g);
     void paintMarkers(Graphics &g);
     void paintFills(Graphics &g);
 
