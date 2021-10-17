@@ -1,12 +1,7 @@
 #include "Slider.h"
 
 Slider::Slider()
-    : min(-64),
-      max(63),
-      value(min),
-      colour(Colours::red),
-      formatString("%d"),
-      valueBoxPosition(NoValueBox)
+    : colour(Colours::red), formatString("%d"), valueBoxPosition(NoValueBox)
 {
 }
 
@@ -23,36 +18,41 @@ Slider::ValueBoxPosition Slider::getValueBoxPosition(void) const
 
 void Slider::setMinimum(int16_t newMin)
 {
-    min = newMin;
-    setValue(value);
+    value.setMin(newMin);
+    repaint();
 }
 
 int16_t Slider::getMinimum(void) const
 {
-    return (min);
+    return (value.getMin());
 }
 
 void Slider::setMaximum(int16_t newMax)
 {
-    max = newMax;
-    setValue(value);
+    value.setMax(newMax);
+    repaint();
 }
 
 int16_t Slider::getMaximum(void) const
 {
-    return (max);
+    return (value.getMax());
 }
 
-void Slider::setRange(int16_t newMinimum, int16_t newMaximum)
+void Slider::setRange(int16_t newMin, int16_t newMax)
 {
-    min = newMinimum;
-    max = newMaximum;
-    setValue(value);
+    value.setRange(newMin, newMax);
+    repaint();
 }
 
 void Slider::setValue(int16_t newValue)
 {
-    value = constrain(newValue, min, max);
+    value.set(newValue);
+    repaint();
+}
+
+void Slider::applyValue(int16_t delta)
+{
+    value.apply(delta);
     repaint();
 }
 
@@ -92,7 +92,9 @@ void Slider::onTouchUp(const TouchEvent &touchEvent)
 
 void Slider::onPotChange(const PotEvent &potEvent)
 {
-    applyRelativeChange(potEvent.getRelativeChange());
+    if (potEvent.getRelativeChange()) {
+        applyValue(potEvent.getRelativeChange());
+    }
 }
 
 void Slider::onPotTouchDown(const PotEvent &potEvent)
@@ -103,16 +105,10 @@ void Slider::onPotTouchUp(const PotEvent &potEvent)
 {
 }
 
-void Slider::applyRelativeChange(int16_t relativeChange)
-{
-    value += relativeChange;
-    setValue(value);
-}
-
 void Slider::paintValueBox(Graphics &g)
 {
     char stringValue[10];
-    snprintf(stringValue, sizeof(stringValue), formatString, value);
+    snprintf(stringValue, sizeof(stringValue), formatString, value.get());
     g.printText(0,
                 getHeight() - 13,
                 stringValue,

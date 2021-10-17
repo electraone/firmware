@@ -6,6 +6,9 @@ SliderHorizontal::SliderHorizontal()
 
 void SliderHorizontal::onTouchMove(const TouchEvent &touchEvent)
 {
+    int16_t max = value.getMax();
+    int16_t min = value.getMin();
+
     float step = getWidth() / (float)(max - min);
     int16_t newValue =
         constrain(ceil(touchEvent.getX() / step + min), min, max);
@@ -13,7 +16,7 @@ void SliderHorizontal::onTouchMove(const TouchEvent &touchEvent)
     setValue(newValue);
 
     if (onValueChange) {
-        onValueChange(value);
+        onValueChange(value.get());
     }
 }
 
@@ -27,10 +30,14 @@ void SliderHorizontal::onTouchUp(const TouchEvent &touchEvent)
 
 void SliderHorizontal::paint(Graphics &g)
 {
+    int16_t max = value.getMax();
+    int16_t min = value.getMin();
+    int16_t val = value.get();
+
     uint32_t colourTrack = Colours::darker(colour, 0.3f);
 
     uint16_t padding = (getHeight() - indicatorSize) / 2;
-    uint16_t indicatorX = map(value, min, max, 0, getWidth() - indicatorSize);
+    uint16_t indicatorX = map(val, min, max, 0, getWidth() - indicatorSize);
 
     // Clear the component area
     g.fillAll(Colours::black);

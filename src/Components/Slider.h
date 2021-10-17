@@ -23,8 +23,9 @@ public:
     int16_t getMinimum(void) const;
     void setMaximum(int16_t newMax);
     int16_t getMaximum(void) const;
-    void setRange(int16_t newMinimum, int16_t newMaximum);
+    void setRange(int16_t newMin, int16_t newMax);
     void setValue(int16_t newValue);
+    void applyValue(int16_t delta);
     int16_t getValue(int16_t value) const;
     void setValueFormat(const char *newValueFormat);
     void setColour(uint32_t newColour);
@@ -40,8 +41,6 @@ public:
     virtual void onPotTouchDown(const PotEvent &potEvent) override;
     virtual void onPotTouchUp(const PotEvent &potEvent) override;
 
-    virtual void applyRelativeChange(int16_t relativeChange);
-
     std::function<void(int16_t value)> onValueChange;
     std::function<void(int16_t value)> onDragStart;
     std::function<void(int16_t value)> onDragEnd;
@@ -49,9 +48,7 @@ public:
 protected:
     virtual void paintValueBox(Graphics &g);
 
-    int16_t min;
-    int16_t max;
-    int16_t value;
+    Value value;
     uint32_t colour;
 
     const char *formatString;
