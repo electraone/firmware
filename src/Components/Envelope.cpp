@@ -82,7 +82,7 @@ void Envelope::paint(Graphics &g)
 
 void Envelope::paintContour(Graphics &g)
 {
-    g.setColour(Colours::orange);
+    g.setColour(colour);
 
     for (uint8_t i = 0; i < std::max(0, (int)(points.size() - 1)); i += 1) {
         g.drawLine(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y);
