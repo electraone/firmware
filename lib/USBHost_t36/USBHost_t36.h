@@ -597,7 +597,10 @@ protected:
     virtual bool claim(Device_t *device,
                        int type,
                        const uint8_t *descriptors,
-                       uint32_t len);
+                       uint32_t len)
+	{
+		return (false);
+	}
 
     // When an unknown (not chapter 9) control transfer completes, this
     // function is called for all drivers bound to the device.  Return
@@ -628,7 +631,9 @@ protected:
     // code continuing to call its API.  However, pipes and transfers
     // are the handled by lower layers, so device drivers do not free
     // pipes they created or cancel transfers they had in progress.
-    virtual void disconnect();
+    virtual void disconnect()
+	{
+	}
 
     // Drivers are managed by this single-linked list.  All inactive
     // (not bound to any device) drivers are linked from
@@ -653,13 +658,16 @@ public:
     USBDriverTimer()
     {
     }
+
     USBDriverTimer(USBDriver *d) : driver(d)
     {
     }
+
     void init(USBDriver *d)
     {
         driver = d;
-    };
+    }
+
     void start(uint32_t microseconds);
     void stop();
     void *pointer;
@@ -777,10 +785,10 @@ protected:
     virtual bool claim(Device_t *dev,
                        int type,
                        const uint8_t *descriptors,
-                       uint32_t len);
-    virtual void control(const Transfer_t *transfer);
-    virtual void timer_event(USBDriverTimer *whichTimer);
-    virtual void disconnect();
+                       uint32_t len) override;
+    virtual void control(const Transfer_t *transfer) override;
+    virtual void timer_event(USBDriverTimer *whichTimer) override;
+    virtual void disconnect()override;
     void init();
     bool can_send_control_now();
     void send_poweron(uint32_t port);
@@ -862,9 +870,9 @@ protected:
     virtual bool claim(Device_t *device,
                        int type,
                        const uint8_t *descriptors,
-                       uint32_t len);
-    virtual void control(const Transfer_t *transfer);
-    virtual void disconnect();
+                       uint32_t len) override;
+    virtual void control(const Transfer_t *transfer) override;
+    virtual void disconnect() override;
     static void in_callback(const Transfer_t *transfer);
     static void out_callback(const Transfer_t *transfer);
     void in_data(const Transfer_t *transfer);
@@ -1011,9 +1019,9 @@ protected:
     virtual bool claim(Device_t *device,
                        int type,
                        const uint8_t *descriptors,
-                       uint32_t len);
-    virtual void control(const Transfer_t *transfer);
-    virtual void disconnect();
+                       uint32_t len) override;
+    virtual void control(const Transfer_t *transfer) override;
+    virtual void disconnect() override;
     static void callback(const Transfer_t *transfer);
     void new_data(const Transfer_t *transfer);
     void init();
@@ -1183,9 +1191,9 @@ protected:
     virtual bool claim(Device_t *device,
                        int type,
                        const uint8_t *descriptors,
-                       uint32_t len);
-    virtual void control(const Transfer_t *transfer);
-    virtual void disconnect();
+                       uint32_t len) override;
+    virtual void control(const Transfer_t *transfer) override;
+    virtual void disconnect() override;
 
     // From USBHIDInput
     virtual hidclaim_t claim_collection(USBHIDParser *driver,
@@ -1633,8 +1641,8 @@ protected:
     virtual bool claim(Device_t *device,
                        int type,
                        const uint8_t *descriptors,
-                       uint32_t len);
-    virtual void disconnect();
+                       uint32_t len) override;
+    virtual void disconnect() override;
     static void rx_callback(const Transfer_t *transfer);
     static void tx_callback(const Transfer_t *transfer);
     void rx_data(const Transfer_t *transfer);
@@ -1740,10 +1748,10 @@ protected:
     virtual bool claim(Device_t *device,
                        int type,
                        const uint8_t *descriptors,
-                       uint32_t len);
-    virtual void control(const Transfer_t *transfer);
-    virtual void disconnect();
-    virtual void timer_event(USBDriverTimer *whichTimer);
+                       uint32_t len) override;
+    virtual void control(const Transfer_t *transfer) override;
+    virtual void disconnect() override;
+    virtual void timer_event(USBDriverTimer *whichTimer) override;
 
 private:
     static void rx_callback(const Transfer_t *transfer);
@@ -1858,9 +1866,9 @@ protected:
     virtual bool claim(Device_t *device,
                        int type,
                        const uint8_t *descriptors,
-                       uint32_t len);
-    virtual void disconnect();
-    virtual void timer_event(USBDriverTimer *whichTimer);
+                       uint32_t len) override;
+    virtual void disconnect() override;
+    virtual void timer_event(USBDriverTimer *whichTimer) override;
 
 private:
     static void rx_callback(const Transfer_t *transfer);

@@ -332,6 +332,29 @@ bool Component::isOverlaping(Component *first, Component *second)
     return (true);
 }
 
+#include "BarHorizontal.h"
+#include "List.h"
+
+Component *Component::createComponent(uint8_t type)
+{
+    Component *c = nullptr;
+
+    if (type == 1) {
+        if ((c = new BarHorizontal) != nullptr) {
+            logMessage("building fader");
+        }
+    } else {
+        if ((c = new List) != nullptr) {
+            logMessage("building list");
+        }
+    }
+
+    if (c) {
+    }
+
+    return (c);
+}
+
 // \todo Move this to an appropriate place
 #include <CircularBuffer.h>
 extern CircularBuffer<Component *, 100> repaintQueue;

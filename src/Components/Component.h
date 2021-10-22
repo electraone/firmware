@@ -372,6 +372,11 @@ public:
      */
     Rectangle getLocalBounds(void) const;
 
+	/** Factory function
+	 *
+	 */
+    static Component *createComponent(uint8_t type);
+
 protected:
     static const int MaxNameLength = 15;
     char name[MaxNameLength + 1];

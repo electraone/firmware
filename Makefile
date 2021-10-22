@@ -67,7 +67,7 @@ CPPFLAGS = -Wall -Os -mthumb -ffunction-sections -fdata-sections \
 			-Isrc -I$(BASEPATH)
 
 # compiler options for C++ only
-CXXFLAGS = -std=gnu++0x -felide-constructors -fexceptions -fno-rtti \
+CXXFLAGS = -std=gnu++17 -felide-constructors -fexceptions \
       -fshort-enums -Wno-reorder
 
 # compiler options for C only
