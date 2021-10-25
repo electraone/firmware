@@ -21,7 +21,7 @@ public:
     void computePoints(void)
     {
         uint16_t segmentWidth = getSegmentWidth(3);
-        uint16_t decayLength = segmentWidth * values[decay].get();
+        uint16_t decayLength = segmentWidth * values[decay].getRelative();
         float factor = (float)decayLength / (float)segmentWidth;
 
         // Set the baseline
