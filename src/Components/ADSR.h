@@ -20,10 +20,10 @@ public:
 
     virtual ~ADSR() = default;
 
-    void computePoints(void)
+    void computePoints(const Rectangle &bounds)
     {
-        uint16_t segmentWidth = getSegmentWidth(4);
-        float maxY = getHeight() - 1;
+        uint16_t segmentWidth = getSegmentWidth(bounds.getWidth(), 4);
+        float maxY = bounds.getHeight() - 1;
 
         // Set the baseline
         baselineY = map(0.0f,

@@ -25,19 +25,17 @@ public:
     virtual void onPotTouchDown(const PotEvent &potEvent) override;
     virtual void onPotTouchUp(const PotEvent &potEvent) override;
 
-    virtual void computePoints(void) = 0;
+    virtual void computePoints(const Rectangle &bounds) = 0;
     virtual void resized(void) override;
     virtual void paint(Graphics &g) override;
 
     static constexpr uint8_t delay = 0;
 
 protected:
-    uint16_t getSegmentWidth(uint8_t numSegments);
+    uint16_t getSegmentWidth(uint16_t width, uint8_t numSegments);
 
     std::vector<Point> points;
     std::vector<Value> values;
-    float boundaryMin;
-    float boundaryMax;
     int16_t baselineY;
     bool delayEnabled;
     uint32_t colour;

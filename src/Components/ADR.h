@@ -18,14 +18,14 @@ public:
 
     virtual ~ADR() = default;
 
-    void computePoints(void)
+    void computePoints(const Rectangle &bounds)
     {
-        uint16_t segmentWidth = getSegmentWidth(3);
+        uint16_t segmentWidth = getSegmentWidth(bounds.getWidth(), 3);
         uint16_t decayLength = segmentWidth * values[decay].getRelative();
         float factor = (float)decayLength / (float)segmentWidth;
 
         // Set the baseline
-        baselineY = getHeight() - 1;
+        baselineY = bounds.getHeight() - 1;
 
         // Starting point
         points[0].x = 0;

@@ -25,49 +25,77 @@ public:
 
     virtual ~Env5Seg() = default;
 
-    void computePoints(void)
+    float getMinimumLevel(void)
     {
-        uint16_t segmentWidth = getSegmentWidth(5);
-        float maxY = getHeight() - 1;
+        float minLevel =
+            std::min(std::min(values[level1].get(), values[level2].get()),
+                     std::min(values[level3].get(), values[level4].get()));
+        if (minLevel > 0) {
+            minLevel = 0;
+        }
+
+        return (minLevel);
+    }
+
+    float getMaximumLevel(void)
+    {
+        float maxLevel =
+            std::max(std::max(values[level1].get(), values[level2].get()),
+                     std::max(values[level3].get(), values[level4].get()));
+
+        if (maxLevel < 0) {
+            maxLevel = 0;
+        }
+
+        return (maxLevel);
+    }
+
+    void computePoints(const Rectangle &bounds)
+    {
+        uint16_t segmentWidth = getSegmentWidth(bounds.getWidth(), 5);
+        float maxY = bounds.getHeight() - 1;
+
+        float boundaryMin = getMinimumLevel();
+        float boundaryMax = getMaximumLevel();
 
         int16_t baseline = map(0.0f, boundaryMin, boundaryMax, maxY, 0.0f);
 
-        int16_t level1Level =
+        int16_t level1Y =
             map(values[level1].get(), boundaryMin, boundaryMax, maxY, 0.0f);
-        int16_t level2Level =
+        int16_t level2Y =
             map(values[level2].get(), boundaryMin, boundaryMax, maxY, 0.0f);
-        int16_t level3Level =
+        int16_t level3Y =
             map(values[level3].get(), boundaryMin, boundaryMax, maxY, 0.0f);
-        int16_t level4Level =
+        int16_t level4Y =
             map(values[level4].get(), boundaryMin, boundaryMax, maxY, 0.0f);
 
         // Starting point
         points[0].x = 0;
-        points[0].y = level4Level;
+        points[0].y = level4Y;
 
         // Delay
         points[1].x = segmentWidth * values[delay].getRelative();
-        points[1].y = level4Level;
+        points[1].y = level4Y;
 
         // Segment 1
         points[2].x = points[1].x + segmentWidth * values[rate1].getRelative();
-        points[2].y = level1Level;
+        points[2].y = level1Y;
 
         // Segment 2
         points[3].x = points[2].x + segmentWidth * values[rate2].getRelative();
-        points[3].y = level2Level;
+        points[3].y = level2Y;
 
         // Segment 3
         points[4].x = points[3].x + segmentWidth * values[rate3].getRelative();
-        points[4].y = level3Level;
+        points[4].y = level3Y;
 
         // Segment 4
         points[5].x = points[4].x + segmentWidth;
-        points[5].y = level3Level;
+        points[5].y = level3Y;
 
         // Segment 5
         points[6].x = points[5].x + segmentWidth * values[rate4].getRelative();
-        points[6].y = level4Level;
+        points[6].y = level4Y;
 
         // Set the baseline
         baselineY = baseline;

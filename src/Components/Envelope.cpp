@@ -1,12 +1,7 @@
 #include "Envelope.h"
 #include "LookAndFeel.h"
 
-Envelope::Envelope()
-    : activeSegment(1),
-      boundaryMin(0.0f),
-      boundaryMax(1.0f),
-      baselineY(0),
-      delayEnabled(false)
+Envelope::Envelope() : activeSegment(1), baselineY(0), delayEnabled(false)
 {
     points.push_back(Point()); // Starting point
     points.push_back(Point()); // Delay
@@ -35,13 +30,11 @@ void Envelope::applyValue(uint8_t handle, float delta)
 void Envelope::setMin(uint8_t handle, float newMin)
 {
     values[handle].setMin(newMin);
-    boundaryMin = (newMin < boundaryMin) ? newMin : boundaryMin;
 }
 
 void Envelope::setMax(uint8_t handle, float newMax)
 {
     values[handle].setMax(newMax);
-    boundaryMax = (newMax > boundaryMax) ? newMax : boundaryMax;
 }
 
 void Envelope::setActiveSegment(uint8_t newActiveSegment)
@@ -89,9 +82,9 @@ void Envelope::paint(Graphics &g)
     }
 
     // Compute points on the envelope contour
-    computePoints();
+    computePoints(getLocalBounds());
 
-    LookAndFeel::paintEnvelope(g, getBounds(), colour, baselineY, points);
+    LookAndFeel::paintEnvelope(g, getLocalBounds(), colour, baselineY, points);
 }
 
 void Envelope::resized(void)
@@ -99,7 +92,7 @@ void Envelope::resized(void)
     repaint();
 }
 
-uint16_t Envelope::getSegmentWidth(uint8_t numSegments)
+uint16_t Envelope::getSegmentWidth(uint16_t width, uint8_t numSegments)
 {
-    return (getWidth() / (numSegments + delayEnabled));
+    return (width / (numSegments + delayEnabled));
 }

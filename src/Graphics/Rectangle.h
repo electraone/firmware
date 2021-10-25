@@ -112,6 +112,14 @@ public:
     }
 
     /**
+     * Returns bounds relative to the its origin.
+     */
+    Rectangle getLocalBounds(void) const
+    {
+        return (Rectangle(0, 0, width, height));
+    }
+
+    /**
      * Sets the bounding boax of the rectangle using another rectangle.
      *
      * @param rect position and location given by Rectangle object.
