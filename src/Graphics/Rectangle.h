@@ -1,5 +1,9 @@
 #pragma once
 
+extern "C" {
+void logMessage(const char *format, ...);
+}
+
 /**
  * @brief Represents rectangular area at given position.
  */
@@ -205,6 +209,15 @@ public:
     {
         x = newCentreX - (width / 2);
         y = newCentreY - (height / 2);
+    }
+
+    /**
+	 * Prints information about bounds
+	 */
+    void print(void) const
+    {
+        logMessage(
+            "bounds: [%d %d %d %d]", getX(), getY(), getWidth(), getHeight());
     }
 
 private:
