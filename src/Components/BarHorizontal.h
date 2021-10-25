@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Slider.h"
+#include "LookAndFeel.h"
 
 class BarHorizontal : public Slider
 {

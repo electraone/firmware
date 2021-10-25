@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Slider.h"
+#include "LookAndFeel.h"
 
 class SliderHorizontal : public Slider
 {
@@ -15,6 +16,4 @@ public:
     void paint(Graphics &g) override;
 
 private:
-    static constexpr uint8_t indicatorSize = 22;
-    static constexpr uint8_t indicatorRadius = indicatorSize / 2;
 };

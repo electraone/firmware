@@ -334,6 +334,7 @@ bool Component::isOverlaping(Component *first, Component *second)
 
 #include "BarHorizontal.h"
 #include "List.h"
+#include "Pad.h"
 
 Component *Component::createComponent(uint8_t type)
 {
@@ -343,14 +344,17 @@ Component *Component::createComponent(uint8_t type)
         if ((c = new BarHorizontal) != nullptr) {
             logMessage("building fader");
         }
-    } else {
+    } else if (type == 3) {
         if ((c = new List) != nullptr) {
             logMessage("building list");
         }
+    } else if (type == 4) {
+        if ((c = new Pad) != nullptr) {
+            logMessage("building pad");
+        }
     }
 
-    if (c) {
-    }
+    if (c) {}
 
     return (c);
 }

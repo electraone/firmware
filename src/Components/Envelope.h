@@ -40,6 +40,7 @@ protected:
     float boundaryMax;
     int16_t baselineY;
     bool delayEnabled;
+    uint32_t colour;
 
 private:
     void paintContour(Graphics &g);
@@ -52,6 +53,5 @@ private:
                                  Point &D,
                                  Point &intersection);
 
-    uint32_t colour;
     uint8_t activeSegment;
 };

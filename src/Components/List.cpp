@@ -50,67 +50,10 @@ void List::onPotTouchUp(const PotEvent &potEvent)
 
 void List::paint(Graphics &g)
 {
-    // Paint the background
-    g.fillAll(Colours::black);
-
-    // Print the label
-    g.printText(0,
-                getHeight() / 2 - 22,
-                items[index].label.c_str(),
-                TextStyle::mediumTransparent,
-                getWidth(),
-                TextAlign::center);
-
-    // Paint the graphics
-    if (items.size() < 16) {
-        paintDots(g);
-    } else {
-        paintBar(g);
-    }
+    LookAndFeel::paintList(g, getBounds(), colour, items, index);
 }
 
 void List::resized(void)
 {
     repaint();
-}
-
-void List::paintDots(Graphics &g)
-{
-    // Paint the dots
-    uint8_t paddingDots = (getWidth() - (items.size() * 8)) / 2 + 4;
-
-    // paint dots
-    for (size_t i = 0; i < items.size(); i++) {
-        g.setColour((i == index) ? colour : Colours::darker(colour, 0.5));
-        g.fillCircle(paddingDots + i * 8, getHeight() / 2, 2);
-    }
-}
-
-void List::paintBar(Graphics &g)
-{
-    uint16_t lastItem = items.size() - 1;
-    uint32_t dark = Colours::darker(colour, 0.5);
-    uint32_t light = Colours::lighter(colour, 0.5);
-
-    uint16_t paddingFader = (getWidth() - 137) / 2;
-    float step = 127.0f / (float)lastItem;
-    float faderLength = std::max(1.0f, abs(step * (index)));
-
-    // Paint the track
-    g.setColour(dark);
-    g.fillRect(paddingFader + 4, getHeight() / 2 - 2, 129, 5);
-
-    // Paint the start point
-    g.setColour((index == 0) ? light : dark);
-    g.fillCircle(paddingFader + 2, getHeight() / 2, 2);
-
-    // Paint the active point on the track
-    if ((index != 0) && (index != lastItem)) {
-        g.setColour((index == lastItem) ? light : dark);
-        g.fillCircle(paddingFader + 134, getHeight() / 2, 2);
-    }
-
-    // Paint the end point
-    g.setColour(light);
-    g.fillRect(paddingFader + faderLength, getHeight() / 2 - 2, step, 5);
 }

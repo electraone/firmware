@@ -30,24 +30,6 @@ void SliderHorizontal::onTouchUp(const TouchEvent &touchEvent)
 
 void SliderHorizontal::paint(Graphics &g)
 {
-    int16_t max = value.getMax();
-    int16_t min = value.getMin();
-    int16_t val = value.get();
-
-    uint32_t colourTrack = Colours::darker(colour, 0.3f);
-
-    uint16_t padding = (getHeight() - indicatorSize) / 2;
-    uint16_t indicatorX = map(val, min, max, 0, getWidth() - indicatorSize);
-
-    // Clear the component area
-    g.fillAll(Colours::black);
-
-    // Slider track
-    g.setColour(colourTrack);
-    g.fillRect(0, padding + indicatorRadius - 2, getWidth(), 4);
-
-    // Indicator
-    g.setColour(colour);
-    g.fillElipse(
-        indicatorX + indicatorRadius, padding + indicatorRadius, 11, 11);
+    LookAndFeel::paintSliderHorizontal(
+        g, getBounds(), colour, value.getMin(), value.getMax(), value.get());
 }
