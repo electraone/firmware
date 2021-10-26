@@ -43,7 +43,7 @@ public:
      *
      * @param newId component identifier.
      *
-     * @see getId, getComponentById
+     * @see getId, findChildById
      */
     void setId(uint16_t newId);
 
@@ -52,7 +52,7 @@ public:
      *
      * @return component identifier.
      *
-     * @see setId, getComponentById
+     * @see setId, findChildById
      */
     uint16_t getId(void) const;
 
@@ -372,7 +372,7 @@ public:
      */
     Rectangle getLocalBounds(void) const;
 
-	/** Factory function
+    /** Factory function
 	 *
 	 */
     static Component *createComponent(uint8_t type);
