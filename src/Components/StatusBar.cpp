@@ -24,6 +24,7 @@ StatusBar::StatusBar()
 {
     setName("statusBar");
     setBounds(0, 5, 1024, 15);
+    setVisible(true);
 }
 
 StatusBar::~StatusBar()

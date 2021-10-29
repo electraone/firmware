@@ -5,8 +5,7 @@
 class Label : public Component
 {
 public:
-    Label()
-        : isDisabled(false), active(false), backgroundColour(0x0000)
+    Label() : isDisabled(false), active(false), backgroundColour(0x0000)
     {
         *label = '\0';
     }
@@ -17,6 +16,7 @@ public:
 
     // Lambdas
     std::function<bool(void)> onClick;
+    std::function<bool(void)> onRelease;
 
     void setLabel(const char *newLabel)
     {
@@ -61,9 +61,6 @@ public:
                        (getWidth() / 2) - (labelWidth / 2) - 1 + labelWidth,
                        15);
         }
-
-        //g.setColour(Colours::white);
-        //g.drawRect(0, 0, getWidth(), getHeight());
     }
 
     void onPotTouchDown(const PotEvent &potEvent) override
@@ -75,6 +72,9 @@ public:
 
     void onPotTouchUp(const PotEvent &potEvent) override
     {
+        if (onRelease) {
+            onRelease();
+        }
     }
 
 private:

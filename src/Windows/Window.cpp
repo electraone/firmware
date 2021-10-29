@@ -1,24 +1,30 @@
 #include "Window.h"
+#include "System.h"
 
-Window::Window() : activeComponent{}
+Window::Window() : activeComponent{}, contentComponent(nullptr)
 
 {
     setBounds(0, 22, 1024, 560);
+    System::windowManager.addWindow(this);
 }
 
 Window::Window(uint16_t newX,
                uint16_t newY,
                uint16_t newWidth,
                uint16_t newHeight)
-    : activeComponent{}
+    : activeComponent{}, contentComponent(nullptr)
 {
     setBounds(newX, newY, newWidth, newHeight);
+    System::windowManager.addWindow(this);
 }
 
 Window::~Window()
 {
-    // \todo deleteAllChildren is not correct.
-    deleteAllChildren();
+    System::windowManager.removeWindow(this);
+
+    if (contentComponent) {
+        delete contentComponent;
+    }
 }
 
 Component *Window::checkHit(Component *component, uint16_t x, uint16_t y)
@@ -92,6 +98,17 @@ void Window::paint(Graphics &g)
     }
 }
 
+void Window::setVisible(bool shouldBeVisible)
+{
+    Component *c = getOwnedContent();
+
+    if (c) {
+        c->setVisible(shouldBeVisible);
+    }
+
+    return (Component::setVisible(shouldBeVisible));
+}
+
 void Window::display(void)
 {
     repaint();
@@ -111,4 +128,9 @@ void Window::setOwnedContent(Component *newComponent)
 {
     contentComponent = newComponent;
     newComponent->setParentComponent(this);
+}
+
+Component *Window::getOwnedContent(void)
+{
+    return (contentComponent);
 }

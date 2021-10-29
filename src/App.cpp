@@ -1,6 +1,5 @@
 #include "App.h"
 
-
 App *App::appInstance = nullptr;
 
 App *App::get(void)
@@ -27,11 +26,6 @@ void App::initialise(void)
 {
 }
 
-WindowManager *App::getWindows(void)
-{
-    return (&windowManager);
-}
-
 const char *App::getApplicationName(void) const
 {
     return ("default");
@@ -47,7 +41,6 @@ const char *App::getApplicationSandbox(void) const
     return ("default");
 }
 
-
 // --------------------------------------------------------------------------
 
 #include <CircularBuffer.h>
@@ -57,7 +50,7 @@ void repaintGraphics(void);
 extern CircularBuffer<Component *, 100> repaintQueue;
 
 void App::handleIncomingControlMessage(MidiInput &midiInput,
-                                          MidiMessage &midiMessage)
+                                       MidiMessage &midiMessage)
 {
 }
 
@@ -70,13 +63,12 @@ void App::execute(const char *filename)
 }
 
 bool App::handleCtrlFileReceived(LocalFile file,
-                                    ElectraCommand::Object fileType)
+                                 ElectraCommand::Object fileType)
 {
     return (true);
 }
 
-bool App::handleCtrlFileRemoved(int fileNumber,
-                                   ElectraCommand::Object fileType)
+bool App::handleCtrlFileRemoved(int fileNumber, ElectraCommand::Object fileType)
 {
     return (true);
 }
@@ -110,12 +102,12 @@ void App::indicateMidiActivity(uint8_t port,
 
 void App::clearScreen(void)
 {
-    flushRepaintGraphics();
-    Hardware::screen.clear();
+    //flushRepaintGraphics();
+    //Hardware::screen.clear();
     statusBar.forceRepaint();
 }
 
 void App::paintScreen(void)
 {
-    windowManager.repaintActive();
+    System::windowManager.repaintActive();
 }

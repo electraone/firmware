@@ -18,6 +18,7 @@ void repaintGraphics(void)
 {
     //logMessage ("repaintGraphics");
     if (repaintQueue.isEmpty() != true) {
+        logMessage("in");
         Hardware::screen.switchWriteLayer();
 
         while (repaintQueue.isEmpty() != true) {
@@ -27,5 +28,6 @@ void repaintGraphics(void)
         }
 
         Hardware::screen.showPreparedLayer(0, 0, 1024, 600);
+        logMessage("out");
     }
 }

@@ -1,5 +1,5 @@
 #include "luaWindow.h"
-#include "App.h"
+#include "System.h"
 #include "SelectorComponent.h"
 
 int luaopen_window(lua_State *L)
@@ -16,9 +16,8 @@ int window_addAndMakeVisible(lua_State *L)
         luaL_checkudata(L, 1, "Component"));
 
     if (component) {
-        App::get()->getWindows()->getActiveWindow()->addAndMakeVisible(
-            component);
-        App::get()->getWindows()->repaintActive();
+        System::windowManager.getActiveWindow()->addAndMakeVisible(component);
+        System::windowManager.repaintActive();
     }
 
     return (0);
@@ -26,13 +25,13 @@ int window_addAndMakeVisible(lua_State *L)
 
 int window_repaint(lua_State *L)
 {
-    App::get()->getWindows()->repaintActive();
+    System::windowManager.repaintActive();
     return (0);
 }
 
 int window_clear(lua_State *L)
 {
-    //App::get()->getWindows()->getActiveWindow()->clear ();
+    //System::windowManager.getActiveWindow()->clear ();
     return (0);
 }
 
@@ -42,7 +41,7 @@ int window_findChildById(lua_State *L)
     int id = luaL_checkinteger(L, -1);
 
     SelectorComponent *component = reinterpret_cast<SelectorComponent *>(
-        App::get()->getWindows()->getActiveWindow()->findChildById(id));
+        System::windowManager.getActiveWindow()->findChildById(id));
 
     if (component) {
         *reinterpret_cast<SelectorComponent **>(

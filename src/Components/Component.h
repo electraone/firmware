@@ -36,7 +36,7 @@ public:
     Component(const char *newName);
 
     /** Destructor. */
-    virtual ~Component() = default;
+    virtual ~Component();
 
     /**
      * Sets component identifier.
@@ -181,7 +181,7 @@ public:
      *
      * @see isVisible
      */
-    void setVisible(bool shouldBeVisible);
+    virtual void setVisible(bool shouldBeVisible);
 
     /**
      * Gets information if the object is visible.
@@ -396,4 +396,5 @@ private:
     Component *parentComponent;
     friend class Window;
     void repaintQueueItem(void);
+    bool shouldBeDisplayed(void) const;
 };

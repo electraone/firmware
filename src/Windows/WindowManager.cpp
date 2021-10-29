@@ -1,44 +1,42 @@
 #include "WindowManager.h"
 
-
-WindowManager::WindowManager() : activeWindow(nullptr)
+WindowManager::WindowManager()
 {
 }
 
-bool WindowManager::addWindow(Window *const windowToAdd)
+bool WindowManager::addWindow(Window *windowToAdd)
 {
     windows.push_back(windowToAdd);
+
+    logMessage("xxxx Name: %s", windows[0]->getName());
 
     return (true);
 }
 
-void WindowManager::removeWindow(Window *const windowToRemove)
+void WindowManager::removeWindow(Window *windowToRemove)
 {
-    // \todo add implementation
+    if (windows.back() == windowToRemove) {
+        static_cast<void>(windows.pop_back());
+    }
 }
 
-int WindowManager::getNumWindows()
+int WindowManager::getNumWindows(void)
 {
     return (windows.size());
 }
 
-Window *WindowManager::getWindow(const int index)
+Window *WindowManager::getWindow(uint8_t index)
 {
-    return windows[index];
+    return (windows[index]);
 }
 
-Window *WindowManager::getActiveWindow()
+Window *WindowManager::getActiveWindow(void)
 {
-    return (activeWindow);
-}
+    if (windows.size() > 0) {
+        return (windows.back());
+    }
 
-/**
- * Assigns the active window
- *
- */
-void WindowManager::setActiveWindow(Window *newActiveWindow)
-{
-    activeWindow = newActiveWindow;
+    return (nullptr);
 }
 
 /**
@@ -47,7 +45,9 @@ void WindowManager::setActiveWindow(Window *newActiveWindow)
  */
 void WindowManager::repaintActive(void)
 {
-    if (getActiveWindow()) {
-        getActiveWindow()->repaint();
+    Window *w = getActiveWindow();
+
+    if (w) {
+        w->repaint();
     }
 }

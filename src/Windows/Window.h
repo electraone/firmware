@@ -19,12 +19,14 @@ public:
 
     // Paint releated methods
     void paint(Graphics &g) override;
+    void setVisible(bool shouldBeVisible) override;
     void display(void);
 
     void addChildComponent(Component *component) override;
     void addAndMakeVisible(Component *component) override;
 
     void setOwnedContent(Component *newComponent);
+    Component *getOwnedContent(void);
 
 private:
     static Component *checkHit(Component *component, uint16_t x, uint16_t y);

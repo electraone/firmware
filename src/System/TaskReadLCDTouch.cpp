@@ -11,13 +11,11 @@ void readLCDTouch(void)
 
     //logMessage ("readLCDTouch");
 
-    App *app = App::get();
-
     if (Hardware::touch.readTouch() == 0) {
         return;
     }
 
-    Window *originatingWindow = app->getWindows()->getActiveWindow();
+    Window *originatingWindow = System::windowManager.getActiveWindow();
 
     while (Hardware::touch.eventsAvailable()) {
         TouchPoint touchPoint = Hardware::touch.readEvents();

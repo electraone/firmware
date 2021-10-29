@@ -9,7 +9,6 @@
 #include "FlashMessage.h"
 #include "luabridge.h"
 
-
 #define CREATE_ELECTRA_APPLICATION(AppClass)                                   \
     void createApplication(void);                                              \
     void createApplication(void)                                               \
@@ -18,7 +17,6 @@
     }
 
 #define START_ELECTRA_APPLICATION(AppClass) CREATE_ELECTRA_APPLICATION(AppClass)
-
 
 class App
 {
@@ -35,7 +33,6 @@ public:
     virtual ~App() = default;
 
     virtual void initialise(void);
-    virtual WindowManager *getWindows(void);
     virtual const char *getApplicationName(void) const;
     virtual const char *getApplicationVersion(void) const;
     virtual const char *getApplicationSandbox(void) const;
@@ -59,11 +56,9 @@ public:
                               Direction direction,
                               MidiMessage::Type msgType);
 
-
     // These are kept public on purpose
 public:
     bool enableMidi; // \todo enableMidi needs to be renamed and moved to System
-    WindowManager windowManager;
     StatusBar statusBar;
     FlashMessage flashMessage;
     MemoryPool sysexPool;

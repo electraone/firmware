@@ -3,13 +3,11 @@
 #include "App.h"
 #include "SplashScreen.h"
 
-
 /*
  * Prototype of the application creation function.
  * Required by START_ELECTRA_APPLICATION() macro.
  */
 extern App *createApplication(void);
-
 
 void initialise(void)
 {
@@ -65,7 +63,7 @@ void initialise(void)
 
     // Clear and repaint the application screen.
     App::get()->clearScreen();
-    App::get()->paintScreen();
+    //App::get()->paintScreen();
 
     // Enable standard system tasks
     System::tasks.enableAll();

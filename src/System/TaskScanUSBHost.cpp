@@ -1,5 +1,6 @@
 #include "TaskScanUSBHost.h"
 #include "SysexCallbacks.h"
+#include "System.h"
 #include "App.h"
 
 // \todo To be removed.
@@ -93,7 +94,7 @@ void scanUSBHost(void)
             }
 
             app->statusBar.indicateUsbHostChange();
-            app->getWindows()->repaintActive();
+            System::windowManager.repaintActive();
         }
     }
 }

@@ -1,11 +1,12 @@
 #include "Component.h"
 #include "Window.h"
+#include "System.h"
 #include "helpers.h"
 
 Component::Component()
     : id(0),
       parentComponent(nullptr),
-      visible(true),
+      visible(false),
       active(false),
       queueEntry(nullptr)
 {
@@ -15,7 +16,7 @@ Component::Component()
 Component::Component(Component *newParent)
     : id(0),
       parentComponent(newParent),
-      visible(true),
+      visible(false),
       active(false),
       queueEntry(nullptr)
 {
@@ -25,11 +26,17 @@ Component::Component(Component *newParent)
 Component::Component(const char *newName)
     : id(0),
       parentComponent(nullptr),
-      visible(true),
+      visible(false),
       active(false),
       queueEntry(nullptr)
 {
     copyString(name, newName, MaxNameLength);
+}
+
+Component::~Component()
+{
+    releasePot();
+    deleteAllChildren();
 }
 
 void Component::setId(uint16_t newId)
@@ -65,9 +72,9 @@ Window *Component::getWindow(void) const
     Component *component = getParentComponent();
     Component *topComponent = component;
 
-    while ((component = component->getParentComponent()) != nullptr) {
+    do {
         topComponent = component;
-    }
+    } while ((component = component->getParentComponent()) != nullptr);
 
     return (static_cast<Window *>(topComponent));
 }
@@ -135,6 +142,7 @@ void Component::setVisible(bool shouldBeVisible)
 {
     bool chg = visible != shouldBeVisible;
     visible = shouldBeVisible;
+
     if (chg) {
         visibilityChanged();
     }
@@ -143,6 +151,17 @@ void Component::setVisible(bool shouldBeVisible)
 bool Component::isVisible(void) const
 {
     return (visible);
+}
+
+bool Component::shouldBeDisplayed(void) const
+{
+    for (const Component *c = this; c != nullptr; c = c->getParentComponent()) {
+        if (!c->isVisible()) {
+            return (false);
+        }
+    }
+
+    return (true);
 }
 
 void Component::setActive(bool shouldBeActive)
@@ -155,9 +174,20 @@ bool Component::isActive(void) const
     return (active);
 }
 
+// \todo Move this to an appropriate place
+#include <CircularBuffer.h>
+extern CircularBuffer<Component *, 100> repaintQueue;
+
 void Component::repaint(void)
 {
-    if (isVisible()) {
+    if (shouldBeDisplayed()) {
+        if ((System::windowManager.getNumWindows() > 1)
+            && (this != System::windowManager.getWindow(0))) {
+            logMessage("Repainting the base window");
+            System::windowManager.getWindow(0)->repaint();
+        }
+
+        logMessage("Component is repainted: %s (%d)", getName(), getId());
         repaintQueueItem();
     }
 }
@@ -365,16 +395,6 @@ extern CircularBuffer<Component *, 100> repaintQueue;
 
 void Component::repaintQueueItem(void)
 {
-#ifdef DEBUG
-    logMessage("repaint request '%s' [%d %d %d %d] size=%d",
-               getName(),
-               this->getX(),
-               this->getY(),
-               this->getWidth(),
-               this->getHeight(),
-               repaintQueue.size());
-#endif
-
     if (queueEntry == nullptr) {
         repaintQueue.push(this);
         queueEntry = repaintQueue.last();
