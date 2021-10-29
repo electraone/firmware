@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Graphics.h"
-#include "ListItem.h"
+#include "ListData.h"
 
 class LookAndFeel
 {
@@ -42,7 +42,7 @@ public:
     static void paintList(Graphics &g,
                           const Rectangle &bounds,
                           uint32_t colour,
-                          const std::vector<ListItem> &items,
+                          const ListData &items,
                           uint8_t activeIndex);
 
     static void paintSet(Graphics &g,
@@ -50,50 +50,50 @@ public:
                          uint32_t colour,
                          const char *label);
 
-	static void paintEnvelope(Graphics &g,
-	                        const Rectangle &bounds,
-	                        uint32_t colour,
-							uint16_t baselineY,
-	                        const std::vector<Point> &points);
+    static void paintEnvelope(Graphics &g,
+                              const Rectangle &bounds,
+                              uint32_t colour,
+                              uint16_t baselineY,
+                              const std::vector<Point> &points);
 
 private:
-	static void paintEnvelopeContour(Graphics &g,
-	                           const Rectangle &bounds,
-	                           uint32_t colour,
-	                           const std::vector<Point> &points);
+    static void paintEnvelopeContour(Graphics &g,
+                                     const Rectangle &bounds,
+                                     uint32_t colour,
+                                     const std::vector<Point> &points);
 
-	static void paintEnvelopeBaseline(Graphics &g,
-	                           const Rectangle &bounds,
-	                           uint32_t colour,
-							   uint16_t baselineY);
+    static void paintEnvelopeBaseline(Graphics &g,
+                                      const Rectangle &bounds,
+                                      uint32_t colour,
+                                      uint16_t baselineY);
 
-	static void paintEnvelopeMarkers(Graphics &g,
-	                           const Rectangle &bounds,
-	                           uint32_t colour,
-							   uint16_t baselineY,
-	                           const std::vector<Point> &points);
+    static void paintEnvelopeMarkers(Graphics &g,
+                                     const Rectangle &bounds,
+                                     uint32_t colour,
+                                     uint16_t baselineY,
+                                     const std::vector<Point> &points);
 
-	static void paintEnvelopeFills(Graphics &g,
-	                           const Rectangle &bounds,
-	                           uint32_t colour,
-							   uint16_t baselineY,
-	                           const std::vector<Point> &points);
+    static void paintEnvelopeFills(Graphics &g,
+                                   const Rectangle &bounds,
+                                   uint32_t colour,
+                                   uint16_t baselineY,
+                                   const std::vector<Point> &points);
 
-	static bool findIntersection(uint16_t lineY,
-	                                const Point &C,
-	                                const Point &D,
-	                                Point &intersection);
+    static bool findIntersection(uint16_t lineY,
+                                 const Point &C,
+                                 const Point &D,
+                                 Point &intersection);
 
     static void paintDots(Graphics &g,
                           const Rectangle &bounds,
                           uint32_t colour,
-                          const std::vector<ListItem> &items,
+                          const ListData &items,
                           uint8_t activeIndex);
 
     static void paintBar(Graphics &g,
                          const Rectangle &bounds,
                          uint32_t colour,
-                         const std::vector<ListItem> &items,
+                         const ListData &items,
                          uint8_t activeIndex);
 
     // Slider

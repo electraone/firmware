@@ -1,6 +1,6 @@
 #include "List.h"
 
-std::vector<ListItem> List::empty;
+ListData List::empty;
 
 List::List() : index(0), items(empty)
 {
@@ -14,13 +14,13 @@ void List::setColour(uint32_t newColour)
 
 void List::setIndex(uint16_t newIndex)
 {
-    index = constrain(newIndex, 0, items.size() - 1);
+    index = constrain(newIndex, 0, items.getMaxIndex());
     repaint();
 }
 
-void List::assignListItems(const std::vector<ListItem> &newItems)
+void List::assignListData(const ListData &newListData)
 {
-    items = newItems;
+    items = newListData;
 }
 
 void List::onTouchMove(const TouchEvent &touchEvent)

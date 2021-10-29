@@ -134,22 +134,24 @@ void LookAndFeel::paintSliderVertical(Graphics &g,
 void LookAndFeel::paintList(Graphics &g,
                             const Rectangle &bounds,
                             uint32_t colour,
-                            const std::vector<ListItem> &items,
+                            const ListData &items,
                             uint8_t activeIndex)
 {
     // Paint the background
     g.fillAll(Colours::black);
 
+    items.print();
+
     // Print the label
     g.printText(0,
                 0,
-                items[activeIndex].label.c_str(),
+                items.getByIndex(activeIndex).getLabel(),
                 TextStyle::mediumTransparent,
                 bounds.getWidth(),
                 TextAlign::center);
 
     // Paint the graphics
-    if (items.size() < 16) {
+    if (items.getNumItems() < 16) {
         paintDots(g, bounds, colour, items, activeIndex);
     } else {
         paintBar(g, bounds, colour, items, activeIndex);
@@ -223,10 +225,10 @@ void LookAndFeel::paintSet(Graphics &g,
 // Envelope -----------------------------------------------------------------
 
 void LookAndFeel::paintEnvelope(Graphics &g,
-                           const Rectangle &bounds,
-                           uint32_t colour,
-						   uint16_t baselineY,
-                           const std::vector<Point> &points)
+                                const Rectangle &bounds,
+                                uint32_t colour,
+                                uint16_t baselineY,
+                                const std::vector<Point> &points)
 {
     g.fillAll(Colours::black);
 
@@ -237,9 +239,9 @@ void LookAndFeel::paintEnvelope(Graphics &g,
 }
 
 void LookAndFeel::paintEnvelopeContour(Graphics &g,
-                           const Rectangle &bounds,
-                           uint32_t colour,
-                           const std::vector<Point> &points)
+                                       const Rectangle &bounds,
+                                       uint32_t colour,
+                                       const std::vector<Point> &points)
 {
     g.setColour(colour);
 
@@ -249,21 +251,21 @@ void LookAndFeel::paintEnvelopeContour(Graphics &g,
 }
 
 void LookAndFeel::paintEnvelopeBaseline(Graphics &g,
-                           const Rectangle &bounds,
-                           uint32_t colour,
-						   uint16_t baselineY)
+                                        const Rectangle &bounds,
+                                        uint32_t colour,
+                                        uint16_t baselineY)
 {
-	g.setColour(Colours::black);
+    g.setColour(Colours::black);
     g.drawLine(0, baselineY, bounds.getWidth(), baselineY);
     g.setColour(Colours::darkgrey);
     g.drawHorizontalDottedLine(0, bounds.getWidth(), baselineY);
 }
 
 void LookAndFeel::paintEnvelopeMarkers(Graphics &g,
-                           const Rectangle &bounds,
-                           uint32_t colour,
-						   uint16_t baselineY,
-                           const std::vector<Point> &points)
+                                       const Rectangle &bounds,
+                                       uint32_t colour,
+                                       uint16_t baselineY,
+                                       const std::vector<Point> &points)
 {
     g.setColour(Colours::black);
 
@@ -273,12 +275,12 @@ void LookAndFeel::paintEnvelopeMarkers(Graphics &g,
 }
 
 void LookAndFeel::paintEnvelopeFills(Graphics &g,
-                           const Rectangle &bounds,
-                           uint32_t colour,
-						   uint16_t baselineY,
-                           const std::vector<Point> &points)
+                                     const Rectangle &bounds,
+                                     uint32_t colour,
+                                     uint16_t baselineY,
+                                     const std::vector<Point> &points)
 {
-	uint32_t darker = Colours::darker(colour, 0.2f);
+    uint32_t darker = Colours::darker(colour, 0.2f);
 
     for (uint8_t i = 0; i < std::max(0, (int)(points.size() - 1)); i++) {
         Point intersection(0, 0);
@@ -339,9 +341,9 @@ void LookAndFeel::paintEnvelopeFills(Graphics &g,
 }
 
 bool LookAndFeel::findIntersection(uint16_t lineY,
-                                const Point &C,
-                                const Point &D,
-                                Point &intersection)
+                                   const Point &C,
+                                   const Point &D,
+                                   Point &intersection)
 {
     // Envelope baseline represented as a1x + b1y = c1
     int a1 = 0;
@@ -371,15 +373,16 @@ bool LookAndFeel::findIntersection(uint16_t lineY,
 void LookAndFeel::paintDots(Graphics &g,
                             const Rectangle &bounds,
                             uint32_t colour,
-                            const std::vector<ListItem> &items,
+                            const ListData &items,
                             uint8_t activeIndex)
 {
     // Paint the dots
-    uint8_t paddingDots = (bounds.getWidth() - (items.size() * 8)) / 2 + 4;
-	uint16_t yPosition = 25;
+    uint8_t paddingDots =
+        (bounds.getWidth() - (items.getNumItems() * 8)) / 2 + 4;
+    uint16_t yPosition = 25;
 
     // paint dots
-    for (size_t i = 0; i < items.size(); i++) {
+    for (uint16_t i = 0; i < items.getNumItems(); i++) {
         g.setColour((i == activeIndex) ? colour : Colours::darker(colour, 0.5));
         g.fillCircle(paddingDots + i * 8, yPosition, 2);
     }
@@ -388,17 +391,17 @@ void LookAndFeel::paintDots(Graphics &g,
 void LookAndFeel::paintBar(Graphics &g,
                            const Rectangle &bounds,
                            uint32_t colour,
-                           const std::vector<ListItem> &items,
+                           const ListData &items,
                            uint8_t activeIndex)
 {
-    uint16_t lastItem = items.size() - 1;
+    uint16_t lastItem = items.getMaxIndex();
     uint32_t dark = Colours::darker(colour, 0.5);
     uint32_t light = Colours::lighter(colour, 0.5);
 
     uint16_t paddingFader = (bounds.getWidth() - 137) / 2;
     float step = 127.0f / (float)lastItem;
     float faderLength = std::max(1.0f, abs(step * (activeIndex)));
-	uint16_t yPosition = 25;
+    uint16_t yPosition = 25;
 
     // Paint the track
     g.setColour(dark);

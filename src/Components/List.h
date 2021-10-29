@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Component.h"
-#include "ListItem.h"
+#include "ListData.h"
 #include "LookAndFeel.h"
 #include <vector>
 
@@ -12,7 +12,7 @@ public:
     virtual ~List() = default;
     void setColour(uint32_t newColour);
     void setIndex(uint16_t newIndex);
-    void assignListItems(const std::vector<ListItem> &newItems);
+    void assignListData(const ListData &newListData);
 
     virtual void onTouchMove(const TouchEvent &touchEvent) override;
     virtual void onTouchDown(const TouchEvent &touchEvent) override;
@@ -27,12 +27,12 @@ public:
 
 protected:
     uint32_t colour;
-    std::vector<ListItem> &items;
+    ListData &items;
     uint16_t index;
 
 private:
     void paintDots(Graphics &g);
     void paintBar(Graphics &g);
 
-    static std::vector<ListItem> empty;
+    static ListData empty;
 };
