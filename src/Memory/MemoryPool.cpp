@@ -106,9 +106,11 @@ size_t MemoryPool::getItem(uint32_t address,
                            size_t maxLength,
                            uint32_t *bitmap)
 {
-    fb->readRamData(baseAddress + address, (uint8_t *)bitmap, 4);
-    fb->readRamData(baseAddress + address + 4, (uint8_t *)buffer, maxLength);
-    buffer[maxLength - 1] = '\0';
+    uint8_t tmpBuffer[maxLength + 4];
+
+    fb->readRamData(baseAddress + address, (uint8_t *)tmpBuffer, maxLength + 4);
+    *bitmap = (uint32_t)tmpBuffer;
+    copyString(buffer, (const char *)tmpBuffer + 4, maxLength - 1);
 
     return (strlen(buffer));
 }
