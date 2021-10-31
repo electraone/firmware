@@ -8,7 +8,6 @@ class DemoApp : public App, private MidiInputCallback, private ButtonListener
 public:
     DemoApp()
     {
-        windowManager.setActiveWindow(&mainWindow);
         assignAllButtons();
     }
 
@@ -30,6 +29,7 @@ public:
     void initialise(void) override
     {
         logMessage("setup completed");
+		mainWindow.display();
     }
 
     class MainWindow : public Window
