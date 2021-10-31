@@ -15,8 +15,8 @@ public:
 
     void assignStorageDriver(FrameBuffer *newFb);
     Bitmap saveBitmap(const uint8_t *data);
-    void paint(Bitmap &bitmap, uint16_t x, uint16_t y, uint16_t colour);
-    void paint(Bitmap &bitmap,
+    void paint(const Bitmap &bitmap, uint16_t x, uint16_t y, uint16_t colour);
+    void paint(const Bitmap &bitmap,
                uint16_t x,
                uint16_t y,
                uint16_t colour,

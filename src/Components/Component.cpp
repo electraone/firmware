@@ -183,11 +183,8 @@ void Component::repaint(void)
     if (shouldBeDisplayed()) {
         if ((System::windowManager.getNumWindows() > 1)
             && (this != System::windowManager.getWindow(0))) {
-            logMessage("Repainting the base window");
             System::windowManager.getWindow(0)->repaint();
         }
-
-        logMessage("Component is repainted: %s (%d)", getName(), getId());
         repaintQueueItem();
     }
 }

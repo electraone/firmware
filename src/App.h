@@ -2,7 +2,6 @@
 
 #include "Hardware.h"
 #include "System.h"
-#include "MemoryPool.h"
 #include "LocalFile.h"
 #include "WindowManager.h"
 #include "StatusBar.h"

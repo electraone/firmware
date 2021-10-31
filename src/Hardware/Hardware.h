@@ -7,6 +7,7 @@
 #include "Touch.h"
 #include "Graphics.h"
 #include "PersistentStorage.h"
+#include "Memory.h"
 #include "RamMonitor.h"
 
 // A list of all hardware features of Electra One platform.
@@ -16,7 +17,7 @@ class Hardware
 {
 public:
     Hardware() = delete;
-    
+
     static void initialise(void);
 
     static Pots pots;
@@ -26,5 +27,6 @@ public:
     static Touch touch;
     static Graphics screen;
     static PersistentStorage sdcard;
+    static Memory memory;
     static RamMonitor ram;
 };

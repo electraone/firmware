@@ -93,6 +93,9 @@ void VideoRam::readRamData(uint32_t address, uint8_t *data, uint16_t size)
     for (uint16_t i = 0; i < size; i++) {
         data[i] = readRAM8();
     }
+
+    setMemoryMode(DEFAULT_BPP);
+
     restoreState();
 
 #ifdef DEBUG

@@ -101,16 +101,21 @@ size_t MemoryPool::getString(uint32_t address, char *buffer, size_t maxLength)
     return (strlen(buffer));
 }
 
+void MemoryPool::readData(uint32_t address, uint8_t *buffer, size_t maxLength)
+{
+    fb->readRamData(baseAddress + address, buffer, maxLength);
+}
+
 size_t MemoryPool::getItem(uint32_t address,
                            char *buffer,
                            size_t maxLength,
                            uint32_t *bitmap)
 {
-    uint8_t tmpBuffer[maxLength + 4];
+    uint8_t tmpBuffer[4 + maxLength];
 
     fb->readRamData(baseAddress + address, (uint8_t *)tmpBuffer, maxLength + 4);
-    *bitmap = (uint32_t)tmpBuffer;
-    copyString(buffer, (const char *)tmpBuffer + 4, maxLength - 1);
+    *bitmap = *(uint32_t *)tmpBuffer;
+    copyString(buffer, (const char *)(tmpBuffer + 4), maxLength - 1);
 
     return (strlen(buffer));
 }

@@ -35,7 +35,7 @@ RA8876::RA8876(int csPin, int resetPin)
 
     m_width = 0;
     m_height = 0;
-    m_memoryMode = Bpp16;
+    m_memoryMode = DEFAULT_BPP;
 
     m_oscClock = 10000; // 10MHz
     m_sdramInfo = &defaultSdramInfo;

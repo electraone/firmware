@@ -42,6 +42,7 @@ Bitmap BitmapPool::saveBitmap(const uint8_t *data)
         }
     }
 
+    // \todo this is not ok, it should return the default colour bit depth
     // restore the color depth to 16
     fb->writeReg(RA8876_REG_AW_COLOR, 1);
 
@@ -55,7 +56,7 @@ Bitmap BitmapPool::saveBitmap(const uint8_t *data)
     return (Bitmap(bitmapX, bitmapY, BITMAP_WIDTH, BITMAP_HEIGHT));
 }
 
-void BitmapPool::paint(Bitmap &bitmap,
+void BitmapPool::paint(const Bitmap &bitmap,
                        uint16_t x,
                        uint16_t y,
                        uint16_t colour,
@@ -72,7 +73,10 @@ void BitmapPool::paint(Bitmap &bitmap,
                      colour);
 }
 
-void BitmapPool::paint(Bitmap &bitmap, uint16_t x, uint16_t y, uint16_t colour)
+void BitmapPool::paint(const Bitmap &bitmap,
+                       uint16_t x,
+                       uint16_t y,
+                       uint16_t colour)
 {
     uint32_t address = fb->getActiveBufferAddress();
     paint(bitmap, x, y, colour, address);

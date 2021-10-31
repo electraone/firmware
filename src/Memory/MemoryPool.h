@@ -23,6 +23,8 @@ public:
                    size_t maxLength,
                    uint32_t *bitmap);
 
+    void readData(uint32_t address, uint8_t *buffer, size_t maxLevel);
+
 private:
     Graphics *fb;
     uint32_t getBaseAddress(void);

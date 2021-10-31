@@ -140,15 +140,19 @@ void LookAndFeel::paintList(Graphics &g,
     // Paint the background
     g.fillAll(Colours::black);
 
-    items.print();
-
-    // Print the label
-    g.printText(0,
-                0,
-                items.getByIndex(activeIndex).getLabel(),
-                TextStyle::mediumTransparent,
-                bounds.getWidth(),
-                TextAlign::center);
+    if (items.getByIndex(activeIndex).isBitmapEmpty()) {
+        // Print the label
+        g.printText(0,
+                    0,
+                    items.getByIndex(activeIndex).getLabel(),
+                    TextStyle::mediumTransparent,
+                    bounds.getWidth(),
+                    TextAlign::center);
+    } else {
+        // display bitmap image
+        uint16_t paddingBitmap = ((bounds.getWidth() - BITMAP_WIDTH)) / 2 - 1;
+        items.getByIndex(activeIndex).paintBitmap(paddingBitmap, 0, colour);
+    }
 
     // Paint the graphics
     if (items.getNumItems() < 16) {
