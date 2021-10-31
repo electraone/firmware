@@ -1,7 +1,7 @@
 #pragma once
 
-#define FIRMWARE_VERSION "v2.4.0"
-#define FIRMWARE_SEQ 200400000
+#define FIRMWARE_VERSION "v2.4.1"
+#define FIRMWARE_SEQ 200400100
 #define UI_FILE "ui-0.9.6.bmp"
 #define JSON_VERSION 2
 

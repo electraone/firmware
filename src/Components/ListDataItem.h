@@ -15,7 +15,7 @@ public:
 
     ListDataItem(uint16_t newValue,
                  const char *label,
-                 const char *encodedBitmap)
+                 const char *encodedBitmap = nullptr)
         : address(0), labelIsEmpty(false), bitmapIsEmpty(true)
     {
         Bitmap bitmap;

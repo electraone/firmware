@@ -25,14 +25,10 @@ public:
         return (id);
     }
 
-    void addItem(uint16_t value, const char *label, const char *bitmap)
+    void
+        addItem(uint16_t value, const char *label, const char *bitmap = nullptr)
     {
-        addItem(value, ListDataItem(value, label, bitmap));
-    }
-
-    void addItem(uint16_t value, ListDataItem item)
-    {
-        items.push_back(item);
+        items.push_back(ListDataItem(value, label, bitmap));
     }
 
     ListDataItem getByIndex(uint16_t index) const
