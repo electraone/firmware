@@ -2,6 +2,7 @@
 #include "MainComponent.h"
 #include "MidiInputCallback.h"
 #include "ButtonListener.h"
+#include "Model.h"
 
 class DemoApp : public App, private MidiInputCallback, private ButtonListener
 {
@@ -28,6 +29,18 @@ public:
 
     void initialise(void) override
     {
+		logMessage("sqlite version: %s\n", sqlite3_libversion());
+
+        model.attach("synth.db");
+		model.create();
+
+		if (model.getCount() == 0) {
+			model.insertRows();
+		}
+
+		model.query();
+		model.close();
+
         logMessage("setup completed");
 		mainWindow.display();
     }
@@ -79,6 +92,7 @@ public:
 
 private:
     MainWindow mainWindow;
+	Model model;
 };
 
 // This macro instructs main() routine to launch the app.
