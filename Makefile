@@ -70,14 +70,23 @@ CPPFLAGS = -Wall -Os -mthumb -ffunction-sections -fdata-sections \
 CXXFLAGS = -std=gnu++17 -felide-constructors -fexceptions \
       -fshort-enums -Wno-reorder
 
+# sqlite options
+CFLAGS_SQLITE= -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=0 -DHAVE_SYS_STAT_H=0 \
+	-DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 \
+	-DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=0 \
+	-DLT_OBJDIR=\".libs/\" -DHAVE_FDATASYNC=0 -DHAVE_USLEEP=0 \
+	-DHAVE_LOCALTIME_R=0 -DHAVE_GMTIME_R=0 -DHAVE_DECL_STRERROR_R=1 \
+	-DHAVE_STRERROR_R=1 -DHAVE_ZLIB_H=0 -DSQLITE_THREADSAFE=0 \
+	-DSQLITE_OMIT_LOAD_EXTENSION=1 -DSQLITE_OMIT_WAL=1 -DSQLITE_OS_OTHER=1
+
 # compiler options for C only
-CFLAGS = -ggdb
+CFLAGS = -ggdb $(CFLAGS_SQLITE)
 
 # linker options
 LDFLAGS = -Os -Wl,--gc-sections -mthumb
 
 # additional libraries to link
-LIBS = -lstdc++ -lm
+LIBS = -lstdc++ -lm #lib/sqlite/sqlite3.o
 
 # compiler options
 CPPFLAGS += -D__MK66FX1M0__ -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
