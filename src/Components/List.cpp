@@ -1,8 +1,6 @@
 #include "List.h"
 
-ListData List::empty;
-
-List::List() : index(0), items(empty)
+List::List() : index(0)
 {
 }
 
@@ -16,11 +14,6 @@ void List::setIndex(uint16_t newIndex)
 {
     index = constrain(newIndex, 0, items.getMaxIndex());
     repaint();
-}
-
-void List::assignListData(const ListData &newListData)
-{
-    items = newListData;
 }
 
 void List::onTouchMove(const TouchEvent &touchEvent)

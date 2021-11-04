@@ -1,18 +1,17 @@
 #pragma once
 
 #include "Component.h"
-#include "ListData.h"
+#include "AssignableList.h"
 #include "LookAndFeel.h"
 #include <vector>
 
-class List : public Component
+class List : public Component, public AssignableList
 {
 public:
     List();
     virtual ~List() = default;
     void setColour(uint32_t newColour);
     void setIndex(uint16_t newIndex);
-    void assignListData(const ListData &newListData);
 
     virtual void onTouchMove(const TouchEvent &touchEvent) override;
     virtual void onTouchDown(const TouchEvent &touchEvent) override;
@@ -27,12 +26,9 @@ public:
 
 protected:
     uint32_t colour;
-    ListData &items;
     uint16_t index;
 
 private:
     void paintDots(Graphics &g);
     void paintBar(Graphics &g);
-
-    static ListData empty;
 };
