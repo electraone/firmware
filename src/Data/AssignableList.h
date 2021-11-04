@@ -13,9 +13,12 @@ public:
 	    items = newListData;
 	}
 
-protected:
-    ListData &items;
+	const ListData& getItems(void)
+	{
+		return(items);
+	}
 
 private:
+	ListData &items;
     static ListData empty;
 };

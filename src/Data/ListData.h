@@ -36,6 +36,16 @@ public:
         return (items[index]);
     }
 
+    ListDataItem getByValue(int16_t value) const
+    {
+        for (const auto &item : items) {
+            if (item.getValue() == value) {
+                return (item);
+            }
+        }
+        return (ListDataItem());
+    }
+
     uint16_t getNumItems(void) const
     {
         return (items.size());

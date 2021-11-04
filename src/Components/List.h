@@ -10,6 +10,7 @@ class List : public Component, public AssignableList
 public:
     List();
     virtual ~List() = default;
+	
     void setColour(uint32_t newColour);
     void setIndex(uint16_t newIndex);
 
@@ -29,6 +30,4 @@ protected:
     uint16_t index;
 
 private:
-    void paintDots(Graphics &g);
-    void paintBar(Graphics &g);
 };

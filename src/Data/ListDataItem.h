@@ -13,10 +13,10 @@ public:
     {
     }
 
-    ListDataItem(uint16_t newValue,
+    ListDataItem(int16_t newValue,
                  const char *label,
                  const char *encodedBitmap = nullptr)
-        : address(0), labelIsEmpty(false), bitmapIsEmpty(true)
+        : value(newValue), address(0), labelIsEmpty(false), bitmapIsEmpty(true)
     {
         Bitmap bitmap;
 
@@ -27,12 +27,11 @@ public:
 
         address =
             Hardware::memory.stringPool.saveItem(bitmap.getAddress(), label);
-        value = newValue;
     }
 
     virtual ~ListDataItem() = default;
 
-    uint16_t getValue(void) const
+    int16_t getValue(void) const
     {
         return (value);
     }
@@ -70,6 +69,11 @@ public:
         return (address);
     }
 
+    bool isLabelEmpty(void) const
+    {
+        return (labelIsEmpty);
+    }
+
     bool isBitmapEmpty(void) const
     {
         return (bitmapIsEmpty);
@@ -88,7 +92,7 @@ private:
         return (Hardware::memory.bitmapPool.saveBitmap(bytes));
     }
 
-    uint16_t value;
+    int16_t value;
     uint32_t address;
 
     struct {
