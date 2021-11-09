@@ -1,4 +1,4 @@
-#include "arduino.h"
+#include "Arduino.h"
 
 void interrupts(void)
 {
