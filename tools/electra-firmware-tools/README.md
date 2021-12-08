@@ -3,7 +3,7 @@
 ## Build instructions
 
 - Install a recent rust toolchain via e.g. [rustup](https://rustup.rs/).
-- run `cargo build`
+- Run `cargo build`.
 
 Windows and macOS don't have any external dependencies. For linux you'll need to
 provide `libasound2-dev` and `libusb-1.0-0-dev` or however the asound and libusb
@@ -43,7 +43,6 @@ source file can be either the `hex` (intel hex) or the `img` (Electra firmware).
 This is a helper command that's an equivalent of `hex2k66img`:
 
     electra-firmware-tools convert-ihex-to-img -s $HEXFILE -o $IMGFILE
-
 
 ### List connected MIDI devices
 
