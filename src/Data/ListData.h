@@ -4,7 +4,6 @@
 #include "ListDataItem.h"
 #include <cstdint>
 #include <string>
-#include <map>
 #include <vector>
 
 class ListData
@@ -57,6 +56,16 @@ public:
     uint16_t getMaxIndex(void) const
     {
         return (getNumItems() - 1);
+    }
+
+    bool hasItems(void) const
+    {
+      return (!items.empty());
+    }
+
+    bool isEmpty(void) const
+    {
+      return (items.empty());
     }
 
     void print(void) const

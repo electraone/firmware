@@ -19,6 +19,21 @@ public:
         return (listData);
     }
 
+    bool isEmpty(void) const
+    {
+      return (listData == nullptr || (listData && listData->isEmpty()));
+    }
+
+    bool hasItems(void) const
+    {
+      return (listData && listData->hasItems());
+    }
+
+    bool isAssigned(void) const
+    {
+      return (listData != nullptr);
+    }
+
 private:
     const ListData *listData;
 };
