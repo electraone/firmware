@@ -5,6 +5,6 @@
 class PotTouch : virtual public BU21072
 {
 public:
-    PotTouch() {};
+    PotTouch(){};
     ~PotTouch() = default;
 };

@@ -6,7 +6,7 @@
 // #define MUX_DISABLE GPIOB_PDOR = 0x00;
 
 #define MUX_ENABLE                                                             \
-    digitalWriteFast(49, LOW);                                                     \
+    digitalWriteFast(49, LOW);                                                 \
     delayMicroseconds(1);
 #define MUX_DISABLE digitalWriteFast(49, HIGH)
 

@@ -17,7 +17,8 @@ public:
 
     virtual ~SysexHandler() = default;
 
-    virtual void process(const uint8_t *sysExData, uint16_t sysExSize, bool complete)
+    virtual void
+        process(const uint8_t *sysExData, uint16_t sysExSize, bool complete)
     {
         App *app = App::get();
 
@@ -40,7 +41,6 @@ public:
     }
 
 protected:
-  
     static void processGeneralSysex(MidiInterface::Type &midiInterface,
                                     uint8_t port,
                                     const SysexBlock &sysexBlock)

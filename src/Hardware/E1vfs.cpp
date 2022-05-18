@@ -1,10 +1,10 @@
 #include "Hardware.h"
 #include "helpers.h"
 
-#define SQLITE_VFS_BUFFERS                2048
-#define SQLITE_DEFAULT_PAGE_SIZE          1024
-#define SQLITE_MAX_DEFAULT_PAGE_SIZE      1024
-#define SQLITE_DEFAULT_CACHE_SIZE         16384
+#define SQLITE_VFS_BUFFERS 2048
+#define SQLITE_DEFAULT_PAGE_SIZE 1024
+#define SQLITE_MAX_DEFAULT_PAGE_SIZE 1024
+#define SQLITE_DEFAULT_CACHE_SIZE 16384
 
 #include <sqlite3.h>
 
@@ -225,7 +225,7 @@ static int e1Open(sqlite3_vfs *pVfs,
         e1DeviceCharacteristics // deviceCharacteristics
     };
 
-	sqlite3_soft_heap_limit64(16384);
+    sqlite3_soft_heap_limit64(16384);
     sqlite3_hard_heap_limit64(32768);
 
     E1File *p = (E1File *)pFile;

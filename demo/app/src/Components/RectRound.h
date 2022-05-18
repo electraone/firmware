@@ -15,19 +15,9 @@ public:
         g.setColour(ElectraColours::rgb565NumericRed);
 
         if (filled) {
-            g.fillRoundRect(
-                0,
-                0,
-                getWidth(),
-                getHeight(),
-                20);
+            g.fillRoundRect(0, 0, getWidth(), getHeight(), 20);
         } else {
-            g.drawRoundRect(
-                0,
-                0,
-                getWidth(),
-                getHeight(),
-                20);
+            g.drawRoundRect(0, 0, getWidth(), getHeight(), 20);
         }
     }
 

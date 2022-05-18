@@ -24,32 +24,32 @@ const char *LocalFile::getFilepath(void)
 
 bool LocalFile::createDirectory(void)
 {
-  return (Hardware::sdcard.createDirectory(filepath));
+    return (Hardware::sdcard.createDirectory(filepath));
 }
 
 bool LocalFile::exists(void)
 {
-  return (Hardware::sdcard.exists(filepath));
+    return (Hardware::sdcard.exists(filepath));
 }
 
 FileIoStream LocalFile::createInputStream(void)
 {
-  return (Hardware::sdcard.createInputStream(filepath));
+    return (Hardware::sdcard.createInputStream(filepath));
 }
 
 FileIoStream LocalFile::createOutputStream(oflag_t oflag)
 {
-  return (Hardware::sdcard.createOutputStream(filepath, oflag));
+    return (Hardware::sdcard.createOutputStream(filepath, oflag));
 }
 
 bool LocalFile::deleteFile(void)
 {
-  return(Hardware::sdcard.deleteFile(filepath));
+    return (Hardware::sdcard.deleteFile(filepath));
 }
 
 bool LocalFile::deleteRecursively(void)
 {
-  return (Hardware::sdcard.deleteRecursively(filepath));
+    return (Hardware::sdcard.deleteRecursively(filepath));
 }
 
 bool LocalFile::writeAll(MemoryBlock &memoryBlock)

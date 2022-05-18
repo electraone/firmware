@@ -177,7 +177,7 @@ public:
             _mstate = msOk;
     };
 
-    #define MAX_RAM 210000 // Idealy calculate out of BSS size
+#define MAX_RAM 210000 // Idealy calculate out of BSS size
 
     size_t getFreeRam(void)
     {

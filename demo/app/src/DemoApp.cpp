@@ -29,20 +29,20 @@ public:
 
     void initialise(void) override
     {
-		logMessage("sqlite version: %s\n", sqlite3_libversion());
+        logMessage("sqlite version: %s\n", sqlite3_libversion());
 
         model.attach("synth.db");
-		model.create();
+        model.create();
 
-		if (model.getCount() == 0) {
-			model.insertRows();
-		}
+        if (model.getCount() == 0) {
+            model.insertRows();
+        }
 
-		model.query();
-		model.close();
+        model.query();
+        model.close();
 
         logMessage("setup completed");
-		mainWindow.display();
+        mainWindow.display();
     }
 
     class MainWindow : public Window
@@ -92,7 +92,7 @@ public:
 
 private:
     MainWindow mainWindow;
-	Model model;
+    Model model;
 };
 
 // This macro instructs main() routine to launch the app.

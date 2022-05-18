@@ -5,20 +5,20 @@
 class AssignableList
 {
 public:
-	AssignableList() : items(empty) {};
-	virtual ~AssignableList() = default;
+    AssignableList() : listData(nullptr){};
+    AssignableList(const ListData *newListData) : listData(newListData){};
+    virtual ~AssignableList() = default;
 
-    void assignListData(const ListData &newListData)
-	{
-	    items = newListData;
-	}
+    void assignListData(const ListData *newListData)
+    {
+        listData = newListData;
+    }
 
-	const ListData& getItems(void)
-	{
-		return(items);
-	}
+    const ListData *getList(void)
+    {
+        return (listData);
+    }
 
 private:
-	ListData &items;
-    static ListData empty;
+    const ListData *listData;
 };

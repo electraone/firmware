@@ -12,8 +12,8 @@ Graphics::Graphics(const uint8_t CSp, const uint8_t RSTp)
 
 void Graphics::initialise(void)
 {
-  init();
-  clear();
-  setBacklight(true);
-  resetExtRam();
+    init();
+    clear();
+    setBacklight(true);
+    resetExtRam();
 }

@@ -65,8 +65,7 @@ public:
         g.setColour(rgb565NumericDarkerColour);
 
         if (active == true) {
-            g.fillRect(
-                0, 0, getWidth(), getHeight());
+            g.fillRect(0, 0, getWidth(), getHeight());
             g.printText(0,
                         textOffsetY,
                         label,
@@ -74,12 +73,8 @@ public:
                         getWidth(),
                         TextAlign::center);
         } else {
-            g.drawRect(
-                0, 0, getWidth(), getHeight());
-            g.drawRect(1,
-                       1,
-                       getWidth() - 2,
-                       getHeight() - 2);
+            g.drawRect(0, 0, getWidth(), getHeight());
+            g.drawRect(1, 1, getWidth() - 2, getHeight() - 2);
             g.printText(0,
                         textOffsetY,
                         label,

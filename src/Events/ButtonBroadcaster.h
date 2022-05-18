@@ -6,7 +6,7 @@ class ButtonListener;
 
 typedef void (ButtonListener::*blFunction)(uint8_t);
 
-class ButtonBroadcaster: public Broadcaster<ButtonListener>
+class ButtonBroadcaster : public Broadcaster<ButtonListener>
 {
 public:
     //using Broadcaster<ButtonListener>::Broadcaster;

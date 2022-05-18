@@ -13,7 +13,7 @@ public:
     Set(Rectangle newBounds, uint32_t newColour, const char *newLabel)
         : colour(newColour), label(newLabel)
     {
-		setBounds(newBounds);
+        setBounds(newBounds);
     }
 
     virtual ~Set() = default;
@@ -23,10 +23,10 @@ public:
         colour = newColour;
     }
 
-	void setLabel(const char *newLabel)
-	{
-		label = newLabel;
-	}
+    void setLabel(const char *newLabel)
+    {
+        label = newLabel;
+    }
 
     void paint(Graphics &g)
     {

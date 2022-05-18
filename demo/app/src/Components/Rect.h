@@ -15,17 +15,9 @@ public:
         g.setColour(ElectraColours::rgb565NumericOrange);
 
         if (filled) {
-            g.fillRect(
-                0,
-                0,
-                getWidth(),
-                getHeight());
+            g.fillRect(0, 0, getWidth(), getHeight());
         } else {
-            g.drawRect(
-                0,
-                0,
-                getWidth(),
-                getHeight());
+            g.drawRect(0, 0, getWidth(), getHeight());
         }
     }
 

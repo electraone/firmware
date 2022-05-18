@@ -1,10 +1,9 @@
 #include "ButtonBroadcaster.h"
 #include "ButtonListener.h"
 
-
 void ButtonBroadcaster::buttonDown(uint8_t buttonId)
 {
-  triggerCallbacks(buttonId, &ButtonListener::onButtonDown);
+    triggerCallbacks(buttonId, &ButtonListener::onButtonDown);
 }
 
 void ButtonBroadcaster::buttonUp(uint8_t buttonId)
@@ -14,7 +13,7 @@ void ButtonBroadcaster::buttonUp(uint8_t buttonId)
 
 void ButtonBroadcaster::buttonLongHold(uint8_t buttonId)
 {
-  triggerCallbacks(buttonId, &ButtonListener::onButtonLongHold);
+    triggerCallbacks(buttonId, &ButtonListener::onButtonLongHold);
 }
 
 void ButtonBroadcaster::triggerCallbacks(uint8_t buttonId, blFunction function)
@@ -24,7 +23,7 @@ void ButtonBroadcaster::triggerCallbacks(uint8_t buttonId, blFunction function)
 
         if ((listener->buttonId == ButtonListener::AllButtons)
             || (buttonId == listener->buttonId)) {
-                (listener->*function)(buttonId);
+            (listener->*function)(buttonId);
         }
     }
 }

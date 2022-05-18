@@ -3,11 +3,13 @@
 #include <map>
 #include <cstdint>
 
-
-template <class T> class Broadcaster
+template <class T>
+class Broadcaster
 {
 public:
-    Broadcaster() {}
+    Broadcaster()
+    {
+    }
     virtual ~Broadcaster() = default;
 
     void addListener(T *newListener)
@@ -17,7 +19,7 @@ public:
 
     void removeListener(T *listenerToRemove)
     {
-      listeners.erase(listenerToRemove);
+        listeners.erase(listenerToRemove);
     }
 
 protected:

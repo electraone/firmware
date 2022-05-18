@@ -18,7 +18,10 @@ public:
     {
     }
 
-    virtual ~ListData() = default;
+    virtual ~ListData()
+    {
+        logMessage("destroying list: %x", this);
+    }
 
     uint8_t getId(void) const
     {

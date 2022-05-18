@@ -189,12 +189,14 @@ public:
             }
             if (cmd.isFileRequest()) {
                 if (object == ElectraCommand::Object::FilePreset) {
-                    if (sendSysExFile(System::context.getCurrentPresetFile(), object)) {
+                    if (sendSysExFile(System::context.getCurrentPresetFile(),
+                                      object)) {
                         logMessage("processElectraSysex::handleElectraSysex: "
                                    "preset sysex sent to the host");
                     }
                 } else if (object == ElectraCommand::Object::FileLua) {
-                    if (sendSysExFile(System::context.getCurrentLuaFile(), object)) {
+                    if (sendSysExFile(System::context.getCurrentLuaFile(),
+                                      object)) {
                         logMessage("processElectraSysex::handleElectraSysex: "
                                    "lua sysex sent to the host");
                     }

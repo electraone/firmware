@@ -1,7 +1,6 @@
 #include "List.h"
-#include "LookAndFeel.h"
 
-List::List() : index(0)
+List::List(const ListData *newListData) : AssignableList(newListData), index(0)
 {
 }
 
@@ -13,7 +12,7 @@ void List::setColour(uint32_t newColour)
 
 void List::setIndex(uint16_t newIndex)
 {
-    index = constrain(newIndex, 0, getItems().getMaxIndex());
+    index = constrain(newIndex, 0, getList()->getMaxIndex());
     repaint();
 }
 
@@ -44,7 +43,7 @@ void List::onPotTouchUp(const PotEvent &potEvent)
 
 void List::paint(Graphics &g)
 {
-    LookAndFeel::paintList(g, getBounds(), colour, getItems(), index);
+    LookAndFeel::paintList(g, getBounds(), colour, getList(), index);
 }
 
 void List::resized(void)

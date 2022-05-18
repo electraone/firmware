@@ -119,18 +119,17 @@ static const uint8_t charWidthLarge[] = { 3,  5,  12, 9,  14, 13, 3, 4,
                                           10, // Z
                                           5,  7,  5,  10, 9 };
 
-Text::Text(const uint8_t CSp, const uint8_t RSTp)
-: FrameBuffer(CSp, RSTp)
+Text::Text(const uint8_t CSp, const uint8_t RSTp) : FrameBuffer(CSp, RSTp)
 {
 }
 
 void Text::printText(uint16_t x,
-                         uint16_t y,
-                         const char *text,
-                         TextStyle textStyle,
-                         uint16_t width,
-                         TextAlign align,
-                         uint8_t color)
+                     uint16_t y,
+                     const char *text,
+                     TextStyle textStyle,
+                     uint16_t width,
+                     TextAlign align,
+                     uint8_t color)
 {
     uint16_t xPosition = 0;
     uint32_t address = getCanvasAddress();
@@ -217,11 +216,11 @@ uint16_t Text::getTextWidth(const char *text, TextStyle textStyle)
 }
 
 void Text::textPlaceHolder(uint16_t x,
-                               uint16_t y,
-                               const char *text,
-                               TextStyle style,
-                               uint16_t width,
-                               TextAlign align)
+                           uint16_t y,
+                           const char *text,
+                           TextStyle style,
+                           uint16_t width,
+                           TextAlign align)
 {
     uint16_t xPosition;
     uint16_t textWidth = getTextWidth(text, style);
@@ -236,8 +235,7 @@ void Text::textPlaceHolder(uint16_t x,
     }
 
     setForegroundColor(ElectraColours::rgb565NumericBlack);
-    fillRect(
-        x + xPosition - 2, y - 1, textWidth + 2, charHeight + 1);
+    fillRect(x + xPosition - 2, y - 1, textWidth + 2, charHeight + 1);
 }
 
 // Private

@@ -134,28 +134,29 @@ void LookAndFeel::paintSliderVertical(Graphics &g,
 void LookAndFeel::paintList(Graphics &g,
                             const Rectangle &bounds,
                             uint32_t colour,
-                            const ListData &items,
+                            const ListData *items,
                             uint8_t activeIndex)
 {
+    items->print();
+
     // Paint the background
     g.fillAll(Colours::black);
 
-    if (items.getByIndex(activeIndex).isBitmapEmpty()) {
+    if (items->getByIndex(activeIndex).isBitmapEmpty()) {
         // Print the label
         g.printText(0,
                     0,
-                    items.getByIndex(activeIndex).getLabel(),
+                    items->getByIndex(activeIndex).getLabel(),
                     TextStyle::mediumTransparent,
                     bounds.getWidth(),
                     TextAlign::center);
     } else {
         // display bitmap image
         uint16_t paddingBitmap = ((bounds.getWidth() - BITMAP_WIDTH)) / 2 - 1;
-        items.getByIndex(activeIndex).paintBitmap(paddingBitmap, 0, colour);
+        items->getByIndex(activeIndex).paintBitmap(paddingBitmap, 0, colour);
     }
-
     // Paint the graphics
-    if (items.getNumItems() < 16) {
+    if (items->getNumItems() < 16) {
         paintDots(g, bounds, colour, items, activeIndex);
     } else {
         paintBar(g, bounds, colour, items, activeIndex);
@@ -377,16 +378,16 @@ bool LookAndFeel::findIntersection(uint16_t lineY,
 void LookAndFeel::paintDots(Graphics &g,
                             const Rectangle &bounds,
                             uint32_t colour,
-                            const ListData &items,
+                            const ListData *items,
                             uint8_t activeIndex)
 {
     // Paint the dots
     uint8_t paddingDots =
-        (bounds.getWidth() - (items.getNumItems() * 8)) / 2 + 4;
+        (bounds.getWidth() - (items->getNumItems() * 8)) / 2 + 4;
     uint16_t yPosition = 25;
 
     // paint dots
-    for (uint16_t i = 0; i < items.getNumItems(); i++) {
+    for (uint16_t i = 0; i < items->getNumItems(); i++) {
         g.setColour((i == activeIndex) ? colour : Colours::darker(colour, 0.5));
         g.fillCircle(paddingDots + i * 8, yPosition, 2);
     }
@@ -395,10 +396,10 @@ void LookAndFeel::paintDots(Graphics &g,
 void LookAndFeel::paintBar(Graphics &g,
                            const Rectangle &bounds,
                            uint32_t colour,
-                           const ListData &items,
+                           const ListData *items,
                            uint8_t activeIndex)
 {
-    uint16_t lastItem = items.getMaxIndex();
+    uint16_t lastItem = items->getMaxIndex();
     uint32_t dark = Colours::darker(colour, 0.5);
     uint32_t light = Colours::lighter(colour, 0.5);
 

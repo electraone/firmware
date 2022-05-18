@@ -57,18 +57,18 @@ void Pots::rescanAllPots(void)
 
 void Pots::initialise(void)
 {
-  // Initialise Pot Touch
-  Hardware::potTouch.begin();
-  Hardware::potTouch.reset();
+    // Initialise Pot Touch
+    Hardware::potTouch.begin();
+    Hardware::potTouch.reset();
 
-  // Configure Pot Touch
-  if (!Hardware::potTouch.init()) {
-      logMessage(
-          "capacitive sensing: cannot calibrate. Check input USB voltage");
-  } else {
-      logMessage("capacitive sensing: Initialized");
-  }
+    // Configure Pot Touch
+    if (!Hardware::potTouch.init()) {
+        logMessage(
+            "capacitive sensing: cannot calibrate. Check input USB voltage");
+    } else {
+        logMessage("capacitive sensing: Initialized");
+    }
 
-  // Run the first scan of Pots to get them to known state
-  rescanAllPots();
+    // Run the first scan of Pots to get them to known state
+    rescanAllPots();
 }

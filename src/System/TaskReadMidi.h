@@ -3,7 +3,6 @@
 #include "MidiMessage.h"
 #include "CircularBuffer.h"
 
-
 void readCtrlMidi(void);
 void readMidi(void);
 void processMidi(void);

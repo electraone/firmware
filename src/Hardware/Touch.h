@@ -7,6 +7,6 @@
 class Touch : public FT5x16
 {
 public:
-    Touch() : FT5x16(CTP_INT) {};
+    Touch() : FT5x16(CTP_INT){};
     ~Touch() = default;
 };

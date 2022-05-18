@@ -19,15 +19,9 @@ public:
         g.setColour(ElectraColours::rgb565NumericWhite);
 
         if (filled) {
-            g.fillElipse(centreX,
-                         centreY,
-                         radius,
-                         radius);
+            g.fillElipse(centreX, centreY, radius, radius);
         } else {
-            g.drawElipse(centreX,
-                         centreY,
-                         radius,
-                         radius);
+            g.drawElipse(centreX, centreY, radius, radius);
         }
     }
 

@@ -131,7 +131,7 @@ typedef uint8_t SdCsPin_t;
 /**
  * SD maximum initialization clock rate.
  */
-#define SD_MAX_INIT_RATE_KHZ 400
+#define SD_MAX_INIT_RATE_KHZ 100
 //------------------------------------------------------------------------------
 /**
  * Set USE_LONG_FILE_NAMES nonzero to use long file names (LFN) in FAT16/FAT32.

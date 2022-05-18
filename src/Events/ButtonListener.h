@@ -3,7 +3,6 @@
 #include <cstdint>
 #include "ButtonBroadcaster.h"
 
-
 /**
  * @brief provides callbacks for handling hardware button events.
  */
@@ -25,21 +24,27 @@ public:
      *
      * @param buttonId an identifier of the button.
      */
-    virtual void onButtonDown(uint8_t buttonId) {}
+    virtual void onButtonDown(uint8_t buttonId)
+    {
+    }
 
     /**
      * Called when the button is released.
      *
      * @param buttonId an identifier of the button.
      */
-    virtual void onButtonUp(uint8_t buttonId) {}
+    virtual void onButtonUp(uint8_t buttonId)
+    {
+    }
 
     /**
      * Called when the button is held down for longer time period.
      *
      * @param buttonId an identifier of the button.
      */
-    virtual void onButtonLongHold(uint8_t buttonId) {}
+    virtual void onButtonLongHold(uint8_t buttonId)
+    {
+    }
 
     /**
      * Assigns the pot to the listener object.

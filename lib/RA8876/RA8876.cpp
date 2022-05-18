@@ -723,9 +723,10 @@ void RA8876::setRadius(uint16_t major, uint16_t minor)
     writeReg16(RA8876_REG_ELL_A0, major);
     writeReg16(RA8876_REG_ELL_B0, minor);
 }
-
+#include "helpers.h"
 void RA8876::saveState(void)
 {
+	logMessage("Saving state");
     waitCompleted();
     savedState.CURH0 = readReg16(RA8876_REG_CURH0);
     savedState.CURV0 = readReg16(RA8876_REG_CURV0);
@@ -734,7 +735,10 @@ void RA8876::saveState(void)
 
 void RA8876::restoreState(void)
 {
+	logMessage("Restoring state");
+	waitCompleted();
     writeReg(RA8876_REG_AW_COLOR, savedState.AW_COLOR);
+    waitCompleted();
     writeReg16(RA8876_REG_CURH0, savedState.CURH0);
     writeReg16(RA8876_REG_CURV0, savedState.CURV0);
     waitCompleted();
@@ -743,8 +747,10 @@ void RA8876::restoreState(void)
 void RA8876::waitForStatus(uint8_t status)
 {
     while (readStatus() & status) {
+		//logMessage("gen status: %x", readStatus());
         asm("nop");
     }
+	//logMessage("gen final status: %x", readStatus());
 }
 
 void RA8876::waitCompleted(void)
@@ -776,7 +782,13 @@ bool RA8876::waitNormalOperation(void)
 
 bool RA8876::waitSdramReady(void)
 {
-    return (waitForStatusSlow(0x40));
+
+	while ((readStatus() & 0x04) == 0) {
+		//logMessage("sdrem status: %x", readStatus());
+		asm("nop");
+	}
+	//logMessage("sdrem final status: %x", readStatus());
+	return (true);
 }
 
 void RA8876::drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)
@@ -1264,7 +1276,7 @@ void RA8876::bteExpansion(uint32_t srcAddress,
 void RA8876::setBacklight(boolean on)
 {
     writeReg(RA8876_REG_DZ_LENGTH, 127); // set deadzone
-    writeReg(RA8876_REG_PSCLR, 4); // set prescaler
+    writeReg(RA8876_REG_PSCLR, 0); // set prescaler
     writeReg(RA8876_REG_PMUXR,
              0x00 | (on == true) ? 0x02 : 0x00); // route PWM output out
     writeReg(RA8876_REG_TCNTB0L, 0x00); // counter buffer low

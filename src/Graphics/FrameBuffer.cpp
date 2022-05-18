@@ -1,6 +1,5 @@
 #include "FrameBuffer.h"
 
-
 FrameBuffer::FrameBuffer(const uint8_t CSp, const uint8_t RSTp)
     : RA8876(CSp, RSTp), writeLayer(1)
 {

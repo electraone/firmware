@@ -3,14 +3,13 @@
 #include "Component.h"
 #include "AssignableList.h"
 #include "LookAndFeel.h"
-#include <vector>
 
 class List : public Component, public AssignableList
 {
 public:
-    List();
+    List(const ListData *newListData);
     virtual ~List() = default;
-	
+
     void setColour(uint32_t newColour);
     void setIndex(uint16_t newIndex);
 

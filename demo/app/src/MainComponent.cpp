@@ -25,8 +25,8 @@ MainComponent::MainComponent()
     for (uint8_t i = 0; i < numKnobs; i++) {
         knob[i] = new Knob();
         knob[i]->setColour(Colours::darkslateblue);
-		knob[i]->setRange(-64.0f, 63.0f);
-		knob[i]->setValue(0.0f);
+        knob[i]->setRange(-64.0f, 63.0f);
+        knob[i]->setValue(0.0f);
         knob[i]->assignPot(i);
         addAndMakeVisible(knob[i]);
     }
@@ -35,8 +35,8 @@ MainComponent::MainComponent()
     for (uint8_t i = 0; i < numBars; i++) {
         bar[i] = new BarVertical;
         bar[i]->setColour(Colours::peru);
-		bar[i]->setRange(-64.0f, 63.0f);
-		bar[i]->setValue(0.0f);
+        bar[i]->setRange(-64.0f, 63.0f);
+        bar[i]->setValue(0.0f);
         bar[i]->assignPot(i);
         bar[i]->assignPot(i + numKnobs);
 

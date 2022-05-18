@@ -42,7 +42,7 @@ public:
     static void paintList(Graphics &g,
                           const Rectangle &bounds,
                           uint32_t colour,
-                          const ListData &items,
+                          const ListData *items,
                           uint8_t activeIndex);
 
     static void paintSet(Graphics &g,
@@ -87,13 +87,13 @@ private:
     static void paintDots(Graphics &g,
                           const Rectangle &bounds,
                           uint32_t colour,
-                          const ListData &items,
+                          const ListData *items,
                           uint8_t activeIndex);
 
     static void paintBar(Graphics &g,
                          const Rectangle &bounds,
                          uint32_t colour,
-                         const ListData &items,
+                         const ListData *items,
                          uint8_t activeIndex);
 
     // Slider
