@@ -16,8 +16,9 @@ public:
     {
     }
 
-    void setAppName(const char *appName)
+    void setAppName(const char *newAppName)
     {
+        appName = newAppName;
         snprintf(
             currentConfigFile, MAX_FILENAME_LENGTH, "%s/setup.cfg", appName);
         snprintf(currentTempFile, MAX_FILENAME_LENGTH, "%s/file.tmp", appName);

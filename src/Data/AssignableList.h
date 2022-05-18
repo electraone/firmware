@@ -21,17 +21,17 @@ public:
 
     bool isEmpty(void) const
     {
-      return (listData == nullptr || (listData && listData->isEmpty()));
+        return (listData == nullptr || (listData && listData->isEmpty()));
     }
 
     bool hasItems(void) const
     {
-      return (listData && listData->hasItems());
+        return (listData && listData->hasItems());
     }
 
     bool isAssigned(void) const
     {
-      return (listData != nullptr);
+        return (listData != nullptr);
     }
 
 private:

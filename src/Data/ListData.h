@@ -60,12 +60,12 @@ public:
 
     bool hasItems(void) const
     {
-      return (!items.empty());
+        return (!items.empty());
     }
 
     bool isEmpty(void) const
     {
-      return (items.empty());
+        return (items.empty());
     }
 
     void print(void) const

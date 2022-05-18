@@ -82,28 +82,42 @@ void luaLE_addObjectMethods(lua_State *L, const luaL_Reg *l)
     }
 }
 
+void luaLE_postFunctionCleanUp(lua_State *L)
+{
+    //luaLE_dumpstack(L);
+
+    while (lua_gettop(L)) {
+        lua_pop(L, 1);
+    }
+
+    lua_gc(L, LUA_GCCOLLECT, 0);
+}
+
 void luaLE_dumpstack(lua_State *L)
 {
     int top = lua_gettop(L);
 
+    logMessage("stack size: %d", top);
+
     for (int i = 1; i <= top; i++) {
-        logMessage("%d\t%s   ", i, luaL_typename(L, i));
+        logMessage("%d -> %s   ", i, luaL_typename(L, i));
 
         switch (lua_type(L, i)) {
             case LUA_TNUMBER:
-                logMessage("%g\n", lua_tonumber(L, i));
+                logMessage("number: %g", lua_tonumber(L, i));
                 break;
             case LUA_TSTRING:
-                logMessage("%s\n", lua_tostring(L, i));
+                logMessage("string: %s", lua_tostring(L, i));
                 break;
             case LUA_TBOOLEAN:
-                logMessage("%s\n", (lua_toboolean(L, i) ? "true" : "false"));
+                logMessage("bool: %s",
+                           (lua_toboolean(L, i) ? "true" : "false"));
                 break;
             case LUA_TNIL:
-                logMessage("%s\n", "nil");
+                logMessage("nil: %s", "nil");
                 break;
             default:
-                logMessage("%p\n", lua_topointer(L, i));
+                logMessage("pointer: %p", lua_topointer(L, i));
                 break;
         }
     }

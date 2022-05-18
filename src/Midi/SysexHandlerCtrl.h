@@ -49,17 +49,21 @@ public:
                     fileType = ElectraCommand::Object::FileUi;
                 } else if (sysExData[5]
                            == (uint8_t)ElectraCommand::Object::FileLua) {
-                    logMessage("handleSysEx: lua script transfer initiated");
                     filename = System::context.getCurrentLuaFile();
                     fileType = ElectraCommand::Object::FileLua;
+                    logMessage(
+                        "handleSysEx: lua script transfer initiated: filename=%s",
+                        filename);
                 } else if ((sysExData[5]
                             == (uint8_t)ElectraCommand::Object::FilePreset)
                            || (sysExData[5]
                                == (uint8_t)
                                    ElectraCommand::Object::FilePresetLegacy)) {
-                    logMessage("handleSysEx: preset transfer initiated");
                     filename = System::context.getCurrentPresetFile();
                     fileType = ElectraCommand::Object::FilePreset;
+                    logMessage(
+                        "handleSysEx: preset transfer initiated: filename=%s",
+                        filename);
                 } else {
                     logMessage("handleSysEx: unknown filetype");
                     fileType = ElectraCommand::Object::Unknown;
@@ -69,7 +73,8 @@ public:
     				     * Open the file
     				     */
                 if (filename) {
-                    file = Hardware::sdcard.createOutputStream(filename);
+                    file = Hardware::sdcard.createOutputStream(
+                        filename, FILE_WRITE | O_CREAT | O_TRUNC);
                 }
 
                 // if file cannot be opened now, use sysexBlock
@@ -105,7 +110,7 @@ public:
             if (sysExData[sysExSize - 1] == 0xF7) {
                 sysExSize -= 1; // remove sysex stop byte
             }
-
+            logMessage("writing packet: %d", packetNr);
             // if it is a uitoolkitTransfer decode the base64 data
             if (fileType == ElectraCommand::Object::FileUi) {
                 decodedDataSize = base64_decode(

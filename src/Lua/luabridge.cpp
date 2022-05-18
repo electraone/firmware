@@ -166,7 +166,7 @@ void executeElectraLua(const char *filename)
 bool isLuaValid(const char *filename)
 {
     size_t filesize = 0;
-    File file = SD.open(filename, FILE_READ);
+    File file = Hardware::sdcard.createOutputStream(filename, FILE_READ);
 
     if (file) {
         filesize = file.fileSize();

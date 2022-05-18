@@ -23,4 +23,5 @@ void luaLE_getModuleFunction(lua_State *L,
                              const char *function);
 void luaLE_handleNonexistentFunction(lua_State *L, const char *function);
 void luaLE_addObjectMethods(lua_State *L, const luaL_Reg *l);
+void luaLE_postFunctionCleanUp(lua_State *L);
 void luaLE_dumpstack(lua_State *L);
