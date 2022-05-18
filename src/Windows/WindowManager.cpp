@@ -7,9 +7,6 @@ WindowManager::WindowManager()
 bool WindowManager::addWindow(Window *windowToAdd)
 {
     windows.push_back(windowToAdd);
-
-    logMessage("xxxx Name: %s", windows[0]->getName());
-
     return (true);
 }
 
