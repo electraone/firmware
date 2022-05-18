@@ -4,7 +4,7 @@
 #include "Sysex.h"
 #include "LocalFile.h"
 #include "System.h"
-#include "base64.h"
+#include "Base64.h"
 
 enum class FileType { preset, config, luaScript, uiToolkit, unknown };
 

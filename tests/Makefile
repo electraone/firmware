@@ -24,7 +24,7 @@ INCDIRS=-I./ -I./$(STUBSDIR) -I./$(FAKESDIR) -I./$(MOCKSDIR) -I../src
 CXXFLAGS = -Wall -Werror -c $(INCDIRS) -std=c++11
 
 CPPUTEST_HOME = /usr/local/Cellar/cpputest/4.0
-CXXFLAGS += -I$(CPPUTEST_HOME)/include -include "arduino.h"
+CXXFLAGS += -I$(CPPUTEST_HOME)/include -include "Arduino.h"
 
 LDFLAGS = -lCppUTest -lCppUTestExt
 

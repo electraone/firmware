@@ -3,7 +3,7 @@
 #include <cstdarg>
 #include <vector>
 #include <cstdint>
-#include "arduino.h"
+#include "Arduino.h"
 
 #define _HELPERS_H
 

@@ -5,7 +5,7 @@
 #include <cstdarg>
 #include <cstring>
 #include <iostream>
-#include "arduino.h"
+#include "Arduino.h"
 #include "helpers.h"
 
 using namespace std;
