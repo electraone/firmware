@@ -137,8 +137,6 @@ void LookAndFeel::paintList(Graphics &g,
                             const ListData *items,
                             uint8_t activeIndex)
 {
-    items->print();
-
     // Paint the background
     g.fillAll(Colours::black);
 

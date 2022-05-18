@@ -726,7 +726,7 @@ void RA8876::setRadius(uint16_t major, uint16_t minor)
 #include "helpers.h"
 void RA8876::saveState(void)
 {
-	logMessage("Saving state");
+    //logMessage("Saving state");
     waitCompleted();
     savedState.CURH0 = readReg16(RA8876_REG_CURH0);
     savedState.CURV0 = readReg16(RA8876_REG_CURV0);
@@ -735,8 +735,8 @@ void RA8876::saveState(void)
 
 void RA8876::restoreState(void)
 {
-	logMessage("Restoring state");
-	waitCompleted();
+    //logMessage("Restoring state");
+    waitCompleted();
     writeReg(RA8876_REG_AW_COLOR, savedState.AW_COLOR);
     waitCompleted();
     writeReg16(RA8876_REG_CURH0, savedState.CURH0);
@@ -747,10 +747,10 @@ void RA8876::restoreState(void)
 void RA8876::waitForStatus(uint8_t status)
 {
     while (readStatus() & status) {
-		//logMessage("gen status: %x", readStatus());
+    //logMessage("gen status: %x", readStatus());
         asm("nop");
     }
-	//logMessage("gen final status: %x", readStatus());
+    //logMessage("gen final status: %x", readStatus());
 }
 
 void RA8876::waitCompleted(void)
