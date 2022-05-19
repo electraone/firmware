@@ -8,6 +8,7 @@ Component::Component()
       parentComponent(nullptr),
       visible(false),
       active(false),
+      dimmed(false),
       queueEntry(nullptr)
 {
     copyString(name, "", MaxNameLength);
@@ -18,6 +19,7 @@ Component::Component(Component *newParent)
       parentComponent(newParent),
       visible(false),
       active(false),
+      dimmed(false),
       queueEntry(nullptr)
 {
     copyString(name, "", MaxNameLength);
@@ -28,6 +30,7 @@ Component::Component(const char *newName)
       parentComponent(nullptr),
       visible(false),
       active(false),
+      dimmed(false),
       queueEntry(nullptr)
 {
     copyString(name, newName, MaxNameLength);
@@ -174,6 +177,16 @@ bool Component::isActive(void) const
     return (active);
 }
 
+void Component::setDimmed(bool shouldBeDimmed)
+{
+    dimmed = shouldBeDimmed;
+}
+
+bool Component::isDimmed(void) const
+{
+    return (dimmed);
+}
+
 // \todo Move this to an appropriate place
 #include <CircularBuffer.h>
 extern CircularBuffer<Component *, 100> repaintQueue;
@@ -272,7 +285,14 @@ void Component::paintWithChildren(Graphics &g)
         for (auto &component : components) {
             component->paintWithChildren(g);
         }
-        //g.drawRect (0, 0, getWidth(), getHeight(), ElectraColours::rgb565NumericWhite);
+        if (dimmed == true) {
+            g.dim(0, 0, getWidth(), getHeight(), Colours::black);
+        }
+
+        if (false) { // Display component bounding box
+            g.setColour(Colours::white);
+            g.drawRect(0, 0, getWidth(), getHeight());
+        }
     }
 }
 

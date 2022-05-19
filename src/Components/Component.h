@@ -197,6 +197,8 @@ public:
      */
     virtual void setActive(bool shouldBeActive);
     virtual bool isActive(void) const;
+    virtual void setDimmed(bool shouldBeDimmed);
+    virtual bool isDimmed(void) const;
 
     /**
      * Schedules repaint of the graphic object.
@@ -380,6 +382,7 @@ protected:
         uint16_t id : 9;
         bool visible : 1;
         bool active : 1;
+        bool dimmed : 1;
     };
 
     Component *queueEntry;
