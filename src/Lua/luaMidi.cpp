@@ -1,5 +1,6 @@
 #include "luaMidi.h"
 #include "MidiOutput.h"
+#include "luaLE.h"
 
 int luaopen_midi(lua_State *L)
 {
@@ -672,4 +673,117 @@ int midi_sendControlChange14Bit(lua_State *L)
         lsbFirst);
 
     return (0);
+}
+
+void midi_onSingleByte(const char *function, MidiInput midiInput)
+{
+    luaLE_getModuleFunction("midi", function);
+
+    if (lua_isfunction(L, -1)) {
+        lua_newtable(L);
+        luaLE_pushTableInteger(
+            L, "interface", (uint8_t)midiInput.getInterfaceType());
+        luaLE_pushTableInteger(L, "port", midiInput.getPort());
+
+        if (lua_pcall(L, 1, 0, 0) != 0) {
+            logMessage("error running function '%s': %s",
+                       function,
+                       lua_tostring(L, -1));
+        }
+    } else {
+        luaLE_handleNonexistentFunction(L, function);
+    }
+}
+
+void midi_onTwoBytes(const char *function, MidiInput midiInput, int data1)
+{
+    luaLE_getModuleFunction("midi", function);
+
+    if (lua_isfunction(L, -1)) {
+        lua_newtable(L);
+        luaLE_pushTableInteger(
+            L, "interface", (uint8_t)midiInput.getInterfaceType());
+        luaLE_pushTableInteger(L, "port", midiInput.getPort());
+        lua_pushnumber(L, data1);
+
+        if (lua_pcall(L, 2, 0, 0) != 0) {
+            logMessage("error running function '%s': %s",
+                       function,
+                       lua_tostring(L, -1));
+        }
+    } else {
+        luaLE_handleNonexistentFunction(L, function);
+    }
+}
+
+void midi_onTwoBytesWithChannel(const char *function,
+                                MidiInput midiInput,
+                                uint8_t channel,
+                                int data1)
+{
+    luaLE_getModuleFunction("midi", function);
+
+    if (lua_isfunction(L, -1)) {
+        lua_newtable(L);
+        luaLE_pushTableInteger(
+            L, "interface", (uint8_t)midiInput.getInterfaceType());
+        luaLE_pushTableInteger(L, "port", midiInput.getPort());
+        lua_pushnumber(L, channel);
+        lua_pushnumber(L, data1);
+
+        if (lua_pcall(L, 3, 0, 0) != 0) {
+            logMessage("error running function '%s': %s",
+                       function,
+                       lua_tostring(L, -1));
+        }
+    } else {
+        luaLE_handleNonexistentFunction(L, function);
+    }
+}
+
+void midi_onThreeBytesWithChannel(const char *function,
+                                  MidiInput midiInput,
+                                  uint8_t channel,
+                                  uint8_t data1,
+                                  uint8_t data2)
+{
+    luaLE_getModuleFunction("midi", function);
+
+    if (lua_isfunction(L, -1)) {
+        lua_newtable(L);
+        luaLE_pushTableInteger(
+            L, "interface", (uint8_t)midiInput.getInterfaceType());
+        luaLE_pushTableInteger(L, "port", midiInput.getPort());
+        lua_pushnumber(L, channel);
+        lua_pushnumber(L, data1);
+        lua_pushnumber(L, data2);
+
+        if (lua_pcall(L, 4, 0, 0) != 0) {
+            logMessage("error running function '%s': %s",
+                       function,
+                       lua_tostring(L, -1));
+        }
+    } else {
+        luaLE_handleNonexistentFunction(L, function);
+    }
+}
+
+void midi_onMidiSysex(MidiInput &midiInput, SysexBlock &sysexBlock)
+{
+    luaLE_getModuleFunction("midi", "onSysex");
+
+    if (lua_isfunction(L, -1)) {
+        lua_newtable(L);
+        luaLE_pushTableInteger(
+            L, "interface", (uint8_t)midiInput.getInterfaceType());
+        luaLE_pushTableInteger(L, "port", midiInput.getPort());
+        luaLE_pushObject(L, "SysexBlock", &sysexBlock);
+
+        if (lua_pcall(L, 2, 0, 0) != 0) {
+            logMessage("error running function 'onSysex': %s",
+                       lua_tostring(L, -1));
+        }
+    } else {
+        luaLE_handleNonexistentFunction(L, "onSysex");
+    }
 }

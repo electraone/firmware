@@ -26,6 +26,13 @@ void luaLE_pushTableInteger(lua_State *L, const char *key, int value)
     lua_settable(L, -3);
 }
 
+void luaLE_pushTableObject(lua_State *L, const char *key, void *object)
+{
+    lua_pushstring(L, key);
+    luaLE_pushObject(L, key, object);
+    lua_settable(L, -3);
+}
+
 void luaLE_pushArrayInteger(lua_State *L, int key, int value)
 {
     lua_pushinteger(L, key);
@@ -121,4 +128,26 @@ void luaLE_dumpstack(lua_State *L)
                 break;
         }
     }
+}
+
+bool luaLE_functionExists(const char *module, const char *function)
+{
+    luaLE_getModuleFunction(module, function);
+
+    if (lua_isfunction(L, -1)) {
+        lua_remove(L, -1);
+        return (true);
+    } else {
+        luaLE_handleNonexistentFunction(L, function);
+    }
+
+    return (false);
+}
+
+void luaLE_getModuleFunction(const char *module, const char *function)
+{
+    lua_getglobal(L, module);
+    lua_pushstring(L, function);
+    lua_gettable(L, -2);
+    lua_remove(L, -2);
 }

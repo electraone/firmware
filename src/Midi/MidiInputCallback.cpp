@@ -49,8 +49,11 @@ void (*MidiInputCallback::onMidiAfterTouchPolyCallback)(MidiInput midiInput,
                                                         uint8_t noteNumber,
                                                         uint8_t pressure) =
     nullptr;
-void (*MidiInputCallback::onMidiSysexCallback)(MidiInput midiInput,
-                                               MidiMessage midiMessage) =
+void (*MidiInputCallback::onMidiSysexCallback)(MidiInput &midiInput,
+                                               MidiMessage &midiMessage) =
+    nullptr;
+void (*MidiInputCallback::onMidiMessageCallback)(MidiInput &midiInput,
+                                                 MidiMessage &midiMessage) =
     nullptr;
 
 DeviceManager MidiInputCallback::deviceManager;

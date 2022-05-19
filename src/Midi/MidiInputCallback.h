@@ -61,8 +61,10 @@ public:
                                                 uint8_t channel,
                                                 uint8_t noteNumber,
                                                 uint8_t pressure);
-    static void (*onMidiSysexCallback)(MidiInput midiInput,
-                                       MidiMessage midiMessage);
+    static void (*onMidiSysexCallback)(MidiInput &midiInput,
+                                       MidiMessage &midiMessage);
+    static void (*onMidiMessageCallback)(MidiInput &midiInput,
+                                         MidiMessage &midiMessage);
 
     static DeviceManager deviceManager;
 };

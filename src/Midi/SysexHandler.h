@@ -50,6 +50,14 @@ protected:
         MidiInput midiInput(midiInterface, port);
         MidiMessage midiMessage(sysexBlock);
 
+        if (MidiInputCallback::onMidiSysexCallback) {
+            MidiInputCallback::onMidiSysexCallback(midiInput, midiMessage);
+        }
+
+        if (MidiInputCallback::onMidiMessageCallback) {
+            MidiInputCallback::onMidiMessageCallback(midiInput, midiMessage);
+        }
+
         MidiInputCallback::deviceManager.handleIncomingMidiMessage(midiInput,
                                                                    midiMessage);
     }

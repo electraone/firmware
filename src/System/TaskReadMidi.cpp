@@ -229,4 +229,9 @@ void runOptionalCallbacks(MidiInput midiInput,
                 midiInput, channel, data1, data2);
         }
     }
+
+    if (MidiInputCallback::onMidiMessageCallback) {
+        MidiMessage midiMessage(channel, type, data1, data2);
+        MidiInputCallback::onMidiMessageCallback(midiInput, midiMessage);
+    }
 }
