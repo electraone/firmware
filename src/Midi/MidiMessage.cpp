@@ -110,6 +110,11 @@ MidiMessage MidiMessage::controllerEvent(uint8_t channel,
                         value & 0x7F));
 }
 
+bool MidiMessage::isNote(void) const
+{
+    return (isNoteOn() || isNoteOff());
+}
+
 bool MidiMessage::isNoteOn(void) const
 {
     return (type == MidiMessage::Type::NoteOn);

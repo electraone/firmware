@@ -56,6 +56,7 @@ public:
     static MidiMessage
         controllerEvent(uint8_t channel, uint8_t controllerType, uint8_t value);
 
+    bool isNote(void) const;
     bool isNoteOn(void) const;
     static MidiMessage
         noteOn(uint8_t channel, uint8_t noteNumber, uint8_t velocity);
