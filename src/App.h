@@ -35,6 +35,7 @@ public:
     virtual const char *getApplicationName(void) const;
     virtual const char *getApplicationVersion(void) const;
     virtual const char *getApplicationSandbox(void) const;
+    virtual Window *getMainWindow(void);
 
     // \todo these will be moved elsewhere
     virtual void handleIncomingControlMessage(MidiInput &midiInput,

@@ -41,6 +41,11 @@ const char *App::getApplicationSandbox(void) const
     return ("default");
 }
 
+Window *App::getMainWindow(void)
+{
+  return (nullptr);
+}
+
 // --------------------------------------------------------------------------
 
 #include <CircularBuffer.h>
