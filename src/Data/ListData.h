@@ -48,6 +48,16 @@ public:
         return (ListDataItem());
     }
 
+    int16_t getIndex(int16_t value) const
+    {
+      for (uint16_t i = 0; i < items.size(); i++) {
+        if (items[i].getValue() == value) {
+            return (i);
+        }
+      }
+      return (-1);
+    }
+
     uint16_t getNumItems(void) const
     {
         return (items.size());
