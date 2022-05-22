@@ -110,7 +110,7 @@ public:
             if (sysExData[sysExSize - 1] == 0xF7) {
                 sysExSize -= 1; // remove sysex stop byte
             }
-            logMessage("writing packet: %d", packetNr);
+
             // if it is a uitoolkitTransfer decode the base64 data
             if (fileType == ElectraCommand::Object::FileUi) {
                 decodedDataSize = base64_decode(
