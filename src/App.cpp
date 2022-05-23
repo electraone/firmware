@@ -43,7 +43,7 @@ const char *App::getApplicationSandbox(void) const
 
 Window *App::getMainWindow(void)
 {
-  return (nullptr);
+    return (nullptr);
 }
 
 // --------------------------------------------------------------------------
