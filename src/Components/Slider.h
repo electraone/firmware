@@ -26,7 +26,7 @@ public:
     void setRange(int16_t newMin, int16_t newMax);
     void setValue(int16_t newValue);
     void applyValue(int16_t delta);
-    int16_t getValue(int16_t value) const;
+    int16_t getValue(void) const;
     void setValueFormat(const char *newValueFormat);
     void setColour(uint32_t newColour);
 

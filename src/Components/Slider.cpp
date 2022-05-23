@@ -56,9 +56,9 @@ void Slider::applyValue(int16_t delta)
     repaint();
 }
 
-int16_t Slider::getValue(int16_t value) const
+int16_t Slider::getValue(void) const
 {
-    return (value);
+    return (value.get());
 }
 
 void Slider::setValueFormat(const char *newValueFormat)
