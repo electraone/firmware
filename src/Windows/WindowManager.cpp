@@ -1,6 +1,6 @@
 #include "WindowManager.h"
 
-WindowManager::WindowManager()
+WindowManager::WindowManager() : activeIndex(0)
 {
 }
 
@@ -12,16 +12,16 @@ bool WindowManager::addWindow(Window *windowToAdd)
 
 void WindowManager::removeWindow(Window *windowToRemove)
 {
-    uint8_t idx = 0;
-    for(auto i = windows.begin();i != windows.end();i++) {
-        if(*i == windowToRemove) {
+    uint8_t index = 0;
+    for (auto i = windows.begin(); i != windows.end(); i++) {
+        if (*i == windowToRemove) {
             windows.erase(i);
-            if(activeIdx == idx) {
-                if(activeIdx > 0) {
-                    setActiveIdx(activeIdx - 1);
+            if (activeIndex == index) {
+                if (activeIndex > 0) {
+                    setActiveIndex(activeIndex - 1);
                 }
             }
-            // note: iterator is invalid! 
+            // note: iterator is invalid!
             return;
         }
     }
@@ -34,7 +34,7 @@ int WindowManager::getNumWindows(void)
 
 Window *WindowManager::getWindow(uint8_t index)
 {
-    if(index >= windows.size()) {
+    if (index >= windows.size()) {
         return nullptr;
     }
     return (windows[index]);
@@ -42,41 +42,41 @@ Window *WindowManager::getWindow(uint8_t index)
 
 Window *WindowManager::getActiveWindow(void)
 {
-    return getWindow(activeIdx);   
+    return getWindow(activeIndex);
 }
 
-
-void WindowManager::setActiveWindow(Window *newActiveWindow) {
-    uint8_t idx = 0;
-    for(const auto& i : windows) {
-        if(i == newActiveWindow) {
-            setActiveIdx(idx);
+void WindowManager::setActiveWindow(Window *newActiveWindow)
+{
+    uint8_t index = 0;
+    for (const auto &i : windows) {
+        if (i == newActiveWindow) {
+            setActiveIndex(index);
             return;
         }
-        idx++;
+        index++;
     }
 }
 
-void WindowManager::setActiveIdx(uint8_t index) {
-    if(index < windows.size()) {
+void WindowManager::setActiveIndex(uint8_t index)
+{
+    if (index < windows.size()) {
         activate(index);
     }
 }
 
-uint8_t WindowManager::getActiveIdx() {
-    return activeIdx;
-
+uint8_t WindowManager::getActiveIndex()
+{
+    return activeIndex;
 }
 
+void WindowManager::activate(uint8_t index)
+{
+    activeIndex = index;
 
+    // todo?
+    // do we need to deactivate windows, so that they dont start processing events?
 
-void WindowManager::activate(uint8_t idx) {
-    activeIdx = idx;
-
-    // todo? 
-    // do we need to deactivate windows, so that they dont start processing events? 
-
-    // auto oldW = getWindow(activeIdx); 
+    // auto oldW = getWindow(activeIdx);
     // auto newW = getWindow(idx);
     // if(oldW) {
     //     oldW->setActive(false);
@@ -86,8 +86,6 @@ void WindowManager::activate(uint8_t idx) {
     //     newW->setActive(true);
     // }
 }
-
-
 
 /**
  * Repaints currently active window
