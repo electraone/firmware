@@ -93,7 +93,7 @@ Component *Window::getActiveComponent(void)
 
 void Window::paint(Graphics &g)
 {
-    if (isVisible()) {
+    if (isVisible() && contentComponent) {
         contentComponent->paintWithChildren(g);
     }
 }
