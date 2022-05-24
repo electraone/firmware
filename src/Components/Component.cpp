@@ -40,6 +40,7 @@ Component::~Component()
 {
     releasePot();
     deleteAllChildren();
+    logMessage("destroying: %s", getName());
 }
 
 void Component::setId(uint16_t newId)
@@ -189,7 +190,7 @@ bool Component::isDimmed(void) const
 
 // \todo Move this to an appropriate place
 #include <CircularBuffer.h>
-extern CircularBuffer<Component *, 100> repaintQueue;
+extern CircularBuffer<Component *, 500> repaintQueue;
 
 void Component::repaint(void)
 {
@@ -378,10 +379,6 @@ bool Component::isOverlaping(Component *first, Component *second)
 
     return (true);
 }
-
-// \todo Move this to an appropriate place
-#include <CircularBuffer.h>
-extern CircularBuffer<Component *, 100> repaintQueue;
 
 void Component::repaintQueueItem(void)
 {

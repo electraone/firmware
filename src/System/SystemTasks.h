@@ -33,6 +33,10 @@ public:
     bool isTimerEnabled(void);
     unsigned long timerGetInterval(void);
     void timerSetInterval(unsigned long interval);
+    void enableRepaintGraphics(void);
+    void disableRepaintGraphics(void);
+    void flushRepaintGraphics(void);
+    void clearRepaintGraphics(void);
     void doNotUsePotTouch(void);
     void enableUserTask(void);
     void disableUserTask(void);

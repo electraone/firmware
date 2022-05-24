@@ -56,7 +56,7 @@ void initialise(void)
     logMessage("MIDI interfaces: initialised");
 
     // Clear the repaint queue \todo does not beliong here
-    App::get()->clearRepaintGraphics();
+    System::tasks.clearRepaintGraphics();
 
     // Initialise the user application (App)
     App::get()->initialise();

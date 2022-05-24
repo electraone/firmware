@@ -7,7 +7,7 @@ class Envelope : public Component
 public:
     Envelope();
     virtual ~Envelope() = default;
-    
+
     void setColour(uint32_t newColour);
 
     virtual void setValue(uint8_t handle, float newValue);

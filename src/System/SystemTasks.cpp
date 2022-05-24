@@ -2,6 +2,10 @@
 #include "TaskScheduler.h"
 #include "System.h"
 
+// \todo Move this to an appropriate place
+#include <CircularBuffer.h>
+extern CircularBuffer<Component *, 100> repaintQueue;
+
 SystemTasks::SystemTasks()
     : taskMonitorFreeMemory(10000000, TASK_FOREVER, &monitorFreeMemory),
       taskReadPots(10000, TASK_FOREVER, &readPots),
@@ -93,6 +97,26 @@ unsigned long SystemTasks::timerGetInterval(void)
 void SystemTasks::timerSetInterval(unsigned long interval)
 {
     taskRunTimer.setInterval(interval);
+}
+
+void SystemTasks::enableRepaintGraphics(void)
+{
+    taskRepaintGraphics.enable();
+}
+
+void SystemTasks::disableRepaintGraphics(void)
+{
+    taskRepaintGraphics.disable();
+}
+
+void SystemTasks::flushRepaintGraphics(void)
+{
+    repaintGraphics();
+}
+
+void SystemTasks::clearRepaintGraphics(void)
+{
+    repaintQueue.clear();
 }
 
 void SystemTasks::doNotUsePotTouch(void)

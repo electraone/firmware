@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "Hardware.h"
 
-CircularBuffer<Component *, 100> repaintQueue;
+CircularBuffer<Component *, 500> repaintQueue;
 
 /*
  * An option for visual layout debugging
@@ -16,7 +16,7 @@ bool showComponentFrames = false;
  */
 void repaintGraphics(void)
 {
-    //logMessage ("repaintGraphics");
+    //logMessage("repaintGraphics");
     if (repaintQueue.isEmpty() != true) {
         Hardware::screen.switchWriteLayer();
 

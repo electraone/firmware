@@ -51,9 +51,6 @@ Window *App::getMainWindow(void)
 #include <CircularBuffer.h>
 
 // \todo To be removed.
-void repaintGraphics(void);
-extern CircularBuffer<Component *, 100> repaintQueue;
-
 void App::handleIncomingControlMessage(MidiInput &midiInput,
                                        MidiMessage &midiMessage)
 {
@@ -80,16 +77,6 @@ bool App::handleCtrlFileRemoved(int fileNumber, ElectraCommand::Object fileType)
 
 void App::runUserTask(void)
 {
-}
-
-void App::flushRepaintGraphics(void)
-{
-    repaintGraphics();
-}
-
-void App::clearRepaintGraphics(void)
-{
-    repaintQueue.clear();
 }
 
 void App::indicateMidiActivity(uint8_t port,

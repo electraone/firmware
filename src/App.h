@@ -48,8 +48,6 @@ public:
                                        ElectraCommand::Object fileType);
     virtual void runUserTask(void);
 
-    void flushRepaintGraphics(void);
-    void clearRepaintGraphics(void);
     void clearScreen(void);
     void paintScreen(void);
     void indicateMidiActivity(uint8_t port,
