@@ -1,0 +1,13 @@
+[package]
+name = "electra-firmware-tools"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = "^3.0.0-beta"
+midir = "^0.7"
+midi-msg = "^0.3"
+hidapi = "^1.2"
+ihex = "^3.0"
+snafu = "^0.7.0-beta"
+indicatif = "^0.16"
