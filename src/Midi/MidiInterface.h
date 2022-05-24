@@ -3,6 +3,7 @@
 #include "MidiIo.h"
 #include "MidiUsbDev.h"
 #include "MidiUsbHost.h"
+#include <array>
 
 class MidiInterface final
 {
@@ -34,6 +35,8 @@ public:
             return ("Uknown");
         }
     }
+
+    static const std::array<MidiInterface::Type, 3> allInterfaceTypes;
 
 private:
     static MidiIo midiIo;
