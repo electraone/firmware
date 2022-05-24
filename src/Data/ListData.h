@@ -17,10 +17,7 @@ public:
     {
     }
 
-    virtual ~ListData()
-    {
-        logMessage("destroying list: %x", this);
-    }
+    virtual ~ListData() = default;
 
     uint8_t getId(void) const
     {
@@ -48,7 +45,7 @@ public:
         return (ListDataItem());
     }
 
-    int16_t getIndex(int16_t value) const
+    int16_t getIndexByValue(int16_t value) const
     {
         for (uint16_t i = 0; i < items.size(); i++) {
             if (items[i].getValue() == value) {
@@ -56,6 +53,11 @@ public:
             }
         }
         return (-1);
+    }
+
+    int16_t getValueByIndex(uint16_t index) const
+    {
+        return (items[index].getValue());
     }
 
     uint16_t getNumItems(void) const
