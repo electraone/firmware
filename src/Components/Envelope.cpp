@@ -27,6 +27,11 @@ void Envelope::applyValue(uint8_t handle, float delta)
     repaint();
 }
 
+float Envelope::getValue(uint8_t handle)
+{
+    return (values[handle].get());
+}
+
 void Envelope::setMin(uint8_t handle, float newMin)
 {
     values[handle].setMin(newMin);
