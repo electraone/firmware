@@ -2,7 +2,7 @@
 
 #include "Component.h"
 
-class BottomBar : public Component
+class BottomBar : virtual public Component
 {
 private:
     // \todo move to common config file

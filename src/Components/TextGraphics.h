@@ -4,7 +4,7 @@
 
 extern bool showComponentFrames;
 
-class TextGraphics : public Component
+class TextGraphics : virtual public Component
 {
 public:
     TextGraphics()

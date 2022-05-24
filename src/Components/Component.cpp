@@ -40,7 +40,6 @@ Component::~Component()
 {
     releasePot();
     deleteAllChildren();
-    logMessage("destroying: %s", getName());
 }
 
 void Component::setId(uint16_t newId)

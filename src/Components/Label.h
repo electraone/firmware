@@ -2,7 +2,7 @@
 
 #include "Component.h"
 
-class Label : public Component
+class Label : virtual public Component
 {
 public:
     Label() : isDisabled(false), active(false), backgroundColour(0x0000)

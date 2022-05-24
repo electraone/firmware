@@ -2,7 +2,7 @@
 
 #include "Component.h"
 
-class SelectorComponent : public Component
+class SelectorComponent : virtual public Component
 {
 public:
     SelectorComponent() : dimmed(false), colour(ElectraColours::white)

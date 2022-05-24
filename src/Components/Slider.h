@@ -2,7 +2,7 @@
 
 #include "Component.h"
 
-class Slider : public Component
+class Slider : virtual public Component
 {
 public:
     enum ValueBoxPosition {

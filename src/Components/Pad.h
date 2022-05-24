@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "LookAndFeel.h"
 
-class Pad : public Component
+class Pad : virtual public Component
 {
 public:
     Pad();

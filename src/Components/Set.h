@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "LookAndFeel.h"
 
-class Set : public Component
+class Set : virtual public Component
 {
 public:
     Set() : colour(Colours::white), label("")

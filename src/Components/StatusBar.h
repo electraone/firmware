@@ -8,7 +8,7 @@ enum class Direction { in, out };
 
 extern USBDevice USBDevices[];
 
-class StatusBar : public Component
+class StatusBar : virtual public Component
 {
 public:
     StatusBar();

@@ -4,7 +4,7 @@
 #include "AssignableList.h"
 #include "LookAndFeel.h"
 
-class List : public Component, public AssignableList
+class List : virtual public Component, public AssignableList
 {
 public:
     List(const ListData *newListData);

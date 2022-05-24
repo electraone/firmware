@@ -2,7 +2,7 @@
 
 #include "Component.h"
 
-class Envelope : public Component
+class Envelope : virtual public Component
 {
 public:
     Envelope();

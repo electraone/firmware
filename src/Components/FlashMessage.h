@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "Colours.h"
 
-class FlashMessage : public Component
+class FlashMessage : virtual public Component
 {
 public:
     FlashMessage()

@@ -2,7 +2,7 @@
 
 #include "Component.h"
 
-class ButtonComponent : public Component
+class ButtonComponent : virtual public Component
 {
 public:
     ButtonComponent() : dimmed(false), colour(ElectraColours::white)
