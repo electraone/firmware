@@ -103,6 +103,10 @@ public:
     static CircularBuffer<MidiMessageTransport, queueSize> outgoingQueue;
 
 private:
+    static void indicate(MidiInterface::Type interface,
+                         uint8_t port,
+                         Direction direction,
+                         MidiMessage::Type msgType);
     uint8_t channel;
     uint16_t rate;
     uint32_t tsLastMessage;

@@ -4,6 +4,8 @@
 #include "MidiInterface.h"
 #include "SysexBlock.h"
 
+enum class Direction { in, out };
+
 class MidiMessage
 {
 public:

@@ -4,8 +4,6 @@
 #include "MidiInterface.h"
 #include "MidiMessage.h"
 
-enum class Direction { in, out };
-
 extern USBDevice USBDevices[];
 
 class StatusBar : virtual public Component

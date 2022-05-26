@@ -1,6 +1,5 @@
 #include "MidiOutput.h"
-
-//MidiInterface MidiInterface;
+#include "App.h"
 
 /** Constructor
  *
@@ -225,6 +224,8 @@ void MidiOutput::sendControlChange(MidiInterface::Type interface,
 {
     MidiInterface::get(interface)->sendControlChange(
         port, parameterNumber, value, channel);
+
+    indicate(interface, port, Direction::out, MidiMessage::Type::ControlChange);
 }
 
 void MidiOutput::sendNoteOn(MidiInterface::Type interface,
@@ -235,6 +236,7 @@ void MidiOutput::sendNoteOn(MidiInterface::Type interface,
 {
     MidiInterface::get(interface)->sendNoteOn(
         port, channel, noteNumber, velocity);
+    indicate(interface, port, Direction::out, MidiMessage::Type::NoteOn);
 }
 
 void MidiOutput::sendNoteOff(MidiInterface::Type interface,
@@ -245,21 +247,25 @@ void MidiOutput::sendNoteOff(MidiInterface::Type interface,
 {
     MidiInterface::get(interface)->sendNoteOff(
         port, channel, noteNumber, velocity);
+    indicate(interface, port, Direction::out, MidiMessage::Type::NoteOff);
 }
 
 void MidiOutput::sendStart(MidiInterface::Type interface, uint8_t port)
 {
     MidiInterface::get(interface)->sendStart(port);
+    indicate(interface, port, Direction::out, MidiMessage::Type::Start);
 }
 
 void MidiOutput::sendStop(MidiInterface::Type interface, uint8_t port)
 {
     MidiInterface::get(interface)->sendStop(port);
+    indicate(interface, port, Direction::out, MidiMessage::Type::Stop);
 }
 
 void MidiOutput::sendTuneRequest(MidiInterface::Type interface, uint8_t port)
 {
     MidiInterface::get(interface)->sendTuneRequest(port);
+    indicate(interface, port, Direction::out, MidiMessage::Type::TuneRequest);
 }
 
 void MidiOutput::sendProgramChange(MidiInterface::Type interface,
@@ -269,6 +275,7 @@ void MidiOutput::sendProgramChange(MidiInterface::Type interface,
 {
     MidiInterface::get(interface)->sendProgramChange(
         port, channel, programNumber);
+    indicate(interface, port, Direction::out, MidiMessage::Type::ProgramChange);
 }
 
 void MidiOutput::sendSysEx(MidiInterface::Type interface,
@@ -277,6 +284,8 @@ void MidiOutput::sendSysEx(MidiInterface::Type interface,
                            uint16_t dataLength)
 {
     MidiInterface::get(interface)->sendSysEx(port, data, dataLength);
+    indicate(
+        interface, port, Direction::out, MidiMessage::Type::SystemExclusive);
 }
 
 void MidiOutput::sendPitchBend(MidiInterface::Type interface,
@@ -285,6 +294,7 @@ void MidiOutput::sendPitchBend(MidiInterface::Type interface,
                                uint16_t value)
 {
     MidiInterface::get(interface)->sendPitchBend(port, channel, value);
+    indicate(interface, port, Direction::out, MidiMessage::Type::PitchBend);
 }
 
 void MidiOutput::sendAfterTouchPoly(MidiInterface::Type interface,
@@ -295,6 +305,8 @@ void MidiOutput::sendAfterTouchPoly(MidiInterface::Type interface,
 {
     MidiInterface::get(interface)->sendAfterTouchPoly(
         port, channel, noteNumber, pressure);
+    indicate(
+        interface, port, Direction::out, MidiMessage::Type::AfterTouchPoly);
 }
 
 void MidiOutput::sendAfterTouchChannel(MidiInterface::Type interface,
@@ -304,26 +316,32 @@ void MidiOutput::sendAfterTouchChannel(MidiInterface::Type interface,
 {
     MidiInterface::get(interface)->sendAfterTouchChannel(
         port, channel, pressure);
+    indicate(
+        interface, port, Direction::out, MidiMessage::Type::AfterTouchChannel);
 }
 
 void MidiOutput::sendClock(MidiInterface::Type interface, uint8_t port)
 {
     MidiInterface::get(interface)->sendClock(port);
+    indicate(interface, port, Direction::out, MidiMessage::Type::Clock);
 }
 
 void MidiOutput::sendContinue(MidiInterface::Type interface, uint8_t port)
 {
     MidiInterface::get(interface)->sendContinue(port);
+    indicate(interface, port, Direction::out, MidiMessage::Type::Continue);
 }
 
 void MidiOutput::sendActiveSensing(MidiInterface::Type interface, uint8_t port)
 {
     MidiInterface::get(interface)->sendActiveSensing(port);
+    indicate(interface, port, Direction::out, MidiMessage::Type::ActiveSensing);
 }
 
 void MidiOutput::sendSystemReset(MidiInterface::Type interface, uint8_t port)
 {
     MidiInterface::get(interface)->sendSystemReset(port);
+    indicate(interface, port, Direction::out, MidiMessage::Type::SystemReset);
 }
 
 void MidiOutput::sendSongSelect(MidiInterface::Type interface,
@@ -331,6 +349,7 @@ void MidiOutput::sendSongSelect(MidiInterface::Type interface,
                                 uint8_t song)
 {
     MidiInterface::get(interface)->sendSongSelect(port, song);
+    indicate(interface, port, Direction::out, MidiMessage::Type::SongSelect);
 }
 
 void MidiOutput::sendSongPosition(MidiInterface::Type interface,
@@ -338,6 +357,7 @@ void MidiOutput::sendSongPosition(MidiInterface::Type interface,
                                   uint16_t beats)
 {
     MidiInterface::get(interface)->sendSongPosition(port, beats);
+    indicate(interface, port, Direction::out, MidiMessage::Type::SongPosition);
 }
 
 void MidiOutput::sendSysEx(MidiInterface::Type interface,
@@ -345,6 +365,8 @@ void MidiOutput::sendSysEx(MidiInterface::Type interface,
                            std::vector<uint8_t> data)
 {
     sendSysEx(interface, port, &data[0], data.size());
+    indicate(
+        interface, port, Direction::out, MidiMessage::Type::SystemExclusive);
 }
 
 void MidiOutput::sendNrpn(MidiInterface::Type interface,
@@ -401,6 +423,14 @@ void MidiOutput::sendControlChange14Bit(MidiInterface::Type interface,
         sendControlChange(
             interface, port, channel, parameterNumber + 32, midiValue & 0x7F);
     }
+}
+
+void MidiOutput::indicate(MidiInterface::Type interface,
+                          uint8_t port,
+                          Direction direction,
+                          MidiMessage::Type msgType)
+{
+    App::get()->statusBar.indicate(interface, port, direction, msgType);
 }
 
 CircularBuffer<MidiMessageTransport, MidiOutput::queueSize>
