@@ -47,10 +47,10 @@ public:
     }
 
     /**
-     * Assigns the pot to the listener object.
+     * Assigns the button to the listener object.
      *
-     * @param an identifier of the pot. It is a number in range 0 to 11, or
-     *        AllPots constant for catching events from all pots.
+     * @param an identifier of the button. It is a number in range 0 to 5, or
+     *        AllButtons constant for catching events from all buttons.
      */
     void assignButton(uint8_t newButtonId = AllButtons)
     {
@@ -59,7 +59,7 @@ public:
     }
 
     /**
-     * Assigns all pots to the listener object.
+     * Assigns all buttons to the listener object.
      */
     void assignAllButtons(void)
     {
@@ -68,7 +68,7 @@ public:
     }
 
     /**
-     * Stops listening for assigned pots.
+     * Stops listening for assigned buttons.
      */
     void releaseButton(void)
     {

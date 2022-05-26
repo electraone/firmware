@@ -15,6 +15,8 @@ public:
     void buttonUp(uint8_t buttonId);
     void buttonLongHold(uint8_t buttonId);
 
+    void listListeners(void);
+
 private:
     void triggerCallbacks(uint8_t buttonId, blFunction function);
 };

@@ -15,11 +15,13 @@ Window::Window(uint16_t newX,
     : activeComponent{}, contentComponent(nullptr)
 {
     setBounds(newX, newY, newWidth, newHeight);
+    assignAllButtons();
     System::windowManager.addWindow(this);
 }
 
 Window::~Window()
 {
+    buttonBroadcaster.removeListener(this);
     System::windowManager.removeWindow(this);
 
     if (contentComponent) {

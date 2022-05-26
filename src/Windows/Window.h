@@ -3,8 +3,9 @@
 #include <vector>
 #include "TouchEvent.h"
 #include "Component.h"
+#include "ButtonListener.h"
 
-class Window : public Component
+class Window : public Component, public ButtonListener
 {
 public:
     Window();

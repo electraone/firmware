@@ -194,10 +194,13 @@ extern CircularBuffer<Component *, 500> repaintQueue;
 void Component::repaint(void)
 {
     if (shouldBeDisplayed()) {
+        /*
+         * \todo commented out on purpose.
         if ((System::windowManager.getNumWindows() > 1)
             && (this != System::windowManager.getWindow(0))) {
             System::windowManager.getWindow(0)->repaint();
         }
+        */
         repaintQueueItem();
     }
 }

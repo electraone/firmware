@@ -1,13 +1,14 @@
 #include "WindowManager.h"
+#include "ButtonBroadcaster.h"
 
 WindowManager::WindowManager() : activeIndex(0)
 {
 }
 
-bool WindowManager::addWindow(Window *windowToAdd)
+void WindowManager::addWindow(Window *windowToAdd)
 {
     windows.push_back(windowToAdd);
-    return (true);
+    setActiveWindow(windowToAdd);
 }
 
 void WindowManager::removeWindow(Window *windowToRemove)
@@ -15,19 +16,24 @@ void WindowManager::removeWindow(Window *windowToRemove)
     uint8_t index = 0;
     for (auto i = windows.begin(); i != windows.end(); i++) {
         if (*i == windowToRemove) {
-            windows.erase(i);
+            windows.erase(i--);
             if (activeIndex == index) {
                 if (activeIndex > 0) {
                     setActiveIndex(activeIndex - 1);
                 }
             }
-            // note: iterator is invalid!
             return;
         }
+        index++;
     }
 }
 
-int WindowManager::getNumWindows(void)
+std::vector<Window *> WindowManager::getWindows(void)
+{
+    return (windows);
+}
+
+uint8_t WindowManager::getNumWindows(void)
 {
     return (windows.size());
 }
@@ -71,20 +77,22 @@ uint8_t WindowManager::getActiveIndex()
 
 void WindowManager::activate(uint8_t index)
 {
-    activeIndex = index;
+    if (activeIndex != index) {
+        auto oldWindow = getWindow(activeIndex);
+        auto newWindow = getWindow(index);
 
-    // todo?
-    // do we need to deactivate windows, so that they dont start processing events?
+        if (oldWindow) {;
+            oldWindow->buttonBroadcaster.suspendListener(oldWindow);
+            oldWindow->setActive(false);
+        }
 
-    // auto oldW = getWindow(activeIdx);
-    // auto newW = getWindow(idx);
-    // if(oldW) {
-    //     oldW->setActive(false);
-    // }
+        if (newWindow) {
+            newWindow->buttonBroadcaster.resumeListener(newWindow);
+            newWindow->setActive(true);
+        }
 
-    // if(newW) {
-    //     newW->setActive(true);
-    // }
+        activeIndex = index;
+    }
 }
 
 /**
@@ -97,5 +105,22 @@ void WindowManager::repaintActive(void)
 
     if (w) {
         w->repaint();
+    }
+}
+
+/**
+ * List all registered windows
+ */
+void WindowManager::listWindows(void)
+{
+    uint8_t index = 0;
+
+    for (const auto &window : windows) {
+        logMessage("listWindows: index=%d, name=%s, address=%x, active=%d",
+                   index,
+                   window->getName(),
+                   window,
+                   index == activeIndex);
+        index++;
     }
 }
