@@ -41,6 +41,5 @@ void ButtonBroadcaster::listListeners(void)
         logMessage("listListeners: buttonListener: %x is suspended: %d",
                    listener,
                    listeners[listener]);
-
     }
 }

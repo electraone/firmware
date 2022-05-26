@@ -8,6 +8,7 @@ WindowManager::WindowManager() : activeIndex(0)
 void WindowManager::addWindow(Window *windowToAdd)
 {
     windows.push_back(windowToAdd);
+    windowToAdd->assignAllButtons();
     setActiveWindow(windowToAdd);
 }
 
@@ -81,7 +82,7 @@ void WindowManager::activate(uint8_t index)
         auto oldWindow = getWindow(activeIndex);
         auto newWindow = getWindow(index);
 
-        if (oldWindow) {;
+        if (oldWindow) {
             oldWindow->buttonBroadcaster.suspendListener(oldWindow);
             oldWindow->setActive(false);
         }
