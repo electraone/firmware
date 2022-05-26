@@ -51,14 +51,6 @@ std::vector<TouchEvent> Window::processTouch(const TouchPoint &touchPoint)
     touchEvent.setEventCompoment(component);
     touchEvents.push_back(touchEvent);
 
-    if (touchPoint.event == TouchPoint::End) {
-        activeComponent[id] = nullptr;
-    } else {
-        if (component) {
-            activeComponent[id] = component;
-        }
-    }
-
     return (touchEvents);
 }
 
@@ -73,22 +65,23 @@ void Window::resetActiveTouch(void)
     }
 }
 
-void Window::setActiveComponent(uint16_t componentId)
+void Window::setActiveComponent(Component *component, uint8_t touchId)
 {
-    for (auto &component : contentComponent->getChildren()) {
-        component->setActive((component->getId() == componentId) ? true
-                                                                 : false);
+    if (component) {
+        component->setActive(true);
+        activeComponent[touchId] = component;
     }
 }
 
-Component *Window::getActiveComponent(void)
+void Window::resetActiveComponent(uint8_t touchId)
 {
-    for (auto &component : contentComponent->getChildren()) {
-        if (component->isActive()) {
-            return (component);
-        }
-    }
-    return (nullptr);
+    activeComponent[touchId]->setActive(false);
+    activeComponent[touchId] = nullptr;
+}
+
+Component *Window::getActiveComponent(uint8_t touchId)
+{
+    return activeComponent[touchId];
 }
 
 void Window::paint(Graphics &g)
@@ -107,6 +100,16 @@ void Window::setVisible(bool shouldBeVisible)
     }
 
     return (Component::setVisible(shouldBeVisible));
+}
+
+void Window::setActive(bool shouldBeActive)
+{
+    active = shouldBeActive;
+}
+
+bool Window::getActive(void) const
+{
+    return (active);
 }
 
 void Window::display(void)

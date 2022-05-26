@@ -7,8 +7,6 @@
  */
 void readLCDTouch(void)
 {
-    static Component *activeComponent[NUM_TOUCH_POINTS];
-
     //logMessage ("readLCDTouch");
 
     if (Hardware::touch.readTouch() == 0) {
@@ -17,7 +15,13 @@ void readLCDTouch(void)
 
     Window *originatingWindow = System::windowManager.getActiveWindow();
 
-    while (Hardware::touch.eventsAvailable()) {
+#ifdef DEBUG
+    logMessage("received touch from active window: address=%x, window=%s",
+               originatingWindow,
+               originatingWindow->getName());
+#endif
+
+    while (originatingWindow && Hardware::touch.eventsAvailable()) {
         TouchPoint touchPoint = Hardware::touch.readEvents();
 
         if (touchPoint.event != TouchPoint::None) {
@@ -28,18 +32,18 @@ void readLCDTouch(void)
                 Component *eventComponent = nullptr;
                 uint8_t id = touchEvent.getId();
 
-                if (activeComponent[id]) {
-                    eventComponent = activeComponent[id];
+                if (originatingWindow->getActiveComponent(id)) {
+                    eventComponent = originatingWindow->getActiveComponent(id);
                     touchEvent.setEventCompoment(eventComponent);
                 } else {
                     eventComponent = touchEvent.getEventComponent();
-                    activeComponent[id] = eventComponent;
+                    originatingWindow->setActiveComponent(eventComponent, id);
                 }
 
                 triggerComponentCallbacks(eventComponent, touchEvent);
 
                 if (touchEvent.getEvent() == TouchPoint::End) {
-                    activeComponent[id] = nullptr;
+                    originatingWindow->resetActiveComponent(id);
                 }
             }
         }
