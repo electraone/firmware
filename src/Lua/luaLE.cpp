@@ -26,7 +26,7 @@ void luaLE_pushTableInteger(lua_State *L, const char *key, int value)
     lua_settable(L, -3);
 }
 
-void luaLE_pushTableObject(lua_State *L, const char *key, void *object)
+void luaLE_pushTableObject(lua_State *L, const char *key, const void *object)
 {
     lua_pushstring(L, key);
     luaLE_pushObject(L, key, object);
@@ -50,16 +50,17 @@ void luaLE_pushArrayString(lua_State *L, int key, const char *value)
 void luaLE_pushArrayObject(lua_State *L,
                            int key,
                            const char *objectName,
-                           void *object)
+                           const void *object)
 {
     lua_pushinteger(L, key);
     luaLE_pushObject(L, objectName, object);
     lua_settable(L, -3);
 }
 
-void luaLE_pushObject(lua_State *L, const char *objectName, void *object)
+void luaLE_pushObject(lua_State *L, const char *objectName, const void *object)
 {
-    *reinterpret_cast<void **>(lua_newuserdata(L, sizeof(void *))) = object;
+    *reinterpret_cast<const void **>(lua_newuserdata(L, sizeof(void *))) =
+        object;
 
     luaL_getmetatable(L, objectName);
     lua_setmetatable(L, -2);
