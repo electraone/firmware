@@ -66,10 +66,15 @@ uint8_t FT5x16::parseTouchPoints(void)
 
             else if (event == TouchPoint::Move) {
                 if (isLongHoldPeriod(id)) {
-                    if (touchPoint[id].longHold == false) {
+                    if (!touchPoint[id].moved &&
+                        touchPoint[id].longHold == false) {
                         touchPoint[id].longHold = true;
                         queueEvent(touchPoint[id], TouchPoint::LongHold);
                     }
+                }
+
+                if (!touchPoint[id].isInCloseRange()) {
+                    touchPoint[id].moved = true;
                 }
             }
 
@@ -107,6 +112,7 @@ void FT5x16::resetTouchPoints(void)
         if (touchPoint[i].event == TouchPoint::End) {
             touchPoint[i].event = TouchPoint::None;
             touchPoint[i].longHold = false;
+            touchPoint[i].moved = false;
         }
     }
 }

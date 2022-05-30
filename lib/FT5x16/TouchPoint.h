@@ -16,6 +16,7 @@ struct TouchPoint {
     uint32_t tsStart;
     uint32_t tsPreviousClick;
     bool longHold;
+    bool moved;
 
     bool isInCloseRange(void)
     {
