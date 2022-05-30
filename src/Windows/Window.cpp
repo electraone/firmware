@@ -4,7 +4,7 @@
 Window::Window() : activeComponent{}, contentComponent(nullptr)
 
 {
-    setBounds(0, 22, 1024, 560);
+    setBounds(0, 22, 1024, 560); // default window position and size
     System::windowManager.addWindow(this);
 }
 
@@ -111,6 +111,10 @@ void Window::setActive(bool shouldBeActive)
 bool Window::getActive(void) const
 {
     return (active);
+}
+
+void Window::onTouchOutside(void)
+{
 }
 
 void Window::display(void)

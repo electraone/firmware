@@ -25,6 +25,18 @@ void readLCDTouch(void)
         TouchPoint touchPoint = Hardware::touch.readEvents();
 
         if (touchPoint.event != TouchPoint::None) {
+            if (touchPoint.event == TouchPoint::Start) {
+                if (!Component::isInside(touchPoint.xStart,
+                                         touchPoint.yStart,
+                                         originatingWindow->getX(),
+                                         originatingWindow->getY(),
+                                         originatingWindow->getWidth(),
+                                         originatingWindow->getHeight())) {
+                    originatingWindow->onTouchOutside();
+                    return;
+                }
+            }
+
             std::vector<TouchEvent> touchEvents =
                 originatingWindow->processTouch(touchPoint);
 

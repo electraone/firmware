@@ -27,6 +27,7 @@ public:
     // Event processing
     void setActive(bool shouldBeActive);
     bool getActive(void) const;
+    virtual void onTouchOutside(void);
 
     void addChildComponent(Component *component) override;
     void addAndMakeVisible(Component *component) override;
