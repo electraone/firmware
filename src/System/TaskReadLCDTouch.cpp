@@ -9,11 +9,22 @@ void readLCDTouch(void)
 {
     //logMessage ("readLCDTouch");
 
+    static Window *previousWindow = System::windowManager.getActiveWindow();
+    static bool waitingForStart = false;
+
     if (Hardware::touch.readTouch() == 0) {
         return;
     }
 
     Window *originatingWindow = System::windowManager.getActiveWindow();
+
+    // Detect a window change. All events will be thrown away till next start
+    // comes in.
+    if (originatingWindow != previousWindow) {
+        waitingForStart = true;
+    }
+
+    previousWindow = originatingWindow;
 
 #ifdef DEBUG
     logMessage("received touch from active window: address=%x, window=%s",
@@ -24,8 +35,13 @@ void readLCDTouch(void)
     while (originatingWindow && Hardware::touch.eventsAvailable()) {
         TouchPoint touchPoint = Hardware::touch.readEvents();
 
+        if (waitingForStart && touchPoint.event != TouchPoint::Start) {
+            continue;
+        }
+
         if (touchPoint.event != TouchPoint::None) {
             if (touchPoint.event == TouchPoint::Start) {
+                waitingForStart = false;
                 if (!Component::isInside(touchPoint.xStart,
                                          touchPoint.yStart,
                                          originatingWindow->getX(),
