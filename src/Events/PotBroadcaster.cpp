@@ -1,6 +1,7 @@
 #include "PotBroadcaster.h"
 #include "PotListener.h"
 #include "Component.h"
+#include "System.h"
 
 PotBroadcaster::PotBroadcaster()
 {
@@ -36,6 +37,8 @@ void PotBroadcaster::potTouchUp(uint8_t potId)
 
 void PotBroadcaster::triggerCallbacks(PotEvent &potEvent, plFunction function)
 {
+    Window *activeWindow = System::windowManager.getActiveWindow();
+
     for (auto i = listeners.begin(); i != listeners.end(); i++) {
         auto listener = i->first;
 
@@ -53,7 +56,9 @@ void PotBroadcaster::triggerCallbacks(PotEvent &potEvent, plFunction function)
 
             for (Component *c = eventComponent; c;
                  c = c->getParentComponent()) {
-                (static_cast<PotListener *>(c)->*function)(potEvent);
+                if (c->getWindow() == activeWindow) {
+                    (static_cast<PotListener *>(c)->*function)(potEvent);
+                }
             }
         }
     }
