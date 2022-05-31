@@ -19,7 +19,9 @@ public:
     uint8_t readTouch(void);
     bool eventsAvailable(void);
     TouchPoint readEvents(void);
+    void clearEvents(void);
     static const char *translateEventToString(TouchPoint::Event event);
+
 
 private:
     static void isr(void);

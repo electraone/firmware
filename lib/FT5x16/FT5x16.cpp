@@ -227,3 +227,9 @@ TouchPoint FT5x16::readEvents(void)
 {
     return (queue.shift());
 }
+
+void FT5x16::clearEvents(void)
+{
+    resetTouchPoints();
+    queue.clear();
+}
