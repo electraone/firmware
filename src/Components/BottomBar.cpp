@@ -19,7 +19,7 @@ void BottomBar::paint(Graphics &g)
         520, 4, pageName, TextStyle::smallWhiteOnBlack, 508, TextAlign::left);
     g.setColour(Colours::white);
     g.fillRect(512, 9, 2, 2);
-    g.dim(0, 3, 1024, 13, Colours::black);
+    g.dim(0, 3, 1024, 14, Colours::black);
 }
 
 void BottomBar::setPresetName(const char *newName)
