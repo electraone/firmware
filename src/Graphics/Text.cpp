@@ -138,7 +138,7 @@ static const uint8_t charWidthMedium[] = {
     4, // j
     7, // k
     3, // l
-    13, // m
+    12, // m
     8, // n
     9, // o
     8, // p
