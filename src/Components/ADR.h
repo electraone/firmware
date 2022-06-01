@@ -32,7 +32,7 @@ public:
         points[0].y = baselineY;
 
         // Delay
-        points[1].x = segmentWidth * values[delay].getRelative();
+        points[1].x = segmentWidth * 0; // values[delay].getRelative();
         points[1].y = baselineY;
 
         // Attack
@@ -49,9 +49,9 @@ public:
         points[4].y = points[0].y;
     }
 
-    static constexpr uint8_t attack = 1;
-    static constexpr uint8_t decay = 2;
-    static constexpr uint8_t release = 3;
+    static constexpr uint8_t attack = 0;
+    static constexpr uint8_t decay = 1;
+    static constexpr uint8_t release = 2;
 
 private:
 };

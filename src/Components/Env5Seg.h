@@ -74,7 +74,7 @@ public:
         points[0].y = level4Y;
 
         // Delay
-        points[1].x = segmentWidth * values[delay].getRelative();
+        points[1].x = segmentWidth * 0; //values[delay].getRelative();
         points[1].y = level4Y;
 
         // Segment 1
@@ -101,14 +101,14 @@ public:
         baselineY = baseline;
     }
 
-    static constexpr uint8_t rate1 = 1;
-    static constexpr uint8_t level1 = 2;
-    static constexpr uint8_t rate2 = 3;
-    static constexpr uint8_t level2 = 4;
-    static constexpr uint8_t rate3 = 5;
-    static constexpr uint8_t level3 = 6;
-    static constexpr uint8_t rate4 = 7;
-    static constexpr uint8_t level4 = 8;
+    static constexpr uint8_t rate1 = 0;
+    static constexpr uint8_t level1 = 1;
+    static constexpr uint8_t rate2 = 2;
+    static constexpr uint8_t level2 = 3;
+    static constexpr uint8_t rate3 = 4;
+    static constexpr uint8_t level3 = 5;
+    static constexpr uint8_t rate4 = 6;
+    static constexpr uint8_t level4 = 7;
 
 private:
 };

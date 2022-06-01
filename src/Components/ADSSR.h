@@ -53,7 +53,7 @@ public:
         points[0].y = baselineY;
 
         // Delay
-        points[1].x = segmentWidth * values[delay].getRelative();
+        points[1].x = segmentWidth * 0; //values[delay].getRelative();
         points[1].y = baselineY;
 
         // Attack
@@ -78,12 +78,12 @@ public:
         points[6].y = baselineY;
     }
 
-    static constexpr uint8_t attack = 1;
-    static constexpr uint8_t decay = 2;
-    static constexpr uint8_t breakPoint = 3;
-    static constexpr uint8_t slope = 4;
-    static constexpr uint8_t sustain = 5;
-    static constexpr uint8_t release = 6;
+    static constexpr uint8_t attack = 0;
+    static constexpr uint8_t decay = 1;
+    static constexpr uint8_t breakPoint = 2;
+    static constexpr uint8_t slope = 3;
+    static constexpr uint8_t sustain = 4;
+    static constexpr uint8_t release = 5;
 
 private:
 };
