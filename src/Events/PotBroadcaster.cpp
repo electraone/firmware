@@ -37,10 +37,13 @@ void PotBroadcaster::potTouchUp(uint8_t potId)
 
 void PotBroadcaster::triggerCallbacks(PotEvent &potEvent, plFunction function)
 {
-    Window *activeWindow = System::windowManager.getActiveWindow();
+    Window *originatingWindow = System::windowManager.getActiveWindow();
 
-    for (auto i = listeners.begin(); i != listeners.end(); i++) {
-        auto listener = i->first;
+    auto i = listeners.begin();
+
+    while (i != listeners.end()) {
+        auto current = i++;
+        auto listener = current->first;
 
         if ((listener->getPotId() == PotListener::AllPots)
             || (potEvent.getPotId() == listener->getPotId())) {
@@ -54,10 +57,15 @@ void PotBroadcaster::triggerCallbacks(PotEvent &potEvent, plFunction function)
                 potEvent.setAcceleratedChange(potEvent.getRelativeChange());
             }
 
-            for (Component *c = eventComponent; c;
-                 c = c->getParentComponent()) {
-                if (c->getWindow() == activeWindow) {
+            if (eventComponent->getWindow() == originatingWindow) {
+                for (Component *c = eventComponent; c;
+                     c = c->getParentComponent()) {
                     (static_cast<PotListener *>(c)->*function)(potEvent);
+
+                    if (originatingWindow
+                        != System::windowManager.getActiveWindow()) {
+                        break;
+                    }
                 }
             }
         }
