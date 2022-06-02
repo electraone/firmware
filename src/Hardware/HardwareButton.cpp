@@ -1,14 +1,14 @@
 #include "core_pins.h"
 #include "helpers.h"
-#include "Button.h"
+#include "HardwareButton.h"
 #include "Mux.h"
 
-Button::Button(uint8_t newId)
+HardwareButton::HardwareButton(uint8_t newId)
     : id(newId), pressed(false), pinState(1), longHold(false), pressStart(0)
 {
 }
 
-Button::Event Button::process(void)
+HardwareButton::Event HardwareButton::process(void)
 {
     Event eventDetected = none;
 
@@ -48,17 +48,17 @@ Button::Event Button::process(void)
     return (eventDetected);
 }
 
-uint8_t Button::getId(void)
+uint8_t HardwareButton::getId(void)
 {
     return (id);
 }
 
-bool Button::isPressed(void)
+bool HardwareButton::isPressed(void)
 {
     return (pressed);
 }
 
-bool Button::isLongHold(void)
+bool HardwareButton::isLongHold(void)
 {
     return (longHold);
 }

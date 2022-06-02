@@ -8,7 +8,7 @@
  *
  * a representation of the hardware button.
  */
-class Button
+class HardwareButton
 {
 public:
     /**
@@ -27,7 +27,7 @@ public:
      * @param id An numeric identifier of the button. The id is given by the
      *        hardware design.
      */
-    Button(uint8_t id);
+    HardwareButton(uint8_t id);
 
     /**
      * Test state of the button

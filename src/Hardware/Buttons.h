@@ -1,7 +1,7 @@
 #pragma once
 
 #include "settings.h"
-#include "Button.h"
+#include "HardwareButton.h"
 
 // \todo replace macros with enum
 #define BUTTON_LEFT_TOP 0
@@ -20,14 +20,14 @@
 class Buttons
 {
 public:
-    Button *operator[](const uint8_t id);
-    Button *getNext(void);
+    HardwareButton *operator[](const uint8_t id);
+    HardwareButton *getNext(void);
 
 private:
-    Button buttons[NR_OF_HW_BUTTONS] = {
-        Button(BUTTON_LEFT_TOP),     Button(BUTTON_LEFT_MIDDLE),
-        Button(BUTTON_LEFT_BOTTOM),  Button(BUTTON_RIGHT_TOP),
-        Button(BUTTON_RIGHT_MIDDLE), Button(BUTTON_RIGHT_BOTTOM)
+    HardwareButton buttons[NR_OF_HW_BUTTONS] = {
+        HardwareButton(BUTTON_LEFT_TOP),     HardwareButton(BUTTON_LEFT_MIDDLE),
+        HardwareButton(BUTTON_LEFT_BOTTOM),  HardwareButton(BUTTON_RIGHT_TOP),
+        HardwareButton(BUTTON_RIGHT_MIDDLE), HardwareButton(BUTTON_RIGHT_BOTTOM)
     };
     uint8_t currentId = 0;
 };

@@ -7,18 +7,18 @@
  */
 void readButtons(void)
 {
-    Button *button = Hardware::buttons.getNext();
+    HardwareButton *button = Hardware::buttons.getNext();
 
     switch (button->process()) {
-        case Button::Event::press:
+        case HardwareButton::Event::press:
             ButtonListener::buttonBroadcaster.buttonDown(button->getId());
             break;
 
-        case Button::Event::hold:
+        case HardwareButton::Event::hold:
             ButtonListener::buttonBroadcaster.buttonLongHold(button->getId());
             break;
 
-        case Button::Event::release:
+        case HardwareButton::Event::release:
             ButtonListener::buttonBroadcaster.buttonUp(button->getId());
             break;
 
