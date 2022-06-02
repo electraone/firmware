@@ -15,6 +15,7 @@
 #include "TaskRunTimer.h"
 #include "TaskRunUserTask.h"
 #include "TaskMonitorFreeMemory.h"
+#include "TaskCollectGarbage.h"
 #include "TaskReadMidi.h"
 #include "TaskSendMidi.h"
 
@@ -45,6 +46,7 @@ private:
     IntervalTimer timerReadMidi;
 
     Task taskMonitorFreeMemory;
+    Task taskCollectGarbage;
     Task taskReadPots;
     Task taskReadButtons;
     Task taskReadPotTouch;

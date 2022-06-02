@@ -8,6 +8,7 @@ extern CircularBuffer<Component *, 100> repaintQueue;
 
 SystemTasks::SystemTasks()
     : taskMonitorFreeMemory(10000000, TASK_FOREVER, &monitorFreeMemory),
+      taskCollectGarbage(10000000, TASK_FOREVER, &collectGarbage),
       taskReadPots(10000, TASK_FOREVER, &readPots),
       taskReadButtons(15000, TASK_FOREVER, &readButtons),
       taskReadPotTouch(100000, TASK_FOREVER, &readPotTouch),
@@ -22,6 +23,7 @@ SystemTasks::SystemTasks()
 {
     init();
     addTask(taskMonitorFreeMemory);
+    addTask(taskCollectGarbage);
     addTask(taskReadPots);
     addTask(taskReadButtons);
     addTask(taskReadLCDTouch);
@@ -38,6 +40,7 @@ SystemTasks::SystemTasks()
 void SystemTasks::enableAll()
 {
     taskMonitorFreeMemory.disable();
+    taskCollectGarbage.enable();
     taskReadPots.enable();
     taskReadButtons.enable();
     taskReadLCDTouch.enable();
