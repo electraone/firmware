@@ -70,6 +70,11 @@ void readLCDTouch(void)
 
                 triggerComponentCallbacks(eventComponent, touchEvent);
 
+                if (originatingWindow
+                    != System::windowManager.getActiveWindow()) {
+                    break;
+                }
+
                 if (touchEvent.getEvent() == TouchPoint::End) {
                     originatingWindow->resetActiveComponent(id);
                 }
