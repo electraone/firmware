@@ -1,10 +1,9 @@
 #include "TaskRepaintGraphics.h"
-#include "CircularBuffer.h"
+#include "RepaintQueue.h"
 #include "Component.h"
 #include "Hardware.h"
 #include "System.h"
 
-CircularBuffer<Component *, 500> repaintQueue;
 
 /*
  * An option for visual layout debugging

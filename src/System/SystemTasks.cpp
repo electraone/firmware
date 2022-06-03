@@ -1,10 +1,8 @@
 #include "SystemTasks.h"
 #include "TaskScheduler.h"
 #include "System.h"
+#include "RepaintQueue.h"
 
-// \todo Move this to an appropriate place
-#include <CircularBuffer.h>
-extern CircularBuffer<Component *, 100> repaintQueue;
 
 SystemTasks::SystemTasks()
     : taskMonitorFreeMemory(10000000, TASK_FOREVER, &monitorFreeMemory),

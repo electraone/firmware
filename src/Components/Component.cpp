@@ -1,6 +1,7 @@
 #include "Component.h"
 #include "Window.h"
 #include "System.h"
+#include "RepaintQueue.h"
 #include "helpers.h"
 
 Component::Component()
@@ -190,10 +191,6 @@ bool Component::isDimmed(void) const
 {
     return (dimmed);
 }
-
-// \todo Move this to an appropriate place
-#include <CircularBuffer.h>
-extern CircularBuffer<Component *, 500> repaintQueue;
 
 void Component::repaint(void)
 {

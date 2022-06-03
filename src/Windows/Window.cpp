@@ -21,6 +21,7 @@ Window::Window(uint16_t newX,
 Window::~Window()
 {
     buttonBroadcaster.removeListener(this);
+    System::tasks.clearRepaintGraphics();
     System::windowManager.removeWindow(this);
 
     if (contentComponent) {
