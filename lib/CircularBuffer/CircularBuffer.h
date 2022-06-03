@@ -15,89 +15,156 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef __CIRCULAR_BUFFER__
-#define __CIRCULAR_BUFFER__
-#include <inttypes.h>
-
-#ifndef CIRCULAR_BUFFER_XS
-#define __CB_ST__ uint16_t
-#else
-#define __CB_ST__ uint8_t
-#endif
+#ifndef CIRCULAR_BUFFER_H_
+#define CIRCULAR_BUFFER_H_
+#include <stdint.h>
+#include <stddef.h>
 
 #ifdef CIRCULAR_BUFFER_DEBUG
 #include <Print.h>
 #endif
 
-template<typename T, __CB_ST__ S> class CircularBuffer {
+namespace Helper {
+	/** @private */
+	template<bool FITS8, bool FITS16> struct Index {
+		using Type = uint32_t;
+	};
+
+	/** @private */
+	template<> struct Index<false, true> {
+		using Type = uint16_t;
+	};
+
+	/** @private */
+	template<> struct Index<true, true> {
+		using Type = uint8_t;
+	};
+}
+
+/**
+ * @brief Implements a circular buffer that supports LIFO and FIFO operations.
+ *
+ * @tparam T The type of the data to store in the buffer.
+ * @tparam S The maximum number of elements that can be stored in the buffer.
+ * @tparam IT The data type of the index. Typically should be left as default.
+ */
+template<typename T, size_t S, typename IT = typename Helper::Index<(S <= UINT8_MAX), (S <= UINT16_MAX)>::Type> class CircularBuffer {
 public:
-
-	CircularBuffer();
-
-	~CircularBuffer();
+	/**
+	 * @brief The buffer capacity.
+	 *
+	 * Read only as it cannot ever change.
+	 */
+	static constexpr IT capacity = static_cast<IT>(S);
 
 	/**
-	 * Adds an element to the beginning of buffer: the operation returns `false` if the addition caused overwriting an existing element.
+	 * @brief Aliases the index type.
+	 *
+	 * Can be used to obtain the right index type with `decltype(buffer)::index_t`.
+	 */
+	using index_t = IT;
+
+	/**
+	 * @brief Create an empty circular buffer.
+	 */
+	constexpr CircularBuffer();
+
+	// disable the copy constructor
+	/** @private */
+	CircularBuffer(const CircularBuffer&) = delete;
+	/** @private */
+	CircularBuffer(CircularBuffer&&) = delete;
+
+	// disable the assignment operator
+	/** @private */
+	CircularBuffer& operator=(const CircularBuffer&) = delete;
+	/** @private */
+	CircularBuffer& operator=(CircularBuffer&&) = delete;
+
+	/**
+	 * @brief Adds an element to the beginning of buffer.
+	 *
+	 * @return `false` iff the addition caused overwriting to an existing element.
 	 */
 	bool unshift(T value);
 
 	/**
-	 * Adds an element to the end of buffer: the operation returns `false` if the addition caused overwriting an existing element.
+	 * @brief Adds an element to the end of buffer.
+	 *
+	 * @return `false` iff the addition caused overwriting to an existing element.
 	 */
 	bool push(T value);
 
 	/**
-	 * Removes an element from the beginning of the buffer.
+	 * @brief Removes an element from the beginning of the buffer.
+	 *
+	 * @warning Calling this operation on an empty buffer has an unpredictable behaviour.
 	 */
 	T shift();
 
 	/**
-	 * Removes an element from the end of the buffer.
+	 * @brief Removes an element from the end of the buffer.
+	 *
+	 * @warning Calling this operation on an empty buffer has an unpredictable behaviour.
 	 */
 	T pop();
 
 	/**
-	 * Returns the element at the beginning of the buffer.
+	 * @brief Returns the element at the beginning of the buffer.
+	 *
+	 * @return The element at the beginning of the buffer.
 	 */
-	T inline first();
+	T inline first() const;
 
 	/**
-	 * Returns the element at the end of the buffer.
+	 * @brief Returns the element at the end of the buffer.
+	 *
+	 * @return The element at the end of the buffer.
 	 */
-	T inline last();
+	T inline last() const;
 
 	/**
-	 * Array-like access to buffer
+	 * @brief Array-like access to buffer.
+	 *
+	 * Calling this operation using and index value greater than `size - 1` returns the tail element.
+	 *
+	 * @warning Calling this operation on an empty buffer has an unpredictable behaviour.
 	 */
-	T operator [] (__CB_ST__ index);
+	T operator [] (IT index) const;
 
 	/**
-	 * Returns how many elements are actually stored in the buffer.
+	 * @brief Returns how many elements are actually stored in the buffer.
+	 *
+	 * @return The number of elements stored in the buffer.
 	 */
-	__CB_ST__ inline size();
+	IT inline size() const;
 
 	/**
-	 * Returns how many elements can be safely pushed into the buffer.
+	 * @brief Returns how many elements can be safely pushed into the buffer.
+	 *
+	 * @return The number of elements that can be safely pushed into the buffer.
 	 */
-	__CB_ST__ inline available();
+	IT inline available() const;
 
 	/**
-	 * Returns how many elements can be potentially stored into the buffer.
+	 * @brief Check if the buffer is empty.
+	 *
+	 * @return `true` iff no elements can be removed from the buffer.
 	 */
-	__CB_ST__ inline capacity();
+	bool inline isEmpty() const;
 
 	/**
-	 * Returns `true` if no elements can be removed from the buffer.
+	 * @brief Check if the buffer is full.
+	 *
+	 * @return `true` if no elements can be added to the buffer without overwriting existing elements.
 	 */
-	bool inline isEmpty();
+	bool inline isFull() const;
 
 	/**
-	 * Returns `true` if no elements can be added to the buffer without overwriting existing elements.
-	 */
-	bool inline isFull();
-
-	/**
-	 * Resets the buffer to a clean status, making all buffer positions available.
+	 * @brief Resets the buffer to a clean status, making all buffer positions available.
+	 *
+	 * @note This does not clean up any dynamically allocated memory stored in the buffer.
+	 * Clearing a buffer that points to heap-allocated memory may cause a memory leak, if it's not properly cleaned up.
 	 */
 	void inline clear();
 
@@ -111,9 +178,9 @@ private:
 	T *head;
 	T *tail;
 #ifndef CIRCULAR_BUFFER_INT_SAFE
-	__CB_ST__ count;
+	IT count;
 #else
-	volatile __CB_ST__ count;
+	volatile IT count;
 #endif
 };
 

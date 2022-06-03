@@ -16,26 +16,20 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string.h>
-
-template<typename T, __CB_ST__ S> 
-CircularBuffer<T,S>::CircularBuffer() :
+template<typename T, size_t S, typename IT>
+constexpr CircularBuffer<T,S,IT>::CircularBuffer() :
 		head(buffer), tail(buffer), count(0) {
 }
 
-template<typename T, __CB_ST__ S> 
-CircularBuffer<T,S>::~CircularBuffer() {
-}
-
-template<typename T, __CB_ST__ S> 
-bool CircularBuffer<T,S>::unshift(T value) {
+template<typename T, size_t S, typename IT>
+bool CircularBuffer<T,S,IT>::unshift(T value) {
 	if (head == buffer) {
-		head = buffer + S;
+		head = buffer + capacity;
 	}
 	*--head = value;
-	if (count == S) {
+	if (count == capacity) {
 		if (tail-- == buffer) {
-			tail = buffer + S - 1;
+			tail = buffer + capacity - 1;
 		}
 		return false;
 	} else {
@@ -46,14 +40,14 @@ bool CircularBuffer<T,S>::unshift(T value) {
 	}
 }
 
-template<typename T, __CB_ST__ S> 
-bool CircularBuffer<T,S>::push(T value) {
-	if (++tail == buffer + S) {
+template<typename T, size_t S, typename IT>
+bool CircularBuffer<T,S,IT>::push(T value) {
+	if (++tail == buffer + capacity) {
 		tail = buffer;
 	}
 	*tail = value;
-	if (count == S) {
-		if (++head == buffer + S) {
+	if (count == capacity) {
+		if (++head == buffer + capacity) {
 			head = buffer;
 		}
 		return false;
@@ -65,106 +59,103 @@ bool CircularBuffer<T,S>::push(T value) {
 	}
 }
 
-template<typename T, __CB_ST__ S> 
-T CircularBuffer<T,S>::shift() {
-	void(* crash) (void) = 0;
-	if (count <= 0) crash();
+template<typename T, size_t S, typename IT>
+T CircularBuffer<T,S,IT>::shift() {
+	if (count == 0) return *head;
 	T result = *head++;
-	if (head >= buffer + S) {
+	if (head >= buffer + capacity) {
 		head = buffer;
 	}
 	count--;
 	return result;
 }
 
-template<typename T, __CB_ST__ S> 
-T CircularBuffer<T,S>::pop() {
-	void(* crash) (void) = 0;
-	if (count <= 0) crash();
+template<typename T, size_t S, typename IT>
+T CircularBuffer<T,S,IT>::pop() {
+	if (count == 0) return *tail;
 	T result = *tail--;
 	if (tail < buffer) {
-		tail = buffer + S - 1;
+		tail = buffer + capacity - 1;
 	}
 	count--;
 	return result;
 }
 
-template<typename T, __CB_ST__ S> 
-T inline CircularBuffer<T,S>::first() {
+template<typename T, size_t S, typename IT>
+T inline CircularBuffer<T,S,IT>::first() const {
 	return *head;
 }
 
-template<typename T, __CB_ST__ S> 
-T inline CircularBuffer<T,S>::last() {
+template<typename T, size_t S, typename IT>
+T inline CircularBuffer<T,S,IT>::last() const {
 	return *tail;
 }
 
-template<typename T, __CB_ST__ S> 
-T CircularBuffer<T,S>::operator [](__CB_ST__ index) {
-	return *(buffer + ((head - buffer + index) % S));
+template<typename T, size_t S, typename IT>
+T CircularBuffer<T,S,IT>::operator [](IT index) const {
+	if (index >= count) return *tail;
+	return *(buffer + ((head - buffer + index) % capacity));
 }
 
-template<typename T, __CB_ST__ S> 
-__CB_ST__ inline CircularBuffer<T,S>::size() {
+template<typename T, size_t S, typename IT>
+IT inline CircularBuffer<T,S,IT>::size() const {
 	return count;
 }
 
-template<typename T, __CB_ST__ S> 
-__CB_ST__ inline CircularBuffer<T,S>::available() {
-	return S - count;
+template<typename T, size_t S, typename IT>
+IT inline CircularBuffer<T,S,IT>::available() const {
+	return capacity - count;
 }
 
-template<typename T, __CB_ST__ S> 
-__CB_ST__ inline CircularBuffer<T,S>::capacity() {
-	return S;
-}
-
-template<typename T, __CB_ST__ S> 
-bool inline CircularBuffer<T,S>::isEmpty() {
+template<typename T, size_t S, typename IT>
+bool inline CircularBuffer<T,S,IT>::isEmpty() const {
 	return count == 0;
 }
 
-template<typename T, __CB_ST__ S> 
-bool inline CircularBuffer<T,S>::isFull() {
-	return count == S;
+template<typename T, size_t S, typename IT>
+bool inline CircularBuffer<T,S,IT>::isFull() const {
+	return count == capacity;
 }
 
-template<typename T, __CB_ST__ S> 
-void inline CircularBuffer<T,S>::clear() {
+template<typename T, size_t S, typename IT>
+void inline CircularBuffer<T,S,IT>::clear() {
 	head = tail = buffer;
 	count = 0;
 }
 
 #ifdef CIRCULAR_BUFFER_DEBUG
-template<typename T, __CB_ST__ S> 
-void inline CircularBuffer<T,S>::debug(Print* out) {
-	for (__CB_ST__ i = 0; i < S; i++) {
+#include <string.h>
+template<typename T, size_t S, typename IT>
+void inline CircularBuffer<T,S,IT>::debug(Print* out) {
+	for (IT i = 0; i < capacity; i++) {
 		int hex = (int)buffer + i;
+		out->print("[");
 		out->print(hex, HEX);
-		out->print("  ");
+		out->print("] ");
 		out->print(*(buffer + i));
 		if (head == buffer + i) {
-			out->print(" head");
+			out->print("<-head");
 		} 
 		if (tail == buffer + i) {
-			out->print(" tail");
+			out->print("<-tail");
 		}
 		out->println();
 	}
 }
 
-template<typename T, __CB_ST__ S> 
-void inline CircularBuffer<T,S>::debugFn(Print* out, void (*printFunction)(Print*, T)) {
-	for (__CB_ST__ i = 0; i < S; i++) {
+template<typename T, size_t S, typename IT>
+void inline CircularBuffer<T,S,IT>::debugFn(Print* out, void (*printFunction)(Print*, T)) {
+	for (IT i = 0; i < capacity; i++) {
 		int hex = (int)buffer + i;
+		out->print("[");
 		out->print(hex, HEX);
-		out->print("  ");
+		out->print("] ");
 		printFunction(out, *(buffer + i));
 		if (head == buffer + i) {
-			out->print(" head");
+			out->print("<-head");
 		} 
 		if (tail == buffer + i) {
-			out->print(" tail");
+			out->print("<-tail");
 		}
 		out->println();
 	}
