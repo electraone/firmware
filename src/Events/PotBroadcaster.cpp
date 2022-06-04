@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "System.h"
 
-PotBroadcaster::PotBroadcaster()
+PotBroadcaster::PotBroadcaster() : iteratorInvalidated(false)
 {
 }
 
@@ -14,6 +14,7 @@ void PotBroadcaster::addListener(PotListener *newListener)
 
 void PotBroadcaster::removeListener(PotListener *listenerToRemove)
 {
+    iteratorInvalidated = true;
     listeners.erase(listenerToRemove);
 }
 
@@ -38,7 +39,8 @@ void PotBroadcaster::potTouchUp(uint8_t potId)
 void PotBroadcaster::triggerCallbacks(PotEvent &potEvent, plFunction function)
 {
     Window *originatingWindow = System::windowManager.getActiveWindow();
-
+    
+    iteratorInvalidated = false;
     auto i = listeners.begin();
 
     while (i != listeners.end()) {
@@ -68,6 +70,9 @@ void PotBroadcaster::triggerCallbacks(PotEvent &potEvent, plFunction function)
                     }
                 }
             }
+        }
+        if (iteratorInvalidated) {
+            break;
         }
     }
 }

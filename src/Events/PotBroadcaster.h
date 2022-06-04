@@ -24,4 +24,5 @@ public:
 private:
     void triggerCallbacks(PotEvent &pe, plFunction function);
     std::map<PotListener *, uint8_t> listeners;
+    bool iteratorInvalidated;
 };
