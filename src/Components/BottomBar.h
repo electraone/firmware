@@ -14,12 +14,11 @@ public:
     virtual ~BottomBar() override = default;
 
     void paint(Graphics &g);
+    void setPresetName(const char *newName);
+    void setPageName(const char *newName);
     void update(const char *newPresetName, const char *newPageName);
 
 private:
-    void setPresetName(const char *newName);
-    void setPageName(const char *newName);
-
     char presetName[maxPresetNameLength + 1];
     char pageName[maxPageNameLength + 1];
 };
