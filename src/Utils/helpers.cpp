@@ -12,7 +12,7 @@ volatile bool loggerEnabled;
 
 #define LOG_MESSAGE_MAX_SIZE 200 // Max size of the log message
 
-static const int col_pos[6] = { 0, 170, 340, 510, 680, 850 };
+static const int col_pos[6] = { 13, 183, 353, 523, 693, 863 };
 static const int row_pos[6] = { 40, 128, 216, 304, 392, 480 };
 
 const char *noteNames[] = {
