@@ -4,7 +4,6 @@
 #include "Hardware.h"
 #include "System.h"
 
-
 /*
  * An option for visual layout debugging
  * \todo to be removed.

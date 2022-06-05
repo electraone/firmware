@@ -3,7 +3,6 @@
 #include "System.h"
 #include "RepaintQueue.h"
 
-
 SystemTasks::SystemTasks()
     : taskMonitorFreeMemory(10000000, TASK_FOREVER, &monitorFreeMemory),
       taskCollectGarbage(10000000, TASK_FOREVER, &collectGarbage),

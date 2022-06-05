@@ -39,7 +39,7 @@ void PotBroadcaster::potTouchUp(uint8_t potId)
 void PotBroadcaster::triggerCallbacks(PotEvent &potEvent, plFunction function)
 {
     Window *originatingWindow = System::windowManager.getActiveWindow();
-    
+
     iteratorInvalidated = false;
     auto i = listeners.begin();
 
