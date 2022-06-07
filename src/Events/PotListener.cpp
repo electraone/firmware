@@ -4,7 +4,11 @@
 PotBroadcaster PotListener::potBroadcaster;
 
 PotListener::PotListener()
-    : potId(AllPots), tsLastUpdate(0), numValues(0), stepCount(0)
+    : potId(AllPots),
+      tsLastUpdate(0),
+      numValues(0),
+      stepCount(0),
+      encoderMode(0)
 {
 }
 
@@ -22,6 +26,11 @@ void PotListener::assignAllPots(uint16_t newNumValues)
     potBroadcaster.addListener(this);
 }
 
+void PotListener::enableEncoderMode(bool newEncoderMode)
+{
+    encoderMode = newEncoderMode;
+}
+
 void PotListener::releasePot(void)
 {
     potBroadcaster.removeListener(this);
@@ -37,9 +46,14 @@ uint16_t PotListener::getNumValues(void)
     return (numValues);
 }
 
+void PotListener::resetStepCount(void)
+{
+    stepCount = 0;
+}
+
 int16_t PotListener::computeRate(int16_t relativeChange)
 {
-    if (numValues < 99) {
+    if (numValues < 63 || encoderMode) { // this is for the controls with low number of values
         return (decreaseRate(relativeChange));
     } else {
         uint32_t ts = millis();
@@ -48,7 +62,6 @@ int16_t PotListener::computeRate(int16_t relativeChange)
 
         uint8_t tableId = getAccelerationTable(numValues);
         uint8_t index = getIntervalBasedIndex(tp);
-
         return (accelerationTable[tableId][index] * relativeChange);
     }
 }
@@ -58,10 +71,20 @@ int16_t PotListener::decreaseRate(int16_t relativeChange)
     int16_t acceleratedChange = 0;
     stepCount += relativeChange;
 
-    uint16_t threshold =
-        constrain((1 << std::max(0, __builtin_clz(numValues) - 24)), 1, 16);
+    uint16_t threshold = 0; // magic constant set by testing the feel
 
-    if (abs(stepCount) > threshold) {
+    if (encoderMode) {
+        threshold = 5;
+    } else {
+        threshold =
+            constrain((1 << std::max(0, __builtin_clz(numValues) - 27)), 1, 16);
+    }
+    /*
+    logMessage("threshold: %d, stepCount: %d: _b: %d",
+               threshold,
+               stepCount,
+               __builtin_clz(numValues));*/
+    if (abs(stepCount) >= threshold) {
         acceleratedChange = ((stepCount > 0) ? 1 : -1);
         stepCount = 0;
         return (acceleratedChange);
@@ -73,7 +96,7 @@ int16_t PotListener::decreaseRate(int16_t relativeChange)
 uint8_t PotListener::getAccelerationTable(uint16_t numValues)
 {
     // clz on ARM uses 32bits
-    return (std::max(0, 24 - __builtin_clz(numValues & 0x3FFF)));
+    return (std::max(0, 26 - __builtin_clz(numValues & 0x3FFF)));
 }
 
 uint8_t PotListener::getIntervalBasedIndex(uint32_t interval)
@@ -81,13 +104,14 @@ uint8_t PotListener::getIntervalBasedIndex(uint32_t interval)
     return ((100 - std::min((uint32_t)100, (interval / 10) * 10)) / 10);
 }
 
-const uint8_t PotListener::accelerationTable[8][10] = {
-    { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+const uint16_t PotListener::accelerationTable[9][10] = {
     { 1, 1, 1, 1, 1, 1, 2, 2, 2, 2 },
-    { 1, 1, 1, 2, 2, 2, 3, 3, 3, 4 },
-    { 1, 1, 2, 2, 3, 4, 5, 6, 7, 8 },
-    { 1, 2, 3, 4, 5, 6, 8, 10, 13, 16 },
-    { 1, 2, 4, 6, 8, 11, 16, 21, 27, 32 },
+    { 1, 1, 1, 1, 2, 2, 2, 2, 3, 3 },
+    { 1, 1, 2, 2, 3, 4, 5, 6, 8, 10 },
+    { 1, 2, 3, 4, 5, 6, 7, 9, 11, 14 },
+    { 1, 2, 3, 4, 6, 8, 10, 13, 18, 25 },
     { 1, 2, 4, 8, 10, 13, 20, 32, 48, 64 },
-    { 1, 2, 4, 8, 16, 24, 32, 48, 64, 128 }
+    { 1, 2, 4, 8, 16, 24, 32, 48, 64, 128 },
+    { 1, 4, 8, 16, 32, 48, 64, 96, 128, 256 },
+    { 1, 8, 16, 32, 64, 96, 128, 192, 256, 512 }
 };

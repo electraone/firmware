@@ -62,7 +62,13 @@ void PotBroadcaster::triggerCallbacks(PotEvent &potEvent, plFunction function)
             if (eventComponent->getWindow() == originatingWindow) {
                 for (Component *c = eventComponent; c;
                      c = c->getParentComponent()) {
-                    (static_cast<PotListener *>(c)->*function)(potEvent);
+                    if (PotListener *pl = dynamic_cast<PotListener *>(c)) {
+                        (pl->*function)(potEvent);
+
+                        if (function == &PotListener::onPotTouchUp) {
+                            (pl->resetStepCount)();
+                        }
+                    }
 
                     if (originatingWindow
                         != System::windowManager.getActiveWindow()) {

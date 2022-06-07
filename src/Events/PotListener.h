@@ -71,6 +71,14 @@ public:
     void assignAllPots(uint16_t newNumValues = 0);
 
     /**
+     * Enable an encoder mode.
+	 *
+	 * @param true enables encoder style value reading, false keep the analog
+     * pot reading.
+     */
+    void enableEncoderMode(bool newEncoderMode);
+
+    /**
      * Stops listening for assigned pots.
      */
     void releasePot(void);
@@ -90,6 +98,8 @@ public:
 	 */
     int16_t computeRate(int16_t relativeChange);
 
+    void resetStepCount(void);
+
     static constexpr uint8_t AllPots = 255;
     static PotBroadcaster potBroadcaster;
 
@@ -102,6 +112,7 @@ private:
     uint32_t tsLastUpdate;
     uint16_t numValues;
     int8_t stepCount;
+    bool encoderMode;
 
-    static const uint8_t accelerationTable[8][10];
+    static const uint16_t accelerationTable[9][10];
 };
