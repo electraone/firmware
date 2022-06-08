@@ -13,7 +13,7 @@ SystemTasks::SystemTasks()
       taskScanUSBHost(2000000, TASK_FOREVER, &scanUSBHost),
       taskRefreshMidiIndicators(200000, TASK_FOREVER, &refreshMidiIndicators),
       taskRepaintGraphics(40000, TASK_FOREVER, &repaintGraphics),
-      taskUserTask(25000, TASK_FOREVER, &userTask),
+      taskUserTask(250000, TASK_FOREVER, &userTask),
       taskRunTimer(500000, TASK_FOREVER, &runTimer),
       taskSendMidi(10000, TASK_FOREVER, &sendMidi),
       taskProcessMidi(10000, TASK_FOREVER, &processMidi)
@@ -52,7 +52,7 @@ void SystemTasks::enableAll()
     }
 
     taskRepaintGraphics.enable();
-    taskUserTask.enable();
+    taskUserTask.disable();
     taskRunTimer.disable();
     taskSendMidi.enable();
     taskProcessMidi.enable();
