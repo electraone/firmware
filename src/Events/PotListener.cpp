@@ -53,7 +53,8 @@ void PotListener::resetStepCount(void)
 
 int16_t PotListener::computeRate(int16_t relativeChange)
 {
-    if (numValues < 63 || encoderMode) { // this is for the controls with low number of values
+    if (numValues < 63
+        || encoderMode) { // this is for the controls with low number of values
         return (decreaseRate(relativeChange));
     } else {
         uint32_t ts = millis();
