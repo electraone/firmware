@@ -37,7 +37,7 @@ void StatusBar::paint(Graphics &g)
         (USBDevices[0].product[0] != '\0') ? USBDevices[0].product : "USB HOST";
 
     if (repaintUsbDevIo == true) {
-        statusBarItem(g, 8, 5, "USB MIDI", usbDevIo);
+        statusBarItem(g, 8, 5, "USB DEVICE", usbDevIo);
         repaintUsbDevIo = false;
     }
 
