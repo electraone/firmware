@@ -1,11 +1,6 @@
 #include "Hardware.h"
 #include "helpers.h"
 
-/* This is to be able to initiate USB stack in here. To give more
- * control over the USB device configuration
- */
-extern "C" void usb_init(void);
-
 void Hardware::initialise(void)
 {
     // Configure and initialise internal signal multiplexer
@@ -32,10 +27,6 @@ void Hardware::initialise(void)
     // Initialise RAM monitoring
     ram.initialize();
     logMessage("SD RAM monitor: initialised");
-
-    // initialize USB device.
-    usb_init();
-    logMessage("USB device ports: initialised");
 
     // Clear Serial ports
     Serial1.clear();

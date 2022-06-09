@@ -59,6 +59,46 @@ public:
         eeprom_write_byte((uint8_t *)0x0202, shouldBeEnabled);
     }
 
+    uint8_t getUsbDevStatus(void)
+    {
+        return (eeprom_read_byte((uint8_t *)0x0203));
+    }
+
+    void setUsbDevStatus(bool shouldBeEnabled)
+    {
+        eeprom_write_byte((uint8_t *)0x0203, shouldBeEnabled);
+    }
+
+    uint8_t getKeyboardStatus(void)
+    {
+        return (eeprom_read_byte((uint8_t *)0x0204));
+    }
+
+    void setKeyboardStatus(bool shouldBeEnabled)
+    {
+        eeprom_write_byte((uint8_t *)0x0204, shouldBeEnabled);
+    }
+
+    uint8_t getMouseStatus(void)
+    {
+        return (eeprom_read_byte((uint8_t *)0x0205));
+    }
+
+    void setMouseStatus(bool shouldBeEnabled)
+    {
+        eeprom_write_byte((uint8_t *)0x0205, shouldBeEnabled);
+    }
+
+    uint8_t getKeymediaStatus(void)
+    {
+        return (eeprom_read_byte((uint8_t *)0x0206));
+    }
+
+    void setKeymediaStatus(bool shouldBeEnabled)
+    {
+        eeprom_write_byte((uint8_t *)0x0206, shouldBeEnabled);
+    }
+
 private:
     void setIfNotSet(void)
     {
