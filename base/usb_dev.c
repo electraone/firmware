@@ -832,7 +832,7 @@ void usb_init(uint8_t keyboardEnabled,
     uint16_t descriptorPosition = MINIMUM_CONFIG_SIZE;
     uint8_t interfaceNumber = 2;
 
-    if (keyboardEnabled) {
+    if (keyboardEnabled == 1) {
         KEYBOARD_INTERFACE = interfaceNumber;
         KEYBOARD_ENDPOINT = interfaceNumber + 1;
         config_descriptor_keyboard[2] = KEYBOARD_INTERFACE;
@@ -850,7 +850,7 @@ void usb_init(uint8_t keyboardEnabled,
         interfaceNumber++;
     }
 
-    if (mouseEnabled) {
+    if (mouseEnabled == 1) {
         MOUSE_INTERFACE = interfaceNumber;
         MOUSE_ENDPOINT = interfaceNumber + 1;
         config_descriptor_mouse[2] = MOUSE_INTERFACE;
@@ -867,7 +867,7 @@ void usb_init(uint8_t keyboardEnabled,
         interfaceNumber++;
     }
 
-    if (keymediaEnabled) {
+    if (keymediaEnabled == 1) {
         KEYMEDIA_INTERFACE = interfaceNumber;
         KEYMEDIA_ENDPOINT = interfaceNumber + 1;
         config_descriptor_keymedia[2] = KEYMEDIA_INTERFACE;
