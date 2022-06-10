@@ -13,6 +13,7 @@ public:
     ~SysexBlock();
 
     bool isSysex(void) const;
+    bool isEmpty(void) const;
     uint32_t getManufacturerSysexId(void) const;
     bool isElectraSysex(void) const;
     ElectraCommand getElectraSysexCommand(void) const;

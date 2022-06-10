@@ -24,6 +24,11 @@ bool SysexBlock::isSysex(void) const
     return (header[0] == 0xF0);
 }
 
+bool SysexBlock::isEmpty(void) const
+{
+    return (length < 3);
+}
+
 uint32_t SysexBlock::getManufacturerSysexId(void) const
 {
     uint32_t manufacturerSysexId = 0;
