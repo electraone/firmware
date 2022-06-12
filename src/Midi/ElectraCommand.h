@@ -1,5 +1,4 @@
 #pragma once
-
 #include <stdint.h>
 #include <inttypes.h>
 #include "helpers.h"
@@ -16,6 +15,7 @@ public:
         Swap = 0x06,
         Create = 0x07,
         Execute = 0x08,
+        Switch = 0x09,
         UpdateRuntime = 0x14,
         DataContainter = 0x7D,
         Event = 0x7E,
@@ -34,6 +34,10 @@ public:
         SnapshotList = 0x05,
         SnapshotInfo = 0x06,
         Control = 0x07,
+        PresetSlot = 0x08,
+        SnapshotSlot = 0x09,
+        Page = 0x0A,
+        ControlSet = 0x0B,
         FileLua = 0x0C,
         Function = 0x0D,
         FileUi = 0x70,
@@ -82,6 +86,14 @@ public:
             return (Object::SnapshotInfo);
         } else if (objectByte == 0x07) {
             return (Object::Control);
+        } else if (objectByte == 0x08) {
+            return (Object::PresetSlot);
+        } else if (objectByte == 0x09) {
+            return (Object::SnapshotSlot);
+        } else if (objectByte == 0x0A) {
+            return (Object::Page);
+        } else if (objectByte == 0x0B) {
+            return (Object::ControlSet);
         } else if (objectByte == 0x0C) {
             return (Object::FileLua);
         } else if (objectByte == 0x0D) {
@@ -136,6 +148,8 @@ public:
             return (Type::Create);
         } else if (commandByte == 0x08) {
             return (Type::Execute);
+        } else if (commandByte == 0x09) {
+            return (Type::Switch);
         } else if (commandByte == 0x14) {
             return (Type::UpdateRuntime);
         } else if (commandByte == 0x7D) {
@@ -159,7 +173,7 @@ public:
         type = translateType(commandByte);
         if (type
             == Type::
-                MidiLearnSwitch) // \todo ugly fix because the MIDI learn sysx is not ok
+                MidiLearnSwitch) // TODO: ugly fix because the MIDI learn sysx is not ok
         {
             if (objectByte == 1) {
                 object = Object::MidiLearnOn;
@@ -215,6 +229,11 @@ public:
     bool isExecute(void)
     {
         return (type == Type::Execute);
+    }
+
+    bool isSwitch(void)
+    {
+        return (type == Type::Switch);
     }
 
     bool isUpdateRuntime(void)

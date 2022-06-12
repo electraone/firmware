@@ -151,6 +151,11 @@ public:
             App::get()->enableMidi = true;
             System::tasks.enableMidi();
 
+            if (fileType == ElectraCommand::Object::FilePreset
+                || fileType == ElectraCommand::Object::FileLua) {
+                sendPresetSlotChange();
+            }
+
             packetNr = 0;
             fileType = ElectraCommand::Object::Unknown;
             writeToFile = false;
@@ -182,6 +187,11 @@ public:
 
                 file.writeAll(sysexPayload);
 
+                if (object == ElectraCommand::Object::FilePreset
+                    || object == ElectraCommand::Object::FileLua) {
+                    sendPresetSlotChange();
+                }
+
                 if (App::get()->handleCtrlFileReceived(file, object) == true) {
                     logMessage(
                         "processElectraSysex::handleElectraSysex: sending ACK");
@@ -204,6 +214,12 @@ public:
                                       object)) {
                         logMessage("processElectraSysex::handleElectraSysex: "
                                    "lua sysex sent to the host");
+                    }
+                } else if (object == ElectraCommand::Object::FileConfig) {
+                    if (sendSysExFile(System::context.getCurrentConfigFile(),
+                                      object)) {
+                        logMessage("processElectraSysex::handleElectraSysex: "
+                                   "config sysex sent to the host");
                     }
                 } else if (object == ElectraCommand::Object::MemoryInfo) {
                     sendMemoryInfo();
@@ -277,6 +293,7 @@ public:
                         logMessage("processElectraSysex: removing file %s: %s",
                                    fileToRemove,
                                    (status == true) ? "OK" : "fail");
+                        sendPresetSlotChange();
                     }
 
                     if (App::get()->handleCtrlFileRemoved(fileNumber, object)

@@ -157,7 +157,7 @@ void sendAppInfo(void)
 
 void sendNack(void)
 {
-    uint8_t data[9];
+    uint8_t data[5];
 
     stopFlush = 1;
     sendSysExHeader();
@@ -175,7 +175,7 @@ void sendNack(void)
 
 void sendAck(void)
 {
-    uint8_t data[9];
+    uint8_t data[5];
 
     stopFlush = 1;
     sendSysExHeader();
@@ -186,6 +186,70 @@ void sendAck(void)
     data[3] = 0x00;
     data[4] = SYSEX_END;
     sendSysExData(data, 5, USB_MIDI_PORT_CTRL);
+
+    stopFlush = 0;
+}
+
+void sendPresetSwitch(uint8_t bankNumber, uint8_t slotId)
+{
+    uint8_t data[5];
+
+    stopFlush = 1;
+
+    sendSysExHeader();
+    data[0] = EVENT_MESSAGE;
+    data[1] = PRESET_SWITCH;
+    data[2] = bankNumber;
+    data[3] = slotId;
+    data[4] = SYSEX_END;
+    sendSysExData(data, 5, USB_MIDI_PORT_CTRL);
+
+    stopFlush = 0;
+}
+
+void sendSnapshotChange(void)
+{
+    uint8_t data[3];
+
+    stopFlush = 1;
+
+    sendSysExHeader();
+    data[0] = EVENT_MESSAGE;
+    data[1] = SNAPSHOT_CHANGE;
+    data[2] = SYSEX_END;
+    sendSysExData(data, 3, USB_MIDI_PORT_CTRL);
+
+    stopFlush = 0;
+}
+
+void sendSnapshotBankChange(uint8_t bankNumber)
+{
+    uint8_t data[4];
+
+    stopFlush = 1;
+
+    sendSysExHeader();
+    data[0] = EVENT_MESSAGE;
+    data[1] = SNAPSHOT_BANK_SWITCH;
+    data[2] = bankNumber;
+    data[3] = SYSEX_END;
+    sendSysExData(data, 4, USB_MIDI_PORT_CTRL);
+
+    stopFlush = 0;
+}
+
+void sendPresetSlotChange(void)
+{
+    logMessage("sendPresetSlotChange: sending message");
+    uint8_t data[3];
+
+    stopFlush = 1;
+
+    sendSysExHeader();
+    data[0] = EVENT_MESSAGE;
+    data[1] = PRESET_LIST_CHANGE;
+    data[2] = SYSEX_END;
+    sendSysExData(data, 3, USB_MIDI_PORT_CTRL);
 
     stopFlush = 0;
 }

@@ -6,19 +6,6 @@
 #define SYSEX_END 0xF7
 #define SYSEX_MANUFACTURER 0x002145
 
-bool sendSysExFile(const char *filename, ElectraCommand::Object fileType);
-void sendElectraInfo(const char *electraInfoSerial,
-                     uint8_t electraInfoHwRevision);
-void sendMemoryInfo(void);
-void sendAppInfo(void);
-void sendNack(void);
-void sendAck(void);
-void sendSysExData(const uint8_t *data, uint32_t length, uint8_t cable);
-
-void sendSysExHeader(void);
-
-// Kept here temporarily for compatibility reasons
-
 /*
  * Commands
  */
@@ -43,6 +30,7 @@ void sendSysExHeader(void);
 #define PRESET_SWITCH 0x02
 #define SNAPSHOT_CHANGE 0x03
 #define SNAPSHOT_BANK_SWITCH 0x04
+#define PRESET_LIST_CHANGE 0x05
 
 /*
  * Object types
@@ -64,3 +52,24 @@ void sendSysExHeader(void);
 #define ELECTRA_INFO 0x7F
 
 #define USB_MIDI_PORT_CTRL 2
+
+bool sendSysExFile(const char *filename, ElectraCommand::Object fileType);
+void sendMidiLearn(const char *msg,
+                   uint8_t port,
+                   uint8_t channel,
+                   uint16_t parameterId,
+                   uint16_t value);
+void sendMidiLearnSysex(uint8_t port, uint8_t *sysExData, uint16_t sysExLength);
+void sendElectraInfo(const char *electraInfoSerial,
+                     uint8_t electraInfoHwRevision);
+void sendMemoryInfo(void);
+void sendAppInfo(void);
+void sendNack(void);
+void sendAck(void);
+void sendPresetSwitch(uint8_t bankNumber, uint8_t slotId);
+void sendSnapshotChange(void);
+void sendSnapshotBankChange(uint8_t bankNumber);
+void sendPresetSlotChange(void);
+
+void sendSysExData(const uint8_t *data, uint32_t length, uint8_t cable);
+void sendSysExHeader(void);
