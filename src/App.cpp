@@ -70,7 +70,9 @@ bool App::handleCtrlFileReceived(LocalFile file,
     return (true);
 }
 
-bool App::handleCtrlFileRemoved(int fileNumber, ElectraCommand::Object fileType)
+bool App::handleCtrlFileRemoved(uint8_t bankNumber,
+                                uint8_t slot,
+                                ElectraCommand::Object fileType)
 {
     return (true);
 }

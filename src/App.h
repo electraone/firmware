@@ -44,7 +44,8 @@ public:
     virtual void execute(const char *filename);
     virtual bool handleCtrlFileReceived(LocalFile file,
                                         ElectraCommand::Object fileType);
-    virtual bool handleCtrlFileRemoved(int fileNumber,
+    virtual bool handleCtrlFileRemoved(uint8_t bankNumber,
+                                       uint8_t slot,
                                        ElectraCommand::Object fileType);
     virtual void runUserTask(void);
 

@@ -257,34 +257,24 @@ public:
                                "Lua script is not available");
                 }
             } else if (cmd.isRemove()) {
-                int fileNumber = -1; // current preset slot
+                uint8_t bankNumber = cmd.getByte1();
+                uint8_t slot = cmd.getByte2();
+                uint8_t fileNumber = bankNumber * 12 + slot;
                 char filename[MAX_FILENAME_LENGTH];
                 char *fileToRemove = nullptr;
 
-                if (cmd.getByte1() == 0xF7) {
-                    if (object == ElectraCommand::Object::FilePreset) {
-                        fileToRemove = System::context.getCurrentPresetFile();
-                    } else if (object == ElectraCommand::Object::FileConfig) {
-                        fileToRemove = System::context.getCurrentConfigFile();
-                    } else if (object == ElectraCommand::Object::FileLua) {
-                        fileToRemove = System::context.getCurrentLuaFile();
-                    }
+                if (object == ElectraCommand::Object::FilePreset) {
+                    System::context.formatPresetFilename(
+                        filename, MAX_FILENAME_LENGTH, fileNumber);
+                    fileToRemove = filename;
+                } else if (object == ElectraCommand::Object::FileLua) {
+                    System::context.formatLuaFilename(
+                        filename, MAX_FILENAME_LENGTH, fileNumber);
+                    fileToRemove = filename;
                 } else {
-                    fileNumber = cmd.getByte2() + (cmd.getByte1() * 12);
-
-                    if (object == ElectraCommand::Object::FilePreset) {
-                        System::context.formatPresetFilename(
-                            filename, MAX_FILENAME_LENGTH, fileNumber);
-                        fileToRemove = filename;
-                    } else if (object == ElectraCommand::Object::FileLua) {
-                        System::context.formatLuaFilename(
-                            filename, MAX_FILENAME_LENGTH, fileNumber);
-                        fileToRemove = filename;
-                    } else {
-                        logMessage("processElectraSysex: "
-                                   "parameters are not expected for this call");
-                        fileToRemove = nullptr;
-                    }
+                    logMessage("processElectraSysex: "
+                               "parameters are not expected for this call");
+                    fileToRemove = nullptr;
                 }
 
                 if (fileToRemove) {
@@ -296,7 +286,8 @@ public:
                         sendPresetSlotChange();
                     }
 
-                    if (App::get()->handleCtrlFileRemoved(fileNumber, object)
+                    if (App::get()->handleCtrlFileRemoved(
+                            bankNumber, slot, object)
                         == true) {
                         logMessage(
                             "processElectraSysex::handleElectraSysex: sending ACK");
