@@ -165,7 +165,7 @@ public:
         return (midiDINInterfaces[port]->getData2());
     }
 
-    uint8_t getActivePort(void) const
+    uint8_t getActivePort(void) const override
     {
         return (activePort);
     }

@@ -14,26 +14,30 @@ int luaopen_midi(lua_State *L)
  */
 int midi_sendMessage(lua_State *L)
 {
-    // discard any extra arguments passed in
-    lua_settop(L, 3);
+    MidiInterface::Type interface = MidiInterface::Type::MidiAll;
+    int portIndex = 1;
+    int tableIndex = 2;
 
-    // get the port number
-    MidiInterface::Type interface =
-        static_cast<MidiInterface::Type>(luaL_checkinteger(L, 1));
-    int port = luaL_checkinteger(L, 2);
+    if (lua_gettop(L) == 3) { // if number of parameters is 3
+        interface = static_cast<MidiInterface::Type>(luaL_checkinteger(L, 1));
+        portIndex = 2;
+        tableIndex = 3;
+    }
+
+    int port = luaL_checkinteger(L, portIndex);
 
     // get the message table
-    luaL_checktype(L, 2, LUA_TTABLE);
+    luaL_checktype(L, tableIndex, LUA_TTABLE);
 
     // parse type
-    lua_getfield(L, 2, "type");
+    lua_getfield(L, tableIndex, "type");
     int type = luaL_checkinteger(L, -1);
 
     // process type specific parts
     if (type == (uint8_t)MidiMessage::Type::ControlChange) {
-        lua_getfield(L, 2, "channel");
-        lua_getfield(L, 2, "controllerNumber");
-        lua_getfield(L, 2, "value");
+        lua_getfield(L, tableIndex, "channel");
+        lua_getfield(L, tableIndex, "controllerNumber");
+        lua_getfield(L, tableIndex, "value");
 
         int channel = luaL_checkinteger(L, -3);
         int data1 = luaL_checkinteger(L, -2);
@@ -41,17 +45,17 @@ int midi_sendMessage(lua_State *L)
 
         MidiOutput::sendControlChange(interface, port, channel, data1, data2);
     } else if (type == (uint8_t)MidiMessage::Type::ProgramChange) {
-        lua_getfield(L, 2, "channel");
-        lua_getfield(L, 2, "programNumber");
+        lua_getfield(L, tableIndex, "channel");
+        lua_getfield(L, tableIndex, "programNumber");
 
         int channel = luaL_checkinteger(L, -2);
         int data1 = luaL_checkinteger(L, -1);
 
         MidiOutput::sendProgramChange(interface, port, channel, data1);
     } else if (type == (uint8_t)MidiMessage::Type::NoteOn) {
-        lua_getfield(L, 2, "channel");
-        lua_getfield(L, 2, "noteNumber");
-        lua_getfield(L, 2, "velocity");
+        lua_getfield(L, tableIndex, "channel");
+        lua_getfield(L, tableIndex, "noteNumber");
+        lua_getfield(L, tableIndex, "velocity");
 
         int channel = luaL_checkinteger(L, -3);
         int data1 = luaL_checkinteger(L, -2);
@@ -59,9 +63,9 @@ int midi_sendMessage(lua_State *L)
 
         MidiOutput::sendNoteOn(interface, port, channel, data1, data2);
     } else if (type == (uint8_t)MidiMessage::Type::NoteOff) {
-        lua_getfield(L, 2, "channel");
-        lua_getfield(L, 2, "noteNumber");
-        lua_getfield(L, 2, "velocity");
+        lua_getfield(L, tableIndex, "channel");
+        lua_getfield(L, tableIndex, "noteNumber");
+        lua_getfield(L, tableIndex, "velocity");
 
         int channel = luaL_checkinteger(L, -3);
         int data1 = luaL_checkinteger(L, -2);
@@ -69,17 +73,17 @@ int midi_sendMessage(lua_State *L)
 
         MidiOutput::sendNoteOff(interface, port, channel, data1, data2);
     } else if (type == (uint8_t)MidiMessage::Type::PitchBend) {
-        lua_getfield(L, 2, "channel");
-        lua_getfield(L, 2, "value");
+        lua_getfield(L, tableIndex, "channel");
+        lua_getfield(L, tableIndex, "value");
 
         int channel = luaL_checkinteger(L, -2);
         int value = luaL_checkinteger(L, -1);
 
         MidiOutput::sendPitchBend(interface, port, channel, value);
     } else if (type == (uint8_t)MidiMessage::Type::AfterTouchPoly) {
-        lua_getfield(L, 2, "channel");
-        lua_getfield(L, 2, "noteNumber");
-        lua_getfield(L, 2, "pressure");
+        lua_getfield(L, tableIndex, "channel");
+        lua_getfield(L, tableIndex, "noteNumber");
+        lua_getfield(L, tableIndex, "pressure");
 
         int channel = luaL_checkinteger(L, -3);
         int data1 = luaL_checkinteger(L, -2);
@@ -87,8 +91,8 @@ int midi_sendMessage(lua_State *L)
 
         MidiOutput::sendAfterTouchPoly(interface, port, channel, data1, data2);
     } else if (type == (uint8_t)MidiMessage::Type::AfterTouchChannel) {
-        lua_getfield(L, 2, "channel");
-        lua_getfield(L, 2, "pressure");
+        lua_getfield(L, tableIndex, "channel");
+        lua_getfield(L, tableIndex, "pressure");
 
         int channel = luaL_checkinteger(L, -2);
         int data1 = luaL_checkinteger(L, -1);
@@ -107,12 +111,12 @@ int midi_sendMessage(lua_State *L)
     } else if (type == (uint8_t)MidiMessage::Type::SystemReset) {
         MidiOutput::sendSystemReset(interface, port);
     } else if (type == (uint8_t)MidiMessage::Type::SongSelect) {
-        lua_getfield(L, 2, "songNumber");
+        lua_getfield(L, tableIndex, "songNumber");
         int songNumber = luaL_checkinteger(L, -1);
 
         MidiOutput::sendSongSelect(interface, port, songNumber);
     } else if (type == (uint8_t)MidiMessage::Type::SongPosition) {
-        lua_getfield(L, 2, "position");
+        lua_getfield(L, tableIndex, "position");
         int position = luaL_checkinteger(L, -1);
 
         MidiOutput::sendSongPosition(interface, port, position);
@@ -135,13 +139,12 @@ int midi_sendMessage(lua_State *L)
  */
 int midi_sendControlChange(lua_State *L)
 {
-    lua_settop(L, 5);
-
-    int interface = luaL_checkinteger(L, -5);
-    int port = luaL_checkinteger(L, -4);
-    int channel = luaL_checkinteger(L, -3);
-    int controllerNumber = luaL_checkinteger(L, -2);
-    int value = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex++);
+    int channel = luaL_checkinteger(L, nextIndex++);
+    int controllerNumber = luaL_checkinteger(L, nextIndex++);
+    int value = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -168,13 +171,12 @@ int midi_sendControlChange(lua_State *L)
  */
 int midi_sendNoteOn(lua_State *L)
 {
-    lua_settop(L, 5);
-
-    int interface = luaL_checkinteger(L, -5);
-    int port = luaL_checkinteger(L, -4);
-    int channel = luaL_checkinteger(L, -3);
-    int noteNumber = luaL_checkinteger(L, -2);
-    int velocity = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex++);
+    int channel = luaL_checkinteger(L, nextIndex++);
+    int noteNumber = luaL_checkinteger(L, nextIndex++);
+    int velocity = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -201,13 +203,12 @@ int midi_sendNoteOn(lua_State *L)
  */
 int midi_sendNoteOff(lua_State *L)
 {
-    lua_settop(L, 5);
-
-    int interface = luaL_checkinteger(L, -5);
-    int port = luaL_checkinteger(L, -4);
-    int channel = luaL_checkinteger(L, -3);
-    int noteNumber = luaL_checkinteger(L, -2);
-    int velocity = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex++);
+    int channel = luaL_checkinteger(L, nextIndex++);
+    int noteNumber = luaL_checkinteger(L, nextIndex++);
+    int velocity = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -233,12 +234,11 @@ int midi_sendNoteOff(lua_State *L)
  */
 int midi_sendPitchBend(lua_State *L)
 {
-    lua_settop(L, 4);
-
-    int interface = luaL_checkinteger(L, -4);
-    int port = luaL_checkinteger(L, -3);
-    int channel = luaL_checkinteger(L, -2);
-    int value = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex++);
+    int channel = luaL_checkinteger(L, nextIndex++);
+    int value = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -261,13 +261,12 @@ int midi_sendPitchBend(lua_State *L)
  */
 int midi_sendAfterTouchPoly(lua_State *L)
 {
-    lua_settop(L, 5);
-
-    int interface = luaL_checkinteger(L, -5);
-    int port = luaL_checkinteger(L, -4);
-    int channel = luaL_checkinteger(L, -3);
-    int noteNumber = luaL_checkinteger(L, -2);
-    int pressure = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex++);
+    int channel = luaL_checkinteger(L, nextIndex++);
+    int noteNumber = luaL_checkinteger(L, nextIndex++);
+    int pressure = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -293,12 +292,11 @@ int midi_sendAfterTouchPoly(lua_State *L)
  */
 int midi_sendAfterTouchChannel(lua_State *L)
 {
-    lua_settop(L, 4);
-
-    int interface = luaL_checkinteger(L, -4);
-    int port = luaL_checkinteger(L, -3);
-    int channel = luaL_checkinteger(L, -2);
-    int pressure = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex++);
+    int channel = luaL_checkinteger(L, nextIndex++);
+    int pressure = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -318,10 +316,9 @@ int midi_sendAfterTouchChannel(lua_State *L)
  */
 int midi_sendClock(lua_State *L)
 {
-    lua_settop(L, 2);
-
-    int interface = luaL_checkinteger(L, -2);
-    int port = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -338,10 +335,9 @@ int midi_sendClock(lua_State *L)
  */
 int midi_sendStart(lua_State *L)
 {
-    lua_settop(L, 2);
-
-    int interface = luaL_checkinteger(L, -2);
-    int port = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -358,10 +354,9 @@ int midi_sendStart(lua_State *L)
  */
 int midi_sendStop(lua_State *L)
 {
-    lua_settop(L, 2);
-
-    int interface = luaL_checkinteger(L, -2);
-    int port = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -378,10 +373,9 @@ int midi_sendStop(lua_State *L)
  */
 int midi_sendContinue(lua_State *L)
 {
-    lua_settop(L, 2);
-
-    int interface = luaL_checkinteger(L, -2);
-    int port = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -398,10 +392,9 @@ int midi_sendContinue(lua_State *L)
  */
 int midi_sendActiveSensing(lua_State *L)
 {
-    lua_settop(L, 2);
-
-    int interface = luaL_checkinteger(L, -2);
-    int port = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -419,10 +412,9 @@ int midi_sendActiveSensing(lua_State *L)
  */
 int midi_sendSystemReset(lua_State *L)
 {
-    lua_settop(L, 2);
-
-    int interface = luaL_checkinteger(L, -2);
-    int port = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -441,11 +433,10 @@ int midi_sendSystemReset(lua_State *L)
  */
 int midi_sendSongSelect(lua_State *L)
 {
-    lua_settop(L, 3);
-
-    int interface = luaL_checkinteger(L, -3);
-    int port = luaL_checkinteger(L, -2);
-    int song = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex++);
+    int song = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -465,11 +456,10 @@ int midi_sendSongSelect(lua_State *L)
  */
 int midi_sendSongPosition(lua_State *L)
 {
-    lua_settop(L, 3);
-
-    int interface = luaL_checkinteger(L, -3);
-    int port = luaL_checkinteger(L, -2);
-    int position = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex++);
+    int position = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -488,10 +478,9 @@ int midi_sendSongPosition(lua_State *L)
  */
 int midi_sendTuneRequest(lua_State *L)
 {
-    lua_settop(L, 2);
-
-    int interface = luaL_checkinteger(L, -2);
-    int port = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -511,12 +500,11 @@ int midi_sendTuneRequest(lua_State *L)
  */
 int midi_sendProgramChange(lua_State *L)
 {
-    lua_settop(L, 4);
-
-    int interface = luaL_checkinteger(L, -4);
-    int port = luaL_checkinteger(L, -3);
-    int channel = luaL_checkinteger(L, -2);
-    int programNumber = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex++);
+    int channel = luaL_checkinteger(L, nextIndex++);
+    int programNumber = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -539,15 +527,22 @@ int midi_sendProgramChange(lua_State *L)
  */
 int midi_sendSysEx(lua_State *L)
 {
-    lua_settop(L, 3);
+    int interface = LUA_MIDI_INTERFACE_MIDI_ALL;
+    int portIndex = 1;
+    int tableIndex = 2;
 
-    int interface = luaL_checkinteger(L, 1);
-    int port = luaL_checkinteger(L, 2);
+    if (lua_gettop(L) == 3) { // if number of parameters is 3
+        interface = luaL_checkinteger(L, 1);
+        portIndex = 2;
+        tableIndex = 3;
+    }
+
+    int port = luaL_checkinteger(L, portIndex);
 
     checkInterface(interface);
     checkPort(port);
 
-    luaL_checktype(L, 3, LUA_TTABLE);
+    luaL_checktype(L, tableIndex, LUA_TTABLE);
 
     /* table is in the stack at index 1 */
     lua_pushnil(L);
@@ -555,7 +550,7 @@ int midi_sendSysEx(lua_State *L)
     uint8_t buffer[LUA_MAX_SYSEX_SIZE];
     int i = 0;
 
-    while ((lua_next(L, 2) != 0) && (i < LUA_MAX_SYSEX_SIZE)) {
+    while ((lua_next(L, tableIndex) != 0) && (i < LUA_MAX_SYSEX_SIZE)) {
         buffer[i] = luaL_checkinteger(L, -1);
         lua_pop(L, 1);
         i++;
@@ -578,14 +573,13 @@ int midi_sendSysEx(lua_State *L)
  */
 int midi_sendNrpn(lua_State *L)
 {
-    lua_settop(L, 6);
-
-    int interface = luaL_checkinteger(L, -6);
-    int port = luaL_checkinteger(L, -5);
-    int channel = luaL_checkinteger(L, -4);
-    int parameterNumber = luaL_checkinteger(L, -3);
-    int value = luaL_checkinteger(L, -2);
-    int lsbFirst = luaL_optinteger(L, -1, 0);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex++);
+    int channel = luaL_checkinteger(L, nextIndex++);
+    int parameterNumber = luaL_checkinteger(L, nextIndex++);
+    int value = luaL_checkinteger(L, nextIndex++);
+    int lsbFirst = luaL_optinteger(L, nextIndex, 0);
 
     checkInterface(interface);
     checkPort(port);
@@ -614,13 +608,12 @@ int midi_sendNrpn(lua_State *L)
  */
 int midi_sendRpn(lua_State *L)
 {
-    lua_settop(L, 5);
-
-    int interface = luaL_checkinteger(L, -5);
-    int port = luaL_checkinteger(L, -4);
-    int channel = luaL_checkinteger(L, -3);
-    int parameterNumber = luaL_checkinteger(L, -2);
-    int value = luaL_checkinteger(L, -1);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex++);
+    int channel = luaL_checkinteger(L, nextIndex++);
+    int parameterNumber = luaL_checkinteger(L, nextIndex++);
+    int value = luaL_checkinteger(L, nextIndex);
 
     checkInterface(interface);
     checkPort(port);
@@ -648,14 +641,13 @@ int midi_sendRpn(lua_State *L)
  */
 int midi_sendControlChange14Bit(lua_State *L)
 {
-    lua_settop(L, 6);
-
-    int interface = luaL_checkinteger(L, -6);
-    int port = luaL_checkinteger(L, -5);
-    int channel = luaL_checkinteger(L, -4);
-    int controllerNumber = luaL_checkinteger(L, -3);
-    int value = luaL_checkinteger(L, -2);
-    int lsbFirst = luaL_optinteger(L, -1, 0);
+    int nextIndex = 0;
+    int interface = getInterface(L, &nextIndex);
+    int port = luaL_checkinteger(L, nextIndex++);
+    int channel = luaL_checkinteger(L, nextIndex++);
+    int controllerNumber = luaL_checkinteger(L, nextIndex++);
+    int value = luaL_checkinteger(L, nextIndex++);
+    int lsbFirst = luaL_optinteger(L, nextIndex, 0);
 
     checkInterface(interface);
     checkPort(port);
@@ -786,4 +778,18 @@ void midi_onMidiSysex(MidiInput &midiInput, SysexBlock &sysexBlock)
     } else {
         luaLE_handleNonexistentFunction(L, "onSysex");
     }
+}
+
+int getInterface(lua_State *L, int *nextIndex)
+{
+    int numParameters = lua_gettop(L);
+    int interface = LUA_MIDI_INTERFACE_MIDI_ALL;
+
+    if (numParameters == 5) {
+        interface = luaL_checkinteger(L, -numParameters);
+        numParameters--;
+    }
+
+    *nextIndex = -numParameters;
+    return (interface);
 }

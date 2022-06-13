@@ -10,8 +10,9 @@ extern "C" {
 }
 
 #define LUA_MAX_SYSEX_SIZE 256
-#define LUA_NR_OF_MIDI_INTERFACES 3
+#define LUA_NR_OF_MIDI_INTERFACES 4 // includes MidiAll
 #define LUA_NR_OF_MIDI_PORTS 3
+#define LUA_MIDI_INTERFACE_MIDI_ALL 3
 
 /*
  * midiMessage format
@@ -86,7 +87,7 @@ static const luaL_Reg midi_functions[] = {
     { "sendSystemReset", midi_sendSystemReset },
     { "sendSongSelect", midi_sendSongSelect },
     { "sendSongPosition", midi_sendSongPosition },
-    { "sendSysEx", midi_sendSysEx },
+    { "sendSysex", midi_sendSysEx },
     { "sendNrpn", midi_sendNrpn },
     { "sendRpn", midi_sendRpn },
     { "sendControlChange14Bit", midi_sendControlChange14Bit },
@@ -124,3 +125,5 @@ static const luaL_Reg midi_functions[] = {
     if ((number < 0) || (number > 1)) {                                        \
         return (luaL_error(L, "%s is not a boolean: value=%d", var, number));  \
     }
+
+int getInterface(lua_State *L, int *nextIndex);
