@@ -324,9 +324,8 @@ void logChars(uint8_t *data, uint16_t length)
     }
 
     for (uint16_t i = 0; i < length; i++) {
-        Serial.print((char)data[i]);
+        logMessage("%c", (char)data[i]);
     }
-    Serial.println("");
 }
 
 uint8_t getShift(uint8_t value)

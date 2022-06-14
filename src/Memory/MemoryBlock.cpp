@@ -66,38 +66,16 @@ int MemoryBlock::read()
 
 size_t MemoryBlock::readBytes(uint8_t *buffer, size_t length)
 {
-    if (memoryPool == nullptr) {
-        return (0);
+    size_t totalReadBytes = 0;
+    size_t readBytes = 0;
+    size_t offset = 0;
+
+    while ((readBytes = readBytesInternal(buffer + offset, length - offset))
+           != 0) {
+        offset += readBytes;
+        totalReadBytes += readBytes;
     }
-
-    uint16_t bytesToRead = 0;
-
-    size_t currentPosition = tell();
-
-    if (currentPosition < headerLength) {
-        bytesToRead = (headerLength - currentPosition) > length
-                          ? length
-                          : headerLength - currentPosition;
-
-        if (bytesToRead) {
-            memcpy((void *)buffer, header + currentPosition, bytesToRead);
-            currentAddress += bytesToRead;
-        }
-    } else {
-        bytesToRead = (endAddress - currentAddress) >= length
-                          ? length
-                          : (endAddress - currentAddress);
-
-        if (bytesToRead) {
-            memoryPool->fb->readRamData(memoryPool->getBaseAddress()
-                                            + currentAddress,
-                                        buffer,
-                                        bytesToRead);
-            currentAddress += bytesToRead;
-        }
-    }
-
-    return (bytesToRead);
+    return (totalReadBytes);
 }
 
 size_t MemoryBlock::writeBytes(const uint8_t *buffer, size_t lengthToWrite)
@@ -208,17 +186,6 @@ void MemoryBlock::print(MemoryBlockOutputType outputType)
     uint16_t bytesRead = 0;
 
     seek(0);
-    /*
-    logMessage ("Cached header: length=%d", headerLength);
-    if (outputType == MemoryBlockOutputType::Chars)
-    {
-        logChars ((uint8_t *) header, headerLength);
-    }
-    else
-    {
-        logData ((uint8_t *) header, headerLength);
-    }
- */
 
     // logMessage ("Extram header: startAddress=%d, length=%d", startAddress, length);
     while ((bytesRead = readBytes(buffer, sizeof(buffer))) > 0) {
@@ -254,4 +221,40 @@ int MemoryBlock::peek(size_t position) const
     }
 
     return (byte);
+}
+
+size_t MemoryBlock::readBytesInternal(uint8_t *buffer, size_t length)
+{
+    if (memoryPool == nullptr) {
+        return (0);
+    }
+
+    uint16_t bytesToRead = 0;
+
+    size_t currentPosition = tell();
+
+    if (currentPosition < headerLength) {
+        bytesToRead = (headerLength - currentPosition) > length
+                          ? length
+                          : headerLength - currentPosition;
+
+        if (bytesToRead) {
+            memcpy((void *)buffer, header + currentPosition, bytesToRead);
+            currentAddress += bytesToRead;
+        }
+    } else {
+        bytesToRead = (endAddress - currentAddress) >= length
+                          ? length
+                          : (endAddress - currentAddress);
+
+        if (bytesToRead) {
+            memoryPool->fb->readRamData(memoryPool->getBaseAddress()
+                                            + currentAddress,
+                                        buffer,
+                                        bytesToRead);
+            currentAddress += bytesToRead;
+        }
+    }
+
+    return (bytesToRead);
 }

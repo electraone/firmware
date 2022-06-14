@@ -40,4 +40,7 @@ protected:
     uint8_t header[headerMaxSize];
     size_t headerLength;
     bool isFullMessageInHeader;
+
+private:
+    size_t readBytesInternal(uint8_t *buffer, size_t length);
 };
