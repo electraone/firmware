@@ -30,7 +30,7 @@ void handleMidiUsbDevSysEx(uint8_t cable,
                            uint16_t sysExSize,
                            bool complete)
 {
-    // \todo acceoting Electra SysEx messages on non-CTRL port will be replaced
+    // \todo accepting Electra SysEx messages on non-CTRL port will be replaced
     // with message routing. This is a quick fix for now, to allow @jhh working
     // on his ableton preset.
     static bool electraCommand = false;
@@ -43,7 +43,7 @@ void handleMidiUsbDevSysEx(uint8_t cable,
     }
 
     if (electraCommand && cable == electraCommandPort) {
-        handlerMidiUsbDevCtrl.process(sysExData, sysExSize, complete);
+        handlerMidiUsbDevCtrl.process(sysExData, sysExSize, complete, cable);
     } else {
         if (cable == 0) {
             handlerMidiUsbDev1.process(sysExData, sysExSize, complete);

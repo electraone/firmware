@@ -40,7 +40,7 @@ public:
     // \todo these will be moved elsewhere
     virtual void handleIncomingControlMessage(MidiInput &midiInput,
                                               MidiMessage &midiMessage);
-    virtual void handleElectraSysex(const SysexBlock &sysexBlock);
+    virtual void handleElectraSysex(uint8_t port, const SysexBlock &sysexBlock);
     virtual void execute(const char *filename);
     virtual bool handleCtrlFileReceived(LocalFile file,
                                         ElectraCommand::Object fileType);

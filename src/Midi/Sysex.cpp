@@ -7,7 +7,9 @@
 // \todo stopFlush belongs to the System class
 extern uint8_t stopFlush;
 
-bool sendSysExFile(const char *filename, ElectraCommand::Object fileType)
+bool sendSysExFile(uint8_t port,
+                   const char *filename,
+                   ElectraCommand::Object fileType)
 {
     FileIoStream file;
     uint32_t i = 0;
@@ -25,7 +27,7 @@ bool sendSysExFile(const char *filename, ElectraCommand::Object fileType)
     }
 
     stopFlush = 1;
-    sendSysExHeader();
+    sendSysExHeader(port);
 
     data[0] = FILE_UPLOAD;
     data[1] = (uint8_t)fileType;
@@ -40,7 +42,7 @@ bool sendSysExFile(const char *filename, ElectraCommand::Object fileType)
             data[byteInPacket] = file.read();
 
             if (byteInPacket == 3) {
-                sendSysExData(data, 4, USB_MIDI_PORT_CTRL);
+                sendSysExData(data, 4, port);
             }
 
             i++;
@@ -59,14 +61,15 @@ bool sendSysExFile(const char *filename, ElectraCommand::Object fileType)
 	   */
     byteInPacket = packet % 4;
     data[byteInPacket] = SYSEX_END;
-    sendSysExData(data, byteInPacket + 1, USB_MIDI_PORT_CTRL);
+    sendSysExData(data, byteInPacket + 1, port);
 
     stopFlush = 0;
 
     return (true);
 }
 
-void sendElectraInfo(const char *electraInfoSerial,
+void sendElectraInfo(uint8_t port,
+                     const char *electraInfoSerial,
                      uint8_t electraInfoHwRevision)
 {
     uint8_t data[128];
@@ -79,7 +82,7 @@ void sendElectraInfo(const char *electraInfoSerial,
             electraInfoHwRevision - 200);
 
     stopFlush = 1;
-    sendSysExHeader();
+    sendSysExHeader(port);
 
     data[0] = FILE_UPLOAD;
     data[1] = ELECTRA_INFO;
@@ -96,18 +99,18 @@ void sendElectraInfo(const char *electraInfoSerial,
     size_t jsonSize = strlen(jsonStart);
 
     data[jsonSize + 2] = SYSEX_END;
-    sendSysExData(data, jsonSize + 3, USB_MIDI_PORT_CTRL);
+    sendSysExData(data, jsonSize + 3, port);
 
     stopFlush = 0;
 }
 
-void sendMemoryInfo(void)
+void sendMemoryInfo(uint8_t port)
 {
     uint8_t data[128];
     StaticJsonDocument<128> doc;
 
     stopFlush = 1;
-    sendSysExHeader();
+    sendSysExHeader(port);
 
     data[0] = FILE_UPLOAD;
     data[1] = MEMORY_INFO;
@@ -121,18 +124,18 @@ void sendMemoryInfo(void)
     size_t jsonSize = strlen(jsonStart);
 
     data[jsonSize + 2] = SYSEX_END;
-    sendSysExData(data, jsonSize + 3, USB_MIDI_PORT_CTRL);
+    sendSysExData(data, jsonSize + 3, port);
 
     stopFlush = 0;
 }
 
-void sendAppInfo(void)
+void sendAppInfo(uint8_t port)
 {
     uint8_t data[256];
     StaticJsonDocument<256> doc;
 
     stopFlush = 1;
-    sendSysExHeader();
+    sendSysExHeader(port);
 
     data[0] = FILE_UPLOAD;
     data[1] = APP_INFO;
@@ -150,17 +153,17 @@ void sendAppInfo(void)
     size_t jsonSize = strlen(jsonStart);
 
     data[jsonSize + 2] = SYSEX_END;
-    sendSysExData(data, jsonSize + 3, USB_MIDI_PORT_CTRL);
+    sendSysExData(data, jsonSize + 3, port);
 
     stopFlush = 0;
 }
 
-void sendNack(void)
+void sendNack(uint8_t port)
 {
     uint8_t data[5];
 
     stopFlush = 1;
-    sendSysExHeader();
+    sendSysExHeader(port);
 
     data[0] = EVENT_MESSAGE;
     data[1] = NACK;
@@ -168,88 +171,88 @@ void sendNack(void)
     data[3] = 0x00;
     data[4] = SYSEX_END;
 
-    sendSysExData(data, 5, USB_MIDI_PORT_CTRL);
+    sendSysExData(data, 5, port);
 
     stopFlush = 0;
 }
 
-void sendAck(void)
+void sendAck(uint8_t port)
 {
     uint8_t data[5];
 
     stopFlush = 1;
-    sendSysExHeader();
+    sendSysExHeader(port);
 
     data[0] = EVENT_MESSAGE;
     data[1] = ACK;
     data[2] = 0x00;
     data[3] = 0x00;
     data[4] = SYSEX_END;
-    sendSysExData(data, 5, USB_MIDI_PORT_CTRL);
+    sendSysExData(data, 5, port);
 
     stopFlush = 0;
 }
 
-void sendPresetSwitch(uint8_t bankNumber, uint8_t slotId)
+void sendPresetSwitch(uint8_t port, uint8_t bankNumber, uint8_t slotId)
 {
     uint8_t data[5];
 
     stopFlush = 1;
 
-    sendSysExHeader();
+    sendSysExHeader(port);
     data[0] = EVENT_MESSAGE;
     data[1] = PRESET_SWITCH;
     data[2] = bankNumber;
     data[3] = slotId;
     data[4] = SYSEX_END;
-    sendSysExData(data, 5, USB_MIDI_PORT_CTRL);
+    sendSysExData(data, 5, port);
 
     stopFlush = 0;
 }
 
-void sendSnapshotChange(void)
+void sendSnapshotChange(uint8_t port)
 {
     uint8_t data[3];
 
     stopFlush = 1;
 
-    sendSysExHeader();
+    sendSysExHeader(port);
     data[0] = EVENT_MESSAGE;
     data[1] = SNAPSHOT_CHANGE;
     data[2] = SYSEX_END;
-    sendSysExData(data, 3, USB_MIDI_PORT_CTRL);
+    sendSysExData(data, 3, port);
 
     stopFlush = 0;
 }
 
-void sendSnapshotBankChange(uint8_t bankNumber)
+void sendSnapshotBankChange(uint8_t port, uint8_t bankNumber)
 {
     uint8_t data[4];
 
     stopFlush = 1;
 
-    sendSysExHeader();
+    sendSysExHeader(port);
     data[0] = EVENT_MESSAGE;
     data[1] = SNAPSHOT_BANK_SWITCH;
     data[2] = bankNumber;
     data[3] = SYSEX_END;
-    sendSysExData(data, 4, USB_MIDI_PORT_CTRL);
+    sendSysExData(data, 4, port);
 
     stopFlush = 0;
 }
 
-void sendPresetSlotChange(void)
+void sendPresetSlotChange(uint8_t port)
 {
     logMessage("sendPresetSlotChange: sending message");
     uint8_t data[3];
 
     stopFlush = 1;
 
-    sendSysExHeader();
+    sendSysExHeader(port);
     data[0] = EVENT_MESSAGE;
     data[1] = PRESET_LIST_CHANGE;
     data[2] = SYSEX_END;
-    sendSysExData(data, 3, USB_MIDI_PORT_CTRL);
+    sendSysExData(data, 3, port);
 
     stopFlush = 0;
 }
@@ -257,9 +260,9 @@ void sendPresetSlotChange(void)
 /*
  * send USB MIDI packets
  */
-void sendSysExData(const uint8_t *data, uint32_t length, uint8_t cable)
+void sendSysExData(const uint8_t *data, uint32_t length, uint8_t port)
 {
-    cable = (cable & 0x0F) << 4;
+    uint8_t cable = (port & 0x0F) << 4;
 
     while (length > 3) {
         usb_midi_write_packed(0x04 | cable | (data[0] << 8) | (data[1] << 16)
@@ -277,7 +280,7 @@ void sendSysExData(const uint8_t *data, uint32_t length, uint8_t cable)
     }
 }
 
-void sendSysExHeader(void)
+void sendSysExHeader(uint8_t port)
 {
     uint8_t data[4];
     uint32_t manufacturerSysexId = SYSEX_MANUFACTURER;
@@ -287,5 +290,5 @@ void sendSysExHeader(void)
     data[2] = (manufacturerSysexId >> 8) & 0xFF;
     data[3] = manufacturerSysexId & 0xFF;
 
-    sendSysExData(data, 4, USB_MIDI_PORT_CTRL);
+    sendSysExData(data, 4, port);
 }

@@ -17,8 +17,10 @@ public:
 
     virtual ~SysexHandler() = default;
 
-    virtual void
-        process(const uint8_t *sysExData, uint16_t sysExSize, bool complete)
+    virtual void process(const uint8_t *sysExData,
+                         uint16_t sysExSize,
+                         bool complete,
+                         int8_t portOverride = -1)
     {
         App *app = App::get();
 

@@ -56,7 +56,7 @@ void App::handleIncomingControlMessage(MidiInput &midiInput,
 {
 }
 
-void App::handleElectraSysex(const SysexBlock &sysexBlock)
+void App::handleElectraSysex(uint8_t port, const SysexBlock &sysexBlock)
 {
 }
 

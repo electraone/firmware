@@ -53,23 +53,30 @@
 
 #define USB_MIDI_PORT_CTRL 2
 
-bool sendSysExFile(const char *filename, ElectraCommand::Object fileType);
-void sendMidiLearn(const char *msg,
+bool sendSysExFile(uint8_t port,
+                   const char *filename,
+                   ElectraCommand::Object fileType);
+void sendMidiLearn(uint8_t portToTransmitOn,
+                   const char *msg,
                    uint8_t port,
                    uint8_t channel,
                    uint16_t parameterId,
                    uint16_t value);
-void sendMidiLearnSysex(uint8_t port, uint8_t *sysExData, uint16_t sysExLength);
-void sendElectraInfo(const char *electraInfoSerial,
+void sendMidiLearnSysex(uint8_t portToTransmitOn,
+                        uint8_t port,
+                        uint8_t *sysExData,
+                        uint16_t sysExLength);
+void sendElectraInfo(uint8_t port,
+                     const char *electraInfoSerial,
                      uint8_t electraInfoHwRevision);
-void sendMemoryInfo(void);
-void sendAppInfo(void);
-void sendNack(void);
-void sendAck(void);
-void sendPresetSwitch(uint8_t bankNumber, uint8_t slotId);
-void sendSnapshotChange(void);
-void sendSnapshotBankChange(uint8_t bankNumber);
-void sendPresetSlotChange(void);
+void sendMemoryInfo(uint8_t port);
+void sendAppInfo(uint8_t port);
+void sendNack(uint8_t port);
+void sendAck(uint8_t port);
+void sendPresetSwitch(uint8_t port, uint8_t bankNumber, uint8_t slotId);
+void sendSnapshotChange(uint8_t port);
+void sendSnapshotBankChange(uint8_t port, uint8_t bankNumber);
+void sendPresetSlotChange(uint8_t port);
 
-void sendSysExData(const uint8_t *data, uint32_t length, uint8_t cable);
-void sendSysExHeader(void);
+void sendSysExData(const uint8_t *data, uint32_t length, uint8_t port);
+void sendSysExHeader(uint8_t port);

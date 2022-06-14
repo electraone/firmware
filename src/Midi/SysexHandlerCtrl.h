@@ -23,7 +23,8 @@ public:
 
     void process(const uint8_t *sysExData,
                  uint16_t sysExSize,
-                 bool complete) override
+                 bool complete,
+                 int8_t portOverride = -1) override
     {
         uint16_t decodedDataSize = 0;
 
@@ -128,6 +129,9 @@ public:
     	 * handle last packet of the sysex transfer
     	 */
         if (complete) {
+            bool callbackStatus = true;
+            uint8_t portUsed = (portOverride != -1) ? portOverride : port;
+
             // Close the sysex block
             sysexBlock.close();
 
@@ -138,22 +142,26 @@ public:
 
                 LocalFile receivedFile(filename);
 
-                if (App::get()->handleCtrlFileReceived(receivedFile,
-                                                       fileType)) {
-                    sendAck();
+                callbackStatus =
+                    App::get()->handleCtrlFileReceived(receivedFile, fileType);
+
+                App::get()->enableMidi = true;
+                System::tasks.enableMidi();
+
+                if (callbackStatus == true) {
+                    sendAck(portUsed);
                 } else {
-                    sendNack();
+                    sendNack(portUsed);
                 }
             } else {
-                processElectraSysex(sysexBlock);
+                processElectraSysex(portUsed, sysexBlock);
+                App::get()->enableMidi = true;
+                System::tasks.enableMidi();
             }
-
-            App::get()->enableMidi = true;
-            System::tasks.enableMidi();
 
             if (fileType == ElectraCommand::Object::FilePreset
                 || fileType == ElectraCommand::Object::FileLua) {
-                sendPresetSlotChange();
+                sendPresetSlotChange(portUsed);
             }
 
             packetNr = 0;
@@ -163,7 +171,7 @@ public:
         }
     }
 
-    static void processElectraSysex(const SysexBlock &sysexBlock)
+    static void processElectraSysex(uint8_t port, const SysexBlock &sysexBlock)
     {
         if (sysexBlock.isElectraSysex()) {
             ElectraCommand cmd = sysexBlock.getElectraSysexCommand();
@@ -189,54 +197,59 @@ public:
 
                 if (object == ElectraCommand::Object::FilePreset
                     || object == ElectraCommand::Object::FileLua) {
-                    sendPresetSlotChange();
+                    sendPresetSlotChange(port);
                 }
 
                 if (App::get()->handleCtrlFileReceived(file, object) == true) {
                     logMessage(
                         "processElectraSysex::handleElectraSysex: sending ACK");
-                    sendAck();
+                    sendAck(port);
                 } else {
                     logMessage(
                         "processElectraSysex::handleElectraSysex: sending NACK");
-                    sendNack();
+                    sendNack(port);
                 }
             }
             if (cmd.isFileRequest()) {
                 if (object == ElectraCommand::Object::FilePreset) {
-                    if (sendSysExFile(System::context.getCurrentPresetFile(),
+                    if (sendSysExFile(port,
+                                      System::context.getCurrentPresetFile(),
                                       object)) {
                         logMessage("processElectraSysex::handleElectraSysex: "
                                    "preset sysex sent to the host");
                     }
                 } else if (object == ElectraCommand::Object::FileLua) {
-                    if (sendSysExFile(System::context.getCurrentLuaFile(),
+                    if (sendSysExFile(port,
+                                      System::context.getCurrentLuaFile(),
                                       object)) {
                         logMessage("processElectraSysex::handleElectraSysex: "
                                    "lua sysex sent to the host");
                     }
                 } else if (object == ElectraCommand::Object::FileConfig) {
-                    if (sendSysExFile(System::context.getCurrentConfigFile(),
+                    if (sendSysExFile(port,
+                                      System::context.getCurrentConfigFile(),
                                       object)) {
                         logMessage("processElectraSysex::handleElectraSysex: "
                                    "config sysex sent to the host");
                     }
                 } else if (object == ElectraCommand::Object::MemoryInfo) {
-                    sendMemoryInfo();
+                    sendMemoryInfo(port);
                     logMessage("processElectraSysex::handleElectraSysex: "
                                "memoryInfo sysex sent to the host");
                 } else if (object == ElectraCommand::Object::AppInfo) {
-                    sendAppInfo();
+                    sendAppInfo(port);
                     logMessage("processElectraSysex::handleElectraSysex: "
                                "appInfo sysex sent to the host");
                 } else if (object == ElectraCommand::Object::ElectraInfo) {
                     sendElectraInfo(
+                        port,
                         System::runtimeInfo.getElectraInfoSerial(),
                         System::runtimeInfo.getElectraInfoHwRevision());
                     logMessage("processElectraSysex::handleElectraSysex: "
                                "electraInfo sysex sent to the host");
                 } else {
                     App::get()->handleElectraSysex(
+                        port,
                         sysexBlock); // this is to call application based requests
                 }
             } else if (cmd.isExecute()) {
@@ -252,6 +265,7 @@ public:
                                "execute Lua: \"%s\"",
                                buffer);
                     runLuaString((char *)buffer);
+                    sendAck(port);
                 } else {
                     logMessage("processElectraSysex::handleElectraSysex: "
                                "Lua script is not available");
@@ -283,7 +297,7 @@ public:
                         logMessage("processElectraSysex: removing file %s: %s",
                                    fileToRemove,
                                    (status == true) ? "OK" : "fail");
-                        sendPresetSlotChange();
+                        sendPresetSlotChange(port);
                     }
 
                     if (App::get()->handleCtrlFileRemoved(
@@ -291,16 +305,16 @@ public:
                         == true) {
                         logMessage(
                             "processElectraSysex::handleElectraSysex: sending ACK");
-                        sendAck();
+                        sendAck(port);
                     } else {
                         logMessage(
                             "processElectraSysex::handleElectraSysex: sending NACK");
-                        sendNack();
+                        sendNack(port);
                     }
                 } else {
                     logMessage(
                         "processElectraSysex: removed command passed to the app");
-                    App::get()->handleElectraSysex(sysexBlock);
+                    App::get()->handleElectraSysex(port, sysexBlock);
                 }
             } else if (cmd.isSystemCall()) {
                 if ((uint8_t)object == 0x7F) {
@@ -317,9 +331,10 @@ public:
                         logMessage("processElectraSysex::LOGGER ON");
                     }
                     System::runtimeInfo.setLoggerStatus(loggerEnabled);
+                    sendAck(port);
                 }
             } else {
-                App::get()->handleElectraSysex(sysexBlock);
+                App::get()->handleElectraSysex(port, sysexBlock);
             }
         } else {
             logMessage("processElectraSysex: "
