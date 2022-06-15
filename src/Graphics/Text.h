@@ -43,6 +43,7 @@ public:
     static uint16_t getTextWidth(const char *text, TextStyle textStyle);
 
 private:
+    static uint16_t chromaColors[6];
     static uint16_t getCharSize(TextStyle textStyle);
     static uint16_t getCharPxHeight(TextStyle textStyle);
     static uint16_t getCharPositionY(TextStyle textStyle);

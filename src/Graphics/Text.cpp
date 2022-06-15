@@ -279,6 +279,7 @@ void Text::printText(uint16_t x,
             if ((textStyle == TextStyle::largeTransparent)
                 || (textStyle == TextStyle::mediumTransparent)
                 || (textStyle == TextStyle::smallTransparent)) {
+                setBteChromaColor(0x000000);
                 bteCopyChroma(FRAME_UI_TOOLKIT,
                               charXposition,
                               charYposition,
@@ -289,14 +290,15 @@ void Text::printText(uint16_t x,
                               charHeight);
             } else {
                 charYposition += (color * 60);
-                bteCopy(FRAME_UI_TOOLKIT,
-                        charXposition,
-                        charYposition,
-                        address,
-                        x + xPosition,
-                        y,
-                        charWidth,
-                        charHeight);
+                setBteChromaColor(chromaColors[color]);
+                bteCopyChroma(FRAME_UI_TOOLKIT,
+                              charXposition,
+                              charYposition,
+                              address,
+                              x + xPosition,
+                              y,
+                              charWidth,
+                              charHeight);
             }
         }
 
@@ -419,3 +421,9 @@ uint16_t Text::getCharPxHeight(TextStyle textStyle)
 
     return (0);
 }
+
+// The backround colours of the colour version of the texts.
+// The colours are used to filter out the text background using
+// RA8876 Chroma BTE
+uint16_t Text::chromaColors[6] = { 0xFFFF, 0xF2EA, 0xF4A0,
+                                   0x54FD, 0x0533, 0xc232 };

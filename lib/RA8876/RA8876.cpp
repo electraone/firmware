@@ -1273,6 +1273,13 @@ void RA8876::bteExpansion(uint32_t srcAddress,
     setBteColorDepth();
 }
 
+void RA8876::setBteChromaColor(uint32_t color)
+{
+    writeReg(RA8876_REG_BGCR, color >> 11 << 3);
+    writeReg(RA8876_REG_BGCG, ((color >> 5) & 0x3F) << 2);
+    writeReg(RA8876_REG_BGCB, (color & 0x1F) << 3);    
+}
+
 void RA8876::setBacklight(boolean on)
 {
     writeReg(RA8876_REG_DZ_LENGTH, 127); // set deadzone
