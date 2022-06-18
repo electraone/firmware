@@ -1,7 +1,11 @@
 #include "Envelope.h"
 #include "LookAndFeel.h"
 
-Envelope::Envelope() : activeSegment(1), baselineY(0), delayEnabled(false)
+Envelope::Envelope()
+    : activeSegment(1),
+      baselineY(0),
+      delayEnabled(false),
+      activeSegmentIsShown(false)
 {
     points.push_back(Point()); // Starting point
     points.push_back(Point()); // Delay
@@ -47,6 +51,36 @@ void Envelope::setActiveSegment(uint8_t newActiveSegment)
     activeSegment = newActiveSegment;
 }
 
+void Envelope::showActiveSegment(bool shouldBeShown)
+{
+    activeSegmentIsShown = shouldBeShown;
+    repaint();
+}
+
+void Envelope::switchToNextActiveHandle(void)
+{
+    if (activeSegment
+        < (points.size() - 3)) { // without start, delay and last point
+        activeSegment++;
+        setActiveSegment(activeSegment);
+        repaint();
+    }
+}
+
+void Envelope::switchToPreviousActiveHandle(void)
+{
+    if (activeSegment > 0) {
+        activeSegment--;
+        setActiveSegment(activeSegment);
+        repaint();
+    }
+}
+
+uint8_t Envelope::getActiveSegment(void) const
+{
+    return (activeSegment);
+}
+
 void Envelope::useDelay(bool shouldBeUsed)
 {
     delayEnabled = shouldBeUsed;
@@ -89,7 +123,13 @@ void Envelope::paint(Graphics &g)
     // Compute points on the envelope contour
     computePoints(getLocalBounds());
 
-    LookAndFeel::paintEnvelope(g, getLocalBounds(), colour, baselineY, points);
+    LookAndFeel::paintEnvelope(g,
+                               getLocalBounds(),
+                               colour,
+                               baselineY,
+                               points,
+                               activeSegment,
+                               activeSegmentIsShown);
 }
 
 void Envelope::resized(void)

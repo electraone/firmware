@@ -54,7 +54,9 @@ public:
                               const Rectangle &bounds,
                               uint32_t colour,
                               uint16_t baselineY,
-                              const std::vector<Point> &points);
+                              const std::vector<Point> &points,
+                              uint8_t activeSegment,
+                              bool showActiveSegment);
 
 private:
     static void paintEnvelopeContour(Graphics &g,
@@ -77,7 +79,9 @@ private:
                                    const Rectangle &bounds,
                                    uint32_t colour,
                                    uint16_t baselineY,
-                                   const std::vector<Point> &points);
+                                   const std::vector<Point> &points,
+                                   uint8_t activeSegment,
+                                   bool showActiveSegment);
 
     static bool findIntersection(uint16_t lineY,
                                  const Point &C,

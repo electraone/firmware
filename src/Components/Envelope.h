@@ -17,6 +17,10 @@ public:
     virtual void setMax(uint8_t handle, float newMax);
 
     void setActiveSegment(uint8_t newActiveSegment);
+    void switchToNextActiveHandle(void);
+    void switchToPreviousActiveHandle(void);
+    uint8_t getActiveSegment(void) const;
+    void showActiveSegment(bool shouldBeShown);
     void useDelay(bool shouldBeUsed);
 
     virtual void onTouchMove(const TouchEvent &touchEvent) override;
@@ -41,6 +45,8 @@ protected:
     int16_t baselineY;
     bool delayEnabled;
     uint32_t colour;
+    uint8_t activeSegment;
+    bool activeSegmentIsShown;
 
 private:
     void paintContour(Graphics &g);
@@ -52,6 +58,4 @@ private:
                                  Point &C,
                                  Point &D,
                                  Point &intersection);
-
-    uint8_t activeSegment;
 };

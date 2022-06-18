@@ -231,11 +231,14 @@ void LookAndFeel::paintEnvelope(Graphics &g,
                                 const Rectangle &bounds,
                                 uint32_t colour,
                                 uint16_t baselineY,
-                                const std::vector<Point> &points)
+                                const std::vector<Point> &points,
+                                uint8_t activeSegment,
+                                bool showActiveSegment)
 {
     g.fillAll(Colours::black);
 
-    paintEnvelopeFills(g, bounds, colour, baselineY, points);
+    paintEnvelopeFills(
+        g, bounds, colour, baselineY, points, activeSegment, showActiveSegment);
     paintEnvelopeMarkers(g, bounds, colour, baselineY, points);
     paintEnvelopeBaseline(g, bounds, colour, baselineY);
     paintEnvelopeContour(g, bounds, colour, points);
@@ -281,18 +284,27 @@ void LookAndFeel::paintEnvelopeFills(Graphics &g,
                                      const Rectangle &bounds,
                                      uint32_t colour,
                                      uint16_t baselineY,
-                                     const std::vector<Point> &points)
+                                     const std::vector<Point> &points,
+                                     uint8_t activeSegment,
+                                     bool showActiveSegment)
 {
     uint32_t darker = Colours::darker(colour, 0.2f);
 
     for (uint8_t i = 0; i < std::max(0, (int)(points.size() - 1)); i++) {
         Point intersection(0, 0);
 
+        if (showActiveSegment
+            && (i == (activeSegment + 1))) { // the delay is ignored
+            g.setColour(colour);
+        } else {
+            g.setColour(darker);
+        }
+
         if (findIntersection(
                 baselineY, points[i], points[i + 1], intersection)) {
             // The segment intersects with the baseline
 
-            g.setColour(darker);
+            //g.setColour(darker);
 
             // Paint two wedges
             g.fillTriangle(points[i].x,
@@ -322,7 +334,7 @@ void LookAndFeel::paintEnvelopeFills(Graphics &g,
                 yi = (points[i].y > points[i + 1].y) ? i + 1 : i;
             }
 
-            g.setColour(darker);
+            //g.setColour(darker);
 
             // Paint the wedge
             g.fillTriangle(points[i].x,
