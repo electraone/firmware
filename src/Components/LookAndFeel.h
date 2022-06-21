@@ -6,6 +6,9 @@
 class LookAndFeel
 {
 public:
+    static uint32_t backgroundColour;
+    static uint32_t altBackgroundColour;
+
     static void paintBarHorizontal(Graphics &g,
                                    const Rectangle &bounds,
                                    uint32_t colour,

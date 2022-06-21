@@ -1,4 +1,5 @@
 #include "Knob.h"
+#include "LookAndFeel.h"
 
 Knob::Knob()
 {
@@ -54,7 +55,7 @@ void Knob::paint(Graphics &g)
     uint16_t yTrackEnd = sinf(angleTrackEnd) * (float)radius + xCentre;
 
     // Clear the component area
-    g.fillAll(Colours::black);
+    g.fillAll(LookAndFeel::backgroundColour);
 
     //Paint the track
     g.setColour(colourTrack);

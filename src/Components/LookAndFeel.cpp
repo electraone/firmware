@@ -1,5 +1,8 @@
 #include "LookAndFeel.h"
 
+uint32_t LookAndFeel::backgroundColour = Colours::black;
+uint32_t LookAndFeel::altBackgroundColour = 0x0081;
+
 void LookAndFeel::paintBarHorizontal(Graphics &g,
                                      const Rectangle &bounds,
                                      uint32_t colour,
@@ -14,9 +17,6 @@ void LookAndFeel::paintBarHorizontal(Graphics &g,
 
     uint16_t barX = map(0, min, max, 0, bounds.getWidth());
     uint16_t barWidth = map(val, min, max, 0, bounds.getWidth()) - barX;
-
-    // Clear the component area
-    g.fillAll(Colours::black);
 
     // Paint the track background
     g.setColour(colourTrack);
@@ -44,9 +44,6 @@ void LookAndFeel::paintBarVertical(Graphics &g,
 
     uint16_t barY = map(0, min, max, 0, bounds.getHeight());
     uint16_t barHeight = map(val, min, max, 0, bounds.getHeight()) - barY;
-
-    // Clear the component area
-    g.fillAll(Colours::black);
 
     // Paint the track background
     g.setColour(colourTrack);
@@ -90,9 +87,6 @@ void LookAndFeel::paintSliderHorizontal(Graphics &g,
     uint16_t indicatorX =
         map(val, min, max, 0, bounds.getWidth() - indicatorSize);
 
-    // Clear the component area
-    g.fillAll(Colours::black);
-
     // Slider track
     g.setColour(colourTrack);
     g.fillRect(0, padding + indicatorRadius - 2, bounds.getWidth(), 4);
@@ -116,9 +110,6 @@ void LookAndFeel::paintSliderVertical(Graphics &g,
     uint16_t indicatorY =
         map(val, min, max, 0, bounds.getHeight() - indicatorSize);
 
-    // Clear the component area
-    g.fillAll(Colours::black);
-
     // Slider track
     g.setColour(colourTrack);
     g.fillRect(padding + indicatorRadius - 2, 0, 4, bounds.getHeight());
@@ -137,9 +128,6 @@ void LookAndFeel::paintList(Graphics &g,
                             const ListData *items,
                             uint8_t activeIndex)
 {
-    // Paint the background
-    g.fillAll(Colours::black);
-
     if (items->getByIndex(activeIndex).isBitmapEmpty()) {
         // Print the label
         g.printText(0,
@@ -180,15 +168,16 @@ void LookAndFeel::paintSet(Graphics &g,
 
     copyString(labelAdjusted, label, MaxSetLabelLength);
 
-    g.fillAll(Colours::black);
+    uint16_t textWidth =
+        g.getTextWidth(labelAdjusted, TextStyle::smallTransparent);
 
     g.setColour(colour);
 
-    for (uint16_t i = 0; i <= (width / 2); i += 3) {
+    for (uint16_t i = 0; i <= (width / 2) - (textWidth / 2) - 3; i += 3) {
         g.drawPixel(i, 6);
     }
 
-    for (uint16_t i = width; i >= (width / 2); i -= 3) {
+    for (uint16_t i = width; i >= (width / 2) + (textWidth / 2) + 3; i -= 3) {
         g.drawPixel(i, 6);
     }
 
@@ -210,16 +199,10 @@ void LookAndFeel::paintSet(Graphics &g,
     }
 
     if (strlen(labelAdjusted) > 0) {
-        g.textPlaceHolder(0,
-                          0,
-                          labelAdjusted,
-                          TextStyle::smallWhiteOnBlack,
-                          width,
-                          TextAlign::center);
         g.printText(0,
                     0,
                     labelAdjusted,
-                    TextStyle::smallWhiteOnBlack,
+                    TextStyle::smallTransparent,
                     width,
                     TextAlign::center);
     }
@@ -235,8 +218,6 @@ void LookAndFeel::paintEnvelope(Graphics &g,
                                 uint8_t activeSegment,
                                 bool showActiveSegment)
 {
-    g.fillAll(Colours::black);
-
     paintEnvelopeFills(
         g, bounds, colour, baselineY, points, activeSegment, showActiveSegment);
     paintEnvelopeMarkers(g, bounds, colour, baselineY, points);

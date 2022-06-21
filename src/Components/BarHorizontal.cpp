@@ -30,6 +30,7 @@ void BarHorizontal::onTouchUp(const TouchEvent &touchEvent)
 
 void BarHorizontal::paint(Graphics &g)
 {
+    g.fillAll(LookAndFeel::backgroundColour);
     LookAndFeel::paintBarHorizontal(
         g, getBounds(), colour, value.getMin(), value.getMax(), value.get());
 }

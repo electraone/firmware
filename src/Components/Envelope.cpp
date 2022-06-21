@@ -122,7 +122,7 @@ void Envelope::paint(Graphics &g)
 
     // Compute points on the envelope contour
     computePoints(getLocalBounds());
-
+    g.fillAll(LookAndFeel::backgroundColour);
     LookAndFeel::paintEnvelope(g,
                                getLocalBounds(),
                                colour,

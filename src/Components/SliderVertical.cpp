@@ -32,6 +32,7 @@ void SliderVertical::onTouchUp(const TouchEvent &touchEvent)
 
 void SliderVertical::paint(Graphics &g)
 {
+    g.fillAll(LookAndFeel::backgroundColour);
     LookAndFeel::paintSliderVertical(
         g, getBounds(), colour, value.getMin(), value.getMax(), value.get());
 }

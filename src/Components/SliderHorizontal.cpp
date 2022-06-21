@@ -30,6 +30,7 @@ void SliderHorizontal::onTouchUp(const TouchEvent &touchEvent)
 
 void SliderHorizontal::paint(Graphics &g)
 {
+    g.fillAll(LookAndFeel::backgroundColour);
     LookAndFeel::paintSliderHorizontal(
         g, getBounds(), colour, value.getMin(), value.getMax(), value.get());
 }

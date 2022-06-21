@@ -43,6 +43,7 @@ void List::onPotTouchUp(const PotEvent &potEvent)
 
 void List::paint(Graphics &g)
 {
+    g.fillAll(LookAndFeel::backgroundColour);
     LookAndFeel::paintList(g, getBounds(), colour, getList(), index);
 }
 
