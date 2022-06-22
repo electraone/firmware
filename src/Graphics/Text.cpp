@@ -106,7 +106,7 @@ static const uint8_t charWidthMedium[] = {
     7, // E
     7, // F
     10, // G
-    10, // H
+    9, // H
     3, // I
     5, // J
     9, // K
@@ -119,7 +119,7 @@ static const uint8_t charWidthMedium[] = {
     9, // R
     8, // S
     9, // T
-    11, // U
+    10, // U
     10, // V
     15, // W
     10, // X
