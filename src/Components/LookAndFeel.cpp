@@ -67,11 +67,13 @@ void LookAndFeel::paintPad(Graphics &g,
 
     // Paint the background
     g.setColour(state == true ? colourOn : colourOff);
-    g.fillRoundRect(0, 0, bounds.getWidth(), bounds.getHeight(), 8);
+    g.fillRoundRect(
+        bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 8);
 
     // Paint the outline
     g.setColour(colour);
-    g.drawRoundRect(0, 0, bounds.getWidth(), bounds.getHeight(), 8);
+    g.drawRoundRect(
+        bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 8);
 }
 
 void LookAndFeel::paintSliderHorizontal(Graphics &g,
