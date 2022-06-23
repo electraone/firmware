@@ -57,7 +57,8 @@ bool LocalFile::writeAll(MemoryBlock &memoryBlock)
     static const size_t bufferSize = 200;
     File file;
 
-    file = Hardware::sdcard.createOutputStream(filepath);
+    file = Hardware::sdcard.createOutputStream(filepath,
+                                               FILE_WRITE | O_CREAT | O_TRUNC);
 
     if (!file) {
         logMessage("Localfile: Cannot open file failed: %s", filepath);
