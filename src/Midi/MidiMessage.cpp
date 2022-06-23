@@ -411,3 +411,32 @@ size_t MidiMessage::readSysExData(uint8_t *buffer, size_t length)
     }
     return (totalReadBytes);
 }
+
+// \todo this has been added to support External MIDI control of the Controller
+// app. It needs to be made more general or moved to the app.
+MidiMessage::Type MidiMessage::translateType(const char *typeText)
+{
+    if (typeText) {
+        if (strcmp(typeText, "cc7") == 0) {
+            return (MidiMessage::Type::ControlChange);
+        } else if (strcmp(typeText, "note") == 0) {
+            return (MidiMessage::Type::NoteOn);
+        } else if (strcmp(typeText, "program") == 0) {
+            return (MidiMessage::Type::ProgramChange);
+        }
+    }
+    return (MidiMessage::Type::InvalidType);
+}
+
+const char *MidiMessage::translateTypeToText(MidiMessage::Type messageType)
+{
+    if (messageType == MidiMessage::Type::ControlChange) {
+        return "cc7";
+    } else if (messageType == MidiMessage::Type::NoteOn) {
+        return "note";
+    } else if (messageType == MidiMessage::Type::ProgramChange) {
+        return "program";
+    }
+
+    return ("unknown");
+}
