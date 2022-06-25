@@ -27,6 +27,10 @@ public:
      */
     static bool (*routeMessageCallback)(MidiInput &midiInput,
                                         MidiMessage &midiMessage);
+    static void (*routePartialSysexCallback)(MidiInput &midiInput,
+                                             const uint8_t *sysExData,
+                                             uint16_t sysExSize,
+                                             bool complete);
     static void (*onMidiClockCallback)(MidiInput midiInput);
     static void (*onMidiStartCallback)(MidiInput midiInput);
     static void (*onMidiStopCallback)(MidiInput midiInput);

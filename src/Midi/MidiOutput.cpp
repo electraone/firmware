@@ -300,6 +300,18 @@ void MidiOutput::sendSysEx(MidiInterface::Type interface,
         interface, port, Direction::out, MidiMessage::Type::SystemExclusive);
 }
 
+void MidiOutput::sendSysExPartial(MidiInterface::Type interface,
+                                  uint8_t port,
+                                  const uint8_t *data,
+                                  uint16_t dataLength,
+                                  bool complete)
+{
+    MidiInterface::get(interface)->sendSysExPartial(
+        port, data, dataLength, complete);
+    indicate(
+        interface, port, Direction::out, MidiMessage::Type::SystemExclusive);
+}
+
 void MidiOutput::sendPitchBend(MidiInterface::Type interface,
                                uint8_t port,
                                uint8_t channel,

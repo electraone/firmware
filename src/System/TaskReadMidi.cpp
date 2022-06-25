@@ -89,9 +89,12 @@ void readMidi(void)
         MidiInput midiInput(message.getInterfaceType(), message.getPort());
 
         // Forward the message to other interfaces according to the config
-        if (!runRouteMessageCallback(midiInput, message)) {
-            logMessage("skipping the message");
-            continue;
+        // SysEx messages are handled in the SysexCallbacks.cpp
+        if (message.getType() != MidiMessage::Type::SystemExclusive) {
+            if (!runRouteMessageCallback(midiInput, message)) {
+                logMessage("skipping the message");
+                continue;
+            }
         }
 
         // Pass the message for further processing

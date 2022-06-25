@@ -102,6 +102,17 @@ public:
         }
     }
 
+    void sendSysExPartial(uint8_t port,
+                          const uint8_t *sysexData,
+                          uint16_t sysexDataLength,
+                          bool complete) const
+    {
+        if (USBDevices[port].midiDevice != NULL) {
+            USBDevices[port].midiDevice->sendSysEx(
+                sysexDataLength, sysexData, true, port);
+        }
+    }
+
     void sendPitchBend(uint8_t port,
                        uint8_t channel,
                        uint16_t value) const override

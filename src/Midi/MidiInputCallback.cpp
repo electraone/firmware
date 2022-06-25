@@ -8,6 +8,10 @@ MidiInputCallback::MidiInputCallback()
 bool (*MidiInputCallback::routeMessageCallback)(MidiInput &midiInput,
                                                 MidiMessage &midiMessage) =
     nullptr;
+void (*MidiInputCallback::routePartialSysexCallback)(MidiInput &midiInput,
+                                                     const uint8_t *sysExData,
+                                                     uint16_t sysExSize,
+                                                     bool complete) = nullptr;
 void (*MidiInputCallback::onMidiClockCallback)(MidiInput midiInput) = nullptr;
 void (*MidiInputCallback::onMidiStartCallback)(MidiInput midiInput) = nullptr;
 void (*MidiInputCallback::onMidiStopCallback)(MidiInput midiInput) = nullptr;

@@ -82,6 +82,14 @@ public:
         usbMIDI.sendSysEx(sysexDataLength, sysexData, false, port);
     }
 
+    void sendSysExPartial(uint8_t port,
+                          const uint8_t *sysexData,
+                          uint16_t sysexDataLength,
+                          bool complete) const override
+    {
+        usbMIDI.sendSysEx(sysexDataLength, sysexData, true, port);
+    }
+
     void sendPitchBend(uint8_t port,
                        uint8_t channel,
                        uint16_t value) const override

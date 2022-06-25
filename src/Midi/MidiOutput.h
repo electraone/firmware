@@ -62,6 +62,11 @@ public:
                           uint8_t port,
                           uint8_t *data,
                           uint16_t dataLength);
+    static void sendSysExPartial(MidiInterface::Type interface,
+                                 uint8_t port,
+                                 const uint8_t *data,
+                                 uint16_t dataLength,
+                                 bool complete);
     static void sendPitchBend(MidiInterface::Type interface,
                               uint8_t port,
                               uint8_t channel,

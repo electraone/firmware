@@ -33,6 +33,10 @@ public:
     virtual void sendSysEx(uint8_t port,
                            uint8_t *sysexData,
                            uint16_t sysexDataLength) const = 0;
+    virtual void sendSysExPartial(uint8_t port,
+                                  const uint8_t *sysexData,
+                                  uint16_t sysexDataLength,
+                                  bool complete) const = 0;
     virtual void
         sendPitchBend(uint8_t port, uint8_t channel, uint16_t value) const = 0;
     virtual void sendAfterTouchPoly(uint8_t port,

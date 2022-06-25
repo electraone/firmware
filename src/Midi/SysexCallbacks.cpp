@@ -15,6 +15,11 @@ void handleMidiIoSysExPort0(const uint8_t *sysExData,
                             uint16_t sysExSize,
                             bool complete)
 {
+    if (MidiInputCallback::routePartialSysexCallback) {
+        MidiInput midiInput(MidiInterface::Type::MidiIo, 0);
+        MidiInputCallback::routePartialSysexCallback(
+            midiInput, sysExData, sysExSize, complete);
+    }
     handlerMidiIo1.process(sysExData, sysExSize, complete);
 }
 
@@ -22,6 +27,11 @@ void handleMidiIoSysExPort1(const uint8_t *sysExData,
                             uint16_t sysExSize,
                             bool complete)
 {
+    if (MidiInputCallback::routePartialSysexCallback) {
+        MidiInput midiInput(MidiInterface::Type::MidiIo, 1);
+        MidiInputCallback::routePartialSysexCallback(
+            midiInput, sysExData, sysExSize, complete);
+    }
     handlerMidiIo2.process(sysExData, sysExSize, complete);
 }
 
@@ -40,6 +50,14 @@ void handleMidiUsbDevSysEx(uint8_t cable,
         && sysExData[3] == 0x45) {
         electraCommand = true;
         electraCommandPort = cable;
+    }
+
+    if (!electraCommand && (cable == 0 || cable == 1)) {
+        if (MidiInputCallback::routePartialSysexCallback) {
+            MidiInput midiInput(MidiInterface::Type::MidiUsbDev, cable);
+            MidiInputCallback::routePartialSysexCallback(
+                midiInput, sysExData, sysExSize, complete);
+        }
     }
 
     if (electraCommand && cable == electraCommandPort) {
@@ -63,6 +81,11 @@ void handleMidiUsbHostSysExPort0(const uint8_t *sysExData,
                                  uint16_t sysExSize,
                                  bool complete)
 {
+    if (MidiInputCallback::routePartialSysexCallback) {
+        MidiInput midiInput(MidiInterface::Type::MidiUsbHost, 0);
+        MidiInputCallback::routePartialSysexCallback(
+            midiInput, sysExData, sysExSize, complete);
+    }
     handlerMidiUsbHost1.process(sysExData, sysExSize, complete);
 }
 
@@ -70,5 +93,10 @@ void handleMidiUsbHostSysExPort1(const uint8_t *sysExData,
                                  uint16_t sysExSize,
                                  bool complete)
 {
+    if (MidiInputCallback::routePartialSysexCallback) {
+        MidiInput midiInput(MidiInterface::Type::MidiUsbHost, 1);
+        MidiInputCallback::routePartialSysexCallback(
+            midiInput, sysExData, sysExSize, complete);
+    }
     handlerMidiUsbHost2.process(sysExData, sysExSize, complete);
 }
