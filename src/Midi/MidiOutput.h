@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MidiMessage.h"
+#include "MidiMessageTransport.h"
 #include "CircularBuffer.h"
 
 class MidiOutput : public MidiJack
@@ -29,6 +30,12 @@ public:
     static void addToQueue(MidiMessageTransport &message);
     static void sendMessageNow(MidiMessageTransport &message);
 
+    static void send(MidiInterface::Type interface,
+                     uint8_t port,
+                     MidiMessage::Type type,
+                     uint8_t channel,
+                     uint8_t data1,
+                     uint8_t data2);
     static void sendControlChange(MidiInterface::Type interface,
                                   uint8_t port,
                                   uint8_t channel,

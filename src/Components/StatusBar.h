@@ -2,6 +2,7 @@
 
 #include "Component.h"
 #include "MidiInterface.h"
+#include "MidiMessageTransport.h"
 #include "MidiMessage.h"
 
 extern USBDevice USBDevices[];

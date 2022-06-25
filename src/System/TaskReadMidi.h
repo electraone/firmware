@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MidiMessage.h"
+#include "MidiInterface.h"
 #include "CircularBuffer.h"
 
 void readCtrlMidi(void);

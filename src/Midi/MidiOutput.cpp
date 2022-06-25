@@ -216,6 +216,18 @@ void MidiOutput::sendMessageNow(MidiMessageTransport &mmt)
                       mmt.getData2());
 }
 
+void MidiOutput::send(MidiInterface::Type interface,
+                      uint8_t port,
+                      MidiMessage::Type type,
+                      uint8_t channel,
+                      uint8_t data1,
+                      uint8_t data2)
+{
+    MidiInterface::get(interface)->send(port, type, channel, data1, data2);
+    indicate(
+        interface, port, Direction::out, MidiMessage::Type::NoteOn); // \todo
+}
+
 void MidiOutput::sendControlChange(MidiInterface::Type interface,
                                    uint8_t port,
                                    uint8_t channel,

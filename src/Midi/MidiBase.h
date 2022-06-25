@@ -1,12 +1,17 @@
 #pragma once
 
-#include <cstdint>
+#include "MidiMessage.h"
 
 class MidiBase
 {
 public:
     virtual ~MidiBase() = default;
 
+    virtual void send(uint8_t port,
+                      MidiMessage::Type type,
+                      uint8_t channel,
+                      uint8_t data1,
+                      uint8_t data2) const = 0;
     virtual void sendControlChange(uint8_t port,
                                    uint8_t parameterNumber,
                                    uint8_t value,

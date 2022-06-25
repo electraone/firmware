@@ -16,6 +16,18 @@ public:
 
     ~MidiUsbHost() = default;
 
+    void send(uint8_t port,
+              MidiMessage::Type type,
+              uint8_t channel,
+              uint8_t data1,
+              uint8_t data2) const override
+    {
+        if (USBDevices[port].midiDevice != NULL) {
+            USBDevices[port].midiDevice->send(
+                static_cast<uint8_t>(type), data1, data2, channel, port);
+        }
+    }
+
     void sendControlChange(uint8_t port,
                            uint8_t parameterNumber,
                            uint8_t value,

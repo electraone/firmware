@@ -2,6 +2,7 @@
 
 #include "helpers.h"
 #include "MidiMessage.h"
+#include "MidiInterface.h"
 
 extern "C" {
 #include "lauxlib.h"
