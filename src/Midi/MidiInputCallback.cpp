@@ -5,6 +5,9 @@ MidiInputCallback::MidiInputCallback()
     deviceManager.addMidiInputDeviceCallback(this);
 }
 
+bool (*MidiInputCallback::routeMessageCallback)(MidiInput &midiInput,
+                                                MidiMessage &midiMessage) =
+    nullptr;
 void (*MidiInputCallback::onMidiClockCallback)(MidiInput midiInput) = nullptr;
 void (*MidiInputCallback::onMidiStartCallback)(MidiInput midiInput) = nullptr;
 void (*MidiInputCallback::onMidiStopCallback)(MidiInput midiInput) = nullptr;

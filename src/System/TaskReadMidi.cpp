@@ -86,12 +86,20 @@ void readMidi(void)
                                        Direction::in,
                                        message.getType());
 
+        MidiInput midiInput(message.getInterfaceType(), message.getPort());
+
+        // Forward the message to other interfaces according to the config
+        if (!runRouteMessageCallback(midiInput, message)) {
+            logMessage("skipping the message");
+            continue;
+        }
+
         // Pass the message for further processing
         if (message.getType() == MidiMessage::Type::SystemExclusive) {
             // Ignore sysex for now. It is handled with callbacks (SysexCallbacks.cpp)
         } else if ((message.getType() == MidiMessage::Type::Clock)) {
             // process system real-time
-            MidiInput midiInput(message.getInterfaceType(), message.getPort());
+
             MidiInputCallback::deviceManager.handleIncomingMidiMessage(
                 midiInput, message);
             runOptionalCallbacks(midiInput,
@@ -144,6 +152,17 @@ void processMidi(void)
             }
         }
     }
+}
+
+/** Call optional callback function if it is linked.
+ */
+bool runRouteMessageCallback(MidiInput &midiInput, MidiMessage &midiMessage)
+{
+    if (MidiInputCallback::routeMessageCallback) {
+        return (
+            MidiInputCallback::routeMessageCallback(midiInput, midiMessage));
+    }
+    return (true);
 }
 
 /** Call optional callback function if it is linked.

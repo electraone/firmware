@@ -6,6 +6,7 @@
 void readCtrlMidi(void);
 void readMidi(void);
 void processMidi(void);
+bool runRouteMessageCallback(MidiInput &midiInput, MidiMessage &midiMessage);
 void runOptionalCallbacks(MidiInput midiInput,
                           uint8_t channel,
                           MidiMessage::Type type,

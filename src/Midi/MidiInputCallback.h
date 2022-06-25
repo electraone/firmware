@@ -25,6 +25,8 @@ public:
     /** Optional callbacks handlers
      *
      */
+    static bool (*routeMessageCallback)(MidiInput &midiInput,
+                                        MidiMessage &midiMessage);
     static void (*onMidiClockCallback)(MidiInput midiInput);
     static void (*onMidiStartCallback)(MidiInput midiInput);
     static void (*onMidiStopCallback)(MidiInput midiInput);

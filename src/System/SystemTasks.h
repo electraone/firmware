@@ -3,7 +3,7 @@
 #define _TASK_MICRO_RES
 #include "TaskSchedulerDeclarations.h"
 #include <IntervalTimer.h>
-#include "TaskClassCallback.h"
+#include "InstanceCallback.h"
 
 #include "TaskReadButtons.h"
 #include "TaskReadPots.h"

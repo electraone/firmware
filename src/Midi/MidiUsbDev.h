@@ -137,7 +137,7 @@ public:
         bool status = usbMIDI.read();
 
         if (status) {
-            activePort = getActivePort();
+            activePort = usbMIDI.getCable();
         }
 
         return (status);
