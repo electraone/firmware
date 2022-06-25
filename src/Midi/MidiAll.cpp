@@ -209,3 +209,8 @@ uint8_t MidiAll::getActivePort(void) const
 void MidiAll::initialise(void) const
 {
 }
+
+void MidiAll::enableThru(uint8_t port, bool shouldBeEnabled)
+{
+    MidiOutput::enableThru(MidiInterface::Type::MidiIo, port, shouldBeEnabled);
+}

@@ -202,6 +202,15 @@ public:
             handleMidiIoSysExPort1);
     }
 
+    void enableThru(uint8_t port, bool shouldBeEnabled) override
+    {
+        if (shouldBeEnabled) {
+            midiDINInterfaces[port]->turnThruOn();
+        } else {
+            midiDINInterfaces[port]->turnThruOff();
+        }
+    }
+
 private:
     uint8_t activePort;
     static constexpr midi::MidiInterface<HardwareSerial>

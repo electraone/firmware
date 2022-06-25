@@ -62,6 +62,7 @@ public:
     uint8_t getData2(uint8_t port) const override;
     uint8_t getActivePort(void) const override;
     void initialise(void) const override;
+    void enableThru(uint8_t port, bool shouldBeEnabled) override;
 
 private:
 };

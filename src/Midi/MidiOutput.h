@@ -111,6 +111,10 @@ public:
                                        uint16_t midiValue,
                                        bool lsbFirst);
 
+    static void enableThru(MidiInterface::Type interface,
+                           uint8_t port,
+                           bool shouldBeEnabled);
+
     static constexpr uint16_t queueSize = 128;
     static CircularBuffer<MidiMessageTransport, queueSize> outgoingQueue;
 

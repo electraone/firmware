@@ -449,6 +449,16 @@ void MidiOutput::sendControlChange14Bit(MidiInterface::Type interface,
     }
 }
 
+void MidiOutput::enableThru(MidiInterface::Type interface,
+                            uint8_t port,
+                            bool shouldBeEnabled)
+{
+    if (interface == MidiInterface::Type::MidiIo) {
+        MidiInterface::get(interface)->enableThru(port, shouldBeEnabled);
+    }
+    // other interfaces are not implmented on purpose
+}
+
 void MidiOutput::indicate(MidiInterface::Type interface,
                           uint8_t port,
                           Direction direction,

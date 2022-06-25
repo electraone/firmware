@@ -190,6 +190,10 @@ public:
         usbMIDI.setHandleSysEx(handleMidiUsbDevSysEx);
     }
 
+    void enableThru(uint8_t port, bool shouldBeEnabled) override
+    {
+    }
+
 private:
     uint8_t activePort;
 };

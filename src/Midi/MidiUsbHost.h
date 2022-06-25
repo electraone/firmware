@@ -248,6 +248,10 @@ public:
         // \todo No partial SysEx callback handler available.
     }
 
+    void enableThru(uint8_t port, bool shouldBeEnabled) override
+    {
+    }
+
 private:
     uint8_t activePort;
 };

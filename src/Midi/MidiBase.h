@@ -63,4 +63,6 @@ public:
     virtual uint8_t getActivePort(void) const = 0;
 
     virtual void initialise(void) const = 0;
+
+    virtual void enableThru(uint8_t port, bool shouldBeEnabled) = 0;
 };
