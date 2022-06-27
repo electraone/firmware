@@ -1,4 +1,5 @@
 #include "Hardware.h"
+#include "Reset.h"
 #include "helpers.h"
 
 void Hardware::initialise(void)
@@ -42,6 +43,11 @@ void Hardware::initialise(void)
     // Assign the storage drivers.
     memory.stringPool.assignStorageDriver(&Hardware::screen);
     memory.bitmapPool.assignStorageDriver(&Hardware::screen);
+}
+
+void Hardware::reset(void)
+{
+    CPU_RESTART;
 }
 
 Pots Hardware::pots;

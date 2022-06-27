@@ -19,6 +19,7 @@ public:
     Hardware() = delete;
 
     static void initialise(void);
+    static void reset(void);
 
     static Pots pots;
     static PotTouch potTouch;
