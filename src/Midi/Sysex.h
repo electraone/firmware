@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ElectraCommand.h"
+#include "SysexBlock.h"
 
 #define SYSEX_START 0xF0
 #define SYSEX_END 0xF7
@@ -64,8 +65,7 @@ void sendMidiLearn(uint8_t portToTransmitOn,
                    uint16_t value);
 void sendMidiLearnSysex(uint8_t portToTransmitOn,
                         uint8_t port,
-                        uint8_t *sysExData,
-                        uint16_t sysExLength);
+                        const SysexBlock &sysexBlock);
 void sendElectraInfo(uint8_t port,
                      const char *electraInfoSerial,
                      uint8_t electraInfoHwRevision);

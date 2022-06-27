@@ -68,6 +68,83 @@ bool sendSysExFile(uint8_t port,
     return (true);
 }
 
+void sendMidiLearn(uint8_t portToTransmitOn,
+                   const char *msg,
+                   uint8_t port,
+                   uint8_t channel,
+                   uint16_t parameterId,
+                   uint16_t value)
+{
+    uint8_t data[512];
+    StaticJsonDocument<512> doc;
+
+    logMessage(
+        "sendMidiLearn: msg=%s, port=%d, channel=%d, parameter=%d, value=%d",
+        msg,
+        port,
+        channel,
+        parameterId,
+        value);
+
+    stopFlush = 1;
+    sendSysExHeader(portToTransmitOn);
+    data[0] = MIDILEARN_SWITCH;
+
+    char *jsonStart = (char *)&data[1];
+
+    doc["msg"] = msg;
+    doc["port"] = port;
+    doc["channel"] = channel;
+    doc["parameterId"] = parameterId;
+    doc["value"] = value;
+
+    serializeJson(doc, jsonStart, 512);
+
+    size_t jsonSize = strlen(jsonStart);
+    data[jsonSize + 1] = SYSEX_END;
+    sendSysExData(data, jsonSize + 2, portToTransmitOn);
+
+    stopFlush = 0;
+}
+
+void sendMidiLearnSysex(uint8_t portToTransmitOn,
+                        uint8_t port,
+                        const SysexBlock &sysexBlock)
+{
+    const size_t capacity = JSON_ARRAY_SIZE(1024) + 64;
+    size_t sysExLength = sysexBlock.getLength();
+    uint8_t data[sysExLength * 5 + 64];
+    char byteBuffer[3];
+    StaticJsonDocument<capacity> doc;
+
+    stopFlush = 1;
+    sendSysExHeader(portToTransmitOn);
+    data[0] = MIDILEARN_SWITCH;
+
+    char *jsonStart = (char *)&data[1];
+
+    doc["msg"] = "sysex";
+    doc["port"] = port;
+
+    JsonArray array = doc["data"].to<JsonArray>();
+
+    for (uint16_t i = 0; i < sysExLength; i++) {
+        convertToHex(sysexBlock.peek(i), byteBuffer);
+
+        if (!array.add(byteBuffer)) {
+            logMessage("failed: %d", i);
+        }
+    }
+
+    serializeJson(doc, jsonStart, sysExLength * 5 + 65);
+
+    size_t jsonSize = strlen(jsonStart);
+    data[jsonSize + 1] = SYSEX_END;
+    sendSysExData(data, jsonSize + 2, portToTransmitOn);
+
+    stopFlush = 0;
+}
+
 void sendElectraInfo(uint8_t port,
                      const char *electraInfoSerial,
                      uint8_t electraInfoHwRevision)
