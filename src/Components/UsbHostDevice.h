@@ -31,16 +31,16 @@ public:
         uint16_t y = touchEvent.getY();
 
         if (!isDisabled) {
-        if ((y > 0) && (y < getHeight())) {
-            if ((x > 330) && (x < 470)) {
-                onClick(0);
-            } else if ((x > 470) && (x < 610)) {
-                onClick(1);
-            } else if ((x > 610) && (x < 740)) {
-                onClick(2);
+            if ((y > 0) && (y < getHeight())) {
+                if ((x > 330) && (x < 470)) {
+                    onClick(0);
+                } else if ((x > 470) && (x < 610)) {
+                    onClick(1);
+                } else if ((x > 610) && (x < 740)) {
+                    onClick(2);
+                }
             }
         }
-    }
     }
 
     void usbDevice(Graphics &g,
