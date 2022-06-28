@@ -63,6 +63,8 @@ void scanUSBHost(void)
                     logMessage("- serialNumber: %s", serial);
                 }
 
+                uint8_t port = App::get()->getUsbHostPortAssigment(product);
+
                 if (drivers[i] == &midiDevice1) {
                     logMessage("Assigning new MIDI1 device to midiBus 0: %s",
                                product);
@@ -72,7 +74,7 @@ void scanUSBHost(void)
                                       manufacturer,
                                       product,
                                       serial,
-                                      0,
+                                      port,
                                       &midiDevice1);
                     USBDevices[0].midiDevice->setHandleSysEx(
                         handleMidiUsbHostSysExPort0);
@@ -86,7 +88,7 @@ void scanUSBHost(void)
                                       manufacturer,
                                       product,
                                       serial,
-                                      1,
+                                      port,
                                       &midiDevice2);
                     USBDevices[1].midiDevice->setHandleSysEx(
                         handleMidiUsbHostSysExPort1);

@@ -94,6 +94,11 @@ void App::indicateMidiActivity(uint8_t port,
     }
 }
 
+uint8_t App::getUsbHostPortAssigment(const char *productName)
+{
+    return (0);
+}
+
 void App::clearScreen(void)
 {
     //flushRepaintGraphics();

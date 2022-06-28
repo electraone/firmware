@@ -54,6 +54,7 @@ public:
     void indicateMidiActivity(uint8_t port,
                               Direction direction,
                               MidiMessage::Type msgType);
+    virtual uint8_t getUsbHostPortAssigment(const char *productName);
 
     // These are kept public on purpose
 public:
