@@ -97,3 +97,18 @@ bool LocalFile::printToConsole(void)
 
     return (true);
 }
+
+bool LocalFile::rename(const char *newFilepath)
+{
+  File file = Hardware::sdcard.createOutputStream(filepath);
+
+  if (!file) {
+      return (false);
+  }
+
+  bool rc = file.rename(newFilepath);
+
+  file.close();
+
+  return rc;
+}

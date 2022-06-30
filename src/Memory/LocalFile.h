@@ -22,7 +22,8 @@ public:
     bool deleteRecursively(void);
     bool writeAll(MemoryBlock &memoryBlock);
     bool printToConsole(void);
-    ;
+
+    bool rename(const char *newFilepath);
 
 private:
     const char *filepath;

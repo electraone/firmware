@@ -15,6 +15,7 @@ public:
     FileIoStream createOutputStream(const char *path, oflag_t oflag = O_RDONLY);
     bool deleteFile(const char *path);
     bool deleteRecursively(const char *path);
+    bool renameFile(const char *src, const char *dest);
 
 private:
 };

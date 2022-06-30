@@ -46,3 +46,8 @@ bool PersistentStorage::deleteRecursively(const char *path)
 {
     return (SdFs::rmdir(path));
 }
+
+bool PersistentStorage::renameFile(const char *src, const char *dest)
+{
+    return (SdFs::rename(src, dest));
+}
