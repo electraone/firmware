@@ -100,15 +100,15 @@ bool LocalFile::printToConsole(void)
 
 bool LocalFile::rename(const char *newFilepath)
 {
-  File file = Hardware::sdcard.createOutputStream(filepath);
+    File file = Hardware::sdcard.createOutputStream(filepath);
 
-  if (!file) {
-      return (false);
-  }
+    if (!file) {
+        return (false);
+    }
 
-  bool rc = file.rename(newFilepath);
+    bool rc = file.rename(newFilepath);
 
-  file.close();
+    file.close();
 
-  return rc;
+    return rc;
 }
