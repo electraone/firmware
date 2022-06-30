@@ -112,6 +112,17 @@ public:
         return (selected);
     }
 
+    void setHighlighted(bool shouldBeHighligthed)
+    {
+        highlighted = shouldBeHighligthed;
+        repaint();
+    }
+
+    bool isHighlighted(void) const
+    {
+        return (highlighted);
+    }
+
     void onTouchDown(const TouchEvent &touchEvent) override
     {
         if (onClick) {
@@ -182,12 +193,6 @@ public:
     }
 
 private:
-    void setHighlighted(bool shouldBeHighligthed)
-    {
-        highlighted = shouldBeHighligthed;
-        repaint();
-    }
-
     static const uint8_t maxLabelLength = 20;
     char label[maxLabelLength + 1];
 
