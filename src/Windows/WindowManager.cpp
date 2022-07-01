@@ -112,6 +112,27 @@ void WindowManager::repaintActive(void)
 /**
  * List all registered windows
  */
+void WindowManager::repaintAll(void)
+{
+    uint8_t index = 0;
+
+    for (const auto &window : windows) {
+        logMessage("repainting window: index=%d, name=%s, address=%x, active=%d, visible=%d",
+                   index,
+                   window->getName(),
+                   window,
+                   index == activeIndex,
+                   window->isVisible());
+        if (window->isVisible()) {
+            window->repaint();
+        }
+        index++;
+    }
+}
+
+/**
+ * List all registered windows
+ */
 void WindowManager::listWindows(void)
 {
     uint8_t index = 0;

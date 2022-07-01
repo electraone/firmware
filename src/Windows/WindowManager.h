@@ -23,6 +23,7 @@ public:
     uint8_t getActiveIndex(void);
 
     void repaintActive(void);
+    void repaintAll(void);
 
     void listWindows(void);
 

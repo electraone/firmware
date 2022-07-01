@@ -22,7 +22,6 @@ public:
     // Paint releated methods
     void paint(Graphics &g) override;
     void setVisible(bool shouldBeVisible) override;
-    void display(void);
 
     // Event processing
     void setActive(bool shouldBeActive);
@@ -35,6 +34,12 @@ public:
     void setOwnedContent(Component *newComponent);
     Component *getOwnedContent(void);
 
+    void setActivePotTouch(uint8_t potId, Component *component);
+    void resetActivePotTouch(uint8_t potId);
+    uint8_t getNumActivePotTouch(void);
+    Component *getActivePotComponent(void) const;
+    void resetAllActivePotComponents(void);
+
 private:
     static Component *checkHit(Component *component, uint16_t x, uint16_t y);
 
@@ -44,4 +49,8 @@ private:
 
 protected:
     Component *contentComponent;
+
+    // Ui state
+    uint8_t numActivePotTouch;
+    Component *potTouchComponents[12];
 };

@@ -1,7 +1,8 @@
 #include "Window.h"
 #include "System.h"
 
-Window::Window() : activeComponent{}, contentComponent(nullptr)
+Window::Window() : activeComponent{}, contentComponent(nullptr), numActivePotTouch(0),
+      potTouchComponents{ nullptr }
 
 {
     setBounds(0, 22, 1024, 560); // default window position and size
@@ -12,7 +13,8 @@ Window::Window(uint16_t newX,
                uint16_t newY,
                uint16_t newWidth,
                uint16_t newHeight)
-    : activeComponent{}, contentComponent(nullptr)
+    : activeComponent{}, contentComponent(nullptr), numActivePotTouch(0),
+      potTouchComponents{ nullptr }
 {
     setBounds(newX, newY, newWidth, newHeight);
     System::windowManager.addWindow(this);
@@ -101,7 +103,11 @@ void Window::setVisible(bool shouldBeVisible)
         c->setVisible(shouldBeVisible);
     }
 
-    return (Component::setVisible(shouldBeVisible));
+    Component::setVisible(shouldBeVisible);
+
+    if (!shouldBeVisible) {
+        System::windowManager.repaintAll();
+    }
 }
 
 void Window::setActive(bool shouldBeActive)
@@ -116,11 +122,6 @@ bool Window::getActive(void) const
 
 void Window::onTouchOutside(void)
 {
-}
-
-void Window::display(void)
-{
-    repaint();
 }
 
 void Window::addChildComponent(Component *component)
@@ -142,4 +143,39 @@ void Window::setOwnedContent(Component *newComponent)
 Component *Window::getOwnedContent(void)
 {
     return (contentComponent);
+}
+
+void Window::resetAllActivePotComponents(void)
+{
+    for (uint8_t i = 0; i < 12; i++) {
+        potTouchComponents[i] = nullptr;
+    }
+    numActivePotTouch = 0;
+}
+
+Component *Window::getActivePotComponent(void) const
+{
+    for (uint8_t i = 0; i < 12; i++) {
+        if (potTouchComponents[i]) {
+            return (potTouchComponents[i]);
+        }
+    }
+    return (nullptr);
+}
+
+uint8_t Window::getNumActivePotTouch(void)
+{
+    return (numActivePotTouch);
+}
+
+void Window::setActivePotTouch(uint8_t potId, Component *component)
+{
+    potTouchComponents[potId] = component;
+    numActivePotTouch++;
+}
+
+void Window::resetActivePotTouch(uint8_t potId)
+{
+    potTouchComponents[potId] = nullptr;
+    numActivePotTouch--;
 }

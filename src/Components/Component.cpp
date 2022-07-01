@@ -238,6 +238,16 @@ bool Component::hitTest(uint16_t x, uint16_t y)
 
 void Component::visibilityChanged(void)
 {
+    if (visible) {
+        repaint();
+    }
+    else {
+        auto parent = getParentComponent();
+
+        if (parent) {
+            parent->repaint();
+        }
+    }
 }
 
 void Component::addChildComponent(Component *component)
