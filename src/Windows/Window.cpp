@@ -155,6 +155,22 @@ Component *Window::getOwnedContent(void)
     return (contentComponent);
 }
 
+Component *Window::replaceOwnedContent(Component *newComponent)
+{
+    auto originalComponent = getOwnedContent();
+
+    if (originalComponent) {
+        delete originalComponent;
+    }
+    if (newComponent) {
+        setOwnedContent(newComponent);
+        newComponent->setVisible(true);
+    }
+    repaint();
+    
+    return (newComponent);
+}
+
 void Window::resetAllActivePotComponents(void)
 {
     for (uint8_t i = 0; i < 12; i++) {

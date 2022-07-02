@@ -33,6 +33,7 @@ public:
 
     void setOwnedContent(Component *newComponent);
     Component *getOwnedContent(void);
+    Component *replaceOwnedContent(Component *newComponent);
 
     void setParentWindow(Window *parentWindow);
     Window *getParentWindow(void) const;
