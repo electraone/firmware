@@ -34,11 +34,16 @@ public:
     void setOwnedContent(Component *newComponent);
     Component *getOwnedContent(void);
 
+    void setParentWindow(Window *parentWindow);
+    Window *getParentWindow(void) const;
+
     void setActivePotTouch(uint8_t potId, Component *component);
     void resetActivePotTouch(uint8_t potId);
     uint8_t getNumActivePotTouch(void);
     Component *getActivePotComponent(void) const;
     void resetAllActivePotComponents(void);
+
+    static void close(Window *window);
 
 private:
     static Component *checkHit(Component *component, uint16_t x, uint16_t y);
@@ -46,6 +51,7 @@ private:
     static const uint8_t numActiveComponents = 5;
 
     Component *activeComponent[numActiveComponents];
+    Window *parentWindow;
 
 protected:
     Component *contentComponent;

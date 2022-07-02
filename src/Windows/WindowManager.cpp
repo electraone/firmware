@@ -8,6 +8,7 @@ WindowManager::WindowManager() : activeIndex(0)
 void WindowManager::addWindow(Window *windowToAdd)
 {
     windows.push_back(windowToAdd);
+    windowToAdd->setParentWindow(getActiveWindow());
     windowToAdd->assignAllButtons();
     setActiveWindow(windowToAdd);
 }
@@ -22,6 +23,14 @@ void WindowManager::removeWindow(Window *windowToRemove)
                 if (activeIndex > 0) {
                     setActiveIndex(activeIndex - 1);
                 }
+            }
+
+            Window *parentWindow = windowToRemove->getParentWindow();
+            if (parentWindow) {
+                parentWindow->buttonBroadcaster.resumeListener(parentWindow);
+                parentWindow->resetActiveTouch();
+                parentWindow->resetAllActivePotComponents();
+                parentWindow->repaint();
             }
             return;
         }
@@ -117,12 +126,13 @@ void WindowManager::repaintAll(void)
     uint8_t index = 0;
 
     for (const auto &window : windows) {
-        logMessage("repainting window: index=%d, name=%s, address=%x, active=%d, visible=%d",
-                   index,
-                   window->getName(),
-                   window,
-                   index == activeIndex,
-                   window->isVisible());
+        logMessage(
+            "repainting window: index=%d, name=%s, address=%x, active=%d, visible=%d",
+            index,
+            window->getName(),
+            window,
+            index == activeIndex,
+            window->isVisible());
         if (window->isVisible()) {
             window->repaint();
         }

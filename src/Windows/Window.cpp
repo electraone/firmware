@@ -1,11 +1,16 @@
 #include "Window.h"
 #include "System.h"
 
-Window::Window() : activeComponent{}, contentComponent(nullptr), numActivePotTouch(0),
+Window::Window()
+    : activeComponent{},
+      parentWindow(nullptr),
+      contentComponent(nullptr),
+      numActivePotTouch(0),
       potTouchComponents{ nullptr }
 
 {
     setBounds(0, 22, 1024, 560); // default window position and size
+    setVisible(true);
     System::windowManager.addWindow(this);
 }
 
@@ -13,9 +18,12 @@ Window::Window(uint16_t newX,
                uint16_t newY,
                uint16_t newWidth,
                uint16_t newHeight)
-    : activeComponent{}, contentComponent(nullptr), numActivePotTouch(0),
+    : activeComponent{},
+      contentComponent(nullptr),
+      numActivePotTouch(0),
       potTouchComponents{ nullptr }
 {
+    setVisible(true);
     setBounds(newX, newY, newWidth, newHeight);
     System::windowManager.addWindow(this);
 }
@@ -90,7 +98,9 @@ Component *Window::getActiveComponent(uint8_t touchId)
 
 void Window::paint(Graphics &g)
 {
+    logMessage("Window::paint: %s", getName());
     if (isVisible() && contentComponent) {
+        logMessage("Window::paint: going to paint content");
         contentComponent->paintWithChildren(g);
     }
 }
@@ -178,4 +188,21 @@ void Window::resetActivePotTouch(uint8_t potId)
 {
     potTouchComponents[potId] = nullptr;
     numActivePotTouch--;
+}
+
+void Window::setParentWindow(Window *newParentWindow)
+{
+    parentWindow = newParentWindow;
+}
+
+Window *Window::getParentWindow(void) const
+{
+    return (parentWindow);
+}
+
+void Window::close(Window *window)
+{
+    if (window) {
+        delete window;
+    }
 }

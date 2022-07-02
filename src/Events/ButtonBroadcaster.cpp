@@ -38,7 +38,7 @@ void ButtonBroadcaster::listListeners(void)
 {
     for (auto i = listeners.begin(); i != listeners.end(); i++) {
         auto listener = i->first;
-        logMessage("listListeners: buttonListener: %x is suspended: %d",
+        logMessage("listListeners: buttonListener: %x is active: %d",
                    listener,
                    listeners[listener]);
     }

@@ -240,8 +240,7 @@ void Component::visibilityChanged(void)
 {
     if (visible) {
         repaint();
-    }
-    else {
+    } else {
         auto parent = getParentComponent();
 
         if (parent) {
