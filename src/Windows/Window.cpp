@@ -98,9 +98,7 @@ Component *Window::getActiveComponent(uint8_t touchId)
 
 void Window::paint(Graphics &g)
 {
-    logMessage("Window::paint: %s", getName());
     if (isVisible() && contentComponent) {
-        logMessage("Window::paint: going to paint content");
         contentComponent->paintWithChildren(g);
     }
 }
@@ -167,7 +165,7 @@ Component *Window::replaceOwnedContent(Component *newComponent)
         newComponent->setVisible(true);
     }
     repaint();
-    
+
     return (newComponent);
 }
 

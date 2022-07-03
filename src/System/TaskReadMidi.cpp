@@ -71,6 +71,7 @@ void readMidi(void)
     while (incomingQueueL1.isEmpty() != true) {
         MidiMessageTransport message = incomingQueueL1.shift();
 
+#ifdef DEBUG
         logMessage("queueL1: received: interface=%d, port=%d, channel=%d, "
                    " type=%d, data1=%d, data2=%d",
                    message.getInterfaceType(),
@@ -79,6 +80,7 @@ void readMidi(void)
                    message.getType(),
                    message.getData1(),
                    message.getData2());
+#endif
 
         // Indicate incoming data on the display
         App::get()->statusBar.indicate(message.getInterfaceType(),

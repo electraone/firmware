@@ -188,9 +188,7 @@ public:
                 } else if (object == ElectraCommand::Object::FileLua) {
                     file.setFilepath(System::context.getCurrentLuaFile());
                 } else {
-                    logMessage("processElectraSysex::handleElectraSysex: "
-                               "unknown type of file");
-                    return;
+                    file.setFilepath(System::context.getCurrentTempFile());
                 }
 
                 file.writeAll(sysexPayload);
@@ -287,7 +285,7 @@ public:
                     fileToRemove = filename;
                 } else {
                     logMessage("processElectraSysex: "
-                               "parameters are not expected for this call");
+                               "file type not handled by the base firmware");
                     fileToRemove = nullptr;
                 }
 
