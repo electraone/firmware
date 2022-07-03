@@ -127,6 +127,8 @@ public:
     const SysexBlock &getSysExBlock(void) const;
     size_t readSysExData(uint8_t *buffer, size_t length);
 
+    bool isBankSelect(void) const;
+
     static MidiMessage::Type translateType(const char *typeText);
     static const char *translateTypeToText(MidiMessage::Type messageType);
 

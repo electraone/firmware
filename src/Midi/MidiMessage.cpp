@@ -412,6 +412,11 @@ size_t MidiMessage::readSysExData(uint8_t *buffer, size_t length)
     return (totalReadBytes);
 }
 
+bool MidiMessage::isBankSelect(void) const
+{
+    return ((type == MidiMessage::Type::ControlChange) && (data1 == 0));
+}
+
 // \todo this has been added to support External MIDI control of the Controller
 // app. It needs to be made more general or moved to the app.
 MidiMessage::Type MidiMessage::translateType(const char *typeText)
