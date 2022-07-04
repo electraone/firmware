@@ -60,7 +60,6 @@ void SystemTasks::enableAll()
     taskSendMidi.enable();
     taskProcessMidi.enable();
     taskProcessSysex.enable();
-    //timerSpinner.begin(spinnerTick, 200000);
 }
 
 void SystemTasks::enableMidi(void)
@@ -142,6 +141,7 @@ void SystemTasks::disableUserTask(void)
 
 void SystemTasks::enableSpinner(void)
 {
+    System::tasks.clearRepaintGraphics();
     spinnerReset();
     timerSpinner.begin(spinnerTick, 200000);
 }

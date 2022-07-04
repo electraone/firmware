@@ -5,7 +5,7 @@
 class Spinner : public Component
 {
 public:
-    Spinner() : activeDot(0), dimmedApplied(false)
+    Spinner() : activeDot(8), dimmedApplied(false)
     {
         setBounds(0, 20, 1024, 560);
         setVisible(true);
@@ -16,7 +16,7 @@ public:
     void reset(void)
     {
         dimmedApplied = false;
-        activeDot = 0;
+        activeDot = 8;
     }
 
     void paint(Graphics &g)
@@ -27,27 +27,28 @@ public:
             dimmedApplied = true;
         }
 
-        g.setColour(Colours::black);
-        g.fillRect(485, 298, 54, 6);
-
-        for (uint8_t i = 0; i < 5; i++) {
-            if (activeDot == i) {
-                g.setColour(Colours::white);
-            } else if ((activeDot == i - 1) || (activeDot == i + 1)) {
-                g.setColour(0x630C);
-            } else {
-                g.setColour(0x2104);
+        for (uint8_t i = 0; i < 9; i++) {
+            uint8_t x = i + activeDot;
+            if (x > 7) {
+                x = x - 8;
             }
-            g.fillCircle(488 + (i * 12), 320, 3);
+            if (1 < i && i < 7) {
+                g.setColour(dotColours[x]);
+                g.fillCircle(463 + (i * 12), 320, 3);
+            }
         }
-        activeDot++;
+        activeDot--;
 
-        if (activeDot > 4) {
-            activeDot = 0;
+        if (activeDot < 0) {
+            activeDot = 8;
         }
     }
 
 private:
-    uint8_t activeDot;
+    int8_t activeDot;
     bool dimmedApplied;
+
+    static constexpr uint32_t dotColours[9] = { 0x0000, 0x0861, 0x2104,
+                                                0x630C, 0xFFFF, 0x630C,
+                                                0x2104, 0x0861, 0x0000 };
 };

@@ -11,4 +11,5 @@ void spinnerTick(void)
 void spinnerReset(void)
 {
     App::get()->spinner.reset();
+    spinnerTick();
 }
