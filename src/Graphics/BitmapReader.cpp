@@ -76,8 +76,14 @@ void BitmapReader::loadBMP(const char *filename,
         if (progressBar == true) {
             if ((y % 3) == 0) {
                 setCanvasAddress(FRAME_BUFFER_2);
-                setForegroundColor(ElectraColours::rgb565NumericWhite);
+                setForegroundColor(Colours::white);
                 fillRect(407 + (y / 3), 330, 1, 6);
+
+                setForegroundColor(Colours::black);
+                fillRect(407, 330, 1, 1);
+                fillRect(407, 335, 1, 1);
+                fillRect(606, 330, 1, 1);
+                fillRect(606, 335, 1, 1);
             }
         }
 
