@@ -377,7 +377,7 @@ void LookAndFeel::paintDots(Graphics &g,
     // Paint the dots
     uint8_t paddingDots =
         (bounds.getWidth() - (items->getNumItems() * 8)) / 2 + 4;
-    uint16_t yPosition = 25;
+    uint16_t yPosition = 23;
 
     // paint dots
     for (uint16_t i = 0; i < items->getNumItems(); i++) {
@@ -396,26 +396,34 @@ void LookAndFeel::paintBar(Graphics &g,
     uint32_t dark = Colours::darker(colour, 0.5);
     uint32_t light = Colours::lighter(colour, 0.5);
 
-    uint16_t paddingFader = (bounds.getWidth() - 137) / 2;
-    float step = 127.0f / (float)lastItem;
-    float faderLength = std::max(1.0f, abs(step * (activeIndex)));
+    uint16_t fullFaderLength = bounds.getWidth() * 0.9;
+    float step = (float)fullFaderLength / (float)lastItem;
+    fullFaderLength += step;
+    uint16_t paddingFader = (bounds.getWidth() - fullFaderLength) / 2;
+    float faderLength = std::max(1.0f, abs(step * (activeIndex))) + step;
     uint16_t yPosition = 25;
 
     // Paint the track
     g.setColour(dark);
-    g.fillRect(paddingFader + 4, yPosition - 2, 129, 5);
+    g.fillRect(paddingFader, yPosition - 2, fullFaderLength, 5);
 
-    // Paint the start point
-    g.setColour((activeIndex == 0) ? light : dark);
-    g.fillCircle(paddingFader + 2, yPosition, 2);
-
-    // Paint the active point on the track
-    if ((activeIndex != 0) && (activeIndex != lastItem)) {
-        g.setColour((activeIndex == lastItem) ? light : dark);
-        g.fillCircle(paddingFader + 134, yPosition, 2);
+    g.setColour(backgroundColour);
+    if (step > 2) {
+        for (uint16_t x = step + paddingFader;
+             x <= (fullFaderLength + paddingFader);
+             x += step) {
+            g.drawLine(x, yPosition - 2, x, yPosition + 2);
+        }
     }
 
-    // Paint the end point
+    // Paint the active
     g.setColour(light);
-    g.fillRect(paddingFader + faderLength, yPosition - 2, step, 5);
+    g.fillRect(paddingFader + faderLength - step, yPosition - 2, step, 5);
+
+    // Round the conrners
+    g.setColour(Colours::black);
+    g.drawPixel(paddingFader, yPosition - 2);
+    g.drawPixel(paddingFader, yPosition + 2);
+    g.drawPixel(paddingFader + fullFaderLength - 1, yPosition - 2);
+    g.drawPixel(paddingFader + fullFaderLength - 1, yPosition + 2);
 }
