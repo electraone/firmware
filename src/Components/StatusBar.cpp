@@ -124,12 +124,12 @@ void StatusBar::statusBarItem(Graphics &g,
                               bool active)
 {
     g.setColour(ElectraColours::rgb565NumericBlack);
-    g.fillRect(x, y, 168, 12);
+    g.fillRect(x, y, 168, 13);
     g.printText(
         x, y, label, TextStyle::smallWhiteOnBlack, 168, TextAlign::center);
 
     if (active == false) {
-        g.dim(x, y, 168, 12, ElectraColours::rgb565NumericBlack);
+        g.dim(x, y, 168, 13, ElectraColours::rgb565NumericBlack);
     }
 }
 
