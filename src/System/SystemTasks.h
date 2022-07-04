@@ -18,6 +18,8 @@
 #include "TaskCollectGarbage.h"
 #include "TaskReadMidi.h"
 #include "TaskSendMidi.h"
+#include "TaskProcessSysex.h"
+#include "TaskSpinner.h"
 
 class SystemTasks : public Scheduler
 {
@@ -41,9 +43,12 @@ public:
     void doNotUsePotTouch(void);
     void enableUserTask(void);
     void disableUserTask(void);
+    void enableSpinner(void);
+    void disableSpinner(void);
 
 private:
     IntervalTimer timerReadMidi;
+    IntervalTimer timerSpinner;
 
     Task taskMonitorFreeMemory;
     Task taskCollectGarbage;
@@ -58,4 +63,5 @@ private:
     Task taskRunTimer;
     Task taskSendMidi;
     Task taskProcessMidi;
+    Task taskProcessSysex;
 };

@@ -6,6 +6,7 @@
 #include "WindowManager.h"
 #include "StatusBar.h"
 #include "FlashMessage.h"
+#include "Spinner.h"
 #include "luabridge.h"
 
 #define CREATE_ELECTRA_APPLICATION(AppClass)                                   \
@@ -61,5 +62,6 @@ public:
     bool enableMidi; // \todo enableMidi needs to be renamed and moved to System
     StatusBar statusBar;
     FlashMessage flashMessage;
+    Spinner spinner;
     MemoryPool sysexPool;
 };

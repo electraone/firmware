@@ -16,7 +16,8 @@ SystemTasks::SystemTasks()
       taskUserTask(250000, TASK_FOREVER, &userTask),
       taskRunTimer(500000, TASK_FOREVER, &runTimer),
       taskSendMidi(10000, TASK_FOREVER, &sendMidi),
-      taskProcessMidi(10000, TASK_FOREVER, &processMidi)
+      taskProcessMidi(10000, TASK_FOREVER, &processMidi),
+      taskProcessSysex(100000, TASK_FOREVER, &processSysex)
 {
     init();
     addTask(taskMonitorFreeMemory);
@@ -32,6 +33,7 @@ SystemTasks::SystemTasks()
     addTask(taskRunTimer);
     addTask(taskSendMidi);
     addTask(taskProcessMidi);
+    addTask(taskProcessSysex);
 }
 
 void SystemTasks::enableAll()
@@ -44,6 +46,7 @@ void SystemTasks::enableAll()
     taskScanUSBHost.enable();
     taskRefreshMidiIndicators.enable();
     timerReadMidi.priority(150);
+    timerSpinner.priority(255);
 
     if (System::context.getTouchEnabled()) {
         taskReadPotTouch.enable();
@@ -56,6 +59,8 @@ void SystemTasks::enableAll()
     taskRunTimer.disable();
     taskSendMidi.enable();
     taskProcessMidi.enable();
+    taskProcessSysex.enable();
+    //timerSpinner.begin(spinnerTick, 200000);
 }
 
 void SystemTasks::enableMidi(void)
@@ -133,4 +138,15 @@ void SystemTasks::enableUserTask(void)
 void SystemTasks::disableUserTask(void)
 {
     taskUserTask.disable();
+}
+
+void SystemTasks::enableSpinner(void)
+{
+    spinnerReset();
+    timerSpinner.begin(spinnerTick, 200000);
+}
+
+void SystemTasks::disableSpinner(void)
+{
+    timerSpinner.end();
 }
