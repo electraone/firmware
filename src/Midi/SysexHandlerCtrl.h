@@ -148,8 +148,11 @@ public:
             App::get()->enableMidi = true;
             System::tasks.enableMidi();
 
-            if (fileType == ElectraCommand::Object::FilePreset
-                || fileType == ElectraCommand::Object::FileLua) {
+            if (fileType == ElectraCommand::Object::FilePreset) {
+                // Loading the preset always (temporary fix) removes the Lua script
+                // ie. the Lua script needs to be transferred afterwards
+                Hardware::sdcard.deleteFile(
+                    System::context.getCurrentLuaFile());
                 sendPresetSlotChange(portUsed);
             }
 
