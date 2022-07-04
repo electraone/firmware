@@ -2,6 +2,7 @@
 #include "TaskScheduler.h"
 #include "System.h"
 #include "RepaintQueue.h"
+#include "UpdateModeScreen.h"
 
 SystemTasks::SystemTasks()
     : taskMonitorFreeMemory(10000000, TASK_FOREVER, &monitorFreeMemory),
@@ -141,7 +142,7 @@ void SystemTasks::disableUserTask(void)
 
 void SystemTasks::enableSpinner(void)
 {
-    System::tasks.clearRepaintGraphics();
+    clearRepaintGraphics();
     spinnerReset();
     timerSpinner.begin(spinnerTick, 200000);
 }
@@ -149,4 +150,12 @@ void SystemTasks::enableSpinner(void)
 void SystemTasks::disableSpinner(void)
 {
     timerSpinner.end();
+}
+
+void SystemTasks::displayUpdateModeScreen(void)
+{
+    UpdateModeScreen ums;
+    clearRepaintGraphics();
+    ums.repaint();
+    flushRepaintGraphics();
 }

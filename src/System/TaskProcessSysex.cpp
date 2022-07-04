@@ -174,6 +174,7 @@ void processElectraSysex(uint8_t port, const SysexBlock &sysexBlock)
         } else if (cmd.isSystemCall()) {
             if ((uint8_t)object == 0x7F) {
                 logMessage("processElectraSysex: : switch to the update mode");
+                System::tasks.displayUpdateModeScreen();
                 delay(200);
                 _reboot_Teensyduino_();
             } else if (object == ElectraCommand::Object::Logger) {

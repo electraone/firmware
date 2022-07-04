@@ -45,6 +45,7 @@ public:
     void disableUserTask(void);
     void enableSpinner(void);
     void disableSpinner(void);
+    void displayUpdateModeScreen(void);
 
 private:
     IntervalTimer timerReadMidi;
