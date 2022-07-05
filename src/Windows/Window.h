@@ -25,7 +25,9 @@ public:
 
     // Event processing
     void setActive(bool shouldBeActive);
-    bool getActive(void) const;
+    bool isActive(void) const;
+    void setUiEventsValid(void);
+    bool areUiEventsValid(void) const;
     virtual void onTouchOutside(void);
 
     void addChildComponent(Component *component) override;
@@ -43,7 +45,6 @@ public:
     uint8_t getNumActivePotTouch(void);
     Component *getActivePotComponent(void) const;
     void resetAllActivePotComponents(void);
-
     static void close(Window *window);
 
 private:
@@ -53,6 +54,8 @@ private:
 
     Component *activeComponent[numActiveComponents];
     Window *parentWindow;
+    bool active;
+    bool uiEventsValid;
 
 protected:
     Component *contentComponent;

@@ -18,9 +18,11 @@ void readLCDTouch(void)
 
     Window *originatingWindow = System::windowManager.getActiveWindow();
 
-    // Detect a window change. All events will be thrown away till next start
+    // Detect a window change or window content change.
+    // All events will be thrown away till next start
     // comes in.
-    if (originatingWindow != previousWindow) {
+    if ((originatingWindow != previousWindow)
+        || !originatingWindow->areUiEventsValid()) {
         waitingForStart = true;
     }
 
@@ -42,6 +44,7 @@ void readLCDTouch(void)
         if (touchPoint.event != TouchPoint::None) {
             if (touchPoint.event == TouchPoint::Start) {
                 waitingForStart = false;
+                originatingWindow->setUiEventsValid();
                 if (!Component::isInside(touchPoint.xStart,
                                          touchPoint.yStart,
                                          originatingWindow->getX(),
@@ -68,13 +71,12 @@ void readLCDTouch(void)
                     originatingWindow->setActiveComponent(eventComponent, id);
                 }
 
-                triggerComponentCallbacks(eventComponent, touchEvent);
-
-                if (originatingWindow
-                    != System::windowManager.getActiveWindow()) {
+                triggerComponentCallbacks(
+                    originatingWindow, eventComponent, touchEvent);
+                if (originatingWindow != System::windowManager.getActiveWindow()
+                    || !originatingWindow->areUiEventsValid()) {
                     break;
                 }
-
                 if (touchEvent.getEvent() == TouchPoint::End) {
                     originatingWindow->resetActiveComponent(id);
                 }
@@ -83,7 +85,8 @@ void readLCDTouch(void)
     }
 }
 
-void triggerComponentCallbacks(Component *component,
+void triggerComponentCallbacks(Window *window,
+                               Component *component,
                                const TouchEvent &touchEvent)
 {
     TouchPoint::Event state = touchEvent.getEvent();
@@ -101,6 +104,11 @@ void triggerComponentCallbacks(Component *component,
             c->onTouchClick(touchEvent);
         } else if (state == TouchPoint::DoubleClick) {
             c->onTouchDoubleClick(touchEvent);
+        }
+
+        if (window != System::windowManager.getActiveWindow()
+            || !window->areUiEventsValid()) {
+            break;
         }
     }
 }

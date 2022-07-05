@@ -8,7 +8,6 @@ Component::Component()
     : id(0),
       parentComponent(nullptr),
       visible(false),
-      active(false),
       dimmed(false),
       queueEntry(nullptr)
 {
@@ -19,7 +18,6 @@ Component::Component(Component *newParent)
     : id(0),
       parentComponent(newParent),
       visible(false),
-      active(false),
       dimmed(false),
       queueEntry(nullptr)
 {
@@ -30,7 +28,6 @@ Component::Component(const char *newName)
     : id(0),
       parentComponent(nullptr),
       visible(false),
-      active(false),
       dimmed(false),
       queueEntry(nullptr)
 {
@@ -39,6 +36,7 @@ Component::Component(const char *newName)
 
 Component::~Component()
 {
+    setParentComponent(nullptr);
     releasePot();
     deleteAllChildren();
 }
@@ -170,16 +168,6 @@ bool Component::shouldBeDisplayed(void) const
     }
 
     return (true);
-}
-
-void Component::setActive(bool shouldBeActive)
-{
-    active = shouldBeActive;
-}
-
-bool Component::isActive(void) const
-{
-    return (active);
 }
 
 void Component::setDimmed(bool shouldBeDimmed)

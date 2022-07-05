@@ -4,6 +4,8 @@
 Window::Window()
     : activeComponent{},
       parentWindow(nullptr),
+      active(false),
+      uiEventsValid(true),
       contentComponent(nullptr),
       numActivePotTouch(0),
       potTouchComponents{ nullptr }
@@ -19,6 +21,9 @@ Window::Window(uint16_t newX,
                uint16_t newWidth,
                uint16_t newHeight)
     : activeComponent{},
+      parentWindow(nullptr),
+      active(false),
+      uiEventsValid(true),
       contentComponent(nullptr),
       numActivePotTouch(0),
       potTouchComponents{ nullptr }
@@ -69,7 +74,6 @@ std::vector<TouchEvent> Window::processTouch(const TouchPoint &touchPoint)
 void Window::resetActiveTouch(void)
 {
     for (auto &component : contentComponent->getChildren()) {
-        component->setActive(false);
         component->repaint();
     }
     for (uint8_t i = 0; i < numActiveComponents; i++) {
@@ -80,14 +84,12 @@ void Window::resetActiveTouch(void)
 void Window::setActiveComponent(Component *component, uint8_t touchId)
 {
     if (component) {
-        component->setActive(true);
         activeComponent[touchId] = component;
     }
 }
 
 void Window::resetActiveComponent(uint8_t touchId)
 {
-    activeComponent[touchId]->setActive(false);
     activeComponent[touchId] = nullptr;
 }
 
@@ -116,16 +118,6 @@ void Window::setVisible(bool shouldBeVisible)
     if (!shouldBeVisible) {
         System::windowManager.repaintAll();
     }
-}
-
-void Window::setActive(bool shouldBeActive)
-{
-    active = shouldBeActive;
-}
-
-bool Window::getActive(void) const
-{
-    return (active);
 }
 
 void Window::onTouchOutside(void)
@@ -165,6 +157,8 @@ Component *Window::replaceOwnedContent(Component *newComponent)
         newComponent->setVisible(true);
     }
     repaint();
+
+    uiEventsValid = false;
 
     return (newComponent);
 }
@@ -212,6 +206,26 @@ void Window::setParentWindow(Window *newParentWindow)
 Window *Window::getParentWindow(void) const
 {
     return (parentWindow);
+}
+
+void Window::setActive(bool shouldBeActive)
+{
+    active = shouldBeActive;
+}
+
+bool Window::isActive(void) const
+{
+    return (active);
+}
+
+void Window::setUiEventsValid(void)
+{
+    uiEventsValid = true;
+}
+
+bool Window::areUiEventsValid(void) const
+{
+    return (uiEventsValid);
 }
 
 void Window::close(Window *window)

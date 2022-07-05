@@ -195,8 +195,6 @@ public:
     /**
      * @todo candidates to be removed from here
      */
-    virtual void setActive(bool shouldBeActive);
-    virtual bool isActive(void) const;
     virtual void setDimmed(bool shouldBeDimmed);
     virtual bool isDimmed(void) const;
 
@@ -381,7 +379,6 @@ protected:
     struct {
         uint16_t id : 9;
         bool visible : 1;
-        bool active : 1;
         bool dimmed : 1;
     };
 
