@@ -43,7 +43,8 @@ public:
                                               MidiMessage &midiMessage);
     virtual void handleElectraSysex(uint8_t port, const SysexBlock &sysexBlock);
     virtual void execute(const char *filename);
-    virtual bool handleCtrlFileReceived(LocalFile file,
+    virtual bool handleCtrlFileReceived(uint8_t port,
+                                        LocalFile file,
                                         ElectraCommand::Object fileType);
     virtual bool handleCtrlFileRemoved(uint8_t bankNumber,
                                        uint8_t slot,

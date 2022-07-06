@@ -270,7 +270,7 @@ void sendAck(uint8_t port)
     stopFlush = 0;
 }
 
-void sendPresetSwitch(uint8_t port, uint8_t bankNumber, uint8_t slotId)
+void sendPresetSwitched(uint8_t port, uint8_t bankNumber, uint8_t slotId)
 {
     uint8_t data[5];
 
@@ -287,7 +287,7 @@ void sendPresetSwitch(uint8_t port, uint8_t bankNumber, uint8_t slotId)
     stopFlush = 0;
 }
 
-void sendSnapshotChange(uint8_t port)
+void sendSnapshotChanged(uint8_t port)
 {
     uint8_t data[3];
 
@@ -302,7 +302,7 @@ void sendSnapshotChange(uint8_t port)
     stopFlush = 0;
 }
 
-void sendSnapshotBankChange(uint8_t port, uint8_t bankNumber)
+void sendSnapshotBankChanged(uint8_t port, uint8_t bankNumber)
 {
     uint8_t data[4];
 
@@ -318,9 +318,8 @@ void sendSnapshotBankChange(uint8_t port, uint8_t bankNumber)
     stopFlush = 0;
 }
 
-void sendPresetSlotChange(uint8_t port)
+void sendPresetSlotChanged(uint8_t port)
 {
-    logMessage("sendPresetSlotChange: sending message");
     uint8_t data[3];
 
     stopFlush = 1;

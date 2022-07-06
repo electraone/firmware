@@ -64,7 +64,8 @@ void App::execute(const char *filename)
 {
 }
 
-bool App::handleCtrlFileReceived(LocalFile file,
+bool App::handleCtrlFileReceived(uint8_t port,
+                                 LocalFile file,
                                  ElectraCommand::Object fileType)
 {
     return (true);

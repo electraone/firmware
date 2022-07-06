@@ -73,10 +73,10 @@ void sendMemoryInfo(uint8_t port);
 void sendAppInfo(uint8_t port);
 void sendNack(uint8_t port);
 void sendAck(uint8_t port);
-void sendPresetSwitch(uint8_t port, uint8_t bankNumber, uint8_t slotId);
-void sendSnapshotChange(uint8_t port);
-void sendSnapshotBankChange(uint8_t port, uint8_t bankNumber);
-void sendPresetSlotChange(uint8_t port);
+void sendPresetSwitched(uint8_t port, uint8_t bankNumber, uint8_t slotId);
+void sendSnapshotChanged(uint8_t port);
+void sendSnapshotBankChanged(uint8_t port, uint8_t bankNumber);
+void sendPresetSlotChanged(uint8_t port);
 
 void sendSysExData(const uint8_t *data, uint32_t length, uint8_t port);
 void sendSysExHeader(uint8_t port);

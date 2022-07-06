@@ -17,7 +17,7 @@ void processSysex(void)
             System::tasks.disableMidi();
 
             callbackStatus =
-                App::get()->handleCtrlFileReceived(st.file, st.type);
+                App::get()->handleCtrlFileReceived(st.port, st.file, st.type);
 
             App::get()->enableMidi = true;
             System::tasks.enableMidi();
@@ -57,10 +57,11 @@ void processElectraSysex(uint8_t port, const SysexBlock &sysexBlock)
 
             if (object == ElectraCommand::Object::FilePreset
                 || object == ElectraCommand::Object::FileLua) {
-                sendPresetSlotChange(port);
+                sendPresetSlotChanged(port);
             }
 
-            if (App::get()->handleCtrlFileReceived(file, object) == true) {
+            if (App::get()->handleCtrlFileReceived(port, file, object)
+                == true) {
                 logMessage(
                     "processElectraSysex::handleElectraSysex: sending ACK");
                 sendAck(port);
@@ -153,7 +154,7 @@ void processElectraSysex(uint8_t port, const SysexBlock &sysexBlock)
                     logMessage("processElectraSysex: removing file %s: %s",
                                fileToRemove,
                                (status == true) ? "OK" : "fail");
-                    sendPresetSlotChange(port);
+                    sendPresetSlotChanged(port);
                 }
 
                 if (App::get()->handleCtrlFileRemoved(bankNumber, slot, object)
