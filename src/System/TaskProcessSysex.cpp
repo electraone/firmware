@@ -11,29 +11,35 @@ void processSysex(void)
         SysexTransport st = sysexQueue.shift();
 
         if (st.transferType == SysexTransport::Type::File) {
-            bool callbackStatus = true;
-
-            App::get()->enableMidi = false;
-            System::tasks.disableMidi();
-
-            callbackStatus =
-                App::get()->handleCtrlFileReceived(st.port, st.file, st.type);
-
-            App::get()->enableMidi = true;
-            System::tasks.enableMidi();
-
-            if (callbackStatus == true) {
-                sendAck(st.port);
-            } else {
-                sendNack(st.port);
-            }
+            processSysexFile(st.port, st.file, st.type);
         } else if (st.transferType == SysexTransport::Type::Memory) {
-            processElectraSysex(st.port, st.sysexBlock);
+            processSysexMemory(st.port, st.sysexBlock);
         }
     }
 }
 
-void processElectraSysex(uint8_t port, const SysexBlock &sysexBlock)
+void processSysexFile(uint8_t port,
+                      LocalFile &file,
+                      ElectraCommand::Object type)
+{
+    bool status = true;
+
+    App::get()->enableMidi = false;
+    System::tasks.disableMidi();
+
+    status = App::get()->handleCtrlFileReceived(port, file, type);
+
+    System::tasks.enableMidi();
+    App::get()->enableMidi = true;
+
+    if (status == true) {
+        sendAck(port);
+    } else {
+        sendNack(port);
+    }
+}
+
+void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
 {
     if (sysexBlock.isElectraSysex()) {
         ElectraCommand cmd = sysexBlock.getElectraSysexCommand();
@@ -55,8 +61,7 @@ void processElectraSysex(uint8_t port, const SysexBlock &sysexBlock)
 
             file.writeAll(sysexPayload);
 
-            if (object == ElectraCommand::Object::FilePreset
-                || object == ElectraCommand::Object::FileLua) {
+            if (object == ElectraCommand::Object::FilePreset) {
                 sendPresetSlotChanged(port);
             }
 

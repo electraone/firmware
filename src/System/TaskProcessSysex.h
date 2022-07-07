@@ -37,4 +37,7 @@ struct SysexTransport {
 extern CircularBuffer<SysexTransport, SYSEX_QUEUE_SIZE> sysexQueue;
 
 void processSysex(void);
-void processElectraSysex(uint8_t port, const SysexBlock &sysexBlock);
+void processSysexFile(uint8_t port,
+                      LocalFile &file,
+                      ElectraCommand::Object type);
+void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock);
