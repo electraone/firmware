@@ -153,7 +153,6 @@ public:
                 // ie. the Lua script needs to be transferred afterwards
                 Hardware::sdcard.deleteFile(
                     System::context.getCurrentLuaFile());
-                sendPresetSlotChanged(portUsed);
             }
 
             packetNr = 0;

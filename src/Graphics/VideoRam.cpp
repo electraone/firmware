@@ -13,7 +13,7 @@ void VideoRam::storeRam(uint32_t address, ByteSize size, uint32_t value)
 #endif
 
     saveState();
-    
+
     setMemoryMode(MemoryMode::LinearBpp8);
     setAddress(address);
 
