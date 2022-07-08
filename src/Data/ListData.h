@@ -19,13 +19,12 @@ public:
 
     virtual ~ListData() = default;
 
-    uint8_t getId(void) const
+    uint16_t getId(void) const
     {
         return (id);
     }
 
-    void
-        addItem(uint16_t value, const char *label, const char *bitmap = nullptr)
+    void addItem(int16_t value, const char *label, const char *bitmap = nullptr)
     {
         items.push_back(ListDataItem(value, label, bitmap));
     }
@@ -94,6 +93,6 @@ public:
     }
 
 private:
-    uint8_t id;
+    uint16_t id;
     std::vector<ListDataItem> items;
 };
