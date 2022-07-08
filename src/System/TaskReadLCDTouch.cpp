@@ -34,7 +34,8 @@ void readLCDTouch(void)
                originatingWindow->getName());
 #endif
 
-    while (originatingWindow && Hardware::touch.eventsAvailable()) {
+    while ((originatingWindow == System::windowManager.getActiveWindow())
+           && Hardware::touch.eventsAvailable()) {
         TouchPoint touchPoint = Hardware::touch.readEvents();
 
         if (waitingForStart && touchPoint.event != TouchPoint::Start) {
