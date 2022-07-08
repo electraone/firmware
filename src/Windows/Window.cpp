@@ -147,11 +147,6 @@ Component *Window::getOwnedContent(void)
 
 Component *Window::replaceOwnedContent(Component *newComponent)
 {
-    auto originalComponent = getOwnedContent();
-
-    if (originalComponent) {
-        delete originalComponent;
-    }
     if (newComponent) {
         setOwnedContent(newComponent);
         newComponent->setVisible(true);
