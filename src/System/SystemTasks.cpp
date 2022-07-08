@@ -144,7 +144,7 @@ void SystemTasks::enableSpinner(void)
 {
     clearRepaintGraphics();
     spinnerReset();
-    timerSpinner.begin(spinnerTick, 200000);
+    timerSpinner.begin(spinnerTick, 100000);
 }
 
 void SystemTasks::disableSpinner(void)

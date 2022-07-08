@@ -4,8 +4,11 @@
 
 void spinnerTick(void)
 {
-    App::get()->spinner.repaint();
-    System::tasks.flushRepaintGraphics();
+    if (!Hardware::screen.isStateLocked()) {
+        Hardware::screen.setMemoryMode(RA8876::MemoryMode::Bpp16);
+        App::get()->spinner.repaint();
+        System::tasks.flushRepaintGraphics();
+    }
 }
 
 void spinnerReset(void)
