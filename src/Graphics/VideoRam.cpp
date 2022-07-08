@@ -12,6 +12,8 @@ void VideoRam::storeRam(uint32_t address, ByteSize size, uint32_t value)
     logMessage("storeRam: address=%d, size=%d, value=%d", address, size, value);
 #endif
 
+    saveState();
+    
     setMemoryMode(MemoryMode::LinearBpp8);
     setAddress(address);
 
@@ -22,6 +24,8 @@ void VideoRam::storeRam(uint32_t address, ByteSize size, uint32_t value)
     } else if (size == ByteSize::Uint32) {
         writeRAM32(value);
     }
+
+    restoreState();
     setMemoryMode(DEFAULT_BPP);
 }
 
@@ -44,6 +48,8 @@ uint32_t VideoRam::readRam(uint32_t address, ByteSize size)
 {
     uint32_t value = 0;
 
+    saveState();
+
     setMemoryMode(MemoryMode::LinearBpp8);
     setAddress(address);
 
@@ -55,6 +61,7 @@ uint32_t VideoRam::readRam(uint32_t address, ByteSize size)
         value = readRAM32();
     }
 
+    restoreState();
     setMemoryMode(DEFAULT_BPP);
 
 #ifdef DEBUG
@@ -87,16 +94,13 @@ void VideoRam::readRamData(uint32_t address, uint8_t *data, uint16_t size)
     saveState();
 
     setMemoryMode(MemoryMode::LinearBpp8);
-    waitCompleted();
-
     setAddress(address);
     for (uint16_t i = 0; i < size; i++) {
         data[i] = readRAM8();
     }
 
-    setMemoryMode(DEFAULT_BPP);
-
     restoreState();
+    setMemoryMode(DEFAULT_BPP);
 
 #ifdef DEBUG
     logData(data, size, "data read:");
@@ -114,14 +118,13 @@ void VideoRam::writeRamData(uint32_t address,
     saveState();
 
     setMemoryMode(MemoryMode::LinearBpp8);
-    waitCompleted();
-
     setAddress(address);
     for (uint16_t i = 0; i < size; i++) {
         writeRAM8(data[i]);
     }
 
     restoreState();
+    setMemoryMode(DEFAULT_BPP);
 }
 
 void VideoRam::resetExtRam(void)

@@ -318,13 +318,21 @@ public:
         RA8876_FONT_FAMILY_FIXED_BOLD = 3
     };
 
+    enum MemoryMode { LinearBpp8, Bpp8, Bpp16, Bpp24 };
+
     struct SavedState {
+        SavedState() :
+            locked(false),
+            CURH0(0),
+            CURV0(0),
+            AW_COLOR(0)
+        {}
+
+        bool locked;
         uint16_t CURH0;
         uint16_t CURV0;
         uint8_t AW_COLOR;
     };
-
-    enum MemoryMode { LinearBpp8, Bpp8, Bpp16, Bpp24 };
 
     // Constructor
     RA8876(int csPin, int resetPin = 0);
@@ -493,6 +501,7 @@ public:
     // State saving for interrupt context switches
     void saveState(void);
     void restoreState(void);
+    bool isStateLocked(void);
 
 private:
     void waitForStatus(uint8_t status);
@@ -594,7 +603,7 @@ private:
 
     uint32_t canvasAddress;
 
-    SavedState savedState;
+    volatile SavedState savedState;
 
 protected:
     void waitCompleted(void);

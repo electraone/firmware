@@ -433,9 +433,7 @@ bool RA8876::init(void)
 
     // SPI is now up, so we can do a soft reset if no hard reset was
     // possible earlier
-    if (m_resetPin < 0) {
-        softReset();
-    }
+    softReset();
 
     if (!initPLL()) {
         Serial.println("initPLL failed");
@@ -726,22 +724,30 @@ void RA8876::setRadius(uint16_t major, uint16_t minor)
 #include "helpers.h"
 void RA8876::saveState(void)
 {
-    //logMessage("Saving state");
-    waitCompleted();
-    savedState.CURH0 = readReg16(RA8876_REG_CURH0);
-    savedState.CURV0 = readReg16(RA8876_REG_CURV0);
-    savedState.AW_COLOR = readReg(RA8876_REG_AW_COLOR);
+    if (!savedState.locked) {
+        savedState.locked = true;
+        //logMessage("Saving state");
+        waitCompleted();
+        savedState.CURH0 = readReg16(RA8876_REG_CURH0);
+        savedState.CURV0 = readReg16(RA8876_REG_CURV0);
+    }
 }
 
 void RA8876::restoreState(void)
 {
     //logMessage("Restoring state");
-    waitCompleted();
-    writeReg(RA8876_REG_AW_COLOR, savedState.AW_COLOR);
-    waitCompleted();
-    writeReg16(RA8876_REG_CURH0, savedState.CURH0);
-    writeReg16(RA8876_REG_CURV0, savedState.CURV0);
-    waitCompleted();
+    if (savedState.locked) {
+        waitCompleted();
+        writeReg16(RA8876_REG_CURH0, savedState.CURH0);
+        writeReg16(RA8876_REG_CURV0, savedState.CURV0);
+        waitCompleted();
+        savedState.locked = false;
+    }
+}
+
+bool RA8876::isStateLocked(void)
+{
+    return (savedState.locked);
 }
 
 void RA8876::waitForStatus(uint8_t status)
@@ -1277,7 +1283,7 @@ void RA8876::setBteChromaColor(uint32_t color)
 {
     writeReg(RA8876_REG_BGCR, color >> 11 << 3);
     writeReg(RA8876_REG_BGCG, ((color >> 5) & 0x3F) << 2);
-    writeReg(RA8876_REG_BGCB, (color & 0x1F) << 3);    
+    writeReg(RA8876_REG_BGCB, (color & 0x1F) << 3);
 }
 
 void RA8876::setBacklight(boolean on)
@@ -1448,6 +1454,7 @@ void RA8876::setMemoryMode(MemoryMode mode)
     m_memoryMode = mode;
 
     writeReg(RA8876_REG_AW_COLOR, colorDepth);
+    waitCompleted();
 }
 
 void RA8876::setBteColorDepth(void)
@@ -1463,4 +1470,5 @@ void RA8876::setBteColorDepth(void)
     }
 
     writeReg(RA8876_REG_BTE_COLR, colorDepth);
+    waitCompleted();
 }
