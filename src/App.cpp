@@ -14,10 +14,6 @@ void App::set(App *newAppInstance)
 
 App::App()
     : sysexPool(&Hardware::screen, SDRAM_PAGE_0, SDRAM_PAGE_SIZE),
-      flashMessage(Rectangle(0, 570, 1024, 29),
-                   "",
-                   TextStyle::mediumWhiteOnBlack,
-                   TextAlign::center),
       enableMidi(false)
 {
 }
@@ -39,11 +35,6 @@ const char *App::getApplicationVersion(void) const
 const char *App::getApplicationSandbox(void) const
 {
     return ("default");
-}
-
-Window *App::getMainWindow(void)
-{
-    return (nullptr);
 }
 
 // --------------------------------------------------------------------------

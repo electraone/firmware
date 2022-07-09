@@ -5,7 +5,6 @@
 #include "LocalFile.h"
 #include "WindowManager.h"
 #include "StatusBar.h"
-#include "FlashMessage.h"
 #include "Spinner.h"
 #include "luabridge.h"
 
@@ -36,7 +35,6 @@ public:
     virtual const char *getApplicationName(void) const;
     virtual const char *getApplicationVersion(void) const;
     virtual const char *getApplicationSandbox(void) const;
-    virtual Window *getMainWindow(void);
 
     // \todo these will be moved elsewhere
     virtual void handleIncomingControlMessage(MidiInput &midiInput,
@@ -62,7 +60,6 @@ public:
 public:
     bool enableMidi; // \todo enableMidi needs to be renamed and moved to System
     StatusBar statusBar;
-    FlashMessage flashMessage;
     Spinner spinner;
     MemoryPool sysexPool;
 };
