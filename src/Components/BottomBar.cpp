@@ -10,16 +10,15 @@ BottomBar::BottomBar(const char *newPresetName, const char *newPageName)
 
 void BottomBar::paint(Graphics &g)
 {
-    g.fillAll(Colours::black);
-    g.setColour(0x2104);
-    g.drawLine(8, 0, 1016, 0);
+    g.fillAll(Colours::white);
+
     g.printText(
-        0, 4, presetName, TextStyle::smallWhiteOnBlack, 508, TextAlign::right);
+        0, 3, presetName, TextStyle::mediumBlackOnWhite, 508, TextAlign::right);
     g.printText(
-        520, 4, pageName, TextStyle::smallWhiteOnBlack, 508, TextAlign::left);
-    g.setColour(Colours::white);
-    g.fillRect(512, 9, 2, 2);
-    g.dim(0, 3, 1024, 14, Colours::black);
+        520, 3, pageName, TextStyle::mediumBlackOnWhite, 508, TextAlign::left);
+    g.setColour(Colours::black);
+    g.fillRect(512, 9, 4, 4);
+    g.dimAll();
 }
 
 void BottomBar::setPresetName(const char *newName)
