@@ -62,20 +62,14 @@ void LookAndFeel::paintPad(Graphics &g,
                            uint32_t colour,
                            bool state)
 {
-    uint32_t colourOff = Colours::darker(colour, 0.1f);
+    uint32_t colourOff = Colours::darker(colour, 0.2f);
     uint32_t colourOn = Colours::darker(colour, 0.8f);
 
     uint16_t backgroundColour = colourOff;
     uint16_t radius = 5;
-    bool highlighted = false;
-    bool selected = state;
 
-    if (selected) {
+    if (state) {
         backgroundColour = colourOn;
-    }
-
-    if (highlighted) {
-        backgroundColour = Colours::lighter(backgroundColour, 0.1f);
     }
 
     g.setColour(Colours::darker(backgroundColour, 0.5f));
