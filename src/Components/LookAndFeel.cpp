@@ -63,7 +63,7 @@ void LookAndFeel::paintPad(Graphics &g,
                            bool state)
 {
     uint32_t colourOff = Colours::darker(colour, 0.2f);
-    uint32_t colourOn = Colours::darker(colour, 0.8f);
+    uint32_t colourOn = colour;
 
     uint16_t backgroundColour = colourOff;
     uint16_t radius = 5;
