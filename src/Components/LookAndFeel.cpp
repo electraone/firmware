@@ -65,15 +65,23 @@ void LookAndFeel::paintPad(Graphics &g,
     uint32_t colourOff = Colours::darker(colour, 0.1f);
     uint32_t colourOn = Colours::darker(colour, 0.8f);
 
-    // Paint the background
-    g.setColour(state == true ? colourOn : colourOff);
-    g.fillRoundRect(
-        bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 8);
+    uint16_t backgroundColour = colourOff;
+    uint16_t radius = 5;
+    bool highlighted = false;
+    bool selected = state;
 
-    // Paint the outline
-    g.setColour(colour);
-    g.drawRoundRect(
-        bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 8);
+    if (selected) {
+        backgroundColour = colourOn;
+    }
+
+    if (highlighted) {
+        backgroundColour = Colours::lighter(backgroundColour, 0.1f);
+    }
+
+    g.setColour(Colours::darker(backgroundColour, 0.5f));
+    g.fillRoundRect(0, 0, bounds.getWidth(), bounds.getHeight(), radius);
+    g.setColour(backgroundColour);
+    g.fillRoundRect(0, 0, bounds.getWidth(), bounds.getHeight() - 4, radius);
 }
 
 void LookAndFeel::paintSliderHorizontal(Graphics &g,
