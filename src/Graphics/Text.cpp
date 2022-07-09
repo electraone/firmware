@@ -291,7 +291,8 @@ void Text::printText(uint16_t x,
             } else {
                 charYposition += (color * 60);
                 setBteChromaColor(chromaColors[color]);
-                bteCopyChroma(FRAME_UI_TOOLKIT,
+                // Temp fix - do not use chroma. it does not look good for black fonts.
+                bteCopy(FRAME_UI_TOOLKIT,
                               charXposition,
                               charYposition,
                               address,
