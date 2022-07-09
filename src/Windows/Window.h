@@ -20,7 +20,7 @@ public:
     Component *getActiveComponent(uint8_t touchId);
 
     // Paint releated methods
-    void paint(Graphics &g) override;
+    virtual void paint(Graphics &g) override;
     void setVisible(bool shouldBeVisible) override;
 
     // Event processing
