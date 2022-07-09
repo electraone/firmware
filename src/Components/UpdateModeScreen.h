@@ -15,8 +15,8 @@ public:
 
     void paint(Graphics &g)
     {
-        g.dimAll();
-        g.backdrop(398, 162, 228, 205, 0x3840);
+        g.dim(0, 0, 1024, 600, Colours::black);
+        g.dim(398, 162, 228, 205, 0x1840);
         g.copyFromToolkit(822, 78, 466, 200, 92, 80);
         g.printText(398,
                     320,
