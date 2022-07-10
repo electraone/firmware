@@ -293,13 +293,13 @@ void Text::printText(uint16_t x,
                 setBteChromaColor(chromaColors[color]);
                 // Temp fix - do not use chroma. it does not look good for black fonts.
                 bteCopy(FRAME_UI_TOOLKIT,
-                              charXposition,
-                              charYposition,
-                              address,
-                              x + xPosition,
-                              y,
-                              charWidth,
-                              charHeight);
+                        charXposition,
+                        charYposition,
+                        address,
+                        x + xPosition,
+                        y,
+                        charWidth,
+                        charHeight);
             }
         }
 

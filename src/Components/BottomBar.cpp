@@ -10,7 +10,8 @@ BottomBar::BottomBar(const char *newPresetName, const char *newPageName)
 
 void BottomBar::paint(Graphics &g)
 {
-    g.fillAll(Colours::white);
+    g.setColour(Colours::white);
+    g.fillRoundRect(0, 0, getWidth(), getHeight(), 10);
 
     g.printText(
         0, 3, presetName, TextStyle::mediumBlackOnWhite, 508, TextAlign::right);
