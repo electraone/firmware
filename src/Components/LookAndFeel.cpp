@@ -126,6 +126,37 @@ void LookAndFeel::paintSliderVertical(Graphics &g,
                  11);
 }
 
+void LookAndFeel::paintMeterHorizontal(Graphics &g,
+                                       const Rectangle &bounds,
+                                       uint32_t colourActive,
+                                       uint32_t colourInactive,
+                                       uint32_t colourBackground,
+                                       int16_t min,
+                                       int16_t max,
+                                       int16_t val)
+{
+    uint16_t barHeight = bounds.getHeight() * 1.0f;
+    uint16_t padding = (bounds.getHeight() - barHeight) / 2;
+
+    uint16_t barX = map(0, min, max, 0, bounds.getWidth());
+    uint16_t barWidth = map(val, min, max, 0, bounds.getWidth()) - barX;
+
+    // Paint the track background
+    g.setColour(colourInactive);
+    g.fillRect(0, padding, bounds.getWidth(), barHeight);
+
+    // Paint the active bar
+    g.setColour(colourActive);
+    g.fillRect(barX, padding, barWidth, barHeight);
+
+    // Split the bar into segments
+    for (uint16_t x = 0; x < bounds.getWidth() - 2;
+         x += (bounds.getWidth() / 10)) {
+        g.setColour(colourBackground);
+        g.fillRect(x, 0, 2, bounds.getHeight());
+    }
+}
+
 void LookAndFeel::paintList(Graphics &g,
                             const Rectangle &bounds,
                             uint32_t colour,

@@ -42,6 +42,15 @@ public:
                                     int16_t max,
                                     int16_t val);
 
+    static void paintMeterHorizontal(Graphics &g,
+                                     const Rectangle &bounds,
+                                     uint32_t colourActive,
+                                     uint32_t colourInactive,
+                                     uint32_t colourBackground,
+                                     int16_t min,
+                                     int16_t max,
+                                     int16_t val);
+
     static void paintList(Graphics &g,
                           const Rectangle &bounds,
                           uint32_t colour,
