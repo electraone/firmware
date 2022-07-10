@@ -21,6 +21,8 @@ public:
 
     void paint(Graphics &g)
     {
+        g.setBteChromaColor(0x000000);
+
         if (dimmedApplied == false) {
             g.dimAll();
             g.copyFromToolkit(814, 170, 448, 198, 128, 85);
