@@ -51,4 +51,6 @@ private:
     bool repaintUsbDevIo;
 
     bool needsRepaint;
+
+    uint8_t clockCounter;
 };

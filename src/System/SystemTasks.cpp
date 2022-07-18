@@ -12,7 +12,7 @@ SystemTasks::SystemTasks()
       taskReadPotTouch(100000, TASK_FOREVER, &readPotTouch),
       taskReadLCDTouch(40000, TASK_FOREVER, &readLCDTouch),
       taskScanUSBHost(2000000, TASK_FOREVER, &scanUSBHost),
-      taskRefreshMidiIndicators(200000, TASK_FOREVER, &refreshMidiIndicators),
+      taskRefreshMidiIndicators(100000, TASK_FOREVER, &refreshMidiIndicators),
       taskRepaintGraphics(40000, TASK_FOREVER, &repaintGraphics),
       taskUserTask(250000, TASK_FOREVER, &userTask),
       taskRunTimer(500000, TASK_FOREVER, &runTimer),

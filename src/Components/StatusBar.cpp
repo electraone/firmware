@@ -20,7 +20,8 @@ StatusBar::StatusBar()
       repaintMidi2In(true),
       repaintUsbHostIo(true),
       repaintUsbDevIo(true),
-      needsRepaint(false)
+      needsRepaint(false),
+      clockCounter(0)
 {
     setName("statusBar");
     setBounds(0, 5, 1024, 15);
@@ -108,6 +109,14 @@ void StatusBar::indicate(MidiInterface::Type interface,
         }
 
         needsRepaint = true;
+    } else if (msgType == MidiMessage::Type::Clock) {
+        if (clockCounter >= 23) {
+            clockCounter = 0;
+            requestUsbDevIo = true;
+            needsRepaint = true;
+        } else {
+            clockCounter++;
+        }
     }
 }
 
