@@ -190,7 +190,9 @@ void Window::setActivePotTouch(uint8_t potId, Component *component)
 void Window::resetActivePotTouch(uint8_t potId)
 {
     potTouchComponents[potId] = nullptr;
-    numActivePotTouch--;
+    if (numActivePotTouch > 0) {
+        numActivePotTouch--;
+    }
 }
 
 void Window::setParentWindow(Window *newParentWindow)
