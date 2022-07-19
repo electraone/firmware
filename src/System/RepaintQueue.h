@@ -3,4 +3,4 @@
 #include <CircularBuffer.h>
 #include "Component.h"
 
-extern CircularBuffer<Component *, 500> repaintQueue;
+extern CircularBuffer<Component *, 128> repaintQueue;

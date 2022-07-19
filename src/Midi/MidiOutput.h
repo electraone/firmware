@@ -115,7 +115,7 @@ public:
                            uint8_t port,
                            bool shouldBeEnabled);
 
-    static constexpr uint16_t queueSize = 128;
+    static constexpr uint16_t queueSize = 64;
     static CircularBuffer<MidiMessageTransport, queueSize> outgoingQueue;
 
 private:

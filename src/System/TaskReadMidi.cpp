@@ -4,7 +4,7 @@
 #include "App.h" // \todo To be removed.
 
 CircularBuffer<MidiMessageTransport, 5> incomingQueueL1;
-CircularBuffer<MidiMessageTransport, 256> incomingQueueL2;
+CircularBuffer<MidiMessageTransport, 128> incomingQueueL2;
 
 /** This is used when reading of SysEx on CTRL port gets priority.
  */

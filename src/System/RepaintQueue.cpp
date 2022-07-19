@@ -1,3 +1,3 @@
 #include "RepaintQueue.h"
 
-CircularBuffer<Component *, 500> repaintQueue;
+CircularBuffer<Component *, 128> repaintQueue;
