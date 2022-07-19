@@ -17,10 +17,11 @@ void Knob::onTouchMove(const TouchEvent &touchEvent)
                   max);
 
     setValue(newValue);
-
+    /*
     if (onValueChange) {
         onValueChange(value.get());
     }
+    */
 }
 
 void Knob::onTouchDown(const TouchEvent &touchEvent)

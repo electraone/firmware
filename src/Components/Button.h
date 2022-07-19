@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Label.h"
+#include "Component.h"
 #include "LookAndFeel.h"
 
 class Button : virtual public Component

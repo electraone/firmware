@@ -2,10 +2,10 @@
 #include "LookAndFeel.h"
 
 Envelope::Envelope()
-    : activeSegment(1),
-      baselineY(0),
-      delayEnabled(false),
-      activeSegmentIsShown(false)
+    : delayEnabled(false),
+      activeSegment(1),
+      activeSegmentIsShown(false),
+      baselineY(0)
 {
     points.push_back(Point()); // Starting point
     points.push_back(Point()); // Delay

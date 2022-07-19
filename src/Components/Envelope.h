@@ -40,13 +40,16 @@ public:
 protected:
     uint16_t getSegmentWidth(uint16_t width, uint8_t numSegments);
 
+    struct {
+        bool delayEnabled : 1;
+        uint8_t activeSegment : 6;
+        bool activeSegmentIsShown : 1;
+    };
+
     std::vector<Point> points;
     std::vector<Value> values;
     int16_t baselineY;
-    bool delayEnabled;
     uint32_t colour;
-    uint8_t activeSegment;
-    bool activeSegmentIsShown;
 
 private:
     void paintContour(Graphics &g);
