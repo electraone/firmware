@@ -75,7 +75,7 @@ int16_t PotListener::decreaseRate(int16_t relativeChange)
     uint16_t threshold = 0; // magic constant set by testing the feel
 
     if (encoderMode) {
-        threshold = 5;
+        threshold = 10;
     } else {
         threshold =
             constrain((1 << std::max(0, __builtin_clz(numValues) - 27)), 1, 16);
