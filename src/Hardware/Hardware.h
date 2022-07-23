@@ -21,7 +21,6 @@ extern "C" void usb_init(uint8_t keyboardEnabled,
                          uint8_t keymediaEnabled);
 extern "C" void usb_stop(void);
 
-
 class Hardware
 {
 public:
