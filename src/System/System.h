@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Hardware.h"
 #include "SystemTasks.h"
 #include "WindowManager.h"
 #include "Context.h"

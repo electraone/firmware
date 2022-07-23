@@ -13,6 +13,15 @@
 // A list of all hardware features of Electra One platform.
 // Members are made public on purpose.
 
+/* This is to be able to initiate USB stack in here. To give more
+ * control over the USB device configuration
+ */
+extern "C" void usb_init(uint8_t keyboardEnabled,
+                         uint8_t mouseEnabled,
+                         uint8_t keymediaEnabled);
+extern "C" void usb_stop(void);
+
+
 class Hardware
 {
 public:

@@ -946,3 +946,8 @@ void usb_init(uint8_t keyboardEnabled,
     // enable d+ pullup
     USB0_CONTROL = USB_CONTROL_DPPULLUPNONOTG;
 }
+
+void usb_stop(void)
+{
+    USB0_USBTRC0 = USB_USBTRC_USBRESET;
+}

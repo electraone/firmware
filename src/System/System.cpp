@@ -1,13 +1,6 @@
 #include "System.h"
 #include "helpers.h"
 
-/* This is to be able to initiate USB stack in here. To give more
- * control over the USB device configuration
- */
-extern "C" void usb_init(uint8_t keyboardEnabled,
-                         uint8_t mouseEnabled,
-                         uint8_t keymediaEnabled);
-
 void System::initialise(void)
 {
     // Initialize Random number generator
