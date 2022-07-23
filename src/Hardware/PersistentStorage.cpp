@@ -51,3 +51,8 @@ bool PersistentStorage::renameFile(const char *src, const char *dest)
 {
     return (SdFs::rename(src, dest));
 }
+
+bool PersistentStorage::format(void)
+{
+    return SdFs::format();
+}
