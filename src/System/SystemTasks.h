@@ -28,6 +28,7 @@ public:
     ~SystemTasks() = default;
 
     void enableAll(void);
+    void enableSleepMode();
     void enableMidi(void);
     void enableCtrlMidi(void);
     void disableMidi(void);

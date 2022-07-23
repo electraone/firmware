@@ -260,6 +260,7 @@ class USBHost
 {
 public:
     static void begin();
+    static void stop();
     static void Task();
     static void countFree(uint32_t &devices,
                           uint32_t &pipes,

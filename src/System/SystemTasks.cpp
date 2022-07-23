@@ -63,6 +63,27 @@ void SystemTasks::enableAll()
     taskProcessSysex.enable();
 }
 
+void SystemTasks::enableSleepMode()
+{
+    taskMonitorFreeMemory.disable();
+    taskCollectGarbage.disable();
+    taskReadPots.disable();
+    taskReadButtons.enable();
+    taskReadLCDTouch.disable();
+    taskScanUSBHost.disable();
+    taskRefreshMidiIndicators.disable();
+    timerReadMidi.priority(150);
+    timerSpinner.priority(255);
+    taskReadPotTouch.disable();
+    taskRepaintGraphics.disable();
+    taskUserTask.disable();
+    taskRunTimer.disable();
+    taskSendMidi.disable();
+    taskProcessMidi.disable();
+    taskProcessSysex.disable();
+    disableMidi();
+}
+
 void SystemTasks::enableMidi(void)
 {
     timerReadMidi.begin(readMidi, 500);

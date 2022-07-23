@@ -229,6 +229,14 @@ void USBHost::begin()
 
 }
 
+void USBHost::stop(void)
+{
+    USBHS_USBCMD |= USBHS_USBCMD_RST;
+    while (USBHS_USBCMD & USBHS_USBCMD_RST) {
+    }
+    USBHS_USBMODE = USBHS_USBMODE_CM(0);
+}
+
 
 // EHCI registers         page  default
 // --------------         ----  -------
@@ -1375,5 +1383,3 @@ void USBHost::delete_Pipe(Pipe_t *pipe)
 	free_Pipe(pipe);
 	println("* Delete Pipe completed");
 }
-
-
