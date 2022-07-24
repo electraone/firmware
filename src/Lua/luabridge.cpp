@@ -104,6 +104,8 @@ void initLua(void)
 void closeLua(void)
 {
     if (L) {
+        timer_disable(L);
+        transport_disable(L);
         lua_close(L);
         L = nullptr;
     }
