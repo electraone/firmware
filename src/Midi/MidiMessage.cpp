@@ -13,7 +13,7 @@ MidiMessage::MidiMessage(uint8_t newChannel,
 {
 }
 
-MidiMessage::MidiMessage(const SysexBlock &sysexBlock)
+MidiMessage::MidiMessage(SysexBlock &sysexBlock)
     : channel(0),
       data1(0),
       data2(0),
@@ -392,6 +392,11 @@ uint32_t MidiMessage::getSysExDataSize(void) const
 }
 
 const SysexBlock &MidiMessage::getSysExBlock(void) const
+{
+    return (sysexBlock);
+}
+
+SysexBlock &MidiMessage::getSysExBlock(void)
 {
     return (sysexBlock);
 }

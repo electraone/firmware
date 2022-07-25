@@ -38,7 +38,7 @@ public:
                 uint8_t newData2);
 
     /** Constructor */
-    MidiMessage(const SysexBlock &sysexBlock);
+    MidiMessage(SysexBlock &sysexBlock);
 
     /** Destructor. */
     virtual ~MidiMessage() = default;
@@ -125,6 +125,7 @@ public:
     bool isSysEx(void) const;
     uint32_t getSysExDataSize(void) const;
     const SysexBlock &getSysExBlock(void) const;
+    SysexBlock &getSysExBlock(void);
     size_t readSysExData(uint8_t *buffer, size_t length);
 
     bool isBankSelect(void) const;
