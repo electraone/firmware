@@ -3,8 +3,8 @@
  Copyright (c) 2017 Roberto Lo Giacco.
 
  This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as 
- published by the Free Software Foundation, either version 3 of the 
+ it under the terms of the GNU Lesser General Public License as
+ published by the Free Software Foundation, either version 3 of the
  License, or (at your option) any later version.
 
  This program is distributed in the hope that it will be useful,
@@ -98,6 +98,12 @@ T CircularBuffer<T,S,IT>::operator [](IT index) const {
 }
 
 template<typename T, size_t S, typename IT>
+T *CircularBuffer<T,S,IT>::getObjectPointer(IT index) {
+	if (index >= count) return tail;
+	return (buffer + ((head - buffer + index) % capacity));
+}
+
+template<typename T, size_t S, typename IT>
 IT inline CircularBuffer<T,S,IT>::size() const {
 	return count;
 }
@@ -135,7 +141,7 @@ void inline CircularBuffer<T,S,IT>::debug(Print* out) {
 		out->print(*(buffer + i));
 		if (head == buffer + i) {
 			out->print("<-head");
-		} 
+		}
 		if (tail == buffer + i) {
 			out->print("<-tail");
 		}
@@ -153,7 +159,7 @@ void inline CircularBuffer<T,S,IT>::debugFn(Print* out, void (*printFunction)(Pr
 		printFunction(out, *(buffer + i));
 		if (head == buffer + i) {
 			out->print("<-head");
-		} 
+		}
 		if (tail == buffer + i) {
 			out->print("<-tail");
 		}
