@@ -13,6 +13,8 @@ public:
               uint8_t channel,
               uint8_t data1,
               uint8_t data2) const override;
+    void send(uint8_t port, MidiMessage &message) override;
+    void send(uint8_t port, SysexBlock &sysexBlock) override;
     void sendControlChange(uint8_t port,
                            uint8_t parameterNumber,
                            uint8_t value,
@@ -31,6 +33,7 @@ public:
     void sendProgramChange(uint8_t port,
                            uint8_t channel,
                            uint8_t programNumber) const override;
+    void sendSysEx(uint8_t port, SysexBlock &sysexBlock) override;
     void sendSysEx(uint8_t port,
                    uint8_t *sysexData,
                    uint16_t sysexDataLength) const override;

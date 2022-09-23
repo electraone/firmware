@@ -13,7 +13,7 @@ MidiMessage::MidiMessage(uint8_t newChannel,
 {
 }
 
-MidiMessage::MidiMessage(SysexBlock &sysexBlock)
+MidiMessage::MidiMessage(const SysexBlock &sysexBlock)
     : channel(0),
       data1(0),
       data2(0),

@@ -8,27 +8,32 @@ class MidiOutput : public MidiJack
 {
 public:
     MidiOutput(MidiInterface::Type newInterface, uint8_t newPort);
+    MidiOutput(MidiInterface::Type newInterface,
+               uint8_t newPort,
+               uint8_t newChannel,
+               uint16_t newRate);
     virtual ~MidiOutput() = default;
 
     void setPort(uint8_t newPort);
     uint8_t getPort(void) const;
     void setChannel(uint8_t newChannel);
     uint8_t getChannel(void) const;
+    void setRate(uint16_t newRate);
     uint16_t getRate(void) const;
     void setTsLastMessage(void);
     bool isReady(void);
 
     // General MIDI messaging (outgoing)
-    void sendMessages(std::vector<MidiMessage> &messages);
-    void sendMessage(MidiMessage &message);
-
-    virtual void sendMessageNow(MidiMessage &message);
+    static void sendMessage(MidiInterface::Type interface,
+                            uint8_t port,
+                            MidiMessage &message);
 
     static bool isIdenticalChange(const MidiMessageTransport &m1,
                                   const MidiMessageTransport &m2);
 
-    static void addToQueue(MidiMessageTransport &message);
-    static void sendMessageNow(MidiMessageTransport &message);
+    static void addToQueue(MidiInterface::Type interface,
+                           uint8_t port,
+                           MidiMessage &message);
 
     static void send(MidiInterface::Type interface,
                      uint8_t port,
@@ -36,6 +41,11 @@ public:
                      uint8_t channel,
                      uint8_t data1,
                      uint8_t data2);
+    static void
+        send(MidiInterface::Type interface, uint8_t port, MidiMessage &message);
+    static void send(MidiInterface::Type interface,
+                     uint8_t port,
+                     SysexBlock &sysexBlock);
     static void sendControlChange(MidiInterface::Type interface,
                                   uint8_t port,
                                   uint8_t channel,
@@ -58,6 +68,9 @@ public:
                                   uint8_t port,
                                   uint8_t channel,
                                   uint8_t programNumber);
+    static void sendSysEx(MidiInterface::Type interface,
+                          uint8_t port,
+                          SysexBlock &sysexBlock);
     static void sendSysEx(MidiInterface::Type interface,
                           uint8_t port,
                           uint8_t *data,

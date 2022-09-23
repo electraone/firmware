@@ -29,6 +29,20 @@ public:
         usbMIDI.send(static_cast<uint8_t>(type), data1, data2, channel, port);
     }
 
+    void send(uint8_t port, MidiMessage &message) override
+    {
+        usbMIDI.send(static_cast<uint8_t>(message.getType()),
+                     message.getData1(),
+                     message.getData2(),
+                     message.getChannel(),
+                     port);
+    }
+
+    void send(uint8_t port, SysexBlock &sysexBlock) override
+    {
+        sendSysEx(port, sysexBlock);
+    }
+
     void sendControlChange(uint8_t port,
                            uint8_t parameterNumber,
                            uint8_t value,
@@ -73,6 +87,17 @@ public:
                            uint8_t programNumber) const override
     {
         usbMIDI.sendProgramChange(programNumber, channel, port);
+    }
+
+    void sendSysEx(uint8_t port, SysexBlock &sysexBlock) override
+    {
+        uint8_t buffer[MemoryBlock::headerMaxSize];
+        sysexBlock.seek(0);
+        size_t readBytes = 0;
+        while ((readBytes = sysexBlock.readBytes(buffer, sizeof(buffer)))
+               != 0) {
+            sendSysExPartial(port, buffer, readBytes, false);
+        }
     }
 
     void sendSysEx(uint8_t port,

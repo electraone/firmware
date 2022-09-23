@@ -38,7 +38,7 @@ public:
                 uint8_t newData2);
 
     /** Constructor */
-    MidiMessage(SysexBlock &sysexBlock);
+    MidiMessage(const SysexBlock &sysexBlock);
 
     /** Destructor. */
     virtual ~MidiMessage() = default;

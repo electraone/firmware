@@ -12,6 +12,8 @@ public:
                       uint8_t channel,
                       uint8_t data1,
                       uint8_t data2) const = 0;
+    virtual void send(uint8_t port, MidiMessage &message) = 0;
+    virtual void send(uint8_t port, SysexBlock &sysexBlock) = 0;
     virtual void sendControlChange(uint8_t port,
                                    uint8_t parameterNumber,
                                    uint8_t value,
@@ -30,6 +32,7 @@ public:
     virtual void sendProgramChange(uint8_t port,
                                    uint8_t channel,
                                    uint8_t programNumber) const = 0;
+    virtual void sendSysEx(uint8_t port, SysexBlock &sysexBlock) = 0;
     virtual void sendSysEx(uint8_t port,
                            uint8_t *sysexData,
                            uint16_t sysexDataLength) const = 0;

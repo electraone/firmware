@@ -7,39 +7,52 @@
 void sendMidi(void)
 {
     MidiMessageTransport message;
-    MidiMessageTransport messageFirst;
+    uint32_t idFirst = 0;
     uint8_t i = 0;
 
     // Process max 10 entries in the queue
-    while ((MidiOutput::outgoingQueue.isEmpty() != true) && (i < 10)) {
-        message = MidiOutput::outgoingQueue.shift();
+    while (!MidiOutput::outgoingQueue.isEmpty() && i < 10) {
+        message = MidiOutput::outgoingQueue.first();
 
-        // Quit if all the messages have been attempted to send
-        /*
-        if (messageFirst == message) {
-            outgoingQueue.unshift(message);
+        if (message.invalid) {
+            MidiOutput::outgoingQueue.shift();
+            continue;
+        }
+
+        if (idFirst == message.id) {
             break;
         }
-        */
 
-        // Mark the first message in this run. We use it to detect that all
-        // messages were attempted to be sent
         if (i == 0) {
-            messageFirst = message;
+            idFirst = message.id;
         }
 
-        if (1) { // message->outputDevice->isReady()
-            MidiOutput::sendMessageNow(message);
+        message = MidiOutput::outgoingQueue.shift();
 
-            logMessage("sendMidi: queued message: channel: %d,"
-                       " parameterNumber: %d, type=%d",
-                       message.getChannel(),
-                       message.getData1(),
-                       message.getDescription());
+        if (message.getType() == MidiMessage::Type::SystemExclusive) {
+            MidiOutput::send(
+                message.getInterfaceType(), message.getPort(), message);
         } else {
-            MidiOutput::outgoingQueue.unshift(message);
-            logMessage("sendMidi: device is not ready yet");
+            MidiOutput::send(message.getInterfaceType(),
+                             message.getPort(),
+                             message.getType(),
+                             message.getChannel(),
+                             message.getData1(),
+                             message.getData2());
         }
+
+        //#ifdef DEBUG
+        logMessage(
+            "sendMidi: queued message (%d): interface:%d, port:%d, channel: %d,"
+            " parameterNumber: %d, value=%d, type=%s",
+            message.id,
+            message.getInterfaceType(),
+            message.getPort(),
+            message.getChannel(),
+            message.getData1(),
+            message.getData2(),
+            message.getDescription());
+        //#endif
         i++;
     }
 }

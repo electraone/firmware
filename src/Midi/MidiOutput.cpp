@@ -9,6 +9,17 @@ MidiOutput::MidiOutput(MidiInterface::Type newInterface, uint8_t newPort)
 {
 }
 
+MidiOutput::MidiOutput(MidiInterface::Type newInterface,
+                       uint8_t newPort,
+                       uint8_t newChannel,
+                       uint16_t newRate)
+    : MidiJack(newInterface, newPort),
+      channel(newChannel),
+      rate(0),
+      tsLastMessage(0)
+{
+}
+
 void MidiOutput::setPort(uint8_t newPort)
 {
     port = newPort;
@@ -29,6 +40,11 @@ uint8_t MidiOutput::getChannel(void) const
     return (channel);
 }
 
+void MidiOutput::setRate(uint16_t newRate)
+{
+    rate = newRate;
+}
+
 uint16_t MidiOutput::getRate(void) const
 {
     return (rate);
@@ -47,175 +63,59 @@ bool MidiOutput::isReady(void)
 /** Send Electra message to Midi outputs.
  *
  */
-void MidiOutput::sendMessageNow(MidiMessage &message)
+void MidiOutput::sendMessage(MidiInterface::Type interface,
+                             uint8_t port,
+                             MidiMessage &message)
 {
-    MidiMessage::Type type = message.getType();
-
-    if (type == MidiMessage::Type::Clock) {
-        sendClock(getInterfaceType(), getPort());
-    }
-
-    else if (type == MidiMessage::Type::Start) {
-        sendStart(getInterfaceType(), getPort());
-    }
-
-    else if (type == MidiMessage::Type::Continue) {
-        sendContinue(getInterfaceType(), getPort());
-    }
-
-    else if (type == MidiMessage::Type::Stop) {
-        sendStop(getInterfaceType(), getPort());
-    }
-
-    else if (type == MidiMessage::Type::NoteOn) {
-        sendNoteOn(getInterfaceType(),
-                   getPort(),
-                   message.getChannel(),
-                   message.getData1(),
-                   message.getData2());
-    }
-
-    else if (type == MidiMessage::Type::NoteOff) {
-        sendNoteOff(getInterfaceType(),
-                    getPort(),
-                    message.getChannel(),
-                    message.getData1(),
-                    message.getData2());
-    }
-
-    else if (type == MidiMessage::Type::AfterTouchPoly) {
-        sendAfterTouchPoly(getInterfaceType(),
-                           getPort(),
-                           message.getChannel(),
-                           message.getData1(),
-                           message.getData2());
-    }
-
-    else if (type == MidiMessage::Type::AfterTouchChannel) {
-        sendAfterTouchChannel(getInterfaceType(),
-                              getPort(),
-                              message.getChannel(),
-                              message.getData1());
-    }
-
-    else if (type == MidiMessage::Type::ControlChange) {
-        sendControlChange(getInterfaceType(),
-                          getPort(),
-                          message.getChannel(),
-                          message.getData1(),
-                          message.getData2());
-    }
-
-    else if (type == MidiMessage::Type::ProgramChange) {
-        sendProgramChange(getInterfaceType(),
-                          getPort(),
-                          message.getChannel(),
-                          message.getData1());
-    }
-
-    else if (type == MidiMessage::Type::PitchBend) {
-        sendPitchBend(getInterfaceType(),
-                      getPort(),
-                      message.getChannel(),
-                      message.getData1() | message.getData2() << 7);
-    }
-
-    else if (type == MidiMessage::Type::SongPosition) {
-        sendSongPosition(getInterfaceType(),
-                         getPort(),
-                         message.getData1() | message.getData2() << 7);
-    }
-
-    else if (type == MidiMessage::Type::SongSelect) {
-        sendSongSelect(getInterfaceType(), getPort(), message.getData1());
-    }
-
-    else if (type == MidiMessage::Type::TuneRequest) {
-        sendTuneRequest(getInterfaceType(), getPort());
-    }
-
-    else if (type == MidiMessage::Type::ActiveSensing) {
-        sendActiveSensing(getInterfaceType(), getPort());
-    }
-
-    else if (type == MidiMessage::Type::SystemReset) {
-        sendSystemReset(getInterfaceType(), getPort());
-    }
-}
-
-/** Send an array of Electra messages to Midi outputs.
- *
- */
-void MidiOutput::sendMessages(std::vector<MidiMessage> &messages)
-{
-    for (auto &message : messages) {
-        sendMessage(message);
-    }
-}
-
-/** Send Electra message to Midi outputs.
- *
- */
-void MidiOutput::sendMessage(MidiMessage &message)
-{
-    /*
-    // Fetch the device info
-    Device *device = getDevice(message->getDeviceId());
-
-    if (!device) {
-        return;
-    }
-    int rate = device->getRate();
-    */
-
-    MidiMessageTransport mmt(getInterfaceType(), getPort(), message);
-
-    int rate = 0;
-
-    // Send message immediatelly or add it to the queue according to the rate
-    if (rate == 0) {
-        sendMessageNow(mmt);
-    } else {
-        addToQueue(mmt);
-    }
+    addToQueue(interface, port, message);
 }
 
 bool MidiOutput::isIdenticalChange(const MidiMessageTransport &m1,
                                    const MidiMessageTransport &m2)
 {
+    if (m1.getType() == MidiMessage::Type::ControlChange) {
+        if ((m1.getInterfaceType() == m2.getInterfaceType())
+            && (m1.getPort() == m2.getPort()) && (m1.getType() == m2.getType())
+            && (m1.getChannel() == m2.getChannel())
+            && (m1.getData1() == m2.getData1())) {
+            return true;
+        }
+    } else if (m1.getType() == MidiMessage::Type::ProgramChange) {
+        if ((m1.getInterfaceType() == m2.getInterfaceType())
+            && (m1.getPort() == m2.getPort()) && (m1.getType() == m2.getType())
+            && (m1.getChannel() == m2.getChannel())) {
+            return true;
+        }
+    } else if (m1.getType() == MidiMessage::Type::SystemExclusive) {
+        if ((m1.getInterfaceType() == m2.getInterfaceType())
+            && (m1.getPort() == m2.getPort())
+            && (m1.getType() == m2.getType())) {
+            return true;
+        }
+    }
     return (false);
 }
 
 /** Adds the message to the queue if it is not registered there already
  *
  */
-void MidiOutput::addToQueue(MidiMessageTransport &message)
+void MidiOutput::addToQueue(MidiInterface::Type interface,
+                            uint8_t port,
+                            MidiMessage &message)
 {
-    bool alreadyExists = false;
+    MidiMessageTransport mmt(interface, port, message);
 
     for (int i = 0; i < outgoingQueue.size(); i++) {
-        if (MidiOutput::isIdenticalChange(outgoingQueue[i], message)) {
-            alreadyExists = true;
+        if (MidiOutput::isIdenticalChange(outgoingQueue[i], mmt)) {
+            outgoingQueue.getObjectPointer(i)->invalid = true;
         }
     }
-
-    if (alreadyExists == false) {
-        outgoingQueue.push(message);
-    }
+    outgoingQueue.push(mmt);
 }
 
 /** Send Electra message to Midi outputs.
  *
  */
-void MidiOutput::sendMessageNow(MidiMessageTransport &mmt)
-{
-    sendControlChange(mmt.getInterfaceType(),
-                      mmt.getPort(),
-                      mmt.getChannel(),
-                      mmt.getData1(),
-                      mmt.getData2());
-}
-
 void MidiOutput::send(MidiInterface::Type interface,
                       uint8_t port,
                       MidiMessage::Type type,
@@ -224,8 +124,30 @@ void MidiOutput::send(MidiInterface::Type interface,
                       uint8_t data2)
 {
     MidiInterface::get(interface)->send(port, type, channel, data1, data2);
-    indicate(
-        interface, port, Direction::out, MidiMessage::Type::NoteOn); // \todo
+    indicate(interface, port, Direction::out, type);
+}
+
+void MidiOutput::send(MidiInterface::Type interface,
+                      uint8_t port,
+                      MidiMessage &message)
+{
+    if (message.getType() == MidiMessage::Type::SystemExclusive) {
+        MidiInterface::get(interface)->send(port, message.getSysExBlock());
+    } else {
+        MidiInterface::get(interface)->send(port,
+                                            message.getType(),
+                                            message.getChannel(),
+                                            message.getData1(),
+                                            message.getData2());
+    }
+    indicate(interface, port, Direction::out, message.getType());
+}
+
+void MidiOutput::send(MidiInterface::Type interface,
+                      uint8_t port,
+                      SysexBlock &sysexBlock)
+{
+    MidiInterface::get(interface)->sendSysEx(port, sysexBlock);
 }
 
 void MidiOutput::sendControlChange(MidiInterface::Type interface,
@@ -234,9 +156,9 @@ void MidiOutput::sendControlChange(MidiInterface::Type interface,
                                    uint8_t parameterNumber,
                                    uint8_t value)
 {
-    MidiInterface::get(interface)->sendControlChange(
-        port, parameterNumber, value, channel);
-
+    MidiMessage message(
+        channel, MidiMessage::Type::ControlChange, parameterNumber, value);
+    sendMessage(interface, port, message);
     indicate(interface, port, Direction::out, MidiMessage::Type::ControlChange);
 }
 
@@ -285,9 +207,20 @@ void MidiOutput::sendProgramChange(MidiInterface::Type interface,
                                    uint8_t channel,
                                    uint8_t programNumber)
 {
-    MidiInterface::get(interface)->sendProgramChange(
-        port, channel, programNumber);
+    MidiMessage message(
+        channel, MidiMessage::Type::ProgramChange, programNumber, 0);
+    sendMessage(interface, port, message);
     indicate(interface, port, Direction::out, MidiMessage::Type::ProgramChange);
+}
+
+void MidiOutput::sendSysEx(MidiInterface::Type interface,
+                           uint8_t port,
+                           SysexBlock &sysexBlock)
+{
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+    indicate(
+        interface, port, Direction::out, MidiMessage::Type::SystemExclusive);
 }
 
 void MidiOutput::sendSysEx(MidiInterface::Type interface,

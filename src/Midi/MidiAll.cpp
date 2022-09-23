@@ -11,11 +11,27 @@ void MidiAll::send(uint8_t port,
                    uint8_t data1,
                    uint8_t data2) const
 {
-    /*
     for (const auto &interfaceType : MidiInterface::allInterfaceTypes) {
-        MidiOutput::send(interfaceType, port, channel, parameterNumber, value);
+        MidiOutput::send(interfaceType, port, type, channel, data1, data2);
     }
-    */
+}
+
+void MidiAll::send(uint8_t port, MidiMessage &message)
+{
+    for (const auto &interfaceType : MidiInterface::allInterfaceTypes) {
+        if (message.getType() == MidiMessage::Type::SystemExclusive) {
+            MidiOutput::send(interfaceType, port, message.getSysExBlock());
+        } else {
+            MidiOutput::send(interfaceType, port, message);
+        }
+    }
+}
+
+void MidiAll::send(uint8_t port, SysexBlock &sysexBlock)
+{
+    for (const auto &interfaceType : MidiInterface::allInterfaceTypes) {
+        MidiOutput::send(interfaceType, port, sysexBlock);
+    }
 }
 
 void MidiAll::sendControlChange(uint8_t port,
@@ -79,6 +95,13 @@ void MidiAll::sendProgramChange(uint8_t port,
     for (const auto &interfaceType : MidiInterface::allInterfaceTypes) {
         MidiOutput::sendProgramChange(
             interfaceType, port, channel, programNumber);
+    }
+}
+
+void MidiAll::sendSysEx(uint8_t port, SysexBlock &sysexBlock)
+{
+    for (const auto &interfaceType : MidiInterface::allInterfaceTypes) {
+        MidiOutput::sendSysEx(interfaceType, port, sysexBlock);
     }
 }
 

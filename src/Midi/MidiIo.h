@@ -37,6 +37,20 @@ public:
             static_cast<midi::MidiType>(type), data1, data2, channel);
     }
 
+    void send(uint8_t port, MidiMessage &message) override
+    {
+        midiDINInterfaces[port]->send(
+            static_cast<midi::MidiType>(message.getType()),
+            message.getData1(),
+            message.getData2(),
+            message.getChannel());
+    }
+
+    void send(uint8_t port, SysexBlock &sysexBlock) override
+    {
+        sendSysEx(port, sysexBlock);
+    }
+
     void sendControlChange(uint8_t port,
                            uint8_t parameterNumber,
                            uint8_t value,
@@ -82,6 +96,17 @@ public:
                            uint8_t programNumber) const override
     {
         midiDINInterfaces[port]->sendProgramChange(programNumber, channel);
+    }
+
+    void sendSysEx(uint8_t port, SysexBlock &sysexBlock) override
+    {
+        uint8_t buffer[MemoryBlock::headerMaxSize];
+        sysexBlock.seek(0);
+        size_t readBytes = 0;
+        while ((readBytes = sysexBlock.readBytes(buffer, sizeof(buffer)))
+               != 0) {
+            sendSysExPartial(port, buffer, readBytes, false);
+        }
     }
 
     void sendSysEx(uint8_t port,
