@@ -74,10 +74,17 @@ bool MidiOutput::isIdenticalChange(const MidiMessageTransport &m1,
                                    const MidiMessageTransport &m2)
 {
     if (m1.getType() == MidiMessage::Type::ControlChange) {
+        // This is to prevent issue of the rpn reset
         if ((m1.getInterfaceType() == m2.getInterfaceType())
             && (m1.getPort() == m2.getPort()) && (m1.getType() == m2.getType())
             && (m1.getChannel() == m2.getChannel())
-            && (m1.getData1() == m2.getData1())) {
+            && ((m1.getData1() == 100) || (m1.getData1() == 101))) {
+            return false;
+        } else if ((m1.getInterfaceType() == m2.getInterfaceType())
+                   && (m1.getPort() == m2.getPort())
+                   && (m1.getType() == m2.getType())
+                   && (m1.getChannel() == m2.getChannel())
+                   && (m1.getData1() == m2.getData1())) {
             return true;
         }
     } else if (m1.getType() == MidiMessage::Type::ProgramChange) {
@@ -354,6 +361,7 @@ void MidiOutput::sendRpn(MidiInterface::Type interface,
                          uint16_t parameterNumber,
                          uint16_t midiValue)
 {
+    logMessage("sending RPN: %d", parameterNumber);
     sendControlChange(interface, port, channel, 101, parameterNumber >> 7);
     sendControlChange(interface, port, channel, 100, parameterNumber & 0x7F);
     sendControlChange(interface, port, channel, 6, midiValue >> 7);
