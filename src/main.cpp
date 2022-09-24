@@ -75,6 +75,8 @@ void initialise(void)
 
     // Get status of the logger \todo move to Logger class
     loggerEnabled = System::runtimeInfo.getLoggerStatus();
+
+    App::get()->enableMidi = true;
 }
 
 void processEvents(void)
