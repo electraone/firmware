@@ -41,7 +41,7 @@ void sendMidi(void)
                              message.getData2());
         }
 
-        //#ifdef DEBUG
+#ifdef DEBUG
         logMessage(
             "sendMidi: queued message (%d): interface:%d, port:%d, channel: %d,"
             " parameterNumber: %d, value=%d, type=%s",
@@ -52,7 +52,7 @@ void sendMidi(void)
             message.getData1(),
             message.getData2(),
             message.getDescription());
-        //#endif
+#endif
         i++;
     }
 }
