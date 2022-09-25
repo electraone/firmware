@@ -19,8 +19,15 @@ void repaintGraphics(void)
     if (repaintQueue.isEmpty() != true) {
         Hardware::screen.switchWriteLayer();
 
+        uint16_t i = 0;
+
         while (repaintQueue.isEmpty() != true) {
             Component *component = repaintQueue.shift();
+
+            // skip identical entries
+            if (repaintQueue.size() > 0 && component == repaintQueue[++i]) {
+                continue;
+            }
 
             auto window = component->getWindow();
 
@@ -30,7 +37,6 @@ void repaintGraphics(void)
                 component->painted();
             }
         }
-
         Hardware::screen.showPreparedLayer(0, 0, 1024, 600);
     }
 }
