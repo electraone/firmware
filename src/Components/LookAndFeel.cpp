@@ -184,6 +184,30 @@ void LookAndFeel::paintList(Graphics &g,
     }
 }
 
+void LookAndFeel::paintButtonList(Graphics &g,
+                                  const Rectangle &bounds,
+                                  uint32_t colour,
+                                  const ListData *items,
+                                  uint8_t activeIndex)
+{
+    g.setColour(Colours::darker(colour, 0.5f));
+    g.drawRoundRect(0, 0, bounds.getWidth(), bounds.getHeight(), 5);
+
+    if (items->getByIndex(activeIndex).isBitmapEmpty()) {
+        // Print the label
+        g.printText(0,
+                    bounds.getHeight() * 0.3f,
+                    items->getByIndex(activeIndex).getLabel(),
+                    TextStyle::mediumTransparent,
+                    bounds.getWidth(),
+                    TextAlign::center);
+    } else {
+        // display bitmap image
+        uint16_t paddingBitmap = ((bounds.getWidth() - BITMAP_WIDTH)) / 2 - 1;
+        items->getByIndex(activeIndex).paintBitmap(paddingBitmap, 0, colour);
+    }
+}
+
 void LookAndFeel::paintSet(Graphics &g,
                            const Rectangle &bounds,
                            uint32_t colour,

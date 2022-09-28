@@ -57,6 +57,12 @@ public:
                           const ListData *items,
                           uint8_t activeIndex);
 
+    static void paintButtonList(Graphics &g,
+                                const Rectangle &bounds,
+                                uint32_t colour,
+                                const ListData *items,
+                                uint8_t activeIndex);
+
     static void paintSet(Graphics &g,
                          const Rectangle &bounds,
                          uint32_t colour,
