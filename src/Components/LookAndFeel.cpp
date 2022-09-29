@@ -188,9 +188,15 @@ void LookAndFeel::paintButtonList(Graphics &g,
                                   const Rectangle &bounds,
                                   uint32_t colour,
                                   const ListData *items,
-                                  uint8_t activeIndex)
+                                  uint8_t activeIndex,
+                                  bool active)
 {
-    g.setColour(Colours::darker(colour, 0.5f));
+    if (active) {
+        g.setColour(Colours::darker(colour, 0.2f));
+        g.fillRoundRect(0, 0, bounds.getWidth(), bounds.getHeight(), 5);
+    }
+
+    g.setColour(colour);
     g.drawRoundRect(0, 0, bounds.getWidth(), bounds.getHeight(), 5);
 
     if (items->getByIndex(activeIndex).isBitmapEmpty()) {

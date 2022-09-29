@@ -18,7 +18,8 @@ enum class TextStyle {
     largeWhiteOnBlack = 371,
     smallTransparent = 0,
     largeTransparent = 371,
-    mediumTransparent = 13
+    mediumTransparent = 13,
+    mediumInverseTransparent = 32
 };
 
 class Text : public virtual FrameBuffer

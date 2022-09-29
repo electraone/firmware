@@ -61,7 +61,8 @@ public:
                                 const Rectangle &bounds,
                                 uint32_t colour,
                                 const ListData *items,
-                                uint8_t activeIndex);
+                                uint8_t activeIndex,
+                                bool active);
 
     static void paintSet(Graphics &g,
                          const Rectangle &bounds,

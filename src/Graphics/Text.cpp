@@ -288,6 +288,16 @@ void Text::printText(uint16_t x,
                               y,
                               charWidth,
                               charHeight);
+            } else if (textStyle == TextStyle::mediumInverseTransparent) {
+                setBteChromaColor(0xFFFFFF);
+                bteCopyChroma(FRAME_UI_TOOLKIT,
+                              charXposition,
+                              charYposition,
+                              address,
+                              x + xPosition,
+                              y,
+                              charWidth,
+                              charHeight);
             } else {
                 charYposition += (color * 60);
                 setBteChromaColor(chromaColors[color]);
