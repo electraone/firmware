@@ -91,12 +91,17 @@ public:
 
     void sendSysEx(uint8_t port, SysexBlock &sysexBlock) override
     {
-        uint8_t buffer[MemoryBlock::headerMaxSize];
-        sysexBlock.seek(0);
+        size_t sysexBlockLength = sysexBlock.getLength();
         size_t readBytes = 0;
+        size_t totalReadBytes = 0;
+        uint8_t buffer[MemoryBlock::headerMaxSize];
+
+        sysexBlock.seek(0);
         while ((readBytes = sysexBlock.readBytes(buffer, sizeof(buffer)))
                != 0) {
-            sendSysExPartial(port, buffer, readBytes, false);
+            totalReadBytes += readBytes;
+            sendSysExPartial(
+                port, buffer, readBytes, totalReadBytes == sysexBlockLength);
         }
     }
 
@@ -112,7 +117,7 @@ public:
                           uint16_t sysexDataLength,
                           bool complete) const override
     {
-        usbMIDI.sendSysEx(sysexDataLength, sysexData, true, port);
+        usbMIDI.sendSysExPartial(sysexDataLength, sysexData, complete, port);
     }
 
     void sendPitchBend(uint8_t port,
