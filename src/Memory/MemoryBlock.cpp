@@ -87,6 +87,7 @@ size_t MemoryBlock::writeBytes(const uint8_t *buffer, size_t lengthToWrite)
     size_t bytesAvailableInHeader = headerMaxSize - headerLength;
     size_t bytesExceedingHeader;
     size_t bytesToWriteToHeader;
+    size_t originalHeaderLength = headerLength;
 
     if (bytesAvailableInHeader > lengthToWrite) {
         bytesExceedingHeader = 0;
@@ -106,7 +107,9 @@ size_t MemoryBlock::writeBytes(const uint8_t *buffer, size_t lengthToWrite)
             memoryPool->write(header, headerLength);
 
             if (bytesExceedingHeader > 0) {
-                memoryPool->write(buffer + headerLength, bytesExceedingHeader);
+                memoryPool->write(buffer
+                                      + (headerLength - originalHeaderLength),
+                                  bytesExceedingHeader);
             }
         }
     } else {
@@ -117,7 +120,7 @@ size_t MemoryBlock::writeBytes(const uint8_t *buffer, size_t lengthToWrite)
     length += lengthToWrite;
     endAddress = startAddress + length;
 
-    return (length);
+    return (lengthToWrite);
 }
 
 void MemoryBlock::close(void)
