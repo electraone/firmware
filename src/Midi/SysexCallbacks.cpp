@@ -10,6 +10,8 @@ static SysexHandler handlerMidiUsbHost1(MidiInterface::Type::MidiUsbHost, 0);
 static SysexHandler handlerMidiUsbHost2(MidiInterface::Type::MidiUsbHost, 1);
 static SysexHandlerCtrl handlerMidiUsbDevCtrl(MidiInterface::Type::MidiUsbDev,
                                               2);
+static SysexHandlerCtrl handlerMidiUsbHostCtrl(MidiInterface::Type::MidiUsbHost,
+                                               2);
 
 void handleMidiIoSysExPort0(const uint8_t *sysExData,
                             uint16_t sysExSize,
@@ -77,26 +79,36 @@ void handleMidiUsbDevSysEx(uint8_t cable,
     }
 }
 
-void handleMidiUsbHostSysExPort0(const uint8_t *sysExData,
+void handleMidiUsbHostSysExPort0(uint8_t cable,
+                                 const uint8_t *sysExData,
                                  uint16_t sysExSize,
                                  bool complete)
 {
-    if (MidiInputCallback::routePartialSysexCallback) {
+    if (cable != 2 && MidiInputCallback::routePartialSysexCallback) {
         MidiInput midiInput(MidiInterface::Type::MidiUsbHost, 0);
         MidiInputCallback::routePartialSysexCallback(
             midiInput, sysExData, sysExSize, complete);
     }
-    handlerMidiUsbHost1.process(sysExData, sysExSize, complete);
+    if (cable == 2) {
+        handlerMidiUsbHostCtrl.process(sysExData, sysExSize, complete);
+    } else {
+        handlerMidiUsbHost1.process(sysExData, sysExSize, complete);
+    }
 }
 
-void handleMidiUsbHostSysExPort1(const uint8_t *sysExData,
+void handleMidiUsbHostSysExPort1(uint8_t cable,
+                                 const uint8_t *sysExData,
                                  uint16_t sysExSize,
                                  bool complete)
 {
-    if (MidiInputCallback::routePartialSysexCallback) {
+    if (cable != 2 && MidiInputCallback::routePartialSysexCallback) {
         MidiInput midiInput(MidiInterface::Type::MidiUsbHost, 1);
         MidiInputCallback::routePartialSysexCallback(
             midiInput, sysExData, sysExSize, complete);
     }
-    handlerMidiUsbHost2.process(sysExData, sysExSize, complete);
+    if (cable == 2) {
+        handlerMidiUsbHostCtrl.process(sysExData, sysExSize, complete);
+    } else {
+        handlerMidiUsbHost2.process(sysExData, sysExSize, complete);
+    }
 }

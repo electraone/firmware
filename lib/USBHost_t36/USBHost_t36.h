@@ -1562,19 +1562,19 @@ public:
         // type: 0xE0  PitchBend
         handlePitchChange = fptr;
     }
-    void setHandleSysEx(void (*fptr)(const uint8_t *data,
+    void setHandleSysEx(void (*fptr)(uint8_t cable, const uint8_t *data,
                                      uint16_t length,
                                      bool complete))
     {
         // type: 0xF0  SystemExclusive - multiple calls for message bigger than buffer
-        handleSysExPartial = (void (*)(const uint8_t *, uint16_t, uint8_t))fptr;
+        handleSysExPartial = (void (*)(uint8_t, const uint8_t *, uint16_t, uint8_t))fptr;
     }
-    void setHandleSystemExclusive(void (*fptr)(const uint8_t *data,
+    void setHandleSystemExclusive(void (*fptr)(uint8_t cable, const uint8_t *data,
                                                uint16_t length,
                                                bool complete))
     {
         // type: 0xF0  SystemExclusive - multiple calls for message bigger than buffer
-        handleSysExPartial = (void (*)(const uint8_t *, uint16_t, uint8_t))fptr;
+        handleSysExPartial = (void (*)(uint8_t, const uint8_t *, uint16_t, uint8_t))fptr;
     }
     void setHandleSystemExclusive(void (*fptr)(uint8_t *data,
                                                unsigned int size))
@@ -1692,7 +1692,7 @@ private:
     void (*handleProgramChange)(uint8_t ch, uint8_t program);
     void (*handleAfterTouch)(uint8_t ch, uint8_t pressure);
     void (*handlePitchChange)(uint8_t ch, int pitch);
-    void (*handleSysExPartial)(const uint8_t *data,
+    void (*handleSysExPartial)(uint8_t cable, const uint8_t *data,
                                uint16_t length,
                                uint8_t complete);
     void (*handleSysExComplete)(uint8_t *data, unsigned int size);

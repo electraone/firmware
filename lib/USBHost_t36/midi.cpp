@@ -728,7 +728,7 @@ system_common_or_realtime:
 		msg_type = 0xF0;            // 0xF0 = SystemExclusive
 		if (handleSysExPartial)
 		{
-			(*handleSysExPartial)(msg_sysex, len, 1);
+			(*handleSysExPartial)(msg_cable, msg_sysex, len, 1);
 		}
 		else if (handleSysExComplete)
 		{
@@ -756,7 +756,7 @@ void MIDIDevice::sysex_byte (uint8_t b)
 	if (handleSysExPartial && msg_sysex_len >= SYSEX_MAX_LEN)
 	{
 		// when buffer is full, send another chunk to partial handler.
-		(*handleSysExPartial)(msg_sysex, msg_sysex_len, 0);
+		(*handleSysExPartial)(msg_cable, msg_sysex, msg_sysex_len, 0);
 		msg_sysex_len = 0;
 	}
 	if (msg_sysex_len < SYSEX_MAX_LEN)
