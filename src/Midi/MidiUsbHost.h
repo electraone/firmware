@@ -111,12 +111,18 @@ public:
 
     void sendSysEx(uint8_t port, SysexBlock &sysexBlock) override
     {
-        uint8_t buffer[MemoryBlock::headerMaxSize];
-        sysexBlock.seek(0);
+        size_t sysexBlockLength = sysexBlock.getLength();
         size_t readBytes = 0;
+        size_t totalReadBytes = 0;
+        // buffer size must be divisible by 3
+        uint8_t buffer[60];
+
+        sysexBlock.seek(0);
         while ((readBytes = sysexBlock.readBytes(buffer, sizeof(buffer)))
                != 0) {
-            sendSysExPartial(port, buffer, readBytes, false);
+            totalReadBytes += readBytes;
+            sendSysExPartial(
+                port, buffer, readBytes, totalReadBytes == sysexBlockLength);
         }
     }
 
@@ -136,8 +142,8 @@ public:
                           bool complete) const
     {
         if (USBDevices[port].midiDevice != NULL) {
-            USBDevices[port].midiDevice->sendSysEx(
-                sysexDataLength, sysexData, true, port);
+            USBDevices[port].midiDevice->sendSysExPartial(
+                sysexDataLength, sysexData, complete, port);
         }
     }
 

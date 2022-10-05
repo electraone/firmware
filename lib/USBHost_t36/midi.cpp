@@ -385,6 +385,17 @@ void MIDIDevice::write_packed (uint32_t data)
 	}
 }
 
+void MIDIDevice::send_sysex_buffer_partial (const uint8_t *data, uint32_t length, uint8_t cable)
+{
+	cable = (cable & 0x0F) << 4;
+	while (length > 0)
+	{
+		write_packed (0x04 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
+		data += 3;
+		length -= 3;
+	}
+}
+
 void MIDIDevice::send_sysex_buffer_has_term (const uint8_t *data, uint32_t length, uint8_t cable)
 {
 	cable = (cable & 0x0F) << 4;

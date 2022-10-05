@@ -123,6 +123,19 @@ void MidiOutput::sendNack(MidiInterface::Type interface, uint8_t port)
     sendMessage(interface, port, message);
 }
 
+void MidiOutput::sendAvailable(MidiInterface::Type interface, uint8_t port)
+{
+    uint8_t data[9] = { 0xF0,      0x00, 0x21, 0x45, EVENT_MESSAGE,
+                        AVAILABLE, 0x00, 0x00, 0xF7 };
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, sizeof(data));
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+}
+
 void MidiOutput::sendAppInfo(MidiInterface::Type interface, uint8_t port)
 {
     uint8_t data[256];

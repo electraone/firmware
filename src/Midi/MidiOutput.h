@@ -33,6 +33,7 @@
 #define SNAPSHOT_CHANGE 0x03
 #define SNAPSHOT_BANK_SWITCH 0x04
 #define PRESET_LIST_CHANGE 0x05
+#define AVAILABLE 0x7F
 
 /*
  * Object types
@@ -83,6 +84,7 @@ public:
                                    uint8_t slotId);
     static void sendAck(MidiInterface::Type interface, uint8_t port);
     static void sendNack(MidiInterface::Type interface, uint8_t port);
+    static void sendAvailable(MidiInterface::Type interface, uint8_t port);
     static void sendAppInfo(MidiInterface::Type interface, uint8_t port);
     static void sendMemoryInfo(MidiInterface::Type interface, uint8_t port);
     static void sendElectraInfo(MidiInterface::Type interface,

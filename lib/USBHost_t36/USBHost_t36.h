@@ -1371,6 +1371,18 @@ public:
             send_sysex_add_term_bytes(data, length, cable);
         }
     }
+    void sendSysExPartial(uint32_t length,
+                   const uint8_t *data,
+                   bool complete,
+                   uint8_t cable = 0)
+    {
+        //if (cable >= MIDI_NUM_CABLES) return;
+        if (complete) {
+            send_sysex_buffer_has_term(data, length, cable);
+        } else {
+            send_sysex_buffer_partial(data, length, cable);
+        }
+    }
     void sendRealTime(uint8_t type, uint8_t cable = 0)
     {
         switch (type) {
@@ -1650,6 +1662,9 @@ protected:
     void tx_data(const Transfer_t *transfer);
     void init();
     void write_packed(uint32_t data);
+    void send_sysex_buffer_partial(const uint8_t *data,
+                                    uint32_t length,
+                                    uint8_t cable);
     void send_sysex_buffer_has_term(const uint8_t *data,
                                     uint32_t length,
                                     uint8_t cable);
