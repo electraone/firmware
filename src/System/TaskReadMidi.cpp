@@ -1,7 +1,8 @@
 #include "TaskReadMidi.h"
 #include "MidiInputCallback.h"
-#include "Sysex.h"
 #include "App.h" // \todo To be removed.
+
+#define USB_MIDI_PORT_CTRL 2
 
 CircularBuffer<MidiMessageTransport, 5> incomingQueueL1;
 CircularBuffer<MidiMessageTransport, 128> incomingQueueL2;

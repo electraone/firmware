@@ -1,6 +1,6 @@
 #include "TaskProcessSysex.h"
 #include "helpers.h"
-#include "Sysex.h"
+#include "MidiOutput.h"
 #include "App.h"
 
 CircularBuffer<SysexTransport, SYSEX_QUEUE_SIZE> sysexQueue;
@@ -33,9 +33,10 @@ void processSysexFile(uint8_t port,
     App::get()->enableMidi = true;
 
     if (status == true) {
-        sendAck(port);
+        MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
+        ;
     } else {
-        sendNack(port);
+        MidiOutput::sendNack(MidiInterface::Type::MidiUsbDev, port);
     }
 }
 
@@ -62,51 +63,56 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
             file.writeAll(sysexPayload);
 
             if (object == ElectraCommand::Object::FilePreset) {
-                sendPresetSlotChanged(port);
+                MidiOutput::sendPresetSlotChanged(
+                    MidiInterface::Type::MidiUsbDev, port);
             }
 
             if (App::get()->handleCtrlFileReceived(port, file, object)
                 == true) {
                 logMessage(
                     "processElectraSysex::handleElectraSysex: sending ACK");
-                sendAck(port);
+                MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
+                ;
             } else {
                 logMessage(
                     "processElectraSysex::handleElectraSysex: sending NACK");
-                sendNack(port);
+                MidiOutput::sendNack(MidiInterface::Type::MidiUsbDev, port);
             }
         }
         if (cmd.isFileRequest()) {
             if (object == ElectraCommand::Object::FilePreset) {
-                if (sendSysExFile(
+                if (MidiOutput::sendSysExFile(
                         port, System::context.getCurrentPresetFile(), object)) {
                     logMessage("processElectraSysex::handleElectraSysex: "
                                "preset sysex sent to the host");
                 }
             } else if (object == ElectraCommand::Object::FileLua) {
-                if (sendSysExFile(
+                if (MidiOutput::sendSysExFile(
                         port, System::context.getCurrentLuaFile(), object)) {
                     logMessage("processElectraSysex::handleElectraSysex: "
                                "lua sysex sent to the host");
                 }
             } else if (object == ElectraCommand::Object::FileConfig) {
-                if (sendSysExFile(
+                if (MidiOutput::sendSysExFile(
                         port, System::context.getCurrentConfigFile(), object)) {
                     logMessage("processElectraSysex::handleElectraSysex: "
                                "config sysex sent to the host");
                 }
             } else if (object == ElectraCommand::Object::MemoryInfo) {
-                sendMemoryInfo(port);
+                MidiOutput::sendMemoryInfo(MidiInterface::Type::MidiUsbDev,
+                                           port);
                 logMessage("processElectraSysex::handleElectraSysex: "
                            "memoryInfo sysex sent to the host");
             } else if (object == ElectraCommand::Object::AppInfo) {
-                sendAppInfo(port);
+                MidiOutput::sendAppInfo(MidiInterface::Type::MidiUsbDev, port);
                 logMessage("processElectraSysex::handleElectraSysex: "
                            "appInfo sysex sent to the host");
             } else if (object == ElectraCommand::Object::ElectraInfo) {
-                sendElectraInfo(port,
-                                System::runtimeInfo.getElectraInfoSerial(),
-                                System::runtimeInfo.getElectraInfoHwRevision());
+                MidiOutput::sendElectraInfo(
+                    MidiInterface::Type::MidiUsbDev,
+                    port,
+                    System::runtimeInfo.getElectraInfoSerial(),
+                    System::runtimeInfo.getElectraInfoHwRevision());
                 logMessage("processElectraSysex::handleElectraSysex: "
                            "electraInfo sysex sent to the host");
             } else {
@@ -127,7 +133,8 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                            "execute Lua: \"%s\"",
                            buffer);
                 runLuaString((char *)buffer);
-                sendAck(port);
+                MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
+                ;
             } else {
                 logMessage("processElectraSysex::handleElectraSysex: "
                            "Lua script is not available");
@@ -159,18 +166,20 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                     logMessage("processElectraSysex: removing file %s: %s",
                                fileToRemove,
                                (status == true) ? "OK" : "fail");
-                    sendPresetSlotChanged(port);
+                    MidiOutput::sendPresetSlotChanged(
+                        MidiInterface::Type::MidiUsbDev, port);
                 }
 
                 if (App::get()->handleCtrlFileRemoved(bankNumber, slot, object)
                     == true) {
                     logMessage(
                         "processElectraSysex::handleElectraSysex: sending ACK");
-                    sendAck(port);
+                    MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
+                    ;
                 } else {
                     logMessage(
                         "processElectraSysex::handleElectraSysex: sending NACK");
-                    sendNack(port);
+                    MidiOutput::sendNack(MidiInterface::Type::MidiUsbDev, port);
                 }
             } else {
                 logMessage(
@@ -192,7 +201,8 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                     logMessage("processElectraSysex::LOGGER ON");
                 }
                 System::runtimeInfo.setLoggerStatus(loggerEnabled);
-                sendAck(port);
+                MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
+                ;
             }
         } else {
             App::get()->handleElectraSysex(port, sysexBlock);

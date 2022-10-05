@@ -1,6 +1,7 @@
 #include "TaskScanUSBHost.h"
 #include "SysexCallbacks.h"
 #include "System.h"
+#include "MidiOutput.h"
 #include "App.h"
 
 // \todo To be removed.
@@ -92,6 +93,11 @@ void scanUSBHost(void)
                                       &midiDevice2);
                     USBDevices[1].midiDevice->setHandleSysEx(
                         handleMidiUsbHostSysExPort1);
+                }
+
+                if ((drivers[i]->idVendor() == 0x1FC9)
+                    && (drivers[i]->idProduct() == 0x82CF)) {
+                    logMessage("electra is connected");
                 }
             }
 

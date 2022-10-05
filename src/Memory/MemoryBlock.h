@@ -28,7 +28,8 @@ public:
     void print(MemoryBlockOutputType outputType);
     int peek(size_t position) const;
 
-    static const size_t headerMaxSize = 32;
+    // The size of the header must be divisible by 4
+    static const size_t headerMaxSize = 16;
 
 protected:
     MemoryPool *memoryPool;

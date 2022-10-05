@@ -94,7 +94,8 @@ public:
         size_t sysexBlockLength = sysexBlock.getLength();
         size_t readBytes = 0;
         size_t totalReadBytes = 0;
-        uint8_t buffer[MemoryBlock::headerMaxSize];
+        // buffer size must be divisible by 3
+        uint8_t buffer[60];
 
         sysexBlock.seek(0);
         while ((readBytes = sysexBlock.readBytes(buffer, sizeof(buffer)))

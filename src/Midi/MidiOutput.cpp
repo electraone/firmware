@@ -1,4 +1,5 @@
 #include "MidiOutput.h"
+#include "ArduinoJson.h"
 #include "App.h"
 
 /** Constructor
@@ -18,6 +19,381 @@ MidiOutput::MidiOutput(MidiInterface::Type newInterface,
       rate(0),
       tsLastMessage(0)
 {
+}
+
+void MidiOutput::sendSetLogger(MidiInterface::Type interface,
+                               uint8_t port,
+                               bool status)
+{
+    uint8_t data[9] = { 0xF0,   0x00,   0x21, 0x45, SYSTEM_CALL,
+                        LOGGER, status, 0x00, 0xF7 };
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, sizeof(data));
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+}
+
+void MidiOutput::sendPresetSlotChanged(MidiInterface::Type interface,
+                                       uint8_t port)
+{
+    uint8_t data[7] = { 0xF0, 0x00,          0x21,
+                        0x45, EVENT_MESSAGE, PRESET_LIST_CHANGE,
+                        0xF7 };
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, sizeof(data));
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+}
+
+void MidiOutput::sendSnapshotBankChanged(MidiInterface::Type interface,
+                                         uint8_t port,
+                                         uint8_t bankNumber)
+{
+    uint8_t data[8] = { 0xF0,       0x00,          0x21,
+                        0x45,       EVENT_MESSAGE, SNAPSHOT_BANK_SWITCH,
+                        bankNumber, 0xF7 };
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, sizeof(data));
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+}
+
+void MidiOutput::sendSnapshotChanged(MidiInterface::Type interface,
+                                     uint8_t port)
+{
+    uint8_t data[7] = { 0xF0, 0x00, 0x21, 0x45, EVENT_MESSAGE, SNAPSHOT_CHANGE,
+                        0xF7 };
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, sizeof(data));
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+}
+
+void MidiOutput::sendPresetSwitched(MidiInterface::Type interface,
+                                    uint8_t port,
+                                    uint8_t bankNumber,
+                                    uint8_t slotId)
+{
+    uint8_t data[9] = { 0xF0,          0x00,       0x21,   0x45, EVENT_MESSAGE,
+                        PRESET_SWITCH, bankNumber, slotId, 0xF7 };
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, sizeof(data));
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+}
+
+void MidiOutput::sendAck(MidiInterface::Type interface, uint8_t port)
+{
+    uint8_t data[9] = { 0xF0, 0x00, 0x21, 0x45, EVENT_MESSAGE,
+                        ACK,  0x00, 0x00, 0xF7 };
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, sizeof(data));
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+}
+
+void MidiOutput::sendNack(MidiInterface::Type interface, uint8_t port)
+{
+    uint8_t data[9] = { 0xF0, 0x00, 0x21, 0x45, EVENT_MESSAGE,
+                        NACK, 0x00, 0x00, 0xF7 };
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, sizeof(data));
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+}
+
+void MidiOutput::sendAppInfo(MidiInterface::Type interface, uint8_t port)
+{
+    uint8_t data[256];
+    StaticJsonDocument<256> doc;
+
+    data[0] = 0xF0;
+    data[1] = 0x00;
+    data[2] = 0x21;
+    data[3] = 0x45;
+    data[4] = FILE_UPLOAD;
+    data[5] = APP_INFO;
+
+    char *jsonStart = (char *)&data[6];
+    doc["app"] = App::get()->getApplicationName();
+    if (System::context.getPresetName()) {
+        doc["preset"] = System::context.getPresetName();
+    }
+    serializeJson(doc, jsonStart, 250);
+    size_t jsonSize = strlen(jsonStart);
+    data[jsonSize + 6] = SYSEX_END;
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, jsonSize + 7);
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+}
+
+void MidiOutput::sendMemoryInfo(MidiInterface::Type interface, uint8_t port)
+{
+    uint8_t data[128];
+    StaticJsonDocument<128> doc;
+
+    data[0] = 0xF0;
+    data[1] = 0x00;
+    data[2] = 0x21;
+    data[3] = 0x45;
+    data[4] = FILE_UPLOAD;
+    data[5] = MEMORY_INFO;
+
+    char *jsonStart = (char *)&data[6];
+    doc["freePercentage"] = Hardware::ram.getFreeRam();
+    serializeJson(doc, jsonStart, 120);
+    size_t jsonSize = strlen(jsonStart);
+    data[jsonSize + 6] = SYSEX_END;
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, jsonSize + 7);
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+}
+
+void MidiOutput::sendElectraInfo(MidiInterface::Type interface,
+                                 uint8_t port,
+                                 const char *electraInfoSerial,
+                                 uint8_t electraInfoHwRevision)
+{
+    uint8_t data[128];
+    char buf[16];
+    StaticJsonDocument<128> doc;
+
+    sprintf(buf,
+            "%d.%02d",
+            electraInfoHwRevision / 100,
+            electraInfoHwRevision - 200);
+
+    data[0] = 0xF0;
+    data[1] = 0x00;
+    data[2] = 0x21;
+    data[3] = 0x45;
+    data[4] = FILE_UPLOAD;
+    data[5] = ELECTRA_INFO;
+
+    char *jsonStart = (char *)&data[6];
+    doc["versionText"] = FIRMWARE_VERSION;
+    doc["versionSeq"] = FIRMWARE_SEQ;
+    doc["serial"] = electraInfoSerial;
+    doc["hwRevision"] = buf;
+    serializeJson(doc, jsonStart, 120);
+    size_t jsonSize = strlen(jsonStart);
+    data[jsonSize + 6] = SYSEX_END;
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, jsonSize + 7);
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+}
+
+void MidiOutput::sendMidiLearn(MidiInterface::Type interface,
+                               uint8_t portToTransmitOn,
+                               const char *msg,
+                               uint8_t port,
+                               uint8_t channel,
+                               uint16_t parameterId,
+                               uint16_t value)
+{
+    uint8_t data[512];
+    StaticJsonDocument<512> doc;
+
+    logMessage(
+        "sendMidiLearn: msg=%s, port=%d, channel=%d, parameter=%d, value=%d",
+        msg,
+        port,
+        channel,
+        parameterId,
+        value);
+
+    data[0] = 0xF0;
+    data[1] = 0x00;
+    data[2] = 0x21;
+    data[3] = 0x45;
+    data[4] = MIDILEARN_SWITCH;
+
+    char *jsonStart = (char *)&data[5];
+
+    doc["msg"] = msg;
+    doc["port"] = port;
+    doc["channel"] = channel;
+    doc["parameterId"] = parameterId;
+    doc["value"] = value;
+    serializeJson(doc, jsonStart, 504);
+    size_t jsonSize = strlen(jsonStart);
+    data[jsonSize + 5] = SYSEX_END;
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, jsonSize + 6);
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, portToTransmitOn, message);
+}
+
+void MidiOutput::sendMidiLearnSysex(MidiInterface::Type interface,
+                                    uint8_t portToTransmitOn,
+                                    uint8_t port,
+                                    const SysexBlock &capturedSysexBlock)
+{
+    const size_t capacity = JSON_ARRAY_SIZE(1024) + 64;
+    size_t sysExLength = capturedSysexBlock.getLength();
+    uint8_t data[sysExLength * 5 + 64];
+    char byteBuffer[3];
+    StaticJsonDocument<capacity> doc;
+
+    data[0] = 0xF0;
+    data[1] = 0x00;
+    data[2] = 0x21;
+    data[3] = 0x45;
+    data[4] = MIDILEARN_SWITCH;
+
+    char *jsonStart = (char *)&data[5];
+
+    doc["msg"] = "sysex";
+    doc["port"] = port;
+
+    JsonArray array = doc["data"].to<JsonArray>();
+
+    for (uint16_t i = 0; i < sysExLength; i++) {
+        convertToHex(capturedSysexBlock.peek(i), byteBuffer);
+
+        if (!array.add(byteBuffer)) {
+            logMessage("failed: %d", i);
+        }
+    }
+    serializeJson(doc, jsonStart, sysExLength * 5 + 65);
+    size_t jsonSize = strlen(jsonStart);
+    data[jsonSize + 1] = SYSEX_END;
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, jsonSize + 7);
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, portToTransmitOn, message);
+}
+
+extern uint8_t stopFlush;
+
+bool MidiOutput::sendSysExFile(uint8_t port,
+                               const char *filename,
+                               ElectraCommand::Object fileType)
+{
+    FileIoStream file;
+    uint32_t i = 0;
+    uint32_t packet = 0;
+    uint8_t byteInPacket = 0;
+    uint8_t data[4];
+
+    if (!(file = Hardware::sdcard.createInputStream(filename))) {
+        logMessage("sendSysexFile: the file does not exists: filename=%s",
+                   filename);
+        return (false);
+    }
+
+    stopFlush = 1;
+    MidiOutput::sendSysExHeader(port);
+
+    data[0] = FILE_UPLOAD;
+    data[1] = (uint8_t)fileType;
+    packet = 2;
+
+    while (file.available()) {
+        byteInPacket = packet % 4;
+        data[byteInPacket] = file.read();
+
+        if (byteInPacket == 3) {
+            MidiOutput::sendSysExData(data, 4, port);
+        }
+
+        i++;
+        packet++;
+
+        if ((i % 20) == 0) {
+            delayMicroseconds(50);
+        }
+    }
+
+    file.close();
+
+    /*
+     * send last packet correctly
+     */
+    byteInPacket = packet % 4;
+    data[byteInPacket] = SYSEX_END;
+    MidiOutput::sendSysExData(data, byteInPacket + 1, port);
+
+    stopFlush = 0;
+
+    return (true);
+}
+
+/*
+ * send USB MIDI packets
+ */
+void MidiOutput::sendSysExData(const uint8_t *data,
+                               uint32_t length,
+                               uint8_t port)
+{
+    uint8_t cable = (port & 0x0F) << 4;
+
+    while (length > 3) {
+        usb_midi_write_packed(0x04 | cable | (data[0] << 8) | (data[1] << 16)
+                              | (data[2] << 24));
+        data += 3;
+        length -= 3;
+    }
+    if (length == 3) {
+        usb_midi_write_packed(0x07 | cable | (data[0] << 8) | (data[1] << 16)
+                              | (data[2] << 24));
+    } else if (length == 2) {
+        usb_midi_write_packed(0x06 | cable | (data[0] << 8) | (data[1] << 16));
+    } else if (length == 1) {
+        usb_midi_write_packed(0x05 | cable | (data[0] << 8));
+    }
+}
+
+void MidiOutput::sendSysExHeader(uint8_t port)
+{
+    uint8_t data[4];
+    uint32_t manufacturerSysexId = SYSEX_MANUFACTURER;
+
+    data[0] = SYSEX_START;
+    data[1] = (manufacturerSysexId >> 16) & 0xFF;
+    data[2] = (manufacturerSysexId >> 8) & 0xFF;
+    data[3] = manufacturerSysexId & 0xFF;
+
+    MidiOutput::sendSysExData(data, 4, port);
 }
 
 void MidiOutput::setPort(uint8_t newPort)
@@ -111,12 +487,13 @@ void MidiOutput::addToQueue(MidiInterface::Type interface,
                             MidiMessage &message)
 {
     MidiMessageTransport mmt(interface, port, message);
-
+    /*
     for (int i = 0; i < outgoingQueue.size(); i++) {
         if (MidiOutput::isIdenticalChange(outgoingQueue[i], mmt)) {
             outgoingQueue.getObjectPointer(i)->invalid = true;
         }
     }
+*/
     outgoingQueue.push(mmt);
 }
 
@@ -155,6 +532,8 @@ void MidiOutput::send(MidiInterface::Type interface,
                       SysexBlock &sysexBlock)
 {
     MidiInterface::get(interface)->sendSysEx(port, sysexBlock);
+    indicate(
+        interface, port, Direction::out, MidiMessage::Type::SystemExclusive);
 }
 
 void MidiOutput::sendControlChange(MidiInterface::Type interface,

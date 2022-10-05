@@ -127,7 +127,7 @@ void usb_midi_send_sysex_buffer_partial (const uint8_t *data, uint32_t length, u
 {
 	stopFlush = 1;
 	cable = (cable & 0x0F) << 4;
-	while (length > 3)
+	while (length > 0)
 	{
 		//logMessage("%08X", 0x04 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
 		usb_midi_write_packed (0x04 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));

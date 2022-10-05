@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SysexHandler.h"
-#include "Sysex.h"
 #include "LocalFile.h"
 #include "System.h"
 #include "Base64.h"

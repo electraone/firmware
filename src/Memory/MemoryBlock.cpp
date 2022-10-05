@@ -106,8 +106,7 @@ size_t MemoryBlock::writeBytes(const uint8_t *buffer, size_t lengthToWrite)
             memoryPool->write(header, headerLength);
 
             if (bytesExceedingHeader > 0) {
-                memoryPool->write(buffer + headerLength - 1,
-                                  bytesExceedingHeader);
+                memoryPool->write(buffer + headerLength, bytesExceedingHeader);
             }
         }
     } else {
