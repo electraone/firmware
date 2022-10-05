@@ -2,6 +2,7 @@
 #include "System.h"
 #include "App.h"
 #include "SplashScreen.h"
+#include "MidiOutput.h"
 
 /*
  * Prototype of the application creation function.
@@ -77,6 +78,7 @@ void initialise(void)
     loggerEnabled = System::runtimeInfo.getLoggerStatus();
 
     App::get()->enableMidi = true;
+    MidiOutput::sendAvailable(MidiInterface::Type::MidiUsbDev, 2);
 }
 
 void processEvents(void)
