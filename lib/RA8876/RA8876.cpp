@@ -453,7 +453,7 @@ bool RA8876::init(void)
     // Set default font
     selectInternalFont(RA8876_FONT_SIZE_16);
     setTextScale(1);
-
+initExternalFontRom(1, RA8876_FONT_ROM_GT21L16T1W);
     return (true);
 }
 
@@ -887,6 +887,16 @@ void RA8876::drawEllipseShape(uint16_t x,
     waitCompleted();
 }
 
+void RA8876::setCGRAMAddress(uint32_t address)
+{
+    waitCompleted();
+
+    writeReg32(RA8876_REG_CGRAM_STR0, address);
+    writeCmd(RA8876_REG_MRWDP);
+
+    waitCompleted();
+}
+
 void RA8876::setCursor(uint16_t x, uint16_t y)
 {
     writeReg16(RA8876_REG_F_CURX0, x);
@@ -956,6 +966,15 @@ void RA8876::selectInternalFont(enum FontSize size, enum FontEncoding enc)
     writeReg(RA8876_REG_CCR1, ccr1);
 }
 
+void RA8876::selectCGRAMFont(void)
+{
+    writeReg(RA8876_REG_CCR0, 0x80);
+
+    uint8_t ccr1 = readReg(RA8876_REG_CCR1);
+    ccr1 |= 0x40; // Transparent background
+    writeReg(RA8876_REG_CCR1, ccr1);
+}
+
 void RA8876::selectExternalFont(enum ExternalFontFamily family,
                                 enum FontSize size,
                                 enum FontEncoding enc,
@@ -1006,15 +1025,14 @@ void RA8876::setTextColor(uint32_t color)
 
 size_t RA8876::write(const uint8_t *buffer, size_t size)
 {
+    setTextMode();
     for (unsigned int i = 0; i < size; i++) {
         char c = buffer[i];
-
-        setTextMode();
         writeCmd(RA8876_REG_MRWDP);
         waitWriteFifo();
         writeData(c);
-        setGraphicsMode();
     }
+    setGraphicsMode();
 
     return (size);
 }
@@ -1022,6 +1040,14 @@ size_t RA8876::write(const uint8_t *buffer, size_t size)
 size_t RA8876::write(uint8_t c)
 {
     return (write(&c, 1));
+}
+
+void RA8876::print(uint16_t x, uint16_t y, const char *text)
+{
+    x += activeWindowX;
+    y += activeWindowY;
+    setCursor(x, y);
+    write((const uint8_t*)text, strlen(text));
 }
 
 void RA8876::setCanvasAddress(uint32_t address)

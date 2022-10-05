@@ -205,6 +205,12 @@
 #define RA8876_REG_BGCG 0xD6 // Chroma key backgroud register - green
 #define RA8876_REG_BGCB 0xD7 // Chroma key backgroud register - blue
 
+// CGRAM address
+#define RA8876_REG_CGRAM_STR0 0xDB // CGRAM address 0
+#define RA8876_REG_CGRAM_STR1 0xDC // CGRAM address 1
+#define RA8876_REG_CGRAM_STR2 0xDD // CGRAM address 2
+#define RA8876_REG_CGRAM_STR3 0xDE // CGRAM address 3
+
 // Data sheet 19.12: SDRAM control registers
 #define RA8876_REG_SDRAR 0xE0 // SDRAM attribute register
 #define RA8876_REG_SDRMD 0xE1 // SDRAM mode & extended mode register
@@ -392,9 +398,11 @@ public:
     uint16_t getCursorY(void);
 
     // Text
+    void setCGRAMAddress(uint32_t address);
     void
         selectInternalFont(enum FontSize size,
                            enum FontEncoding enc = RA8876_FONT_ENCODING_8859_1);
+    void selectCGRAMFont(void);
     void selectExternalFont(enum ExternalFontFamily family,
                             enum FontSize size,
                             enum FontEncoding enc,
@@ -404,6 +412,7 @@ public:
     void setTextScale(uint8_t scale);
     void setTextColor(uint32_t color);
     uint8_t internalFontEncoding(enum FontEncoding enc);
+    void print(uint16_t x, uint16_t y, const char *text);
 
     // Frame buffer
     void setCanvasAddress(uint32_t address);
