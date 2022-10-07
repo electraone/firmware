@@ -224,7 +224,7 @@
 
 typedef uint8_t FontFlags;
 
-class RA8876 : public Print
+class RA8876
 {
 public:
     struct SdramInfo {
@@ -398,6 +398,7 @@ public:
     uint16_t getCursorY(void);
 
     // Text
+    void loadCGRAMFonts(void);
     void setCGRAMAddress(uint32_t address);
     void
         selectInternalFont(enum FontSize size,
@@ -411,8 +412,10 @@ public:
     void setTextScale(uint8_t xScale, uint8_t yScale);
     void setTextScale(uint8_t scale);
     void setTextColor(uint32_t color);
+    void setCharacterSpacing(uint8_t numPixels);
     uint8_t internalFontEncoding(enum FontEncoding enc);
-    void print(uint16_t x, uint16_t y, const char *text);
+    void printFixed(uint16_t x, uint16_t y, const uint16_t *text, size_t size);
+    void printProportional(uint16_t x, uint16_t y, const uint16_t *text, size_t size);
 
     // Frame buffer
     void setCanvasAddress(uint32_t address);
@@ -501,8 +504,8 @@ public:
     void writeReg(uint8_t reg, uint8_t x);
 
     // Print class
-    virtual size_t write(const uint8_t *buffer, size_t size);
-    virtual size_t write(uint8_t c);
+    virtual size_t write(const uint16_t *buffer, size_t size);
+    void writeChar(uint16_t c);
 
     // To make it possible to restore the color depth
     void setMemoryMode(MemoryMode mode);

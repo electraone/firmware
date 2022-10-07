@@ -1,4 +1,4 @@
-#include "Text.h"
+#include "TextBTE.h"
 #include "Colours.h"
 
 static const uint16_t lookupSmall[] = {
@@ -220,17 +220,17 @@ static const uint8_t charWidthLarge[] = {
     10 // ~
 };
 
-Text::Text(const uint8_t CSp, const uint8_t RSTp) : FrameBuffer(CSp, RSTp)
+TextBTE::TextBTE(const uint8_t CSp, const uint8_t RSTp) : FrameBuffer(CSp, RSTp)
 {
 }
 
-void Text::printText(uint16_t x,
-                     uint16_t y,
-                     const char *text,
-                     TextStyle textStyle,
-                     uint16_t width,
-                     TextAlign align,
-                     uint8_t color)
+void TextBTE::printText(uint16_t x,
+                        uint16_t y,
+                        const char *text,
+                        TextStyle textStyle,
+                        uint16_t width,
+                        TextAlign align,
+                        uint8_t color)
 {
     uint16_t xPosition = 0;
     uint32_t address = getCanvasAddress();
@@ -317,7 +317,7 @@ void Text::printText(uint16_t x,
     }
 }
 
-uint16_t Text::getTextWidth(const char *text, TextStyle textStyle)
+uint16_t TextBTE::getTextWidth(const char *text, TextStyle textStyle)
 {
     uint16_t width = 0;
     uint8_t size = getCharSize(textStyle);
@@ -329,12 +329,12 @@ uint16_t Text::getTextWidth(const char *text, TextStyle textStyle)
     return (width);
 }
 
-void Text::textPlaceHolder(uint16_t x,
-                           uint16_t y,
-                           const char *text,
-                           TextStyle style,
-                           uint16_t width,
-                           TextAlign align)
+void TextBTE::textPlaceHolder(uint16_t x,
+                              uint16_t y,
+                              const char *text,
+                              TextStyle style,
+                              uint16_t width,
+                              TextAlign align)
 {
     uint16_t xPosition;
     uint16_t textWidth = getTextWidth(text, style);
@@ -354,7 +354,7 @@ void Text::textPlaceHolder(uint16_t x,
 
 // Private
 
-int8_t Text::getCharacterTableIndex(char c)
+int8_t TextBTE::getCharacterTableIndex(char c)
 {
     int8_t index = -1;
 
@@ -369,7 +369,7 @@ int8_t Text::getCharacterTableIndex(char c)
     return (index);
 }
 
-uint8_t Text::getCharacterWidth(char c, uint8_t size)
+uint8_t TextBTE::getCharacterWidth(char c, uint8_t size)
 {
     int8_t index = getCharacterTableIndex(c);
     uint8_t width = 0;
@@ -392,12 +392,12 @@ uint8_t Text::getCharacterWidth(char c, uint8_t size)
     return (width);
 }
 
-uint16_t Text::getCharPositionY(TextStyle textStyle)
+uint16_t TextBTE::getCharPositionY(TextStyle textStyle)
 {
     return ((uint16_t)textStyle);
 }
 
-uint16_t Text::getCharSize(TextStyle textStyle)
+uint16_t TextBTE::getCharSize(TextStyle textStyle)
 {
     if ((textStyle == TextStyle::smallWhiteOnBlack)
         || (textStyle == TextStyle::smallTransparent)) {
@@ -415,7 +415,7 @@ uint16_t Text::getCharSize(TextStyle textStyle)
     return (0);
 }
 
-uint16_t Text::getCharPxHeight(TextStyle textStyle)
+uint16_t TextBTE::getCharPxHeight(TextStyle textStyle)
 {
     if ((textStyle == TextStyle::smallWhiteOnBlack)
         || (textStyle == TextStyle::smallTransparent)) {
@@ -436,5 +436,5 @@ uint16_t Text::getCharPxHeight(TextStyle textStyle)
 // The backround colours of the colour version of the texts.
 // The colours are used to filter out the text background using
 // RA8876 Chroma BTE
-uint16_t Text::chromaColors[6] = { 0xFFFF, 0xF2EA, 0xF4A0,
-                                   0x54FD, 0x0533, 0xc232 };
+uint16_t TextBTE::chromaColors[6] = { 0xFFFF, 0xF2EA, 0xF4A0,
+                                      0x54FD, 0x0533, 0xc232 };

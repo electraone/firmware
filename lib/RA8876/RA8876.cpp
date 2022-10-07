@@ -450,10 +450,6 @@ bool RA8876::init(void)
         return (false);
     }
 
-    // Set default font
-    selectInternalFont(RA8876_FONT_SIZE_16);
-    setTextScale(1);
-initExternalFontRom(1, RA8876_FONT_ROM_GT21L16T1W);
     return (true);
 }
 
@@ -899,18 +895,21 @@ void RA8876::setCGRAMAddress(uint32_t address)
 
 void RA8876::setCursor(uint16_t x, uint16_t y)
 {
+    x += activeWindowX;
+    y += activeWindowY;
+
     writeReg16(RA8876_REG_F_CURX0, x);
     writeReg16(RA8876_REG_F_CURY0, y);
 }
 
 uint16_t RA8876::getCursorX(void)
 {
-    return (readReg16(RA8876_REG_F_CURX0));
+    return (readReg16(RA8876_REG_F_CURX0) - activeWindowX);
 }
 
 uint16_t RA8876::getCursorY(void)
 {
-    return (readReg16(RA8876_REG_F_CURY0));
+    return (readReg16(RA8876_REG_F_CURY0) - activeWindowY);
 }
 
 // Given a font encoding value, returns the corresponding bit pattern for
@@ -1023,31 +1022,33 @@ void RA8876::setTextColor(uint32_t color)
     m_textColor = color;
 }
 
-size_t RA8876::write(const uint8_t *buffer, size_t size)
+void RA8876::setCharacterSpacing(uint8_t numPixels)
+{
+    writeReg(RA8876_REG_F2FSSR, numPixels & 0x3F);
+}
+
+size_t RA8876::write(const uint16_t *buffer, size_t size)
 {
     setTextMode();
-    for (unsigned int i = 0; i < size; i++) {
-        char c = buffer[i];
-        writeCmd(RA8876_REG_MRWDP);
+    writeCmd(RA8876_REG_MRWDP);
+
+    for (size_t i = 0; i < size; i++) {
+        uint16_t c = buffer[i];
         waitWriteFifo();
-        writeData(c);
+        writeData(c >> 8);
+        writeData(c & 0xff);
     }
     setGraphicsMode();
 
     return (size);
 }
 
-size_t RA8876::write(uint8_t c)
+void RA8876::writeChar(uint16_t c)
 {
-    return (write(&c, 1));
-}
-
-void RA8876::print(uint16_t x, uint16_t y, const char *text)
-{
-    x += activeWindowX;
-    y += activeWindowY;
-    setCursor(x, y);
-    write((const uint8_t*)text, strlen(text));
+    writeCmd(RA8876_REG_MRWDP);
+    waitWriteFifo();
+    writeData((c >> 8) | 0x80);
+    writeData(c & 0xff);
 }
 
 void RA8876::setCanvasAddress(uint32_t address)

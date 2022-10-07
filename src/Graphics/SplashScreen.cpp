@@ -1,4 +1,6 @@
 #include "Graphics.h"
+#include "VideoRam.h"
+#include "FrameBuffer.h"
 
 void displaySplash(Graphics &g,
                    const char *appName,

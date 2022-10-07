@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Colours.h"
-#include "Text.h"
+#include "TextBTE.h"
+#include "TextCGRAM.h"
 #include "Point.h"
 #include "Rectangle.h"
 #include "Geometry.h"
@@ -16,7 +17,8 @@
 /**
  *
  */
-class Graphics : public Text,
+class Graphics : public TextBTE,
+                 public TextCGRAM,
                  public Geometry,
                  public BitmapTools,
                  public BitmapReader,
