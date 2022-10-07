@@ -54,7 +54,7 @@ void Pad::onPotTouchUp(const PotEvent &potEvent)
 
 void Pad::paint(Graphics &g)
 {
-    LookAndFeel::paintPad(g, getBounds(), colour, state);
+    LookAndFeel::paintPad(g, getBounds(), colour, false, state);
 }
 
 void Pad::resized(void)

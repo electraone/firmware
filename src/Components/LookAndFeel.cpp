@@ -60,22 +60,37 @@ void LookAndFeel::paintBarVertical(Graphics &g,
 void LookAndFeel::paintPad(Graphics &g,
                            const Rectangle &bounds,
                            uint32_t colour,
+                           bool isMomentary,
                            bool state)
 {
-    uint32_t colourOff = Colours::darker(colour, 0.2f);
-    uint32_t colourOn = colour;
-
+    uint32_t colourOff = Colours::darker(colour, 0.3f);
+    uint32_t colourAccent = colour;
+    uint32_t colourOn = Colours::darker(colour, 0.4f);
     uint16_t backgroundColour = colourOff;
+    uint16_t activeBarHeight = bounds.getHeight() - 4;
     uint16_t radius = 5;
 
     if (state) {
         backgroundColour = colourOn;
     }
 
-    g.setColour(Colours::darker(backgroundColour, 0.5f));
+    g.setColour(Colours::darker(colourOff, 0.5f));
     g.fillRoundRect(0, 0, bounds.getWidth(), bounds.getHeight(), radius);
     g.setColour(backgroundColour);
-    g.fillRoundRect(0, 0, bounds.getWidth(), bounds.getHeight() - 4, radius);
+    g.fillRoundRect(0, 0, bounds.getWidth(), activeBarHeight, radius);
+
+    if (!isMomentary && state) {
+        g.setColour(colourAccent);
+        g.fillRoundRect(0, 0, 20, activeBarHeight, radius);
+        g.setColour(backgroundColour);
+        g.fillRect(18, 0, 2, activeBarHeight);
+        g.setColour(Colours::black);
+        g.drawLine(15, 0, 15, activeBarHeight - 1);
+        g.setColour(Colours::darker(colour, 0.15f));
+        g.drawLine(16, 0, 16, activeBarHeight - 1);
+        g.setColour(Colours::darker(colour, 0.30f));
+        g.drawLine(17, 0, 17, activeBarHeight - 1);
+    }
 }
 
 void LookAndFeel::paintSliderHorizontal(Graphics &g,

@@ -26,6 +26,7 @@ public:
     static void paintPad(Graphics &g,
                          const Rectangle &bounds,
                          uint32_t colour,
+                         bool isMomentary,
                          bool state);
 
     static void paintSliderHorizontal(Graphics &g,
