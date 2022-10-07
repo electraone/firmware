@@ -12,7 +12,7 @@ public:
 
     void paint(Graphics &g) override
     {
-        g.setColour(ElectraColours::rgb565NumericOrange);
+        g.setColour(Colours::orange);
 
         if (filled) {
             g.fillRect(0, 0, getWidth(), getHeight());

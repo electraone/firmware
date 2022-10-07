@@ -18,7 +18,7 @@ public:
                  const char *newText,
                  TextStyle newStyle,
                  TextAlign newAligment,
-                 Colour newColour = ElectraColours::white)
+                 uint16_t newColour = Colours::white)
         : text(newText),
           style(newStyle),
           aligment(newAligment),
@@ -40,7 +40,7 @@ public:
     }
 
 private:
-    Colour colour;
+    uint16_t colour;
     const char *text;
     TextStyle style;
     TextAlign aligment;

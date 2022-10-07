@@ -15,7 +15,7 @@ public:
 
     void paint(Graphics &g)
     {
-        g.fillAll(ElectraColours::rgb565NumericBlack);
+        g.fillAll(Colours::black);
         g.printText(0,
                     0,
                     buf,

@@ -69,7 +69,7 @@ MainComponent::MainComponent()
 
     void MainComponent::paint(Graphics & g)
     {
-        g.fillAll(ElectraColours::rgb565NumericBlack);
+        g.fillAll(Colours::black);
         return;
         g.printText(0,
                     40,

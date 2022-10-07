@@ -155,7 +155,7 @@ public:
 
     void paint(Graphics &g)
     {
-        g.fillAll(ElectraColours::rgb565NumericBlack);
+        g.fillAll(Colours::black);
 
         usbDevice(g, 0, 0, uiState::ENABLED, product, manufacturer, serial);
         usbDevicePorts(g, 340, 0, uiState::ENABLED, portNumber);

@@ -82,9 +82,9 @@ public:
         uint16_t width = getWidth();
 
         // Clear the component area
-        g.fillAll(ElectraColours::rgb565NumericBlack);
+        g.fillAll(Colours::black);
 
-        g.setColour(ElectraColours::rgb565NumericWhite);
+        g.setColour(Colours::white);
 
         // Line
         g.drawRect(0, 0, width, 1);

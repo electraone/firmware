@@ -3,62 +3,11 @@
 #include <stdint.h>
 #include "helpers.h"
 
-typedef uint8_t Colour;
-
-namespace ElectraColours
-{
-    extern const Colour white;
-    extern const Colour red;
-    extern const Colour orange;
-    extern const Colour blue;
-    extern const Colour green;
-    extern const Colour purple;
-
-    extern const char *rgb565White;
-    extern const char *rgb565Red;
-    extern const char *rgb565Orange;
-    extern const char *rgb565Blue;
-    extern const char *rgb565Green;
-    extern const char *rgb565Purple;
-
-    extern const uint16_t rgb565NumericWhite;
-    extern const uint16_t rgb565NumericRed;
-    extern const uint16_t rgb565NumericOrange;
-    extern const uint16_t rgb565NumericBlue;
-    extern const uint16_t rgb565NumericGreen;
-    extern const uint16_t rgb565NumericPurple;
-
-    extern const uint16_t rgb565NumericDarkerWhite;
-    extern const uint16_t rgb565NumericDarkerRed;
-    extern const uint16_t rgb565NumericDarkerOrange;
-    extern const uint16_t rgb565NumericDarkerBlue;
-    extern const uint16_t rgb565NumericDarkerGreen;
-    extern const uint16_t rgb565NumericDarkerPurple;
-
-    extern const uint16_t rgb565NumericDimmed;
-    extern const uint16_t rgb565NumericSelected;
-    extern const uint16_t rgb565NumericPinInactive;
-    extern const uint16_t rgb565NumericPinActive;
-    extern const uint16_t rgb565NumericFrame;
-    extern const uint16_t rgb565NumericDarkerFrame;
-    extern const uint16_t rgb565NumericActiveHandle;
-    extern const uint16_t rgb565NumericCSBackground;
-    extern const uint16_t rgb565NumericButtonOutlineInactive;
-    extern const uint16_t rgb565NumericButtonOutlineActive;
-
-    extern const uint16_t rgb565NumericWhite;
-    extern const uint16_t rgb565NumericBlack;
-
-    const Colour translateColour(const char *rgb565Colour);
-    const char *translateColour(Colour colour);
-    const uint16_t getNumericRgb565(Colour colour);
-    const uint16_t getNumericRgb565Darker(Colour colour);
-    const uint16_t getNumericRgb565Lighter(Colour colour);
-    const uint16_t getNumericRgb565Dark(Colour colour);
-} // namespace ElectraColours
-
 namespace Colours
 {
+    uint16_t translateColour(const char *rgb888String);
+    uint32_t translateColour(uint16_t);
+
     extern const uint32_t aliceblue;
     extern const uint32_t antiquewhite;
     extern const uint32_t aqua;

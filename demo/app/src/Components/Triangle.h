@@ -12,7 +12,7 @@ public:
 
     void paint(Graphics &g) override
     {
-        g.setColour(ElectraColours::rgb565NumericGreen);
+        g.setColour(Colours::green);
 
         if (filled) {
             g.fillTriangle(

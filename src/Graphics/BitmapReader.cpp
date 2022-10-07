@@ -53,7 +53,7 @@ void BitmapReader::loadBMP(const char *filename,
     uint16_t buffer[1024];
 
     setCanvasAddress(FRAME_UI_TOOLKIT);
-    clearScreen(ElectraColours::rgb565NumericBlack);
+    clearScreen(Colours::black);
 
     // raw background for the progress bar
     if (progressBar == true) {

@@ -81,7 +81,7 @@ void BitmapTools::dimAll(void)
         0,
         FrameBuffer::getActiveWindowWidth(),
         FrameBuffer::getActiveWindowHeight(),
-        ElectraColours::rgb565NumericBlack);
+        Colours::black);
 }
 
 void BitmapTools::backdrop(uint16_t x,

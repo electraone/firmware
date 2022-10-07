@@ -2,172 +2,6 @@
 #include <string.h>
 #include "RA8876.h"
 
-namespace ElectraColours // For backward compatibility
-{
-    const Colour white{ 0 };
-    const Colour red{ 1 };
-    const Colour orange{ 2 };
-    const Colour blue{ 3 };
-    const Colour green{ 4 };
-    const Colour purple{ 5 };
-
-    const char *rgb565White{ "FFFFFF" };
-    const char *rgb565Red{ "F45C51" };
-    const char *rgb565Orange{ "F49500" };
-    const char *rgb565Blue{ "529DEC" };
-    const char *rgb565Green{ "03A598" };
-    const char *rgb565Purple{ "C44795" };
-
-    const uint16_t rgb565NumericWhite{ 0xFFFF };
-    const uint16_t rgb565NumericRed{ 0xEAC9 };
-    const uint16_t rgb565NumericOrange{ 0xEC80 };
-    const uint16_t rgb565NumericBlue{ 0x54FD }; // this is some sort of glitch
-    const uint16_t rgb565NumericGreen{ 0x0512 };
-    const uint16_t rgb565NumericPurple{ 0xBA32 };
-
-    const uint16_t rgb565NumericDarkerWhite{ 0x3186 };
-    const uint16_t rgb565NumericDarkerRed{ 0x5040 };
-    const uint16_t rgb565NumericDarkerOrange{ 0x5180 };
-    const uint16_t rgb565NumericDarkerBlue{
-        0x0949
-    }; // this is some sort of glitch
-    const uint16_t rgb565NumericDarkerGreen{ 0x02AA };
-    const uint16_t rgb565NumericDarkerPurple{ 0x40A6 };
-
-    const uint16_t rgb565NumericLighterWhite{ 0x5ACB };
-    const uint16_t rgb565NumericLighterRed{ 0x8082 };
-    const uint16_t rgb565NumericLighterOrange{ 0x8260 };
-    const uint16_t rgb565NumericLighterBlue{
-        0x2A6E
-    }; // this is some sort of glitch
-    const uint16_t rgb565NumericLighterGreen{ 0x040E };
-    const uint16_t rgb565NumericLighterPurple{ 0x816C };
-
-    const uint16_t rgb565NumericDarkWhite{ 0x10A2 };
-    const uint16_t rgb565NumericDarkRed{ 0x1820 };
-    const uint16_t rgb565NumericDarkOrange{ 0x20A0 };
-    const uint16_t rgb565NumericDarkBlue{
-        0x0063
-    }; // this is some sort of glitch
-    const uint16_t rgb565NumericDarkGreen{ 0x0104 };
-    const uint16_t rgb565NumericDarkPurple{ 0x1842 };
-
-    // Visual style
-    const uint16_t rgb565NumericDimmed{ 0x630C };
-    const uint16_t rgb565NumericSelected{ 0xFFFF };
-    const uint16_t rgb565NumericPinInactive{ 0x630C };
-    const uint16_t rgb565NumericPinActive{ 0xE120 };
-    const uint16_t rgb565NumericBlack{ 0x0000 };
-    const uint16_t rgb565NumericFrame{ 0x2104 };
-    const uint16_t rgb565NumericDarkerFrame{ 0x10A2 };
-    const uint16_t rgb565NumericActiveHandle{ 0xFFC0 };
-    const uint16_t rgb565NumericCSBackground{ 0x0081 };
-
-    const uint16_t rgb565NumericButtonOutlineInactive{ 0x2104 };
-    const uint16_t rgb565NumericButtonOutlineActive{ 0xFFFF };
-
-#define COLOR_BUTTON_OUTLINE_INACTIVE
-#define COLOR_BUTTON_OUTLINE_ACTIVE
-} // namespace ElectraColours
-
-const Colour ElectraColours::translateColour(const char *rgb565Colour)
-{
-    if (rgb565Colour) {
-        if (strcmp(rgb565Colour, ElectraColours::rgb565Red) == 0) {
-            return (ElectraColours::red);
-        } else if (strcmp(rgb565Colour, ElectraColours::rgb565Orange) == 0) {
-            return (ElectraColours::orange);
-        } else if (strcmp(rgb565Colour, ElectraColours::rgb565Blue) == 0) {
-            return (ElectraColours::blue);
-        } else if (strcmp(rgb565Colour, ElectraColours::rgb565Green) == 0) {
-            return (ElectraColours::green);
-        } else if (strcmp(rgb565Colour, ElectraColours::rgb565Purple) == 0) {
-            return (ElectraColours::purple);
-        }
-    }
-    return (ElectraColours::white);
-}
-
-const char *ElectraColours::translateColour(Colour colour)
-{
-    if (colour == ElectraColours::red) {
-        return (ElectraColours::rgb565Red);
-    } else if (colour == ElectraColours::orange) {
-        return (ElectraColours::rgb565Orange);
-    } else if (colour == ElectraColours::blue) {
-        return (ElectraColours::rgb565Blue);
-    } else if (colour == ElectraColours::green) {
-        return (ElectraColours::rgb565Green);
-    } else if (colour == ElectraColours::purple) {
-        return (ElectraColours::rgb565Purple);
-    }
-    return (ElectraColours::rgb565White);
-}
-
-const uint16_t ElectraColours::getNumericRgb565(Colour colour)
-{
-    if (colour == ElectraColours::red) {
-        return (ElectraColours::rgb565NumericRed);
-    } else if (colour == ElectraColours::orange) {
-        return (ElectraColours::rgb565NumericOrange);
-    } else if (colour == ElectraColours::blue) {
-        return (ElectraColours::rgb565NumericBlue);
-    } else if (colour == ElectraColours::green) {
-        return (ElectraColours::rgb565NumericGreen);
-    } else if (colour == ElectraColours::purple) {
-        return (ElectraColours::rgb565NumericPurple);
-    }
-    return (ElectraColours::rgb565NumericWhite);
-}
-
-const uint16_t ElectraColours::getNumericRgb565Darker(Colour colour)
-{
-    if (colour == ElectraColours::red) {
-        return (ElectraColours::rgb565NumericDarkerRed);
-    } else if (colour == ElectraColours::orange) {
-        return (ElectraColours::rgb565NumericDarkerOrange);
-    } else if (colour == ElectraColours::blue) {
-        return (ElectraColours::rgb565NumericDarkerBlue);
-    } else if (colour == ElectraColours::green) {
-        return (ElectraColours::rgb565NumericDarkerGreen);
-    } else if (colour == ElectraColours::purple) {
-        return (ElectraColours::rgb565NumericDarkerPurple);
-    }
-    return (ElectraColours::rgb565NumericDarkerWhite);
-}
-
-const uint16_t ElectraColours::getNumericRgb565Lighter(Colour colour)
-{
-    if (colour == ElectraColours::red) {
-        return (ElectraColours::rgb565NumericLighterRed);
-    } else if (colour == ElectraColours::orange) {
-        return (ElectraColours::rgb565NumericLighterOrange);
-    } else if (colour == ElectraColours::blue) {
-        return (ElectraColours::rgb565NumericLighterBlue);
-    } else if (colour == ElectraColours::green) {
-        return (ElectraColours::rgb565NumericLighterGreen);
-    } else if (colour == ElectraColours::purple) {
-        return (ElectraColours::rgb565NumericLighterPurple);
-    }
-    return (ElectraColours::rgb565NumericLighterWhite);
-}
-
-const uint16_t ElectraColours::getNumericRgb565Dark(Colour colour)
-{
-    if (colour == ElectraColours::red) {
-        return (ElectraColours::rgb565NumericDarkRed);
-    } else if (colour == ElectraColours::orange) {
-        return (ElectraColours::rgb565NumericDarkOrange);
-    } else if (colour == ElectraColours::blue) {
-        return (ElectraColours::rgb565NumericDarkBlue);
-    } else if (colour == ElectraColours::green) {
-        return (ElectraColours::rgb565NumericDarkGreen);
-    } else if (colour == ElectraColours::purple) {
-        return (ElectraColours::rgb565NumericDarkPurple);
-    }
-    return (ElectraColours::rgb565NumericDarkWhite);
-}
-
 namespace Colours
 {
 #if DEFAULT_BPP == 24
@@ -456,6 +290,31 @@ namespace Colours
     const uint32_t yellowgreen{ 0x9E66 };
 #endif
 
+    uint16_t translateColour(const char *rgb888String)
+    {
+        uint32_t rgb888 = strtol(rgb888String, 0, 16);
+        uint8_t r = rgb888 >> 16;
+        uint8_t g = (rgb888 >> 8) & 0xFF;
+        uint8_t b = rgb888 & 0xFF;
+
+        uint8_t r5 = (r * 249 + 1014) >> 11;
+        uint8_t g6 = (g * 253 + 505) >> 10;
+        uint8_t b5 = (b * 249 + 1014) >> 11;
+
+        return (r5 << 11 | g6 << 5 | b5);
+    }
+
+    uint32_t translateColour(uint16_t rgb565)
+    {
+        uint8_t r = rgb565 >> 11;
+        uint8_t g = (rgb565 >> 5) & 0x3F;
+        uint8_t b = rgb565 & 0x1F;
+
+        uint8_t r8 = (int)floor(r * 255.0f / 31.0f + 0.5f);
+        uint8_t g8 = (int)floor(g * 255.0f / 63.0f + 0.5f);
+        uint8_t b8 = (int)floor(b * 255.0f / 31.0f + 0.5f);
+        return ((r8 << 16) | (g8 << 8) | b8);
+    }
     // Get colour with adjusted brightness
     uint32_t darker(uint32_t originalColour, float factor)
     {

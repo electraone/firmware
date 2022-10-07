@@ -132,13 +132,13 @@ void StatusBar::statusBarItem(Graphics &g,
                               const char *label,
                               bool active)
 {
-    g.setColour(ElectraColours::rgb565NumericBlack);
+    g.setColour(Colours::black);
     g.fillRect(x, y, 168, 13);
     g.printText(
         x, y, label, TextStyle::smallWhiteOnBlack, 168, TextAlign::center);
 
     if (active == false) {
-        g.dim(x, y, 168, 13, ElectraColours::rgb565NumericBlack);
+        g.dim(x, y, 168, 13, Colours::black);
     }
 }
 

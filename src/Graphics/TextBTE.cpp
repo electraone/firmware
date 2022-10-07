@@ -348,7 +348,7 @@ void TextBTE::textPlaceHolder(uint16_t x,
         xPosition = 0;
     }
 
-    setForegroundColor(ElectraColours::rgb565NumericBlack);
+    setForegroundColor(Colours::black);
     fillRect(x + xPosition - 2, y - 1, textWidth + 2, charHeight + 1);
 }
 

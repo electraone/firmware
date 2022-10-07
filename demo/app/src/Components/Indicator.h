@@ -13,7 +13,7 @@ public:
     void paint(Graphics &g) override
     {
         g.dim(0, 0, getWidth(), 100, 0x0007);
-        g.setColour(ElectraColours::rgb565NumericWhite);
+        g.setColour(Colours::white);
         g.fillTriangle(getWidth() / 2,
                        getHeight() - 30,
                        getWidth() / 2 - 10,
