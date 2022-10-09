@@ -15,11 +15,20 @@ struct TouchPoint {
     Event event;
     uint32_t tsStart;
     uint32_t tsPreviousClick;
+    uint16_t prevX;
+    uint16_t prevY;
     bool longHold;
     bool moved;
 
     bool isInCloseRange(void)
     {
-      return ((abs(yStart - y) < CLICK_DISTANCE) && (abs(xStart - x) < CLICK_DISTANCE));
+        return (pointsInCloseRange(xStart, yStart, x, y));
+    }
+
+    static bool
+        pointsInCloseRange(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)
+    {
+        return ((abs(x1 - x2) < CLICK_DISTANCE)
+                && (abs(y1 - y2) < CLICK_DISTANCE));
     }
 };

@@ -22,7 +22,6 @@ public:
     void clearEvents(void);
     static const char *translateEventToString(TouchPoint::Event event);
 
-
 private:
     static void isr(void);
     void clearIsr(void);

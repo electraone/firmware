@@ -62,12 +62,21 @@ uint8_t FT5x16::parseTouchPoints(void)
                 touchPoint[id].tsStart = millis();
                 touchPoint[id].xStart = getX(i);
                 touchPoint[id].yStart = getY(i);
+
+                if (!TouchPoint::pointsInCloseRange(touchPoint[id].xStart,
+                                                    touchPoint[id].yStart,
+                                                    touchPoint[id].prevX,
+                                                    touchPoint[id].prevY)) {
+                    touchPoint[id].tsPreviousClick = 0;
+                }
+                touchPoint[id].prevX = touchPoint[id].xStart;
+                touchPoint[id].prevY = touchPoint[id].yStart;
             }
 
             else if (event == TouchPoint::Move) {
                 if (isLongHoldPeriod(id)) {
-                    if (!touchPoint[id].moved &&
-                        touchPoint[id].longHold == false) {
+                    if (!touchPoint[id].moved
+                        && touchPoint[id].longHold == false) {
                         touchPoint[id].longHold = true;
                         queueEvent(touchPoint[id], TouchPoint::LongHold);
                     }
