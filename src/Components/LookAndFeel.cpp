@@ -225,7 +225,9 @@ void LookAndFeel::paintButtonList(Graphics &g,
     } else {
         // display bitmap image
         uint16_t paddingBitmap = ((bounds.getWidth() - BITMAP_WIDTH)) / 2 - 1;
-        items->getByIndex(activeIndex).paintBitmap(paddingBitmap, 0, colour);
+        items->getByIndex(activeIndex)
+            .paintBitmap(
+                paddingBitmap, bounds.getHeight() * 0.3f, Colours565::white);
     }
 }
 
