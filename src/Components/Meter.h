@@ -48,7 +48,7 @@ public:
                     TextAlign::center);
 
         if (active == true) {
-            g.setColour(Colours::white);
+            g.setColour(Colours565::white);
             g.drawLine((getWidth() / 2) - (labelWidth / 2) - 1,
                        15,
                        (getWidth() / 2) - (labelWidth / 2) - 1 + labelWidth,

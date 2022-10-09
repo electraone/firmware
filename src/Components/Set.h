@@ -6,7 +6,7 @@
 class Set : virtual public Component
 {
 public:
-    Set() : colour(Colours::white), label("")
+    Set() : colour(Colours565::white), label("")
     {
     }
 

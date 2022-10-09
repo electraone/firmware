@@ -53,7 +53,7 @@ void BitmapReader::loadBMP(const char *filename,
     uint16_t buffer[1024];
 
     setCanvasAddress(FRAME_UI_TOOLKIT);
-    clearScreen(Colours::black);
+    clearScreen(Colours565::black);
 
     // raw background for the progress bar
     if (progressBar == true) {
@@ -76,10 +76,10 @@ void BitmapReader::loadBMP(const char *filename,
         if (progressBar == true) {
             if ((y % 3) == 0) {
                 setCanvasAddress(FRAME_BUFFER_2);
-                setForegroundColor(Colours::white);
+                setForegroundColor(Colours565::white);
                 fillRect(407 + (y / 3), 330, 1, 6);
 
-                setForegroundColor(Colours::black);
+                setForegroundColor(Colours565::black);
                 fillRect(407, 330, 1, 1);
                 fillRect(407, 335, 1, 1);
                 fillRect(606, 330, 1, 1);

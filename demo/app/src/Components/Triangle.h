@@ -12,7 +12,7 @@ public:
 
     void paint(Graphics &g) override
     {
-        g.setColour(Colours::green);
+        g.setColour(Colours565::green);
 
         if (filled) {
             g.fillTriangle(

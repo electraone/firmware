@@ -16,7 +16,7 @@ public:
         uint16_t centreY = getHeight() / 2;
         uint16_t radius = getWidth() / 2 - 1;
 
-        g.setColour(Colours::white);
+        g.setColour(Colours565::white);
 
         if (filled) {
             g.fillElipse(centreX, centreY, radius, radius);

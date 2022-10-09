@@ -38,8 +38,8 @@ void Knob::paint(Graphics &g)
     int16_t min = value.getMin();
     int16_t val = value.get();
 
-    uint32_t colourTrack = Colours::darker(colour, 0.3f);
-    uint32_t colourCenter = Colours::darker(colour, 0.2f);
+    uint32_t colourTrack = Colours565::darker(colour, 0.3f);
+    uint32_t colourCenter = Colours565::darker(colour, 0.2f);
 
     float angle = map((float)val, min, max, angleTrackStart, angleTrackEnd);
     float angleZero =
@@ -70,7 +70,7 @@ void Knob::paint(Graphics &g)
     g.drawCircle(xCentre, yCentre, radius);
 
     // Mask the track
-    g.setColour(Colours::black);
+    g.setColour(Colours565::black);
     g.fillTriangle(
         xCentre, yCentre, xTrackStart, yTrackStart, xTrackEnd, yTrackEnd);
     g.fillRect(xTrackStart,
@@ -79,7 +79,7 @@ void Knob::paint(Graphics &g)
                getHeight() - yTrackStart + 1);
 
     // Mask the centre
-    g.setColour(Colours::black);
+    g.setColour(Colours565::black);
     g.fillCircle(xCentre, yCentre, getWidth() / 3 - 1);
     g.setColour(colourCenter);
     g.fillCircle(xCentre, yCentre, getWidth() / 4 - 1);
@@ -94,7 +94,7 @@ void Knob::paintValue(Graphics &g,
 {
     uint32_t address = g.getCanvasAddress();
     g.setCanvasAddress(FRAME_MASK);
-    g.setForegroundColor(Colours::black);
+    g.setForegroundColor(Colours565::black);
 
     if (angleZero < angle) {
         drawCurve(g, xCentre, yCentre, radius, angleZero, angle);
@@ -152,7 +152,7 @@ void Knob::drawCurve(Graphics &g,
     uint16_t y2 = 0;
 
     // Set the masking colour
-    g.setColour(Colours::black);
+    g.setColour(Colours565::black);
 
     // Mask the curve segments
     if (quadrantEnd == 0) {
@@ -232,7 +232,7 @@ void Knob::maskUnused(Graphics &g,
             y1 = height / 2;
         }
 
-        g.setColour(Colours::black);
+        g.setColour(Colours565::black);
         g.fillRect(xCentre, yCentre, x1, y1);
     }
 }

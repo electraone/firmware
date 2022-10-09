@@ -13,7 +13,7 @@ BottomBar::BottomBar(const char *newPresetName, const char *newPageName)
 
     if (ramIndicator) {
         ramIndicator->setColour(0xAD55);
-        ramIndicator->setColourInactive(Colours::black);
+        ramIndicator->setColourInactive(Colours565::black);
         ramIndicator->setColourBackground(0x2104);
         ramIndicator->setMinimum(0.0f);
         ramIndicator->setMaximum(100.0f);
@@ -33,7 +33,7 @@ void BottomBar::paint(Graphics &g)
     g.printText(
         800, 4, infoText, TextStyle::mediumTransparent, 180, TextAlign::right);
 
-    g.setColour(Colours::white);
+    g.setColour(Colours565::white);
     g.fillRect(512, 9, 2, 2);
 }
 

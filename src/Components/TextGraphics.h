@@ -18,7 +18,7 @@ public:
                  const char *newText,
                  TextStyle newStyle,
                  TextAlign newAligment,
-                 uint16_t newColour = Colours::white)
+                 uint16_t newColour = Colours565::white)
         : text(newText),
           style(newStyle),
           aligment(newAligment),

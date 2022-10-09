@@ -12,7 +12,7 @@ public:
 
     void paint(Graphics &g) override
     {
-        g.setColour(Colours::red);
+        g.setColour(Colours565::red);
 
         if (filled) {
             g.fillRoundRect(0, 0, getWidth(), getHeight(), 20);

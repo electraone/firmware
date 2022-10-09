@@ -12,7 +12,8 @@ MainComponent::MainComponent()
     // Pads
     for (uint8_t i = 0; i < numPads; i++) {
         pad[i] = new Pad;
-        pad[i]->setColour(((i % 4) == 0) ? Colours::yellow : Colours::red);
+        pad[i]->setColour(((i % 4) == 0) ? Colours565::yellow
+                                         : Colours565::red);
         pad[i]->setState(((i % 3) == 0) ? true : false);
         addAndMakeVisible(pad[i]);
     }
@@ -24,7 +25,7 @@ MainComponent::MainComponent()
     // Knobs
     for (uint8_t i = 0; i < numKnobs; i++) {
         knob[i] = new Knob();
-        knob[i]->setColour(Colours::darkslateblue);
+        knob[i]->setColour(Colours565::darkslateblue);
         knob[i]->setRange(-64.0f, 63.0f);
         knob[i]->setValue(0.0f);
         knob[i]->assignPot(i);
@@ -34,7 +35,7 @@ MainComponent::MainComponent()
     // Set up a slider (an example of a component)
     for (uint8_t i = 0; i < numBars; i++) {
         bar[i] = new BarVertical;
-        bar[i]->setColour(Colours::peru);
+        bar[i]->setColour(Colours565::peru);
         bar[i]->setRange(-64.0f, 63.0f);
         bar[i]->setValue(0.0f);
         bar[i]->assignPot(i);
@@ -69,7 +70,7 @@ MainComponent::MainComponent()
 
     void MainComponent::paint(Graphics & g)
     {
-        g.fillAll(Colours::black);
+        g.fillAll(Colours565::black);
         return;
         g.printText(0,
                     40,

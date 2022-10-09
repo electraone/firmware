@@ -15,7 +15,7 @@ public:
 
     void paint(Graphics &g)
     {
-        g.fillAll(Colours::black);
+        g.fillAll(Colours565::black);
         g.printText(0,
                     0,
                     buf,

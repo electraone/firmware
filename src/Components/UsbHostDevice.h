@@ -51,7 +51,7 @@ public:
                    const char *manufacturer,
                    const char *serial)
     {
-        g.setBteChromaColor(Colours::red);
+        g.setBteChromaColor(Colours565::red);
 
         if (strcmp(product, "Electra Controller") == 0) {
             g.copyFromToolkit(821, 79, x, y, 92, 78);
@@ -94,7 +94,7 @@ public:
         }
 
         if (state == uiState::DISABLED) {
-            g.dim(x, y, 300, 78, Colours::black);
+            g.dim(x, y, 300, 78, Colours565::black);
         }
     }
 
@@ -121,7 +121,7 @@ public:
                       (port == 2) ? uiState::SELECTED : uiState::ENABLED);
 
         if (state == uiState::DISABLED) {
-            g.dim(x, y, 300, 78, Colours::black);
+            g.dim(x, y, 300, 78, Colours565::black);
         }
     }
 
@@ -132,7 +132,7 @@ public:
                        uiState state)
     {
         // \todo Temporary fix to make sure the Chroma colour is not white
-        g.setBteChromaColor(Colours::red);
+        g.setBteChromaColor(Colours565::red);
 
         if (state == uiState::SELECTED) {
             g.copyFromToolkit(0, 494, x, y, 100, 40);
@@ -155,7 +155,7 @@ public:
 
     void paint(Graphics &g)
     {
-        g.fillAll(Colours::black);
+        g.fillAll(Colours565::black);
 
         usbDevice(g, 0, 0, uiState::ENABLED, product, manufacturer, serial);
         usbDevicePorts(g, 340, 0, uiState::ENABLED, portNumber);

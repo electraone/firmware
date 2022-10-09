@@ -280,11 +280,11 @@ void Component::paintWithChildren(Graphics &g)
             component->paintWithChildren(g);
         }
         if (dimmed == true) {
-            g.dim(0, 0, getWidth(), getHeight(), Colours::black);
+            g.dim(0, 0, getWidth(), getHeight(), Colours565::black);
         }
 
         if (false) { // Display component bounding box
-            g.setColour(Colours::white);
+            g.setColour(Colours565::white);
             g.drawRect(0, 0, getWidth(), getHeight());
         }
     }

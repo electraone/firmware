@@ -1,7 +1,7 @@
 #include "Slider.h"
 
 Slider::Slider()
-    : colour(Colours::red), formatString("%d"), valueBoxPosition(NoValueBox)
+    : colour(Colours565::red), formatString("%d"), valueBoxPosition(NoValueBox)
 {
 }
 

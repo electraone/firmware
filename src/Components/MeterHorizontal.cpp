@@ -1,7 +1,7 @@
 #include "MeterHorizontal.h"
 
 MeterHorizontal::MeterHorizontal()
-    : colourInactive(Colours::grey),
+    : colourInactive(Colours565::grey),
       colourBackground(LookAndFeel::backgroundColour)
 {
 }

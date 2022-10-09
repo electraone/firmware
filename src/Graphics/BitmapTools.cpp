@@ -81,7 +81,7 @@ void BitmapTools::dimAll(void)
         0,
         FrameBuffer::getActiveWindowWidth(),
         FrameBuffer::getActiveWindowHeight(),
-        Colours::black);
+        Colours565::black);
 }
 
 void BitmapTools::backdrop(uint16_t x,

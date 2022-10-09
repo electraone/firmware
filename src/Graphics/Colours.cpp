@@ -2,151 +2,8 @@
 #include <string.h>
 #include "RA8876.h"
 
-namespace Colours
+namespace Colours565
 {
-#if DEFAULT_BPP == 24
-    const uint32_t aliceblue{ 0x00f0f8ff };
-    const uint32_t antiquewhite{ 0x00faebd7 };
-    const uint32_t aqua{ 0x0000ffff };
-    const uint32_t aquamarine{ 0x007fffd4 };
-    const uint32_t azure{ 0x00f0ffff };
-    const uint32_t beige{ 0x00f5f5dc };
-    const uint32_t bisque{ 0x00ffe4c4 };
-    const uint32_t black{ 0x00000000 };
-    const uint32_t blanchedalmond{ 0x00ffebcd };
-    const uint32_t blue{ 0x000000ff };
-    const uint32_t blueviolet{ 0x008a2be2 };
-    const uint32_t brown{ 0x00a52a2a };
-    const uint32_t burlywood{ 0x00deb887 };
-    const uint32_t cadetblue{ 0x005f9ea0 };
-    const uint32_t chartreuse{ 0x007fff00 };
-    const uint32_t chocolate{ 0x00d2691e };
-    const uint32_t coral{ 0x00ff7f50 };
-    const uint32_t cornflowerblue{ 0x006495ed };
-    const uint32_t cornsilk{ 0x00fff8dc };
-    const uint32_t crimson{ 0x00dc143c };
-    const uint32_t cyan{ 0x0000ffff };
-    const uint32_t darkblue{ 0x0000008b };
-    const uint32_t darkcyan{ 0x00008b8b };
-    const uint32_t darkgoldenrod{ 0x00b8860b };
-    const uint32_t darkgrey{ 0x00555555 };
-    const uint32_t darkgreen{ 0x00006400 };
-    const uint32_t darkkhaki{ 0x00bdb76b };
-    const uint32_t darkmagenta{ 0x008b008b };
-    const uint32_t darkolivegreen{ 0x00556b2f };
-    const uint32_t darkorange{ 0x00ff8c00 };
-    const uint32_t darkorchid{ 0x009932cc };
-    const uint32_t darkred{ 0x008b0000 };
-    const uint32_t darksalmon{ 0x00e9967a };
-    const uint32_t darkseagreen{ 0x008fbc8f };
-    const uint32_t darkslateblue{ 0x00483d8b };
-    const uint32_t darkslategrey{ 0x002f4f4f };
-    const uint32_t darkturquoise{ 0x0000ced1 };
-    const uint32_t darkviolet{ 0x009400d3 };
-    const uint32_t deeppink{ 0x00ff1493 };
-    const uint32_t deepskyblue{ 0x0000bfff };
-    const uint32_t dimgrey{ 0x00696969 };
-    const uint32_t dodgerblue{ 0x001e90ff };
-    const uint32_t firebrick{ 0x00b22222 };
-    const uint32_t floralwhite{ 0x00fffaf0 };
-    const uint32_t forestgreen{ 0x00228b22 };
-    const uint32_t fuchsia{ 0x00ff00ff };
-    const uint32_t gainsboro{ 0x00dcdcdc };
-    const uint32_t ghostwhite{ 0x00f8f8ff };
-    const uint32_t gold{ 0x00ffd700 };
-    const uint32_t goldenrod{ 0x00daa520 };
-    const uint32_t grey{ 0x00808080 };
-    const uint32_t green{ 0x00008000 };
-    const uint32_t greenyellow{ 0x00adff2f };
-    const uint32_t honeydew{ 0x00f0fff0 };
-    const uint32_t hotpink{ 0x00ff69b4 };
-    const uint32_t indianred{ 0x00cd5c5c };
-    const uint32_t indigo{ 0x004b0082 };
-    const uint32_t ivory{ 0x00fffff0 };
-    const uint32_t khaki{ 0x00f0e68c };
-    const uint32_t lavender{ 0x00e6e6fa };
-    const uint32_t lavenderblush{ 0x00fff0f5 };
-    const uint32_t lawngreen{ 0x007cfc00 };
-    const uint32_t lemonchiffon{ 0x00fffacd };
-    const uint32_t lightblue{ 0x00add8e6 };
-    const uint32_t lightcoral{ 0x00f08080 };
-    const uint32_t lightcyan{ 0x00e0ffff };
-    const uint32_t lightgoldenrodyellow{ 0x00fafad2 };
-    const uint32_t lightgreen{ 0x0090ee90 };
-    const uint32_t lightgrey{ 0x00d3d3d3 };
-    const uint32_t lightpink{ 0x00ffb6c1 };
-    const uint32_t lightsalmon{ 0x00ffa07a };
-    const uint32_t lightseagreen{ 0x0020b2aa };
-    const uint32_t lightskyblue{ 0x0087cefa };
-    const uint32_t lightslategrey{ 0x00778899 };
-    const uint32_t lightsteelblue{ 0x00b0c4de };
-    const uint32_t lightyellow{ 0x00ffffe0 };
-    const uint32_t lime{ 0x0000ff00 };
-    const uint32_t limegreen{ 0x0032cd32 };
-    const uint32_t linen{ 0x00faf0e6 };
-    const uint32_t magenta{ 0x00ff00ff };
-    const uint32_t maroon{ 0x00800000 };
-    const uint32_t mediumaquamarine{ 0x0066cdaa };
-    const uint32_t mediumblue{ 0x000000cd };
-    const uint32_t mediumorchid{ 0x00ba55d3 };
-    const uint32_t mediumpurple{ 0x009370db };
-    const uint32_t mediumseagreen{ 0x003cb371 };
-    const uint32_t mediumslateblue{ 0x007b68ee };
-    const uint32_t mediumspringgreen{ 0x0000fa9a };
-    const uint32_t mediumturquoise{ 0x0048d1cc };
-    const uint32_t mediumvioletred{ 0x00c71585 };
-    const uint32_t midnightblue{ 0x00191970 };
-    const uint32_t mintcream{ 0x00f5fffa };
-    const uint32_t mistyrose{ 0x00ffe4e1 };
-    const uint32_t moccasin{ 0x00ffe4b5 };
-    const uint32_t navajowhite{ 0x00ffdead };
-    const uint32_t navy{ 0x00000080 };
-    const uint32_t oldlace{ 0x00fdf5e6 };
-    const uint32_t olive{ 0x00808000 };
-    const uint32_t olivedrab{ 0x006b8e23 };
-    const uint32_t orange{ 0x00ffa500 };
-    const uint32_t orangered{ 0x00ff4500 };
-    const uint32_t orchid{ 0x00da70d6 };
-    const uint32_t palegoldenrod{ 0x00eee8aa };
-    const uint32_t palegreen{ 0x0098fb98 };
-    const uint32_t paleturquoise{ 0x00afeeee };
-    const uint32_t palevioletred{ 0x00db7093 };
-    const uint32_t papayawhip{ 0x00ffefd5 };
-    const uint32_t peachpuff{ 0x00ffdab9 };
-    const uint32_t peru{ 0x00cd853f };
-    const uint32_t pink{ 0x00ffc0cb };
-    const uint32_t plum{ 0x00dda0dd };
-    const uint32_t powderblue{ 0x00b0e0e6 };
-    const uint32_t purple{ 0x00800080 };
-    const uint32_t rebeccapurple{ 0x00663399 };
-    const uint32_t red{ 0x00ff0000 };
-    const uint32_t rosybrown{ 0x00bc8f8f };
-    const uint32_t royalblue{ 0x004169e1 };
-    const uint32_t saddlebrown{ 0x008b4513 };
-    const uint32_t salmon{ 0x00fa8072 };
-    const uint32_t sandybrown{ 0x00f4a460 };
-    const uint32_t seagreen{ 0x002e8b57 };
-    const uint32_t seashell{ 0x00fff5ee };
-    const uint32_t sienna{ 0x00a0522d };
-    const uint32_t silver{ 0x00c0c0c0 };
-    const uint32_t skyblue{ 0x0087ceeb };
-    const uint32_t slateblue{ 0x006a5acd };
-    const uint32_t slategrey{ 0x00708090 };
-    const uint32_t snow{ 0x00fffafa };
-    const uint32_t springgreen{ 0x0000ff7f };
-    const uint32_t steelblue{ 0x004682b4 };
-    const uint32_t tan{ 0x00d2b48c };
-    const uint32_t teal{ 0x00008080 };
-    const uint32_t thistle{ 0x00d8bfd8 };
-    const uint32_t tomato{ 0x00ff6347 };
-    const uint32_t turquoise{ 0x0040e0d0 };
-    const uint32_t violet{ 0x00ee82ee };
-    const uint32_t wheat{ 0x00f5deb3 };
-    const uint32_t white{ 0x00ffffff };
-    const uint32_t whitesmoke{ 0x00f5f5f5 };
-    const uint32_t yellow{ 0x00ffff00 };
-    const uint32_t yellowgreen{ 0x009acd32 };
-#else
     const uint32_t aliceblue{ 0xF7DF };
     const uint32_t antiquewhite{ 0xFF5A };
     const uint32_t aqua{ 0x07FF };
@@ -288,62 +145,27 @@ namespace Colours
     const uint32_t whitesmoke{ 0xF7BE };
     const uint32_t yellow{ 0xFFE0 };
     const uint32_t yellowgreen{ 0x9E66 };
-#endif
 
-    uint16_t translateColour(const char *rgb888String)
+    uint32_t fromString(const char *stringNumber)
     {
-        uint32_t rgb888 = strtol(rgb888String, 0, 16);
-        uint8_t r = rgb888 >> 16;
-        uint8_t g = (rgb888 >> 8) & 0xFF;
-        uint8_t b = rgb888 & 0xFF;
-
-        uint8_t r5 = (r * 249 + 1014) >> 11;
-        uint8_t g6 = (g * 253 + 505) >> 10;
-        uint8_t b5 = (b * 249 + 1014) >> 11;
-
-        return (r5 << 11 | g6 << 5 | b5);
+        return strtol(stringNumber, 0, 16);
     }
 
-    uint32_t translateColour(uint16_t rgb565)
+    uint32_t toRGB888(uint32_t rgb565)
     {
         uint8_t r = rgb565 >> 11;
         uint8_t g = (rgb565 >> 5) & 0x3F;
         uint8_t b = rgb565 & 0x1F;
 
-        uint8_t r8 = (int)floor(r * 255.0f / 31.0f + 0.5f);
-        uint8_t g8 = (int)floor(g * 255.0f / 63.0f + 0.5f);
-        uint8_t b8 = (int)floor(b * 255.0f / 31.0f + 0.5f);
+        uint8_t r8 = (r * 527 + 23) >> 6;
+        uint8_t g8 = (g * 259 + 33) >> 6;
+        uint8_t b8 = (b * 527 + 23) >> 6;
+
         return ((r8 << 16) | (g8 << 8) | b8);
     }
+
     // Get colour with adjusted brightness
     uint32_t darker(uint32_t originalColour, float factor)
-    {
-        return (darker(SCREEN_BPP, originalColour, factor));
-    }
-
-    uint32_t darker(uint8_t bpp, uint32_t originalColour, float factor)
-    {
-        if (bpp == 8) {
-            return (darker332(originalColour, factor));
-        } else if (bpp == 16) {
-            return (darker565(originalColour, factor));
-        } else {
-            return (darker888(originalColour, factor));
-        }
-    }
-
-    uint32_t darker332(uint32_t originalColour, float factor)
-    {
-        uint16_t red = (originalColour >> 5) & 0x07;
-        uint16_t green = (originalColour >> 2) & 0x07;
-        uint16_t blue = originalColour & 0x03;
-        uint16_t newRed = (uint16_t)(red * factor) & 0x07;
-        uint16_t newGreen = (uint16_t)(green * factor) & 0x07;
-        uint16_t newBlue = (uint16_t)(blue * factor) & 0x03;
-        return ((newRed << 5) | (newGreen << 2) | newBlue);
-    }
-
-    uint32_t darker565(uint32_t originalColour, float factor)
     {
         uint16_t red = (originalColour >> 11) & 0x1f;
         uint16_t green = (originalColour >> 5) & 0x3f;
@@ -354,7 +176,176 @@ namespace Colours
         return ((newRed << 11) | (newGreen << 5) | newBlue);
     }
 
-    uint32_t darker888(uint32_t originalColour, float factor)
+    uint32_t lighter(uint32_t originalColour, float factor)
+    {
+        uint16_t red = (originalColour >> 11) & 0x1f;
+        uint16_t green = (originalColour >> 5) & 0x3f;
+        uint16_t blue = originalColour & 0x1f;
+        uint16_t newRed = (uint16_t)(red + (0x1f - red) * factor) & 0x1f;
+        uint16_t newGreen = (uint16_t)(green + (0x3f - green) * factor) & 0x3f;
+        uint16_t newBlue = (uint16_t)(blue + (0x1f - blue) * factor) & 0x1f;
+        return ((newRed << 11) | (newGreen << 5) | newBlue);
+    }
+} // namespace Colours565
+
+namespace Colours888
+{
+    const uint32_t aliceblue{ 0x00f0f8ff };
+    const uint32_t antiquewhite{ 0x00faebd7 };
+    const uint32_t aqua{ 0x0000ffff };
+    const uint32_t aquamarine{ 0x007fffd4 };
+    const uint32_t azure{ 0x00f0ffff };
+    const uint32_t beige{ 0x00f5f5dc };
+    const uint32_t bisque{ 0x00ffe4c4 };
+    const uint32_t black{ 0x00000000 };
+    const uint32_t blanchedalmond{ 0x00ffebcd };
+    const uint32_t blue{ 0x000000ff };
+    const uint32_t blueviolet{ 0x008a2be2 };
+    const uint32_t brown{ 0x00a52a2a };
+    const uint32_t burlywood{ 0x00deb887 };
+    const uint32_t cadetblue{ 0x005f9ea0 };
+    const uint32_t chartreuse{ 0x007fff00 };
+    const uint32_t chocolate{ 0x00d2691e };
+    const uint32_t coral{ 0x00ff7f50 };
+    const uint32_t cornflowerblue{ 0x006495ed };
+    const uint32_t cornsilk{ 0x00fff8dc };
+    const uint32_t crimson{ 0x00dc143c };
+    const uint32_t cyan{ 0x0000ffff };
+    const uint32_t darkblue{ 0x0000008b };
+    const uint32_t darkcyan{ 0x00008b8b };
+    const uint32_t darkgoldenrod{ 0x00b8860b };
+    const uint32_t darkgrey{ 0x00555555 };
+    const uint32_t darkgreen{ 0x00006400 };
+    const uint32_t darkkhaki{ 0x00bdb76b };
+    const uint32_t darkmagenta{ 0x008b008b };
+    const uint32_t darkolivegreen{ 0x00556b2f };
+    const uint32_t darkorange{ 0x00ff8c00 };
+    const uint32_t darkorchid{ 0x009932cc };
+    const uint32_t darkred{ 0x008b0000 };
+    const uint32_t darksalmon{ 0x00e9967a };
+    const uint32_t darkseagreen{ 0x008fbc8f };
+    const uint32_t darkslateblue{ 0x00483d8b };
+    const uint32_t darkslategrey{ 0x002f4f4f };
+    const uint32_t darkturquoise{ 0x0000ced1 };
+    const uint32_t darkviolet{ 0x009400d3 };
+    const uint32_t deeppink{ 0x00ff1493 };
+    const uint32_t deepskyblue{ 0x0000bfff };
+    const uint32_t dimgrey{ 0x00696969 };
+    const uint32_t dodgerblue{ 0x001e90ff };
+    const uint32_t firebrick{ 0x00b22222 };
+    const uint32_t floralwhite{ 0x00fffaf0 };
+    const uint32_t forestgreen{ 0x00228b22 };
+    const uint32_t fuchsia{ 0x00ff00ff };
+    const uint32_t gainsboro{ 0x00dcdcdc };
+    const uint32_t ghostwhite{ 0x00f8f8ff };
+    const uint32_t gold{ 0x00ffd700 };
+    const uint32_t goldenrod{ 0x00daa520 };
+    const uint32_t grey{ 0x00808080 };
+    const uint32_t green{ 0x00008000 };
+    const uint32_t greenyellow{ 0x00adff2f };
+    const uint32_t honeydew{ 0x00f0fff0 };
+    const uint32_t hotpink{ 0x00ff69b4 };
+    const uint32_t indianred{ 0x00cd5c5c };
+    const uint32_t indigo{ 0x004b0082 };
+    const uint32_t ivory{ 0x00fffff0 };
+    const uint32_t khaki{ 0x00f0e68c };
+    const uint32_t lavender{ 0x00e6e6fa };
+    const uint32_t lavenderblush{ 0x00fff0f5 };
+    const uint32_t lawngreen{ 0x007cfc00 };
+    const uint32_t lemonchiffon{ 0x00fffacd };
+    const uint32_t lightblue{ 0x00add8e6 };
+    const uint32_t lightcoral{ 0x00f08080 };
+    const uint32_t lightcyan{ 0x00e0ffff };
+    const uint32_t lightgoldenrodyellow{ 0x00fafad2 };
+    const uint32_t lightgreen{ 0x0090ee90 };
+    const uint32_t lightgrey{ 0x00d3d3d3 };
+    const uint32_t lightpink{ 0x00ffb6c1 };
+    const uint32_t lightsalmon{ 0x00ffa07a };
+    const uint32_t lightseagreen{ 0x0020b2aa };
+    const uint32_t lightskyblue{ 0x0087cefa };
+    const uint32_t lightslategrey{ 0x00778899 };
+    const uint32_t lightsteelblue{ 0x00b0c4de };
+    const uint32_t lightyellow{ 0x00ffffe0 };
+    const uint32_t lime{ 0x0000ff00 };
+    const uint32_t limegreen{ 0x0032cd32 };
+    const uint32_t linen{ 0x00faf0e6 };
+    const uint32_t magenta{ 0x00ff00ff };
+    const uint32_t maroon{ 0x00800000 };
+    const uint32_t mediumaquamarine{ 0x0066cdaa };
+    const uint32_t mediumblue{ 0x000000cd };
+    const uint32_t mediumorchid{ 0x00ba55d3 };
+    const uint32_t mediumpurple{ 0x009370db };
+    const uint32_t mediumseagreen{ 0x003cb371 };
+    const uint32_t mediumslateblue{ 0x007b68ee };
+    const uint32_t mediumspringgreen{ 0x0000fa9a };
+    const uint32_t mediumturquoise{ 0x0048d1cc };
+    const uint32_t mediumvioletred{ 0x00c71585 };
+    const uint32_t midnightblue{ 0x00191970 };
+    const uint32_t mintcream{ 0x00f5fffa };
+    const uint32_t mistyrose{ 0x00ffe4e1 };
+    const uint32_t moccasin{ 0x00ffe4b5 };
+    const uint32_t navajowhite{ 0x00ffdead };
+    const uint32_t navy{ 0x00000080 };
+    const uint32_t oldlace{ 0x00fdf5e6 };
+    const uint32_t olive{ 0x00808000 };
+    const uint32_t olivedrab{ 0x006b8e23 };
+    const uint32_t orange{ 0x00ffa500 };
+    const uint32_t orangered{ 0x00ff4500 };
+    const uint32_t orchid{ 0x00da70d6 };
+    const uint32_t palegoldenrod{ 0x00eee8aa };
+    const uint32_t palegreen{ 0x0098fb98 };
+    const uint32_t paleturquoise{ 0x00afeeee };
+    const uint32_t palevioletred{ 0x00db7093 };
+    const uint32_t papayawhip{ 0x00ffefd5 };
+    const uint32_t peachpuff{ 0x00ffdab9 };
+    const uint32_t peru{ 0x00cd853f };
+    const uint32_t pink{ 0x00ffc0cb };
+    const uint32_t plum{ 0x00dda0dd };
+    const uint32_t powderblue{ 0x00b0e0e6 };
+    const uint32_t purple{ 0x00800080 };
+    const uint32_t rebeccapurple{ 0x00663399 };
+    const uint32_t red{ 0x00ff0000 };
+    const uint32_t rosybrown{ 0x00bc8f8f };
+    const uint32_t royalblue{ 0x004169e1 };
+    const uint32_t saddlebrown{ 0x008b4513 };
+    const uint32_t salmon{ 0x00fa8072 };
+    const uint32_t sandybrown{ 0x00f4a460 };
+    const uint32_t seagreen{ 0x002e8b57 };
+    const uint32_t seashell{ 0x00fff5ee };
+    const uint32_t sienna{ 0x00a0522d };
+    const uint32_t silver{ 0x00c0c0c0 };
+    const uint32_t skyblue{ 0x0087ceeb };
+    const uint32_t slateblue{ 0x006a5acd };
+    const uint32_t slategrey{ 0x00708090 };
+    const uint32_t snow{ 0x00fffafa };
+    const uint32_t springgreen{ 0x0000ff7f };
+    const uint32_t steelblue{ 0x004682b4 };
+    const uint32_t tan{ 0x00d2b48c };
+    const uint32_t teal{ 0x00008080 };
+    const uint32_t thistle{ 0x00d8bfd8 };
+    const uint32_t tomato{ 0x00ff6347 };
+    const uint32_t turquoise{ 0x0040e0d0 };
+    const uint32_t violet{ 0x00ee82ee };
+    const uint32_t wheat{ 0x00f5deb3 };
+    const uint32_t white{ 0x00ffffff };
+    const uint32_t whitesmoke{ 0x00f5f5f5 };
+    const uint32_t yellow{ 0x00ffff00 };
+    const uint32_t yellowgreen{ 0x009acd32 };
+
+    uint32_t fromString(const char *stringNumber)
+    {
+        return strtol(stringNumber, 0, 16);
+    }
+
+    uint16_t toRGB565(uint32_t rgb888)
+    {
+        uint8_t r = rgb888 >> 16;
+        uint8_t g = (rgb888 >> 8) & 0xFF;
+        uint8_t b = rgb888 & 0xFF;
+        return (((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3));
+    }
+
+    uint32_t darker(uint32_t originalColour, float factor)
     {
         uint16_t red = (originalColour >> 16) & 0xff;
         uint16_t green = (originalColour >> 8) & 0xff;
@@ -367,44 +358,6 @@ namespace Colours
 
     uint32_t lighter(uint32_t originalColour, float factor)
     {
-        return (lighter(SCREEN_BPP, originalColour, factor));
-    }
-
-    uint32_t lighter(uint8_t bpp, uint32_t originalColour, float factor)
-    {
-        if (bpp == 8) {
-            return (lighter332(originalColour, factor));
-        } else if (bpp == 16) {
-            return (lighter565(originalColour, factor));
-        } else {
-            return (lighter888(originalColour, factor));
-        }
-    }
-
-    uint32_t lighter332(uint32_t originalColour, float factor)
-    {
-        uint16_t red = (originalColour >> 5) & 0x07;
-        uint16_t green = (originalColour >> 2) & 0x07;
-        uint16_t blue = originalColour & 0x03;
-        uint16_t newRed = (uint16_t)(red + (0x07 - red) * factor) & 0x07;
-        uint16_t newGreen = (uint16_t)(green + (0x07 - green) * factor) & 0x07;
-        uint16_t newBlue = (uint16_t)(blue + (0x03 - blue) * factor) & 0x03;
-        return ((newRed << 5) | (newGreen << 2) | newBlue);
-    }
-
-    uint32_t lighter565(uint32_t originalColour, float factor)
-    {
-        uint16_t red = (originalColour >> 11) & 0x1f;
-        uint16_t green = (originalColour >> 5) & 0x3f;
-        uint16_t blue = originalColour & 0x1f;
-        uint16_t newRed = (uint16_t)(red + (0x1f - red) * factor) & 0x1f;
-        uint16_t newGreen = (uint16_t)(green + (0x3f - green) * factor) & 0x3f;
-        uint16_t newBlue = (uint16_t)(blue + (0x1f - blue) * factor) & 0x1f;
-        return ((newRed << 11) | (newGreen << 5) | newBlue);
-    }
-
-    uint32_t lighter888(uint32_t originalColour, float factor)
-    {
         uint16_t red = (originalColour >> 16) & 0xff;
         uint16_t green = (originalColour >> 8) & 0xff;
         uint16_t blue = originalColour & 0xff;
@@ -413,4 +366,4 @@ namespace Colours
         uint16_t newBlue = (uint16_t)(blue + (0xff - blue) * factor) & 0xff;
         return ((newRed << 16) | (newGreen << 8) | newBlue);
     }
-} // namespace Colours
+} // namespace Colours888

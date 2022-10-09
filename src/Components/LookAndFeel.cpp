@@ -1,6 +1,6 @@
 #include "LookAndFeel.h"
 
-uint32_t LookAndFeel::backgroundColour = Colours::black;
+uint32_t LookAndFeel::backgroundColour = Colours565::black;
 uint32_t LookAndFeel::altBackgroundColour = 0x0081;
 
 void LookAndFeel::paintBarHorizontal(Graphics &g,
@@ -10,7 +10,7 @@ void LookAndFeel::paintBarHorizontal(Graphics &g,
                                      int16_t max,
                                      int16_t val)
 {
-    uint32_t colourTrack = Colours::darker(colour, 0.3f);
+    uint32_t colourTrack = Colours565::darker(colour, 0.3f);
 
     uint16_t barHeight = bounds.getHeight() * 1.0f;
     uint16_t padding = (bounds.getHeight() - barHeight) / 2;
@@ -37,7 +37,7 @@ void LookAndFeel::paintBarVertical(Graphics &g,
                                    int16_t max,
                                    int16_t val)
 {
-    uint32_t colourTrack = Colours::darker(colour, 0.3f);
+    uint32_t colourTrack = Colours565::darker(colour, 0.3f);
 
     uint16_t barWidth = bounds.getWidth() * 1.0f;
     uint16_t padding = (bounds.getWidth() - barWidth) / 2;
@@ -63,9 +63,9 @@ void LookAndFeel::paintPad(Graphics &g,
                            bool isMomentary,
                            bool state)
 {
-    uint32_t colourOff = Colours::darker(colour, 0.3f);
+    uint32_t colourOff = Colours565::darker(colour, 0.3f);
     uint32_t colourAccent = colour;
-    uint32_t colourOn = Colours::darker(colour, 0.4f);
+    uint32_t colourOn = Colours565::darker(colour, 0.4f);
     uint16_t backgroundColour = colourOff;
     uint16_t activeBarHeight = bounds.getHeight() - 4;
     uint16_t radius = 5;
@@ -74,7 +74,7 @@ void LookAndFeel::paintPad(Graphics &g,
         backgroundColour = colourOn;
     }
 
-    g.setColour(Colours::darker(colourOff, 0.5f));
+    g.setColour(Colours565::darker(colourOff, 0.5f));
     g.fillRoundRect(0, 0, bounds.getWidth(), bounds.getHeight(), radius);
     g.setColour(backgroundColour);
     g.fillRoundRect(0, 0, bounds.getWidth(), activeBarHeight, radius);
@@ -84,11 +84,11 @@ void LookAndFeel::paintPad(Graphics &g,
         g.fillRoundRect(0, 0, 20, activeBarHeight, radius);
         g.setColour(backgroundColour);
         g.fillRect(18, 0, 2, activeBarHeight);
-        g.setColour(Colours::black);
+        g.setColour(Colours565::black);
         g.drawLine(15, 0, 15, activeBarHeight - 1);
-        g.setColour(Colours::darker(colour, 0.15f));
+        g.setColour(Colours565::darker(colour, 0.15f));
         g.drawLine(16, 0, 16, activeBarHeight - 1);
-        g.setColour(Colours::darker(colour, 0.30f));
+        g.setColour(Colours565::darker(colour, 0.30f));
         g.drawLine(17, 0, 17, activeBarHeight - 1);
     }
 }
@@ -100,7 +100,7 @@ void LookAndFeel::paintSliderHorizontal(Graphics &g,
                                         int16_t max,
                                         int16_t val)
 {
-    uint32_t colourTrack = Colours::darker(colour, 0.3f);
+    uint32_t colourTrack = Colours565::darker(colour, 0.3f);
 
     uint16_t padding = (bounds.getHeight() - indicatorSize) / 2;
     uint16_t indicatorX =
@@ -123,7 +123,7 @@ void LookAndFeel::paintSliderVertical(Graphics &g,
                                       int16_t max,
                                       int16_t val)
 {
-    uint32_t colourTrack = Colours::darker(colour, 0.3f);
+    uint32_t colourTrack = Colours565::darker(colour, 0.3f);
 
     uint16_t padding = (bounds.getWidth() - indicatorSize) / 2;
     uint16_t indicatorY =
@@ -207,7 +207,7 @@ void LookAndFeel::paintButtonList(Graphics &g,
                                   bool active)
 {
     if (active) {
-        g.setColour(Colours::darker(colour, 0.2f));
+        g.setColour(Colours565::darker(colour, 0.2f));
         g.fillRoundRect(0, 0, bounds.getWidth(), bounds.getHeight(), 5);
     }
 
@@ -322,9 +322,9 @@ void LookAndFeel::paintEnvelopeBaseline(Graphics &g,
                                         uint32_t colour,
                                         uint16_t baselineY)
 {
-    g.setColour(Colours::black);
+    g.setColour(Colours565::black);
     g.drawLine(0, baselineY, bounds.getWidth(), baselineY);
-    g.setColour(Colours::darkgrey);
+    g.setColour(Colours565::darkgrey);
     g.drawHorizontalDottedLine(0, bounds.getWidth(), baselineY);
 }
 
@@ -334,7 +334,7 @@ void LookAndFeel::paintEnvelopeMarkers(Graphics &g,
                                        uint16_t baselineY,
                                        const std::vector<Point> &points)
 {
-    g.setColour(Colours::black);
+    g.setColour(Colours565::black);
 
     for (uint8_t i = 0; i < std::max(0, (int)(points.size() - 1)); i += 1) {
         g.drawLine(points[i].x, points[i].y, points[i].x, baselineY);
@@ -349,7 +349,7 @@ void LookAndFeel::paintEnvelopeFills(Graphics &g,
                                      uint8_t activeSegment,
                                      bool showActiveSegment)
 {
-    uint32_t darker = Colours::darker(colour, 0.2f);
+    uint32_t darker = Colours565::darker(colour, 0.2f);
 
     for (uint8_t i = 0; i < std::max(0, (int)(points.size() - 1)); i++) {
         Point intersection(0, 0);
@@ -459,7 +459,8 @@ void LookAndFeel::paintDots(Graphics &g,
 
     // paint dots
     for (uint16_t i = 0; i < items->getNumItems(); i++) {
-        g.setColour((i == activeIndex) ? colour : Colours::darker(colour, 0.5));
+        g.setColour((i == activeIndex) ? colour
+                                       : Colours565::darker(colour, 0.5));
         g.fillCircle(paddingDots + i * 8, yPosition, 2);
     }
 }
@@ -471,8 +472,8 @@ void LookAndFeel::paintBar(Graphics &g,
                            uint8_t activeIndex)
 {
     uint16_t lastItem = items->getMaxIndex();
-    uint32_t dark = Colours::darker(colour, 0.5);
-    uint32_t light = Colours::lighter(colour, 0.5);
+    uint32_t dark = Colours565::darker(colour, 0.5);
+    uint32_t light = Colours565::lighter(colour, 0.5);
 
     uint16_t fullFaderLength = bounds.getWidth() * 0.9;
     float step = (float)fullFaderLength / (float)lastItem;
@@ -499,7 +500,7 @@ void LookAndFeel::paintBar(Graphics &g,
     g.fillRect(paddingFader + faderLength - step, yPosition - 2, step, 5);
 
     // Round the conrners
-    g.setColour(Colours::black);
+    g.setColour(Colours565::black);
     g.drawPixel(paddingFader, yPosition - 2);
     g.drawPixel(paddingFader, yPosition + 2);
     g.drawPixel(paddingFader + fullFaderLength - 1, yPosition - 2);

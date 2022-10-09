@@ -62,6 +62,11 @@ public:
         return (colour);
     }
 
+    uint32_t getColour565(void) const
+    {
+        return (Colours888::toRGB565(colour));
+    }
+
     void setSelectedColour(uint32_t newColour)
     {
         selectedColour = newColour;
@@ -71,6 +76,11 @@ public:
     uint32_t getSelectedColour(void) const
     {
         return (selectedColour);
+    }
+
+    uint32_t getSelectedColour565(void) const
+    {
+        return (Colours888::toRGB565(selectedColour));
     }
 
     void setColours(uint32_t newColour, uint32_t newSelectedColour)
@@ -170,14 +180,14 @@ public:
 
     void paint(Graphics &g) override
     {
-        uint16_t backgroundColour = colour;
+        uint16_t backgroundColour = Colours888::toRGB565(colour);
 
         if (selected) {
-            backgroundColour = selectedColour;
+            backgroundColour = Colours888::toRGB565(selectedColour);
         }
 
         if (highlighted) {
-            backgroundColour = Colours::lighter(backgroundColour, 0.1f);
+            backgroundColour = Colours565::lighter(backgroundColour, 0.1f);
         }
 
         g.setColour(backgroundColour);
@@ -197,13 +207,13 @@ private:
     static const uint8_t maxLabelLength = 20;
     char label[maxLabelLength + 1];
 
-    uint16_t colour;
-    uint16_t selectedColour;
     uint8_t radius;
 
     struct {
         bool highlighted : 1;
         bool disabled : 1;
         bool selected : 1;
+        uint32_t colour : 24;
+        uint32_t selectedColour : 24;
     };
 };
