@@ -278,38 +278,39 @@ void MidiOutput::sendMidiLearnSysex(MidiInterface::Type interface,
                                     uint8_t port,
                                     const SysexBlock &capturedSysexBlock)
 {
-    const size_t capacity = JSON_ARRAY_SIZE(1024) + 64;
     size_t sysExLength = capturedSysexBlock.getLength();
-    uint8_t data[sysExLength * 5 + 64];
-    char byteBuffer[3];
-    StaticJsonDocument<capacity> doc;
-
-    data[0] = 0xF0;
-    data[1] = 0x00;
-    data[2] = 0x21;
-    data[3] = 0x45;
-    data[4] = MIDILEARN_SWITCH;
-
-    char *jsonStart = (char *)&data[5];
-
-    doc["msg"] = "sysex";
-    doc["port"] = port;
-
-    JsonArray array = doc["data"].to<JsonArray>();
-
-    for (uint16_t i = 0; i < sysExLength; i++) {
-        convertToHex(capturedSysexBlock.peek(i), byteBuffer);
-
-        if (!array.add(byteBuffer)) {
-            logMessage("failed: %d", i);
-        }
-    }
-    serializeJson(doc, jsonStart, sysExLength * 5 + 65);
-    size_t jsonSize = strlen(jsonStart);
-    data[jsonSize + 1] = SYSEX_END;
+    char writeBuffer[64];
 
     SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
-    sysexBlock.writeBytes(data, jsonSize + 7);
+
+    writeBuffer[0] = 0xF0;
+    writeBuffer[1] = 0x00;
+    writeBuffer[2] = 0x21;
+    writeBuffer[3] = 0x45;
+    writeBuffer[4] = MIDILEARN_SWITCH;
+    sysexBlock.writeBytes((const uint8_t *)writeBuffer, 5);
+
+    snprintf(writeBuffer,
+             sizeof(writeBuffer),
+             "{\"msg\":\"sysex\", \"port\":%d,\"data\":[",
+             port);
+    sysexBlock.writeBytes((const uint8_t *)writeBuffer, strlen(writeBuffer));
+
+    for (size_t i = 0; i < sysExLength; i++) {
+        snprintf(writeBuffer,
+                 sizeof(writeBuffer),
+                 "\"%02X\"%c",
+                 capturedSysexBlock.peek(i),
+                 (i == (sysExLength - 1)) ? ' ' : ',');
+        sysexBlock.writeBytes((const uint8_t *)writeBuffer,
+                              strlen(writeBuffer));
+    }
+
+    writeBuffer[0] = ']';
+    writeBuffer[1] = '}';
+    writeBuffer[2] = 0xF7;
+
+    sysexBlock.writeBytes((const uint8_t *)writeBuffer, 3);
     sysexBlock.close();
 
     MidiMessage message(sysexBlock);
