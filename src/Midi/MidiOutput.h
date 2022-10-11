@@ -209,7 +209,8 @@ public:
                          uint8_t channel,
                          uint16_t parameterNumber,
                          uint16_t midiValue,
-                         bool lsbFirst);
+                         bool lsbFirst,
+                         bool resetRpn);
     static void sendRpn(MidiInterface::Type interface,
                         uint8_t port,
                         uint8_t channel,

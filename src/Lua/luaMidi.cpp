@@ -579,7 +579,8 @@ int midi_sendNrpn(lua_State *L)
     int channel = luaL_checkinteger(L, nextIndex++);
     int parameterNumber = luaL_checkinteger(L, nextIndex++);
     int value = luaL_checkinteger(L, nextIndex++);
-    int lsbFirst = luaL_optinteger(L, nextIndex, 0);
+    int lsbFirst = luaL_optinteger(L, nextIndex++, 0);
+    int resetRpn = luaL_optinteger(L, nextIndex, 1);
 
     checkInterface(interface);
     checkPort(port);
@@ -587,13 +588,15 @@ int midi_sendNrpn(lua_State *L)
     check14bit(parameterNumber, "parameterNumber");
     check14bit(value, "value");
     checkBoolean(lsbFirst, "lsbFirst");
+    checkBoolean(resetRpn, "resetRpn");
 
     MidiOutput::sendNrpn(static_cast<MidiInterface::Type>(interface),
                          port,
                          channel,
                          parameterNumber,
                          value,
-                         lsbFirst);
+                         lsbFirst,
+                         resetRpn);
 
     return (0);
 }

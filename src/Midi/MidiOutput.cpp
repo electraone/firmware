@@ -731,7 +731,8 @@ void MidiOutput::sendNrpn(MidiInterface::Type interface,
                           uint8_t channel,
                           uint16_t parameterNumber,
                           uint16_t midiValue,
-                          bool lsbFirst)
+                          bool lsbFirst,
+                          bool resetRpn)
 {
     sendControlChange(interface, port, channel, 99, parameterNumber >> 7);
     sendControlChange(interface, port, channel, 98, parameterNumber & 0x7F);
@@ -744,8 +745,10 @@ void MidiOutput::sendNrpn(MidiInterface::Type interface,
         sendControlChange(interface, port, channel, 38, midiValue & 0x7F);
     }
 
-    sendControlChange(interface, port, channel, 101, 127);
-    sendControlChange(interface, port, channel, 100, 127);
+    if (resetRpn) {
+        sendControlChange(interface, port, channel, 101, 127);
+        sendControlChange(interface, port, channel, 100, 127);
+    }
 }
 
 void MidiOutput::sendRpn(MidiInterface::Type interface,
