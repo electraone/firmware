@@ -152,7 +152,8 @@ public:
                        uint16_t value) const override
     {
         if (USBDevices[port].midiDevice != NULL) {
-            USBDevices[port].midiDevice->sendPitchBend(value, channel, port);
+            USBDevices[port].midiDevice->sendPitchBend(
+                value - 8191, channel, port);
         }
     }
 

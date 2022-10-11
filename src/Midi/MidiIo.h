@@ -128,7 +128,7 @@ public:
                        uint8_t channel,
                        uint16_t value) const override
     {
-        midiDINInterfaces[port]->sendPitchBend(value, channel);
+        midiDINInterfaces[port]->sendPitchBend(value - 8191, channel);
     }
 
     void sendAfterTouchPoly(uint8_t port,

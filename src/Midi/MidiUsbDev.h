@@ -125,7 +125,7 @@ public:
                        uint8_t channel,
                        uint16_t value) const override
     {
-        usbMIDI.sendPitchBend(value, channel, port);
+        usbMIDI.sendPitchBend(value - 8191, channel, port);
     }
 
     void sendAfterTouchPoly(uint8_t port,
