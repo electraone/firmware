@@ -41,6 +41,7 @@ public:
         FileLua = 0x0C,
         Function = 0x0D,
         FileUi = 0x70,
+        ControlPort = 0x7B,
         AppInfo = 0x7C,
         Logger = 0x7D,
         MemoryInfo = 0x7E,
@@ -102,6 +103,8 @@ public:
             return (Object::FileUi);
         } else if (objectByte == 0x7C) {
             return (Object::AppInfo);
+        } else if (objectByte == 0x7B) {
+            return (Object::ControlPort);
         } else if (objectByte == 0x7D) {
             return (Object::Logger);
         } else if (objectByte == 0x7E) {

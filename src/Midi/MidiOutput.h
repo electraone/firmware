@@ -33,6 +33,10 @@
 #define SNAPSHOT_CHANGE 0x03
 #define SNAPSHOT_BANK_SWITCH 0x04
 #define PRESET_LIST_CHANGE 0x05
+#define PAGE_SWITCH 0x06
+#define PRESET_BANK_SWITCH 0x07
+#define CONTROL_SET_SWITCH 0x08
+#define USB_HOST_CHANGE 0x07
 #define AVAILABLE 0x7F
 
 /*
@@ -49,6 +53,7 @@
 #define FILE_LUA_SCRIPT 0x0C
 #define FUNCTION 0x0D
 #define FILE_UITOOLKIT 0x70
+#define CTRL_PORT 0x7B
 #define APP_INFO 0x7C
 #define LOGGER 0x7D
 #define MEMORY_INFO 0x7E
@@ -82,6 +87,16 @@ public:
                                    uint8_t port,
                                    uint8_t bankNumber,
                                    uint8_t slotId);
+    static void sendPageSwitched(MidiInterface::Type interface,
+                                 uint8_t port,
+                                 uint8_t pageNumber);
+    static void sendPresetBankSwitched(MidiInterface::Type interface,
+                                       uint8_t port,
+                                       uint8_t bankNumber);
+    static void sendControlSetSwitched(MidiInterface::Type interface,
+                                       uint8_t port,
+                                       uint8_t controlSetId);
+    static void sendUsbHostChanged(MidiInterface::Type interface, uint8_t port);
     static void sendAck(MidiInterface::Type interface, uint8_t port);
     static void sendNack(MidiInterface::Type interface, uint8_t port);
     static void sendAvailable(MidiInterface::Type interface, uint8_t port);

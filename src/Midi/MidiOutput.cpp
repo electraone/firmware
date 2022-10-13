@@ -97,6 +97,66 @@ void MidiOutput::sendPresetSwitched(MidiInterface::Type interface,
     sendMessage(interface, port, message);
 }
 
+void MidiOutput::sendPageSwitched(MidiInterface::Type interface,
+                                  uint8_t port,
+                                  uint8_t pageNumber)
+{
+    uint8_t data[8] = { 0xF0,          0x00,        0x21,       0x45,
+                        EVENT_MESSAGE, PAGE_SWITCH, pageNumber, 0xF7 };
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, sizeof(data));
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+}
+
+void MidiOutput::sendPresetBankSwitched(MidiInterface::Type interface,
+                                        uint8_t port,
+                                        uint8_t bankNumber)
+{
+    uint8_t data[8] = { 0xF0,       0x00,          0x21,
+                        0x45,       EVENT_MESSAGE, PRESET_BANK_SWITCH,
+                        bankNumber, 0xF7 };
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, sizeof(data));
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+}
+
+void MidiOutput::sendControlSetSwitched(MidiInterface::Type interface,
+                                        uint8_t port,
+                                        uint8_t controlSetId)
+{
+    uint8_t data[8] = { 0xF0,         0x00,          0x21,
+                        0x45,         EVENT_MESSAGE, CONTROL_SET_SWITCH,
+                        controlSetId, 0xF7 };
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, sizeof(data));
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+}
+
+void MidiOutput::sendUsbHostChanged(MidiInterface::Type interface, uint8_t port)
+{
+    uint8_t data[7] = { 0xF0, 0x00, 0x21, 0x45, EVENT_MESSAGE, USB_HOST_CHANGE,
+                        0xF7 };
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, sizeof(data));
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+}
+
 void MidiOutput::sendAck(MidiInterface::Type interface, uint8_t port)
 {
     uint8_t data[9] = { 0xF0, 0x00, 0x21, 0x45, EVENT_MESSAGE,
