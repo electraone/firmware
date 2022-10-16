@@ -98,11 +98,11 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                     logMessage("processElectraSysex::handleElectraSysex: "
                                "config sysex sent to the host");
                 }
-            } else if (object == ElectraCommand::Object::MemoryInfo) {
-                MidiOutput::sendMemoryInfo(MidiInterface::Type::MidiUsbDev,
-                                           port);
+            } else if (object == ElectraCommand::Object::RuntimeInfo) {
+                MidiOutput::sendRuntimeInfo(MidiInterface::Type::MidiUsbDev,
+                                            port);
                 logMessage("processElectraSysex::handleElectraSysex: "
-                           "memoryInfo sysex sent to the host");
+                           "runtimeInfo sysex sent to the host");
             } else if (object == ElectraCommand::Object::AppInfo) {
                 MidiOutput::sendAppInfo(MidiInterface::Type::MidiUsbDev, port);
                 logMessage("processElectraSysex::handleElectraSysex: "

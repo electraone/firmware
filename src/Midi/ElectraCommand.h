@@ -40,11 +40,12 @@ public:
         ControlSet = 0x0B,
         FileLua = 0x0C,
         Function = 0x0D,
+        Value = 0x0E,
         FileUi = 0x70,
         ControlPort = 0x7B,
         AppInfo = 0x7C,
         Logger = 0x7D,
-        MemoryInfo = 0x7E,
+        RuntimeInfo = 0x7E,
         ElectraInfo = 0x7F,
         Unknown = 0x3F
     };
@@ -55,6 +56,11 @@ public:
         PresetSwitch = 0x02,
         SnapshotChange = 0x03,
         SnapshotBankSwitch = 0x04,
+        PresetListChange = 0x05,
+        PageSwitch = 0x06,
+        ControlSetSwitch = 0x07,
+        PresetBankSwitch = 0x08,
+        UsbHostChange = 0x09,
         Unknown = 0x7F
     };
 
@@ -99,6 +105,8 @@ public:
             return (Object::FileLua);
         } else if (objectByte == 0x0D) {
             return (Object::Function);
+        } else if (objectByte == 0x0E) {
+            return (Object::Value);
         } else if (objectByte == 0x70) {
             return (Object::FileUi);
         } else if (objectByte == 0x7C) {
@@ -108,7 +116,7 @@ public:
         } else if (objectByte == 0x7D) {
             return (Object::Logger);
         } else if (objectByte == 0x7E) {
-            return (Object::MemoryInfo);
+            return (Object::RuntimeInfo);
         } else if (objectByte == 0x7F) {
             return (Object::ElectraInfo);
         } else {
@@ -128,6 +136,16 @@ public:
             return (Event::SnapshotChange);
         } else if (eventByte == 0x04) {
             return (Event::SnapshotBankSwitch);
+        } else if (eventByte == 0x05) {
+            return (Event::PresetListChange);
+        } else if (eventByte == 0x06) {
+            return (Event::PageSwitch);
+        } else if (eventByte == 0x07) {
+            return (Event::ControlSetSwitch);
+        } else if (eventByte == 0x08) {
+            return (Event::PresetBankSwitch);
+        } else if (eventByte == 0x09) {
+            return (Event::UsbHostChange);
         } else {
             return (Event::Unknown);
         }

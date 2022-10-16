@@ -34,9 +34,9 @@
 #define SNAPSHOT_BANK_SWITCH 0x04
 #define PRESET_LIST_CHANGE 0x05
 #define PAGE_SWITCH 0x06
-#define PRESET_BANK_SWITCH 0x07
-#define CONTROL_SET_SWITCH 0x08
-#define USB_HOST_CHANGE 0x07
+#define CONTROL_SET_SWITCH 0x07
+#define PRESET_BANK_SWITCH 0x08
+#define USB_HOST_CHANGE 0x09
 #define AVAILABLE 0x7F
 
 /*
@@ -101,7 +101,7 @@ public:
     static void sendNack(MidiInterface::Type interface, uint8_t port);
     static void sendAvailable(MidiInterface::Type interface, uint8_t port);
     static void sendAppInfo(MidiInterface::Type interface, uint8_t port);
-    static void sendMemoryInfo(MidiInterface::Type interface, uint8_t port);
+    static void sendRuntimeInfo(MidiInterface::Type interface, uint8_t port);
     static void sendElectraInfo(MidiInterface::Type interface,
                                 uint8_t port,
                                 const char *electraInfoSerial,

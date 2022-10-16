@@ -225,7 +225,7 @@ void MidiOutput::sendAppInfo(MidiInterface::Type interface, uint8_t port)
     sendMessage(interface, port, message);
 }
 
-void MidiOutput::sendMemoryInfo(MidiInterface::Type interface, uint8_t port)
+void MidiOutput::sendRuntimeInfo(MidiInterface::Type interface, uint8_t port)
 {
     uint8_t data[128];
     StaticJsonDocument<128> doc;
