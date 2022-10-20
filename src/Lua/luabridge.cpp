@@ -181,17 +181,17 @@ bool isLuaValid(const char *filename)
 void loadGlobalVariables(lua_State *L)
 {
     // colours
-    lua_pushnumber(L, 0);
+    lua_pushnumber(L, 0xffffff);
     lua_setglobal(L, "WHITE");
-    lua_pushnumber(L, 1);
+    lua_pushnumber(L, 0xF45C51);
     lua_setglobal(L, "RED");
-    lua_pushnumber(L, 2);
+    lua_pushnumber(L, 0xF49500);
     lua_setglobal(L, "ORANGE");
-    lua_pushnumber(L, 3);
+    lua_pushnumber(L, 0x529DEC);
     lua_setglobal(L, "BLUE");
-    lua_pushnumber(L, 4);
+    lua_pushnumber(L, 0x03A598);
     lua_setglobal(L, "GREEN");
-    lua_pushnumber(L, 5);
+    lua_pushnumber(L, 0xC44795);
     lua_setglobal(L, "PURPLE");
 
     // midi interfaces
