@@ -176,7 +176,7 @@ void LookAndFeel::paintList(Graphics &g,
                             const Rectangle &bounds,
                             uint32_t colour,
                             const ListData *items,
-                            uint8_t activeIndex)
+                            uint16_t activeIndex)
 {
     if (items->getByIndex(activeIndex).isBitmapEmpty()) {
         // Print the label
@@ -203,7 +203,7 @@ void LookAndFeel::paintButtonList(Graphics &g,
                                   const Rectangle &bounds,
                                   uint32_t colour,
                                   const ListData *items,
-                                  uint8_t activeIndex,
+                                  uint16_t activeIndex,
                                   bool active)
 {
     if (active) {
@@ -452,7 +452,7 @@ void LookAndFeel::paintDots(Graphics &g,
                             const Rectangle &bounds,
                             uint32_t colour,
                             const ListData *items,
-                            uint8_t activeIndex)
+                            uint16_t activeIndex)
 {
     // Paint the dots
     uint8_t paddingDots =
@@ -471,7 +471,7 @@ void LookAndFeel::paintBar(Graphics &g,
                            const Rectangle &bounds,
                            uint32_t colour,
                            const ListData *items,
-                           uint8_t activeIndex)
+                           uint16_t activeIndex)
 {
     uint16_t lastItem = items->getMaxIndex();
     uint32_t dark = Colours565::darker(colour, 0.5);

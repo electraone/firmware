@@ -56,13 +56,13 @@ public:
                           const Rectangle &bounds,
                           uint32_t colour,
                           const ListData *items,
-                          uint8_t activeIndex);
+                          uint16_t activeIndex);
 
     static void paintButtonList(Graphics &g,
                                 const Rectangle &bounds,
                                 uint32_t colour,
                                 const ListData *items,
-                                uint8_t activeIndex,
+                                uint16_t activeIndex,
                                 bool active);
 
     static void paintSet(Graphics &g,
@@ -112,13 +112,13 @@ private:
                           const Rectangle &bounds,
                           uint32_t colour,
                           const ListData *items,
-                          uint8_t activeIndex);
+                          uint16_t activeIndex);
 
     static void paintBar(Graphics &g,
                          const Rectangle &bounds,
                          uint32_t colour,
                          const ListData *items,
-                         uint8_t activeIndex);
+                         uint16_t activeIndex);
 
     // Slider
     static constexpr uint8_t indicatorSize = 22;
