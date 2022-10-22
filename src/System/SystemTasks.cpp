@@ -16,7 +16,7 @@ SystemTasks::SystemTasks()
       taskRepaintGraphics(40000, TASK_FOREVER, &repaintGraphics),
       taskUserTask(250000, TASK_FOREVER, &userTask),
       taskRunTimer(500000, TASK_FOREVER, &runTimer),
-      taskSendMidi(10000, TASK_FOREVER, &sendMidi),
+      taskSendMidi(2000, TASK_FOREVER, &sendMidi),
       taskProcessMidi(10000, TASK_FOREVER, &processMidi),
       taskProcessSysex(100000, TASK_FOREVER, &processSysex)
 {

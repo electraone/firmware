@@ -2,6 +2,7 @@
 
 #include "MidiMessage.h"
 #include "MidiInterface.h"
+#define CIRCULAR_BUFFER_INT_SAFE
 #include "CircularBuffer.h"
 
 void readCtrlMidi(void);

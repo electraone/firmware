@@ -123,10 +123,10 @@ void readMidi(void)
  */
 void processMidi(void)
 {
-    while (incomingQueueL2.isEmpty() != true) {
+    if (incomingQueueL2.isEmpty() != true) {
         MidiMessageTransport message = incomingQueueL2.shift();
 
-#ifdef DENBUG
+#ifdef DEBUG
         logMessage("queueL2 [%d]: received: interface=%d, port=%d, channel=%d, "
                    "type=%d, data1=%d, data2=%d",
                    incomingQueueL2.size(),

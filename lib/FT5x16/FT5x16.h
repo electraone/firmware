@@ -1,5 +1,6 @@
 #pragma once
 
+#define CIRCULAR_BUFFER_INT_SAFE
 #include "CircularBuffer.h"
 #include "TouchPoint.h"
 

@@ -2,6 +2,7 @@
 
 #include "MidiMessage.h"
 #include "MidiMessageTransport.h"
+#define CIRCULAR_BUFFER_INT_SAFE
 #include "CircularBuffer.h"
 
 #define SYSEX_START 0xF0

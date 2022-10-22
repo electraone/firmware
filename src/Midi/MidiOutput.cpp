@@ -300,6 +300,7 @@ void MidiOutput::sendMidiLearn(MidiInterface::Type interface,
     uint8_t data[512];
     StaticJsonDocument<512> doc;
 
+#ifdef DEBUG
     logMessage(
         "sendMidiLearn: msg=%s, port=%d, channel=%d, parameter=%d, value=%d",
         msg,
@@ -307,6 +308,7 @@ void MidiOutput::sendMidiLearn(MidiInterface::Type interface,
         channel,
         parameterId,
         value);
+#endif
 
     data[0] = 0xF0;
     data[1] = 0x00;
