@@ -187,7 +187,7 @@ static void usb_setup(void)
                 p = tx_first[i];
                 while (p) {
                     n = p->next;
-                    usb_free(p);
+                    usb_free_tx(p);
                     p = n;
                 }
                 tx_first[i] = NULL;
@@ -673,7 +673,7 @@ restart:
 			 */
             if (stat & 0x08) // transmit
             {
-                usb_free(packet);
+                usb_free_tx(packet);
                 packet = tx_first[endpoint];
                 if (packet) {
                     //printText ("Y");

@@ -37,7 +37,7 @@ void (*usb_midi_handleRealTimeSystem)(uint8_t rtb) = NULL;
 
 
 // Maximum number of transmit packets to queue so we don't starve other endpoints for memory
-#define TX_PACKET_LIMIT 6
+#define TX_PACKET_LIMIT 24
 static usb_packet_t *rx_packet = NULL;
 static usb_packet_t *tx_packet = NULL;
 static uint8_t transmit_previous_timeout = 0;
@@ -91,7 +91,7 @@ void usb_midi_write_packed (uint32_t n)
 			}
 			if (usb_tx_packet_count (MIDI_TX_ENDPOINT) < TX_PACKET_LIMIT)
 			{
-				tx_packet = usb_malloc ();
+				tx_packet = usb_malloc_tx ();
 				if (tx_packet)
 				{
           // printText ("error");
