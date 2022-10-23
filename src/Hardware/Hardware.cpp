@@ -17,14 +17,6 @@ void Hardware::initialise(void)
     adc.adc1->setResolution(10);
     logMessage("AD convertor: initialised");
 
-    // Initialise pots
-    pots.initialise();
-    logMessage("Pots: initialised");
-
-    // Initialise LCD touch interface
-    touch.begin();
-    logMessage("LCD touch: initialided");
-
     // Initialise RAM monitoring
     ram.initialize();
     logMessage("SD RAM monitor: initialised");
@@ -36,6 +28,14 @@ void Hardware::initialise(void)
     // Initialise the LCD
     screen.initialise();
     logMessage("LCD: initialised");
+
+    // Initialise LCD touch interface
+    touch.begin();
+    logMessage("LCD touch: initialided");
+
+    // Initialise pots
+    pots.initialise();
+    logMessage("Pots: initialised");
 
     // Mount the internal storage media
     Hardware::sdcard.mount();

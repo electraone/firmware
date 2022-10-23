@@ -19,4 +19,6 @@ void Graphics::initialise(void)
     resetExtRam();
     loadCGRAMFonts();
     selectCGRAMFont();
+    setBacklightbrightness(512);
+    delay(20);
 }
