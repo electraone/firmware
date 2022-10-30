@@ -21,11 +21,13 @@ public:
     void setColour(uint32_t newColour)
     {
         colour = newColour;
+        repaint();
     }
 
     void setLabel(const char *newLabel)
     {
         label = newLabel;
+        repaint();
     }
 
     void paint(Graphics &g)
@@ -33,8 +35,10 @@ public:
         LookAndFeel::paintSet(g, getBounds(), colour, label);
     }
 
+protected:
+    uint32_t colour;
+
 private:
     static const uint8_t MaxNameLength = 40;
-    uint32_t colour;
     const char *label;
 };
