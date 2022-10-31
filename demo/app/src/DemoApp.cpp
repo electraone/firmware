@@ -42,7 +42,7 @@ public:
         model.close();
 
         logMessage("setup completed");
-        mainWindow.display();
+        mainWindow.repaint();
     }
 
     class MainWindow : public Window
