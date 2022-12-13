@@ -78,6 +78,18 @@ public:
                               uint8_t activeSegment,
                               bool showActiveSegment);
 
+    static void paintDots(Graphics &g,
+                          const Rectangle &bounds,
+                          uint32_t colour,
+                          const ListData *items,
+                          uint16_t activeIndex);
+
+    static void paintBar(Graphics &g,
+                         const Rectangle &bounds,
+                         uint32_t colour,
+                         const ListData *items,
+                         uint16_t activeIndex);
+
 private:
     static void paintEnvelopeContour(Graphics &g,
                                      const Rectangle &bounds,
@@ -107,18 +119,6 @@ private:
                                  const Point &C,
                                  const Point &D,
                                  Point &intersection);
-
-    static void paintDots(Graphics &g,
-                          const Rectangle &bounds,
-                          uint32_t colour,
-                          const ListData *items,
-                          uint16_t activeIndex);
-
-    static void paintBar(Graphics &g,
-                         const Rectangle &bounds,
-                         uint32_t colour,
-                         const ListData *items,
-                         uint16_t activeIndex);
 
     // Slider
     static constexpr uint8_t indicatorSize = 22;
