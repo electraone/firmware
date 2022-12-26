@@ -34,7 +34,7 @@ struct SysexTransport {
     uint8_t port;
 };
 
-#define SYSEX_QUEUE_SIZE 5
+#define SYSEX_QUEUE_SIZE 32
 extern CircularBuffer<SysexTransport, SYSEX_QUEUE_SIZE> sysexQueue;
 
 void processSysex(void);

@@ -29,7 +29,7 @@ public:
     int peek(size_t position) const;
 
     // The size of the header must be divisible by 4
-    static const size_t headerMaxSize = 16;
+    static const size_t headerMaxSize = 56;
 
 protected:
     MemoryPool *memoryPool;
