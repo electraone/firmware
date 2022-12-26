@@ -12,7 +12,7 @@ int transport_enable(lua_State *L)
 {
     lua_settop(L, 0);
 
-    logMessage("transport enabled");
+    logMessage("lua: transport enabled");
 
     MidiInputCallback::onMidiClockCallback = &transport_onMidiClock;
     MidiInputCallback::onMidiStartCallback = &transport_onMidiStart;
@@ -29,7 +29,7 @@ int transport_disable(lua_State *L)
 {
     lua_settop(L, 0);
 
-    logMessage("transport disabled");
+    logMessage("lua: transport disabled");
 
     MidiInputCallback::onMidiClockCallback = nullptr;
     MidiInputCallback::onMidiStartCallback = nullptr;
@@ -50,30 +50,30 @@ int transport_isEnabled(lua_State *L)
 
 void transport_onMidiClock(MidiInput midiInput)
 {
-    midi_onSingleByte("onClock", midiInput);
+    midi_onSingleByte("transport", "onClock", midiInput);
 }
 
 void transport_onMidiStart(MidiInput midiInput)
 {
-    midi_onSingleByte("onStart", midiInput);
+    midi_onSingleByte("transport", "onStart", midiInput);
 }
 
 void transport_onMidiStop(MidiInput midiInput)
 {
-    midi_onSingleByte("onStop", midiInput);
+    midi_onSingleByte("transport", "onStop", midiInput);
 }
 
 void transport_onMidiContinue(MidiInput midiInput)
 {
-    midi_onSingleByte("onContinue", midiInput);
+    midi_onSingleByte("transport", "onContinue", midiInput);
 }
 
 void transport_onMidiSongSelect(MidiInput midiInput, uint8_t songNumber)
 {
-    midi_onTwoBytes("onSongSelect", midiInput, songNumber);
+    midi_onTwoBytes("transport", "onSongSelect", midiInput, songNumber);
 }
 
 void transport_onMidiSongPosition(MidiInput midiInput, int position)
 {
-    midi_onTwoBytes("onSongPosition", midiInput, position);
+    midi_onTwoBytes("transport", "onSongPosition", midiInput, position);
 }

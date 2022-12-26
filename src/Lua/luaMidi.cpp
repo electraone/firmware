@@ -670,9 +670,11 @@ int midi_sendControlChange14Bit(lua_State *L)
     return (0);
 }
 
-void midi_onSingleByte(const char *function, MidiInput midiInput)
+void midi_onSingleByte(const char *module,
+                       const char *function,
+                       MidiInput midiInput)
 {
-    luaLE_getModuleFunction("midi", function);
+    luaLE_getModuleFunction(module, function);
 
     if (lua_isfunction(L, -1)) {
         lua_newtable(L);
@@ -690,9 +692,12 @@ void midi_onSingleByte(const char *function, MidiInput midiInput)
     }
 }
 
-void midi_onTwoBytes(const char *function, MidiInput midiInput, int data1)
+void midi_onTwoBytes(const char *module,
+                     const char *function,
+                     MidiInput midiInput,
+                     int data1)
 {
-    luaLE_getModuleFunction("midi", function);
+    luaLE_getModuleFunction(module, function);
 
     if (lua_isfunction(L, -1)) {
         lua_newtable(L);
@@ -711,12 +716,13 @@ void midi_onTwoBytes(const char *function, MidiInput midiInput, int data1)
     }
 }
 
-void midi_onTwoBytesWithChannel(const char *function,
+void midi_onTwoBytesWithChannel(const char *module,
+                                const char *function,
                                 MidiInput midiInput,
                                 uint8_t channel,
                                 int data1)
 {
-    luaLE_getModuleFunction("midi", function);
+    luaLE_getModuleFunction(module, function);
 
     if (lua_isfunction(L, -1)) {
         lua_newtable(L);
@@ -736,13 +742,14 @@ void midi_onTwoBytesWithChannel(const char *function,
     }
 }
 
-void midi_onThreeBytesWithChannel(const char *function,
+void midi_onThreeBytesWithChannel(const char *module,
+                                  const char *function,
                                   MidiInput midiInput,
                                   uint8_t channel,
                                   uint8_t data1,
                                   uint8_t data2)
 {
-    luaLE_getModuleFunction("midi", function);
+    luaLE_getModuleFunction(module, function);
 
     if (lua_isfunction(L, -1)) {
         lua_newtable(L);

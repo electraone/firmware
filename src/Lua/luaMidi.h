@@ -58,13 +58,20 @@ int midi_sendSysEx(lua_State *L);
 int midi_sendNrpn(lua_State *L);
 int midi_sendRpn(lua_State *L);
 int midi_sendControlChange14Bit(lua_State *L);
-void midi_onSingleByte(const char *function, MidiInput midiInput);
-void midi_onTwoBytes(const char *function, MidiInput midiInput, int data1);
-void midi_onTwoBytesWithChannel(const char *function,
+void midi_onSingleByte(const char *module,
+                       const char *function,
+                       MidiInput midiInput);
+void midi_onTwoBytes(const char *module,
+                     const char *function,
+                     MidiInput midiInput,
+                     int data1);
+void midi_onTwoBytesWithChannel(const char *module,
+                                const char *function,
                                 MidiInput midiInput,
                                 uint8_t channel,
                                 int data1);
-void midi_onThreeBytesWithChannel(const char *function,
+void midi_onThreeBytesWithChannel(const char *module,
+                                  const char *function,
                                   MidiInput midiInput,
                                   uint8_t channel,
                                   uint8_t data1,
