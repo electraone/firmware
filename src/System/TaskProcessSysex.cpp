@@ -194,15 +194,25 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                 _reboot_Teensyduino_();
             } else if (object == ElectraCommand::Object::Logger) {
                 if (cmd.getByte1() == 0) {
-                    logMessage("processElectraSysex::LOGGER OFF");
+                    logMessage("processElectraSysex::logger disabled");
                     loggerEnabled = false;
                 } else {
                     loggerEnabled = true;
-                    logMessage("processElectraSysex::LOGGER ON");
+                    logMessage("processElectraSysex::logger enabled");
                 }
                 System::runtimeInfo.setLoggerStatus(loggerEnabled);
                 MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
-                ;
+            } else if (object == ElectraCommand::Object::Window) {
+                if (cmd.getByte1() == 0) {
+                    System::tasks.disableRepaintGraphics();
+                    logMessage("processElectraSysex::Window repaint stopped");
+                } else {
+                    System::tasks.clearRepaintGraphics();
+                    System::windowManager.repaintActive();
+                    System::tasks.enableRepaintGraphics();
+                    logMessage("processElectraSysex::Window repaint resumed");
+                }
+                MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
             }
         } else {
             App::get()->handleElectraSysex(port, sysexBlock);

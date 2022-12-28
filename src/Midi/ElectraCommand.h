@@ -42,6 +42,7 @@ public:
         Function = 0x0D,
         Value = 0x0E,
         FileUi = 0x70,
+        Window = 0x7A,
         ControlPort = 0x7B,
         AppInfo = 0x7C,
         Logger = 0x7D,
@@ -109,10 +110,12 @@ public:
             return (Object::Value);
         } else if (objectByte == 0x70) {
             return (Object::FileUi);
-        } else if (objectByte == 0x7C) {
-            return (Object::AppInfo);
+        } else if (objectByte == 0x7A) {
+            return (Object::Window);
         } else if (objectByte == 0x7B) {
             return (Object::ControlPort);
+        } else if (objectByte == 0x7C) {
+            return (Object::AppInfo);
         } else if (objectByte == 0x7D) {
             return (Object::Logger);
         } else if (objectByte == 0x7E) {
