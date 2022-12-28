@@ -31,7 +31,20 @@ int window_repaint(lua_State *L)
 
 int window_clear(lua_State *L)
 {
-    //System::windowManager.getActiveWindow()->clear ();
+    return (0);
+}
+
+int window_stop(lua_State *L)
+{
+    System::tasks.disableRepaintGraphics();
+    return (0);
+}
+
+int window_resume(lua_State *L)
+{
+    System::tasks.clearRepaintGraphics();
+    System::windowManager.repaintActive();
+    System::tasks.enableRepaintGraphics();
     return (0);
 }
 
