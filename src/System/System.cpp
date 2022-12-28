@@ -41,3 +41,5 @@ WindowManager System::windowManager;
 Context System::context;
 RuntimeInfo System::runtimeInfo;
 lua_State *System::L = nullptr;
+
+bool System::repaintActive = false;

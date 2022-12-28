@@ -24,4 +24,6 @@ public:
     static Context context;
     static RuntimeInfo runtimeInfo;
     static lua_State *L;
+
+    static bool repaintActive;
 };

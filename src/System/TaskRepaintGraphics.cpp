@@ -16,6 +16,9 @@ bool showComponentFrames = false;
 void repaintGraphics(void)
 {
     //logMessage("repaintGraphics");
+
+    System::repaintActive = true;
+
     if (repaintQueue.isEmpty() != true) {
         Hardware::screen.switchWriteLayer();
 
@@ -39,4 +42,5 @@ void repaintGraphics(void)
         }
         Hardware::screen.showPreparedLayer(0, 0, 1024, 600);
     }
+    System::repaintActive = false;
 }

@@ -23,6 +23,11 @@ void readCtrlMidi(void)
  */
 void readMidi(void)
 {
+    // Skip when Electra is busy with a component repaints
+    if (System::repaintActive) {
+        return;
+    }
+
     // Process inbound MIDI messages on USB MIDI IN port (virtual cables).
     MidiBase *midiInterface =
         MidiInterface::get(MidiInterface::Type::MidiUsbDev);
