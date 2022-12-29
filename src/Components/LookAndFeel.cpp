@@ -256,10 +256,10 @@ void LookAndFeel::paintSet(Graphics &g,
 
     g.setColour(Colours565::darker(colour, 0.3));
     for (uint16_t i = 0; i <= (width / 2) - (textWidth / 2) - 3; i += 3) {
-        g.drawPixel(i, 6);
+        g.drawPixel(i, 7);
     }
     for (uint16_t i = width; i >= (width / 2) + (textWidth / 2) + 3; i -= 3) {
-        g.drawPixel(i, 6);
+        g.drawPixel(i, 7);
     }
 
     if (isHighligted) {
@@ -275,10 +275,10 @@ void LookAndFeel::paintSet(Graphics &g,
     g.setColour(Colours565::darker(colour, 0.3));
 
     if (height < 20) {
-        g.drawPixel(0, 9);
-        g.drawPixel(width, 9);
+        g.drawPixel(0, 10);
+        g.drawPixel(width, 10);
     } else {
-        for (uint16_t i = 6; i < height; i += 3) {
+        for (uint16_t i = 7; i < height; i += 3) {
             g.drawPixel(0, i);
             g.drawPixel(width, i);
         }
@@ -293,7 +293,7 @@ void LookAndFeel::paintSet(Graphics &g,
 
     if (strlen(labelAdjusted) > 0) {
         g.printText(0,
-                    isHighligted ? 2 : 0,
+                    2,
                     labelAdjusted,
                     TextStyle::smallTransparent,
                     width,
