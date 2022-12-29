@@ -6,12 +6,15 @@
 class Set : virtual public Component
 {
 public:
-    Set() : colour(Colours565::white), label("")
+    Set() : colour(Colours565::white), label(""), isHighligted(false)
     {
     }
 
-    Set(Rectangle newBounds, uint32_t newColour, const char *newLabel)
-        : colour(newColour), label(newLabel)
+    Set(Rectangle newBounds,
+        uint32_t newColour,
+        const char *newLabel,
+        bool newIsHighligted)
+        : colour(newColour), label(newLabel), isHighligted(newIsHighligted)
     {
         setBounds(newBounds);
     }
@@ -30,9 +33,15 @@ public:
         repaint();
     }
 
+    void setHighlighted(bool shouldBeHighlighted)
+    {
+        isHighligted = shouldBeHighlighted;
+        repaint();
+    }
+
     void paint(Graphics &g)
     {
-        LookAndFeel::paintSet(g, getBounds(), colour, label);
+        LookAndFeel::paintSet(g, getBounds(), colour, label, isHighligted);
     }
 
 protected:
@@ -41,4 +50,5 @@ protected:
 private:
     static const uint8_t MaxNameLength = 40;
     const char *label;
+    bool isHighligted;
 };

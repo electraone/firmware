@@ -12,8 +12,8 @@ volatile bool loggerEnabled;
 
 #define LOG_MESSAGE_MAX_SIZE 200 // Max size of the log message
 
-static const int col_pos[6] = { 13, 183, 353, 523, 693, 863 };
-static const int row_pos[6] = { 40, 128, 216, 304, 392, 480 };
+static const int col_pos[6] = { 14, 182, 350, 518, 686, 854 };
+static const int row_pos[6] = { 6, 96, 186, 276, 366, 456 };
 
 const char *noteNames[] = {
     "c-1",  "c#-1", "d-1", "d#-1", "e-1", "f-1", "f#-1", "g-1", "g#-1", "a-1",
@@ -458,7 +458,7 @@ Rectangle slotToBounds(uint8_t slot)
     int row = slot / 6;
     int col = slot % 6;
 
-    return (Rectangle(col_pos[col], row_pos[row], 146, 56));
+    return (Rectangle(col_pos[col], row_pos[row], 158, 56));
 }
 
 uint8_t boundsToSlot(Rectangle bounds)

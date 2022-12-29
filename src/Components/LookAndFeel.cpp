@@ -1,7 +1,7 @@
 #include "LookAndFeel.h"
 
 uint32_t LookAndFeel::backgroundColour = Colours565::black;
-uint32_t LookAndFeel::altBackgroundColour = 0x0081;
+uint32_t LookAndFeel::altBackgroundColour = 0x1082;
 
 void LookAndFeel::paintBarHorizontal(Graphics &g,
                                      const Rectangle &bounds,
@@ -234,7 +234,8 @@ void LookAndFeel::paintButtonList(Graphics &g,
 void LookAndFeel::paintSet(Graphics &g,
                            const Rectangle &bounds,
                            uint32_t colour,
-                           const char *label)
+                           const char *label,
+                           bool isHighligted)
 {
     uint16_t width = bounds.getWidth();
     uint16_t height = bounds.getHeight();
@@ -253,17 +254,27 @@ void LookAndFeel::paintSet(Graphics &g,
     uint16_t textWidth =
         g.getTextWidth(labelAdjusted, TextStyle::smallTransparent);
 
-    g.setColour(colour);
-
+    g.setColour(Colours565::darker(colour, 0.3));
     for (uint16_t i = 0; i <= (width / 2) - (textWidth / 2) - 3; i += 3) {
         g.drawPixel(i, 6);
     }
-
     for (uint16_t i = width; i >= (width / 2) + (textWidth / 2) + 3; i -= 3) {
         g.drawPixel(i, 6);
     }
 
-    if (height < 80) {
+    if (isHighligted) {
+        g.setColour(Colours565::darker(colour, 0.25));
+        g.fillRect(5, 0, width - 10, 15);
+        g.setColour(Colours565::black);
+        g.drawPixel(5, 0);
+        g.drawPixel(5, 14);
+        g.drawPixel(width - 5 - 1, 0);
+        g.drawPixel(width - 5 - 1, 14);
+    }
+
+    g.setColour(Colours565::darker(colour, 0.3));
+
+    if (height < 20) {
         g.drawPixel(0, 9);
         g.drawPixel(width, 9);
     } else {
@@ -282,7 +293,7 @@ void LookAndFeel::paintSet(Graphics &g,
 
     if (strlen(labelAdjusted) > 0) {
         g.printText(0,
-                    0,
+                    isHighligted ? 2 : 0,
                     labelAdjusted,
                     TextStyle::smallTransparent,
                     width,

@@ -68,7 +68,8 @@ public:
     static void paintSet(Graphics &g,
                          const Rectangle &bounds,
                          uint32_t colour,
-                         const char *label);
+                         const char *label,
+                         bool isHighligted);
 
     static void paintEnvelope(Graphics &g,
                               const Rectangle &bounds,
