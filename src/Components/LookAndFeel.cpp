@@ -1,7 +1,7 @@
 #include "LookAndFeel.h"
 
 uint32_t LookAndFeel::backgroundColour = Colours565::black;
-uint32_t LookAndFeel::altBackgroundColour = 0x1082;
+uint32_t LookAndFeel::altBackgroundColour = 0x0022;
 
 void LookAndFeel::paintBarHorizontal(Graphics &g,
                                      const Rectangle &bounds,
