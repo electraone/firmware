@@ -5,12 +5,6 @@
 #include "System.h"
 
 /*
- * An option for visual layout debugging
- * \todo to be removed.
- */
-bool showComponentFrames = false;
-
-/*
  * repaint graphics
  */
 void repaintGraphics(void)

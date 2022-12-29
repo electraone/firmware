@@ -2,8 +2,6 @@
 
 #include "Component.h"
 
-extern bool showComponentFrames;
-
 class TextGraphics : virtual public Component
 {
 public:
