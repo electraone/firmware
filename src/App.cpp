@@ -42,11 +42,6 @@ const char *App::getApplicationSandbox(void) const
 #include <CircularBuffer.h>
 
 // \todo To be removed.
-void App::handleIncomingControlMessage(MidiInput &midiInput,
-                                       MidiMessage &midiMessage)
-{
-}
-
 void App::handleElectraSysex(uint8_t port, const SysexBlock &sysexBlock)
 {
 }

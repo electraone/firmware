@@ -37,8 +37,6 @@ public:
     virtual const char *getApplicationSandbox(void) const;
 
     // \todo these will be moved elsewhere
-    virtual void handleIncomingControlMessage(MidiInput &midiInput,
-                                              MidiMessage &midiMessage);
     virtual void handleElectraSysex(uint8_t port, const SysexBlock &sysexBlock);
     virtual void execute(const char *filename);
     virtual bool handleCtrlFileReceived(uint8_t port,
