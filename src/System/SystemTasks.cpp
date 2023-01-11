@@ -17,7 +17,7 @@ SystemTasks::SystemTasks()
       taskUserTask(250000, TASK_FOREVER, &userTask),
       taskRunTimer(500000, TASK_FOREVER, &runTimer),
       taskSendMidi(2000, TASK_FOREVER, &sendMidi),
-      taskProcessMidi(5000, TASK_FOREVER, &processMidi),
+      taskProcessMidi(2000, TASK_FOREVER, &processMidi),
       taskProcessSysex(5000, TASK_FOREVER, &processSysex)
 {
     init();

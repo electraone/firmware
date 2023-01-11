@@ -28,6 +28,10 @@ void readMidi(void)
         return;
     }
 
+    if (incomingQueueL1.isEmpty() != true) {
+        return;
+    }
+
     // Process inbound MIDI messages on USB MIDI IN port (virtual cables).
     MidiBase *midiInterface =
         MidiInterface::get(MidiInterface::Type::MidiUsbDev);
@@ -87,13 +91,6 @@ void readMidi(void)
                    message.getData1(),
                    message.getData2());
 #endif
-
-        // Indicate incoming data on the display
-        App::get()->statusBar.indicate(message.getInterfaceType(),
-                                       message.getPort(),
-                                       Direction::in,
-                                       message.getType());
-
         MidiInput midiInput(message.getInterfaceType(), message.getPort());
 
         // Forward the message to other interfaces according to the config
@@ -128,8 +125,14 @@ void readMidi(void)
  */
 void processMidi(void)
 {
-    if (incomingQueueL2.isEmpty() != true) {
+    while (incomingQueueL2.isEmpty() != true) {
         MidiMessageTransport message = incomingQueueL2.shift();
+
+        // Indicate incoming data on the display
+        App::get()->statusBar.indicate(message.getInterfaceType(),
+                                       message.getPort(),
+                                       Direction::in,
+                                       message.getType());
 
 #ifdef DEBUG
         logMessage("queueL2 [%d]: received: interface=%d, port=%d, channel=%d, "
@@ -145,22 +148,13 @@ void processMidi(void)
 
         if (App::get()->enableMidi == true) {
             MidiInput midiInput(message.getInterfaceType(), message.getPort());
-
-            // it is a Control message
-            if (((message.getInterfaceType() == MidiInterface::Type::MidiUsbDev)
-                 || (message.getInterfaceType()
-                     == MidiInterface::Type::MidiUsbHost))
-                && (message.getPort() == USB_MIDI_PORT_CTRL)) {
-                App::get()->handleIncomingControlMessage(midiInput, message);
-            } else {
-                MidiInputCallback::deviceManager.handleIncomingMidiMessage(
-                    midiInput, message);
-                runOptionalCallbacks(midiInput,
-                                     message.getChannel(),
-                                     message.getType(),
-                                     message.getData1(),
-                                     message.getData2());
-            }
+            MidiInputCallback::deviceManager.handleIncomingMidiMessage(
+                midiInput, message);
+            runOptionalCallbacks(midiInput,
+                                 message.getChannel(),
+                                 message.getType(),
+                                 message.getData1(),
+                                 message.getData2());
         }
     }
 }
