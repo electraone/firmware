@@ -171,11 +171,14 @@ bool isLuaValid(const char *filename)
     File file = Hardware::sdcard.createInputStream(filename);
 
     if (file) {
+        // \todo do the Lua source validation here
         filesize = file.fileSize();
         file.close();
+    } else {
+        return (false);
     }
 
-    return ((filesize > 0) ? true : false);
+    return (true);
 }
 
 void loadGlobalVariables(lua_State *L)
