@@ -5,31 +5,55 @@ bool findElement(File &file,
                  ElementType elementType,
                  size_t endPosition)
 {
-    if (file.find(elementName) == false) {
-        logMessage("findElement: no %s defined", elementName);
-        return (false);
+    size_t startPosition = file.position();
+    size_t range = endPosition - startPosition;
+
+    //logMessage("findElement (%s): start: %d, end: %d, length: %d", elementName, startPosition, endPosition, range);
+
+    if (endPosition == 0) {
+        if (file.find(elementName) == false) {
+#ifdef DEBUG
+            logMessage("findElement: no %s defined", elementName);
+#endif /* DEBUG */
+            return (false);
+        }
+    } else {
+        if (file.findConstrained(elementName, range) == false) {
+#ifdef DEBUG
+            logMessage("findElement: no %s defined", elementName);
+#endif /* DEBUG */
+            return (false);
+        }
     }
     if (file.find(":") == false) {
+#ifdef DEBUG
         logMessage("findElement: %s is not an element", elementName);
+#endif /* DEBUG */
         return (false);
     }
     if (elementType == ARRAY) {
         if (file.find("[") == false) {
+#ifdef DEBUG
             logMessage("findElement: %s is not an array", elementName);
+#endif /* DEBUG */
             return (false);
         }
     } else if (elementType == OBJECT) {
         if (file.find("{") == false) {
+#ifdef DEBUG
             logMessage("findElement: %s is not an object", elementName);
+#endif /* DEBUG */
             return (false);
         }
     }
 
     if ((endPosition != 0) && (file.position() > endPosition)) {
+#ifdef DEBUG
         logMessage(
             "findElement: not present in the range: element=%s, endPosition=%d",
             elementName,
             endPosition);
+#endif /* DEBUG */
         return (false);
     }
 

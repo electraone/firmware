@@ -84,30 +84,40 @@ bool Stream::find (const char *target)
 // returns true if target string is found, false if timed out
 bool Stream::find (const char *target, size_t length)
 {
-	return (findUntil (target, length, NULL, 0));
+	return (findUntil (target, length, NULL, 0, 0));
 }
 
 // as find but search ends if the terminator string is found
 bool Stream::findUntil (const char *target, const char *terminator)
 {
-	return (findUntil (target, strlen (target), terminator, strlen (terminator)));
+	return (findUntil (target, strlen (target), terminator, strlen (terminator), 0));
+}
+
+bool Stream::findConstrained (const char *target, size_t maxLen)
+{
+  return (findUntil(target, strlen(target), NULL, 0, maxLen));
 }
 
 // reads data from the stream until the target string of the given length is found
 // search terminated if the terminator string is found
 // returns true if target string is found, false if terminated or timed out
-bool Stream::findUntil (const char *target, size_t targetLen, const char *terminator, size_t termLen)
+bool Stream::findUntil(const char *target, size_t targetLen,
+  const char *terminator, size_t termLen, size_t maxLen)
 {
 	size_t index = 0; // maximum target string length is 64k bytes!
 	size_t termIndex = 0;
 	int c;
+  size_t position = 0;
 
 	if ( *target == 0)
 	{
 		return (true); // return true if target is a null string
 	}
-	while ( (c = timedRead ()) > 0)
+	while ((c = timedRead ()) > 0)
 	{
+    if ((maxLen > 0) && (position >= maxLen)) {
+      return (false);
+    }
 		if ( c == target[index])
 		{
 			//////Serial.print("found "); Serial.write(c); Serial.print("index now"); Serial.println(index+1);
@@ -131,6 +141,7 @@ bool Stream::findUntil (const char *target, size_t targetLen, const char *termin
 		{
 			termIndex = 0;
 		}
+    position++;
 	}
 	return (false);
 }
