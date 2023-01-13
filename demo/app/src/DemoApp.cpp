@@ -29,7 +29,7 @@ public:
 
     void initialise(void) override
     {
-        logMessage("sqlite version: %s\n", sqlite3_libversion());
+        System::logger.write("sqlite version: %s\n", sqlite3_libversion());
 
         model.attach("synth.db");
         model.create();
@@ -41,7 +41,7 @@ public:
         model.query();
         model.close();
 
-        logMessage("setup completed");
+        System::logger.write("setup completed");
         mainWindow.repaint();
     }
 
@@ -57,36 +57,37 @@ public:
 
     void onButtonDown(uint8_t buttonId) override
     {
-        logMessage("buttonDown: buttonId=%d", buttonId);
+        System::logger.write("buttonDown: buttonId=%d", buttonId);
     }
 
     void onButtonLongHold(uint8_t buttonId) override
     {
-        logMessage("buttonLongHold: buttonId=%d", buttonId);
+        System::logger.write("buttonLongHold: buttonId=%d", buttonId);
     }
 
     void onButtonUp(uint8_t buttonId) override
     {
-        logMessage("buttonUp: buttonId=%d", buttonId);
+        System::logger.write("buttonUp: buttonId=%d", buttonId);
     }
 
     void handleIncomingMidiMessage(const MidiInput &midiInput,
                                    const MidiMessage &midiMessage) override
     {
         if (midiMessage.isSysEx()) {
-            logMessage("---< sysex start: interface=%s, port=%d >---",
-                       MidiInterface::getName(midiInput.getInterfaceType()),
-                       midiInput.getPort());
+            System::logger.write(
+                "---< sysex start: interface=%s, port=%d >---",
+                MidiInterface::getName(midiInput.getInterfaceType()),
+                midiInput.getPort());
 
             SysexBlock sysexBlock = midiMessage.getSysExBlock();
             size_t sysexLength = sysexBlock.getLength();
 
             for (size_t i = 0; i < sysexLength; i++) {
                 byte sysexByte = sysexBlock.peek(i);
-                logMessage("%d> %X (%c)", i, sysexByte, sysexByte);
+                System::logger.write("%d> %X (%c)", i, sysexByte, sysexByte);
             }
 
-            logMessage("---------------------");
+            System::logger.write("---------------------");
         }
     }
 

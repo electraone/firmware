@@ -29,10 +29,11 @@ void scanUSBHost(void)
             if (driverActive[i]) {
                 driverActive[i] = false;
 
-                logMessage("scanUSBHost: device %s %x:%x: disconnected",
-                           driverNames[i],
-                           drivers[i]->idVendor(),
-                           drivers[i]->idProduct());
+                System::logger.write(
+                    "scanUSBHost: device %s %x:%x: disconnected",
+                    driverNames[i],
+                    drivers[i]->idVendor(),
+                    drivers[i]->idProduct());
                 for (uint8_t j = 0; j < NR_OF_MIDI_INTERFACES; j++) {
                     if (strcmp(driverNames[i], "MIDI1") == 0) {
                         USBDevices[0].reset();
@@ -42,33 +43,33 @@ void scanUSBHost(void)
                 }
                 app->statusBar.indicateUsbHostChange();
             } else {
-                logMessage("scanUSBHost: device %s %x:%x: connected",
-                           driverNames[i],
-                           drivers[i]->idVendor(),
-                           drivers[i]->idProduct());
+                System::logger.write("scanUSBHost: device %s %x:%x: connected",
+                                     driverNames[i],
+                                     drivers[i]->idVendor(),
+                                     drivers[i]->idProduct());
                 driverActive[i] = true;
 
                 char *manufacturer = (char *)drivers[i]->manufacturer();
 
                 if (manufacturer && *manufacturer) {
-                    logMessage("- manufacturer: %s", manufacturer);
+                    System::logger.write("- manufacturer: %s", manufacturer);
                 }
 
                 char *product = (char *)drivers[i]->product();
                 if (product && *product) {
-                    logMessage("- product: %s", product);
+                    System::logger.write("- product: %s", product);
                 }
 
                 char *serial = (char *)drivers[i]->serialNumber();
                 if (serial && *serial) {
-                    logMessage("- serialNumber: %s", serial);
+                    System::logger.write("- serialNumber: %s", serial);
                 }
 
                 uint8_t port = App::get()->getUsbHostPortAssigment(product);
 
                 if (drivers[i] == &midiDevice1) {
-                    logMessage("Assigning new MIDI1 device to midiBus 0: %s",
-                               product);
+                    System::logger.write(
+                        "Assigning new MIDI1 device to midiBus 0: %s", product);
                     USBDevices[0].set(drivers[i]->idVendor(),
                                       drivers[i]->idProduct(),
                                       driverNames[i],
@@ -81,8 +82,8 @@ void scanUSBHost(void)
                         handleMidiUsbHostSysExPort0);
                 }
                 if (drivers[i] == &midiDevice2) {
-                    logMessage("Assigning new MIDI2 device to midiBus 0: %s",
-                               product);
+                    System::logger.write(
+                        "Assigning new MIDI2 device to midiBus 0: %s", product);
                     USBDevices[1].set(drivers[i]->idVendor(),
                                       drivers[i]->idProduct(),
                                       driverNames[i],
@@ -97,7 +98,7 @@ void scanUSBHost(void)
 
                 if ((drivers[i]->idVendor() == 0x1FC9)
                     && (drivers[i]->idProduct() == 0x82CF)) {
-                    logMessage("electra is connected");
+                    System::logger.write("electra is connected");
                 }
             }
 

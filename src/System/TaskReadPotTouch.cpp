@@ -17,7 +17,8 @@ void readPotTouch(void)
 
             if (Hardware::pots[potId].touched) {
 #ifdef DEBUG
-                logMessage("readPotTouch: pot touch touched: potId=%d", potId);
+                System::logger.write(
+                    "readPotTouch: pot touch touched: potId=%d", potId);
 #endif /* DEBUG */
 
                 if (Hardware::pots[potId].active == false) {
@@ -27,8 +28,8 @@ void readPotTouch(void)
             } else {
                 if (Hardware::pots[potId].active == true) {
 #ifdef DEBUG
-                    logMessage("readPotTouch: pot touch released: potId=%d",
-                               potId);
+                    System::logger.write(
+                        "readPotTouch: pot touch released: potId=%d", potId);
 #endif /* DEBUG */
                     Hardware::pots[potId].active = false;
                     PotListener::potBroadcaster.potTouchUp(potId);

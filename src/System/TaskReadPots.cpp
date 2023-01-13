@@ -26,7 +26,7 @@ void readPots(void)
 
     if (pot->step != 0) {
 #ifdef DEBUG
-        logMessage(
+        System::logger.write(
             "readPots: pot moved: potId=%d, step=%d", pot->id, pot->step);
 #endif /* DEBUG */
         PotListener::potBroadcaster.potChange(pot->id, pot->step);

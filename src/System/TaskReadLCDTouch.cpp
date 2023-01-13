@@ -29,9 +29,10 @@ void readLCDTouch(void)
     previousWindow = originatingWindow;
 
 #ifdef DEBUG
-    logMessage("received touch from active window: address=%x, window=%s",
-               originatingWindow,
-               originatingWindow->getName());
+    System::logger.write(
+        "received touch from active window: address=%x, window=%s",
+        originatingWindow,
+        originatingWindow->getName());
 #endif
 
     while ((originatingWindow == System::windowManager.getActiveWindow())

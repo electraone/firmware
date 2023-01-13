@@ -76,8 +76,6 @@ public:
             formatPresetFilename(
                 currentPresetFile, MAX_FILENAME_LENGTH, presetId);
             formatLuaFilename(currentLuaFile, MAX_FILENAME_LENGTH, presetId);
-        } else {
-            logMessage("setCurrentFile: no app name set");
         }
     }
 

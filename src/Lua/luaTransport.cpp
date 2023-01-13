@@ -1,6 +1,7 @@
 #include "luaTransport.h"
 #include "luaLE.h"
 #include "MidiInputCallback.h"
+#include "System.h"
 
 int luaopen_transport(lua_State *L)
 {
@@ -12,7 +13,7 @@ int transport_enable(lua_State *L)
 {
     lua_settop(L, 0);
 
-    logMessage("lua: transport enabled");
+    System::logger.write("lua: transport enabled");
 
     MidiInputCallback::onMidiClockCallback = &transport_onMidiClock;
     MidiInputCallback::onMidiStartCallback = &transport_onMidiStart;
@@ -29,7 +30,7 @@ int transport_disable(lua_State *L)
 {
     lua_settop(L, 0);
 
-    logMessage("lua: transport disabled");
+    System::logger.write("lua: transport disabled");
 
     MidiInputCallback::onMidiClockCallback = nullptr;
     MidiInputCallback::onMidiStartCallback = nullptr;

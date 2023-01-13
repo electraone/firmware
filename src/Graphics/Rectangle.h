@@ -1,9 +1,5 @@
 #pragma once
 
-extern "C" {
-void logMessage(const char *format, ...);
-}
-
 /**
  * @brief Represents rectangular area at given position.
  */
@@ -220,12 +216,14 @@ public:
     }
 
     /**
-	 * Prints information about bounds
-	 */
+     * Prints information about bounds
+     */
     void print(void) const
     {
-        logMessage(
+        /*
+        System::logger.write(
             "bounds: [%d %d %d %d]", getX(), getY(), getWidth(), getHeight());
+       */
     }
 
 private:

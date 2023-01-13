@@ -1,5 +1,6 @@
 #include "WindowManager.h"
 #include "ButtonBroadcaster.h"
+#include "System.h"
 
 WindowManager::WindowManager() : activeIndex(0)
 {
@@ -126,7 +127,7 @@ void WindowManager::repaintAll(void)
     uint8_t index = 0;
 
     for (const auto &window : windows) {
-        logMessage(
+        System::logger.write(
             "repainting window: index=%d, name=%s, address=%x, active=%d, visible=%d",
             index,
             window->getName(),
@@ -148,11 +149,12 @@ void WindowManager::listWindows(void)
     uint8_t index = 0;
 
     for (const auto &window : windows) {
-        logMessage("listWindows: index=%d, name=%s, address=%x, active=%d",
-                   index,
-                   window->getName(),
-                   window,
-                   index == activeIndex);
+        System::logger.write(
+            "listWindows: index=%d, name=%s, address=%x, active=%d",
+            index,
+            window->getName(),
+            window,
+            index == activeIndex);
         index++;
     }
 }

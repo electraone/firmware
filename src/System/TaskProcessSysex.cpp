@@ -69,12 +69,12 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
 
             if (App::get()->handleCtrlFileReceived(port, file, object)
                 == true) {
-                logMessage(
+                System::logger.write(
                     "processElectraSysex::handleElectraSysex: sending ACK");
                 MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
                 ;
             } else {
-                logMessage(
+                System::logger.write(
                     "processElectraSysex::handleElectraSysex: sending NACK");
                 MidiOutput::sendNack(MidiInterface::Type::MidiUsbDev, port);
             }
@@ -83,38 +83,41 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
             if (object == ElectraCommand::Object::FilePreset) {
                 if (MidiOutput::sendSysExFile(
                         port, System::context.getCurrentPresetFile(), object)) {
-                    logMessage("processElectraSysex::handleElectraSysex: "
-                               "preset sysex sent to the host");
+                    System::logger.write(
+                        "processElectraSysex::handleElectraSysex: "
+                        "preset sysex sent to the host");
                 }
             } else if (object == ElectraCommand::Object::FileLua) {
                 if (MidiOutput::sendSysExFile(
                         port, System::context.getCurrentLuaFile(), object)) {
-                    logMessage("processElectraSysex::handleElectraSysex: "
-                               "lua sysex sent to the host");
+                    System::logger.write(
+                        "processElectraSysex::handleElectraSysex: "
+                        "lua sysex sent to the host");
                 }
             } else if (object == ElectraCommand::Object::FileConfig) {
                 if (MidiOutput::sendSysExFile(
                         port, System::context.getCurrentConfigFile(), object)) {
-                    logMessage("processElectraSysex::handleElectraSysex: "
-                               "config sysex sent to the host");
+                    System::logger.write(
+                        "processElectraSysex::handleElectraSysex: "
+                        "config sysex sent to the host");
                 }
             } else if (object == ElectraCommand::Object::RuntimeInfo) {
                 MidiOutput::sendRuntimeInfo(MidiInterface::Type::MidiUsbDev,
                                             port);
-                logMessage("processElectraSysex::handleElectraSysex: "
-                           "runtimeInfo sysex sent to the host");
+                System::logger.write("processElectraSysex::handleElectraSysex: "
+                                     "runtimeInfo sysex sent to the host");
             } else if (object == ElectraCommand::Object::AppInfo) {
                 MidiOutput::sendAppInfo(MidiInterface::Type::MidiUsbDev, port);
-                logMessage("processElectraSysex::handleElectraSysex: "
-                           "appInfo sysex sent to the host");
+                System::logger.write("processElectraSysex::handleElectraSysex: "
+                                     "appInfo sysex sent to the host");
             } else if (object == ElectraCommand::Object::ElectraInfo) {
                 MidiOutput::sendElectraInfo(
                     MidiInterface::Type::MidiUsbDev,
                     port,
                     System::runtimeInfo.getElectraInfoSerial(),
                     System::runtimeInfo.getElectraInfoHwRevision());
-                logMessage("processElectraSysex::handleElectraSysex: "
-                           "electraInfo sysex sent to the host");
+                System::logger.write("processElectraSysex::handleElectraSysex: "
+                                     "electraInfo sysex sent to the host");
             } else {
                 App::get()->handleElectraSysex(
                     port,
@@ -122,22 +125,22 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
             }
         } else if (cmd.isExecute()) {
             if (L) {
-                logMessage("processElectraSysex::handleElectraSysex: "
-                           "execute function");
+                System::logger.write("processElectraSysex::handleElectraSysex: "
+                                     "execute function");
                 uint8_t buffer[sysexPayload.getLength()];
                 sysexPayload.readBytes(buffer, sysexPayload.getLength());
 
                 buffer[sysexPayload.getLength()] = '\0';
 
-                logMessage("processElectraSysex::handleElectraSysex: "
-                           "execute Lua: \"%s\"",
-                           buffer);
+                System::logger.write("processElectraSysex::handleElectraSysex: "
+                                     "execute Lua: \"%s\"",
+                                     buffer);
                 runLuaString((char *)buffer);
                 MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
                 ;
             } else {
-                logMessage("processElectraSysex::handleElectraSysex: "
-                           "Lua script is not available");
+                System::logger.write("processElectraSysex::handleElectraSysex: "
+                                     "Lua script is not available");
             }
         } else if (cmd.isRemove()) {
             uint8_t bankNumber = cmd.getByte1();
@@ -155,62 +158,68 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                     filename, MAX_FILENAME_LENGTH, fileNumber);
                 fileToRemove = filename;
             } else {
-                logMessage("processElectraSysex: "
-                           "file type not handled by the base firmware");
+                System::logger.write(
+                    "processElectraSysex: "
+                    "file type not handled by the base firmware");
                 fileToRemove = nullptr;
             }
 
             if (fileToRemove) {
                 if (Hardware::sdcard.exists(fileToRemove)) {
                     int status = Hardware::sdcard.deleteFile(fileToRemove);
-                    logMessage("processElectraSysex: removing file %s: %s",
-                               fileToRemove,
-                               (status == true) ? "OK" : "fail");
+                    System::logger.write(
+                        "processElectraSysex: removing file %s: %s",
+                        fileToRemove,
+                        (status == true) ? "OK" : "fail");
                     MidiOutput::sendPresetSlotChanged(
                         MidiInterface::Type::MidiUsbDev, port);
                 }
 
                 if (App::get()->handleCtrlFileRemoved(bankNumber, slot, object)
                     == true) {
-                    logMessage(
+                    System::logger.write(
                         "processElectraSysex::handleElectraSysex: sending ACK");
                     MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
                     ;
                 } else {
-                    logMessage(
+                    System::logger.write(
                         "processElectraSysex::handleElectraSysex: sending NACK");
                     MidiOutput::sendNack(MidiInterface::Type::MidiUsbDev, port);
                 }
             } else {
-                logMessage(
+                System::logger.write(
                     "processElectraSysex: removed command passed to the app");
                 App::get()->handleElectraSysex(port, sysexBlock);
             }
         } else if (cmd.isSystemCall()) {
             if ((uint8_t)object == 0x7F) {
-                logMessage("processElectraSysex: : switch to the update mode");
+                System::logger.write(
+                    "processElectraSysex: : switch to the update mode");
                 System::tasks.displayUpdateModeScreen();
                 delay(200);
                 _reboot_Teensyduino_();
             } else if (object == ElectraCommand::Object::Logger) {
                 if (cmd.getByte1() == 0) {
-                    logMessage("processElectraSysex::logger disabled");
-                    loggerEnabled = false;
+                    System::logger.write(
+                        "processElectraSysex::logger disabled");
+                    System::logger.disable();
                 } else {
-                    loggerEnabled = true;
-                    logMessage("processElectraSysex::logger enabled");
+                    System::logger.enable();
+                    System::logger.write("processElectraSysex::logger enabled");
                 }
                 System::runtimeInfo.setLoggerStatus(loggerEnabled);
                 MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
             } else if (object == ElectraCommand::Object::Window) {
                 if (cmd.getByte1() == 0) {
                     System::tasks.disableRepaintGraphics();
-                    logMessage("processElectraSysex::Window repaint stopped");
+                    System::logger.write(
+                        "processElectraSysex::Window repaint stopped");
                 } else {
                     System::tasks.clearRepaintGraphics();
                     System::windowManager.repaintActive();
                     System::tasks.enableRepaintGraphics();
-                    logMessage("processElectraSysex::Window repaint resumed");
+                    System::logger.write(
+                        "processElectraSysex::Window repaint resumed");
                 }
                 MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
             }
@@ -218,7 +227,7 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
             App::get()->handleElectraSysex(port, sysexBlock);
         }
     } else {
-        logMessage("processElectraSysex: "
-                   "message ignored. Not an Electra.One message");
+        System::logger.write("processElectraSysex: "
+                             "message ignored. Not an Electra.One message");
     }
 }

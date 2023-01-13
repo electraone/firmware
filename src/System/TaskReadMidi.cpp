@@ -82,14 +82,15 @@ void readMidi(void)
         MidiMessageTransport message = incomingQueueL1.shift();
 
 #ifdef DEBUG
-        logMessage("queueL1: received: interface=%d, port=%d, channel=%d, "
-                   " type=%d, data1=%d, data2=%d",
-                   message.getInterfaceType(),
-                   message.getPort(),
-                   message.getChannel(),
-                   message.getType(),
-                   message.getData1(),
-                   message.getData2());
+        System::logger.write(
+            "queueL1: received: interface=%d, port=%d, channel=%d, "
+            " type=%d, data1=%d, data2=%d",
+            message.getInterfaceType(),
+            message.getPort(),
+            message.getChannel(),
+            message.getType(),
+            message.getData1(),
+            message.getData2());
 #endif
         MidiInput midiInput(message.getInterfaceType(), message.getPort());
 
@@ -97,7 +98,7 @@ void readMidi(void)
         // SysEx messages are handled in the SysexCallbacks.cpp
         if (message.getType() != MidiMessage::Type::SystemExclusive) {
             if (!runRouteMessageCallback(midiInput, message)) {
-                logMessage("skipping the message");
+                System::logger.write("skipping the message");
                 continue;
             }
         }
@@ -135,15 +136,16 @@ void processMidi(void)
                                        message.getType());
 
 #ifdef DEBUG
-        logMessage("queueL2 [%d]: received: interface=%d, port=%d, channel=%d, "
-                   "type=%d, data1=%d, data2=%d",
-                   incomingQueueL2.size(),
-                   message.getInterfaceType(),
-                   message.getPort(),
-                   message.getChannel(),
-                   message.getType(),
-                   message.getData1(),
-                   message.getData2());
+        System::logger.write(
+            "queueL2 [%d]: received: interface=%d, port=%d, channel=%d, "
+            "type=%d, data1=%d, data2=%d",
+            incomingQueueL2.size(),
+            message.getInterfaceType(),
+            message.getPort(),
+            message.getChannel(),
+            message.getType(),
+            message.getData1(),
+            message.getData2());
 #endif
 
         if (App::get()->enableMidi == true) {

@@ -67,11 +67,11 @@ public:
     {
         int16_t indicatorPositionX =
             map(newValue, min, max, 0, getWidth() - indicatorWidth);
-        logMessage("indicator: %d (min=%d, max=%d value=%d)",
-                   indicatorPositionX,
-                   min,
-                   max,
-                   newValue);
+        System::logger.write("indicator: %d (min=%d, max=%d value=%d)",
+                             indicatorPositionX,
+                             min,
+                             max,
+                             newValue);
         value = newValue;
         indicator->setX(indicatorPositionX);
         repaint();
@@ -97,7 +97,7 @@ public:
 
     void onTouchDown(const TouchEvent &touchEvent) override
     {
-        logMessage("callback: drawings");
+        System::logger.write("callback: drawings");
     }
 
 private:

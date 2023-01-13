@@ -1,13 +1,13 @@
 #include "TaskMonitorFreeMemory.h"
 #include "Hardware.h"
-#include "helpers.h"
+#include "System.h"
 #include "wiring.h"
 
 void monitorFreeMemory(void)
 {
     //logMessage ("monitorFreeMemory");
     Hardware::ram.run();
-    logMessage(
+    System::logger.write(
         "free RAM: total=%d, adj_free=%d, free=%d, heap=%d, collision=%d",
         Hardware::ram.total(),
         Hardware::ram.adj_free(),

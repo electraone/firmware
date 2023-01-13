@@ -1,5 +1,5 @@
 #include "luaLE.h"
-#include "helpers.h"
+#include "System.h"
 #include "SysexBlock.h"
 
 void luaLE_openEoslibs(lua_State *L, const luaL_Reg *libs)
@@ -79,7 +79,7 @@ void luaLE_getModuleFunction(lua_State *L,
 void luaLE_handleNonexistentFunction(lua_State *L, const char *function)
 {
     lua_pop(L, 1);
-    logMessage("lua: function %s does not exist", function);
+    System::logger.write("lua: function %s does not exist", function);
 }
 
 void luaLE_addObjectMethods(lua_State *L, const luaL_Reg *l)
@@ -105,27 +105,27 @@ void luaLE_dumpstack(lua_State *L)
 {
     int top = lua_gettop(L);
 
-    logMessage("stack size: %d", top);
+    System::logger.write("stack size: %d", top);
 
     for (int i = 1; i <= top; i++) {
-        logMessage("%d -> %s   ", i, luaL_typename(L, i));
+        System::logger.write("%d -> %s   ", i, luaL_typename(L, i));
 
         switch (lua_type(L, i)) {
             case LUA_TNUMBER:
-                logMessage("number: %g", lua_tonumber(L, i));
+                System::logger.write("number: %g", lua_tonumber(L, i));
                 break;
             case LUA_TSTRING:
-                logMessage("string: %s", lua_tostring(L, i));
+                System::logger.write("string: %s", lua_tostring(L, i));
                 break;
             case LUA_TBOOLEAN:
-                logMessage("bool: %s",
-                           (lua_toboolean(L, i) ? "true" : "false"));
+                System::logger.write("bool: %s",
+                                     (lua_toboolean(L, i) ? "true" : "false"));
                 break;
             case LUA_TNIL:
-                logMessage("nil: %s", "nil");
+                System::logger.write("nil: %s", "nil");
                 break;
             default:
-                logMessage("pointer: %p", lua_topointer(L, i));
+                System::logger.write("pointer: %p", lua_topointer(L, i));
                 break;
         }
     }

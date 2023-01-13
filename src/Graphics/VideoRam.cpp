@@ -9,7 +9,8 @@ VideoRam::VideoRam(const uint8_t CSp, const uint8_t RSTp)
 void VideoRam::storeRam(uint32_t address, ByteSize size, uint32_t value)
 {
 #ifdef DEBUG
-    logMessage("storeRam: address=%d, size=%d, value=%d", address, size, value);
+    System::logger.write(
+        "storeRam: address=%d, size=%d, value=%d", address, size, value);
 #endif
 
     saveState();
@@ -65,7 +66,8 @@ uint32_t VideoRam::readRam(uint32_t address, ByteSize size)
     setMemoryMode(DEFAULT_BPP);
 
 #ifdef DEBUG
-    logMessage("readRam: address=%d, size=%d, value=%d", address, size, value);
+    System::logger.write(
+        "readRam: address=%d, size=%d, value=%d", address, size, value);
 #endif
     return (value);
 }
@@ -88,7 +90,7 @@ uint32_t VideoRam::readRam32(uint32_t address)
 void VideoRam::readRamData(uint32_t address, uint8_t *data, uint16_t size)
 {
 #ifdef DEBUG
-    logMessage("readRamData: address=%d", address);
+    System::logger.write("readRamData: address=%d", address);
 #endif
 
     saveState();
@@ -112,7 +114,7 @@ void VideoRam::writeRamData(uint32_t address,
                             uint16_t size)
 {
 #ifdef DEBUG
-    logMessage("writeRamData: address=%d", address);
+    System::logger.write("writeRamData: address=%d", address);
 #endif
 
     saveState();

@@ -9,7 +9,7 @@
  */
 void repaintGraphics(void)
 {
-    //logMessage("repaintGraphics");
+    //System::logger.write("repaintGraphics");
 
     System::repaintActive = true;
 

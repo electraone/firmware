@@ -23,7 +23,7 @@ public:
 
     void onTouchDown(const TouchEvent &touchEvent) override
     {
-        logMessage("callback: rect");
+        System::logger.write("callback: rect");
     }
 
 private:

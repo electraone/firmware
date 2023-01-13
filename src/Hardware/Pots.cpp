@@ -1,5 +1,5 @@
-#include "helpers.h"
 #include "Hardware.h"
+#include "System.h"
 
 Pots::Pots()
 {
@@ -63,10 +63,10 @@ void Pots::initialise(void)
 
     // Configure Pot Touch
     if (!Hardware::potTouch.init()) {
-        logMessage(
+        System::logger.write(
             "capacitive sensing: cannot calibrate. Check input USB voltage");
     } else {
-        logMessage("capacitive sensing: Initialized");
+        System::logger.write("capacitive sensing: Initialized");
     }
 
     // Run the first scan of Pots to get them to known state

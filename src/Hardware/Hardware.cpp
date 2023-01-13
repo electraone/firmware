@@ -1,6 +1,6 @@
 #include "Hardware.h"
+#include "System.h"
 #include "Reset.h"
-#include "helpers.h"
 
 void Hardware::initialise(void)
 {
@@ -8,18 +8,18 @@ void Hardware::initialise(void)
     configureMux();
     setMuxAddress(0);
     MUX_DISABLE;
-    logMessage("Multiplexer: initialised");
+    System::logger.write("Multiplexer: initialised");
 
     // Configure AD convertors
     adc.adc0->setAveraging(8);
     adc.adc1->setAveraging(8);
     adc.adc0->setResolution(10);
     adc.adc1->setResolution(10);
-    logMessage("AD convertor: initialised");
+    System::logger.write("AD convertor: initialised");
 
     // Initialise RAM monitoring
     ram.initialize();
-    logMessage("SD RAM monitor: initialised");
+    System::logger.write("SD RAM monitor: initialised");
 
     // Clear Serial ports
     Serial1.clear();
@@ -27,15 +27,15 @@ void Hardware::initialise(void)
 
     // Initialise the LCD
     screen.initialise();
-    logMessage("LCD: initialised");
+    System::logger.write("LCD: initialised");
 
     // Initialise LCD touch interface
     touch.begin();
-    logMessage("LCD touch: initialided");
+    System::logger.write("LCD touch: initialided");
 
     // Initialise pots
     pots.initialise();
-    logMessage("Pots: initialised");
+    System::logger.write("Pots: initialised");
 
     // Mount the internal storage media
     Hardware::sdcard.mount();

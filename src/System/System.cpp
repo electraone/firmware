@@ -40,6 +40,7 @@ SystemTasks System::tasks;
 WindowManager System::windowManager;
 Context System::context;
 RuntimeInfo System::runtimeInfo;
+Logger System::logger;
 lua_State *System::L = nullptr;
 
 bool System::repaintActive = false;

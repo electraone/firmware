@@ -1,6 +1,7 @@
 #include "luaMidi.h"
 #include "MidiOutput.h"
 #include "luaLE.h"
+#include "System.h"
 
 int luaopen_midi(lua_State *L)
 {
@@ -683,9 +684,9 @@ void midi_onSingleByte(const char *module,
         luaLE_pushTableInteger(L, "port", midiInput.getPort());
 
         if (lua_pcall(L, 1, 0, 0) != 0) {
-            logMessage("error running function '%s': %s",
-                       function,
-                       lua_tostring(L, -1));
+            System::logger.write("error running function '%s': %s",
+                                 function,
+                                 lua_tostring(L, -1));
         }
     } else {
         luaLE_handleNonexistentFunction(L, function);
@@ -707,9 +708,9 @@ void midi_onTwoBytes(const char *module,
         lua_pushnumber(L, data1);
 
         if (lua_pcall(L, 2, 0, 0) != 0) {
-            logMessage("error running function '%s': %s",
-                       function,
-                       lua_tostring(L, -1));
+            System::logger.write("error running function '%s': %s",
+                                 function,
+                                 lua_tostring(L, -1));
         }
     } else {
         luaLE_handleNonexistentFunction(L, function);
@@ -733,9 +734,9 @@ void midi_onTwoBytesWithChannel(const char *module,
         lua_pushnumber(L, data1);
 
         if (lua_pcall(L, 3, 0, 0) != 0) {
-            logMessage("error running function '%s': %s",
-                       function,
-                       lua_tostring(L, -1));
+            System::logger.write("error running function '%s': %s",
+                                 function,
+                                 lua_tostring(L, -1));
         }
     } else {
         luaLE_handleNonexistentFunction(L, function);
@@ -761,9 +762,9 @@ void midi_onThreeBytesWithChannel(const char *module,
         lua_pushnumber(L, data2);
 
         if (lua_pcall(L, 4, 0, 0) != 0) {
-            logMessage("error running function '%s': %s",
-                       function,
-                       lua_tostring(L, -1));
+            System::logger.write("error running function '%s': %s",
+                                 function,
+                                 lua_tostring(L, -1));
         }
     } else {
         luaLE_handleNonexistentFunction(L, function);
@@ -782,8 +783,8 @@ void midi_onMidiSysex(MidiInput &midiInput, SysexBlock &sysexBlock)
         luaLE_pushObject(L, "SysexBlock", &sysexBlock);
 
         if (lua_pcall(L, 2, 0, 0) != 0) {
-            logMessage("error running function 'onSysex': %s",
-                       lua_tostring(L, -1));
+            System::logger.write("error running function 'onSysex': %s",
+                                 lua_tostring(L, -1));
         }
     } else {
         luaLE_handleNonexistentFunction(L, "onSysex");

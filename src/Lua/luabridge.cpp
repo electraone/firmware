@@ -65,14 +65,14 @@ void lua_compat_printf(char *format, ...)
     va_list ap;
 
     va_start(ap, format);
-    logMessage(buf, sizeof(buf), format, ap);
+    System::logger.write(buf, sizeof(buf), format, ap);
     va_end(ap);
 }
 
 void lua_compat_print(const char *s)
 {
     if (s && (s[0] != '\n') && (s[0] != '\0')) {
-        logMessage("lua: %s", s);
+        System::logger.write("lua: %s", s);
     }
 }
 
@@ -119,13 +119,14 @@ void loadLuaModule(const char *filename)
     int error = luaL_dofile(L, filename);
 
     if (error) {
-        logMessage("loadLuaModule: error loading file: filename=%s, error=%s",
-                   filename,
-                   lua_tostring(L, -1));
+        System::logger.write(
+            "loadLuaModule: error loading file: filename=%s, error=%s",
+            filename,
+            lua_tostring(L, -1));
         lua_pop(L, 1); /* pop error message from the stack */
     } else {
-        logMessage("loadLuaModule: Lua extension file initialized: file=%s",
-                   filename);
+        System::logger.write(
+            "loadLuaModule: Lua extension file initialized: file=%s", filename);
     }
 }
 
@@ -135,9 +136,9 @@ void runLuaFunction(const char *functionName)
 
     if (lua_isfunction(L, -1)) {
         if (lua_pcall(L, 0, 0, 0) != 0) {
-            logMessage("error running function '%s': %s",
-                       functionName,
-                       lua_tostring(L, -1));
+            System::logger.write("error running function '%s': %s",
+                                 functionName,
+                                 lua_tostring(L, -1));
         }
     }
 }
@@ -149,8 +150,8 @@ void runLuaString(const char *commandText)
     int error = luaL_dostring(L, commandText);
 
     if (error) {
-        logMessage("runLuaString: error loading file: error=%s",
-                   lua_tostring(L, -1));
+        System::logger.write("runLuaString: error loading file: error=%s",
+                             lua_tostring(L, -1));
         lua_pop(L, 1); /* pop error message from the stack */
     }
 }
@@ -158,10 +159,10 @@ void runLuaString(const char *commandText)
 void executeElectraLua(const char *filename)
 {
     lua_windowRepaintEnabled = false;
-    logMessage("loadLua debug output:");
-    logMessage("---- START ----");
+    System::logger.write("loadLua debug output:");
+    System::logger.write("---- START ----");
     loadLuaModule(filename);
-    logMessage("----- END -----");
+    System::logger.write("----- END -----");
     lua_windowRepaintEnabled = true;
 }
 

@@ -44,14 +44,15 @@ public:
 
                 // write preset directly to the current preset file
                 if (sysExData[5] == (uint8_t)ElectraCommand::Object::FileUi) {
-                    logMessage("handleSysEx: toolkit transfer initiated");
+                    System::logger.write(
+                        "handleSysEx: toolkit transfer initiated");
                     filename = UI_FILE;
                     fileType = ElectraCommand::Object::FileUi;
                 } else if (sysExData[5]
                            == (uint8_t)ElectraCommand::Object::FileLua) {
                     filename = System::context.getCurrentLuaFile();
                     fileType = ElectraCommand::Object::FileLua;
-                    logMessage(
+                    System::logger.write(
                         "handleSysEx: lua script transfer initiated: filename=%s",
                         filename);
                 } else if ((sysExData[5]
@@ -61,11 +62,11 @@ public:
                                    ElectraCommand::Object::FilePresetLegacy)) {
                     filename = System::context.getCurrentPresetFile();
                     fileType = ElectraCommand::Object::FilePreset;
-                    logMessage(
+                    System::logger.write(
                         "handleSysEx: preset transfer initiated: filename=%s",
                         filename);
                 } else {
-                    logMessage("handleSysEx: unknown filetype");
+                    System::logger.write("handleSysEx: unknown filetype");
                     fileType = ElectraCommand::Object::Unknown;
                 }
 
@@ -91,7 +92,8 @@ public:
                         sysExSize -= 2;
                     }
                 } else {
-                    logMessage("handleSysEx: Read file failed: %s", filename);
+                    System::logger.write("handleSysEx: Read file failed: %s",
+                                         filename);
                     writeToFile = false;
                 }
             }

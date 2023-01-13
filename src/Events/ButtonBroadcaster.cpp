@@ -1,6 +1,6 @@
 #include "ButtonBroadcaster.h"
 #include "ButtonListener.h"
-#include "helpers.h"
+#include "System.h"
 
 void ButtonBroadcaster::buttonDown(uint8_t buttonId)
 {
@@ -38,8 +38,8 @@ void ButtonBroadcaster::listListeners(void)
 {
     for (auto i = listeners.begin(); i != listeners.end(); i++) {
         auto listener = i->first;
-        logMessage("listListeners: buttonListener: %x is active: %d",
-                   listener,
-                   listeners[listener]);
+        System::logger.write("listListeners: buttonListener: %x is active: %d",
+                             listener,
+                             listeners[listener]);
     }
 }

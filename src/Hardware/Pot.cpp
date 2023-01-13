@@ -1,5 +1,5 @@
 #include "Hardware.h"
-#include "helpers.h"
+#include "System.h"
 #include "Pot.h"
 #include "Mux.h"
 
@@ -16,7 +16,7 @@ void Pot::process(void)
     B = Hardware::adc.adc1->analogRead(A16);
     MUX_DISABLE;
 
-    //logMessage("A=%d B=%d", A, B);
+    //System::logger.write("A=%d B=%d", A, B);
 
     uint16_t move = max(abs(B - pB), abs(A - pA));
 

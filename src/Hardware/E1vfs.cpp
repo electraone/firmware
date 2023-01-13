@@ -1,5 +1,5 @@
 #include "Hardware.h"
-#include "helpers.h"
+#include "System.h"
 
 #define SQLITE_VFS_BUFFERS 2048
 #define SQLITE_DEFAULT_PAGE_SIZE 1024
@@ -43,14 +43,14 @@ static int
     e1DirectWrite(E1File *p, const void *buffer, int size, sqlite_int64 offset)
 {
     if (!(p->file.seek(offset))) {
-        logMessage("e1DirectWrite: Seek error");
+        System::logger.write("e1DirectWrite: Seek error");
         return SQLITE_IOERR_WRITE;
     }
 
     int bytesWritten = p->file.write(buffer, size);
 
     if (bytesWritten != size) {
-        logMessage("e1DirectWrite: Write error");
+        System::logger.write("e1DirectWrite: Write error");
         return SQLITE_IOERR_WRITE;
     }
 
@@ -380,7 +380,7 @@ int registerFunctions(sqlite3 *db,
 
 void errorLogCallback(void *pArg, int errCode, const char *message)
 {
-    logMessage("e1VFS error: errcode=%d, msg=%s", errCode, message);
+    System::logger.write("e1VFS error: errcode=%d, msg=%s", errCode, message);
 }
 
 int sqlite3_os_init(void)

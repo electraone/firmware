@@ -1,8 +1,8 @@
 #include "BitmapReader.h"
 #include "Colours.h"
-#include "helpers.h"
-#include "settings.h"
+#include "System.h"
 #include "Hardware.h"
+#include "settings.h"
 
 BitmapReader::BitmapReader(const uint8_t CSp, const uint8_t RSTp)
     : FrameBuffer(CSp, RSTp)
@@ -22,7 +22,7 @@ void BitmapReader::loadBMP(const char *filename,
     FileIoStream file;
 
     if ((file = Hardware::sdcard.createInputStream(filename)) == 0) {
-        logMessage("Unable to open BMP file: %s", filename);
+        System::logger.write("Unable to open BMP file: %s", filename);
         return;
     }
 
@@ -36,7 +36,7 @@ void BitmapReader::loadBMP(const char *filename,
     // Read the BMP info header
     if (file.read(&infoheader, sizeof(bmpInfoHeader))
         != sizeof(bmpInfoHeader)) {
-        logMessage("Failed to read BMP info header");
+        System::logger.write("Failed to read BMP info header");
         return;
     }
 
@@ -66,7 +66,7 @@ void BitmapReader::loadBMP(const char *filename,
 
     for (uint16_t y = 0; y < lines; y++) {
         if (file.read(&buffer, sizeof(buffer)) != sizeof(buffer)) {
-            logMessage("Image read failed");
+            System::logger.write("Image read failed");
             return;
         }
 

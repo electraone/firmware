@@ -1,5 +1,5 @@
 #include "PersistentStorage.h"
-#include "helpers.h"
+#include "System.h"
 
 PersistentStorage::PersistentStorage()
 {
@@ -8,10 +8,10 @@ PersistentStorage::PersistentStorage()
 void PersistentStorage::mount(void)
 {
     while (!begin(SdioConfig(FIFO_SDIO))) {
-        logMessage("Waiting for internal storage to initialize");
+        System::logger.write("Waiting for internal storage to initialize");
         delay(200);
     }
-    logMessage("internal storage: Initialized");
+    System::logger.write("internal storage: Initialized");
 
     delay(100);
 }

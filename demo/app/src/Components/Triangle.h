@@ -29,7 +29,7 @@ public:
 
     void onTouchDown(const TouchEvent &touchEvent) override
     {
-        logMessage("callback: triangle");
+        System::logger.write("callback: triangle");
     }
 
 private:

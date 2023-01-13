@@ -1,6 +1,6 @@
 #pragma once
 
-#include "helpers.h"
+#include "System.h"
 #include "ListDataItem.h"
 #include <cstdint>
 #include <string>
@@ -81,9 +81,9 @@ public:
 
     void print(void) const
     {
-        logMessage("id: %d", getId());
+        System::logger.write("id: %d", getId());
         for (const auto &item : items) {
-            logMessage(
+            System::logger.write(
                 "    midiValue: %d, label: %s, bitmapEmpty: %d, address=%d",
                 item.getValue(),
                 item.getLabel(),

@@ -83,17 +83,17 @@ void MainComponent::resized()
 
 void MainComponent::onPotChange(const PotEvent &potEvent)
 {
-    logMessage("potChange: potId=%d, relativeChange=%d",
-               potEvent.getPotId(),
-               potEvent.getRelativeChange());
+    System::logger.write("potChange: potId=%d, relativeChange=%d",
+                         potEvent.getPotId(),
+                         potEvent.getRelativeChange());
 }
 
 void MainComponent::onPotTouchDown(const PotEvent &potEvent)
 {
-    logMessage("potTouchDown: potId=%d", potEvent.getPotId());
+    System::logger.write("potTouchDown: potId=%d", potEvent.getPotId());
 }
 
 void MainComponent::onPotTouchUp(const PotEvent &potEvent)
 {
-    logMessage("potTouchUp: potId=%d", potEvent.getPotId());
+    System::logger.write("potTouchUp: potId=%d", potEvent.getPotId());
 }
