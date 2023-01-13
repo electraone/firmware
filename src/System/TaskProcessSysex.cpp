@@ -174,7 +174,6 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                     MidiOutput::sendPresetSlotChanged(
                         MidiInterface::Type::MidiUsbDev, port);
                 }
-
                 if (App::get()->handleCtrlFileRemoved(bankNumber, slot, object)
                     == true) {
                     System::logger.write(
@@ -190,6 +189,13 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                 System::logger.write(
                     "processElectraSysex: removed command passed to the app");
                 App::get()->handleElectraSysex(port, sysexBlock);
+            }
+        } else if (cmd.isUpdateRuntime()) {
+            if ((uint8_t)object == 0x7D) {
+                uint8_t port = cmd.getByte1();
+                System::logger.write(
+                    "processElectraSysex: : switch logger port to: %d", port);
+                System::logger.setPort(port);
             }
         } else if (cmd.isSystemCall()) {
             if ((uint8_t)object == 0x7F) {

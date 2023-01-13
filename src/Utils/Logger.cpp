@@ -9,12 +9,16 @@ Logger::Logger() : level(0), port(2), enabled(true)
 
 void Logger::setPort(uint8_t newPort)
 {
-    port = newPort;
+    if ((0 <= newPort) && (newPort <= 2)) {
+        port = newPort;
+    }
 }
 
 void Logger::setLevel(uint8_t newLevel)
 {
-    level = newLevel;
+    if ((0 <= newLevel) && (newLevel <= 3)) {
+        level = newLevel;
+    }
 }
 
 void Logger::enable(void)
@@ -57,5 +61,5 @@ void Logger::write(const char *format, ...)
         }
     }
 
-    usbMIDI.sendSysEx(strlen(buf + 5) + 5, (const uint8_t *)buf, false, 2);
+    usbMIDI.sendSysEx(strlen(buf + 5) + 5, (const uint8_t *)buf, false, port);
 }
