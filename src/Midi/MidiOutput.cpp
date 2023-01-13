@@ -144,6 +144,32 @@ void MidiOutput::sendControlSetSwitched(MidiInterface::Type interface,
     sendMessage(interface, port, message);
 }
 
+void MidiOutput::sendPotTouchEvent(MidiInterface::Type interface,
+                                   uint8_t port,
+                                   uint8_t potId,
+                                   uint16_t controlId,
+                                   bool touched)
+{
+    uint8_t data[11] = { 0xF0,
+                         0x00,
+                         0x21,
+                         0x45,
+                         EVENT_MESSAGE,
+                         POT_TOUCH,
+                         potId,
+                         (uint8_t)(controlId & 0x7f),
+                         (uint8_t)((controlId >> 7) & 0x7f),
+                         touched,
+                         0xF7 };
+
+    SysexBlock sysexBlock = SysexBlock(App::get()->sysexPool.openMemoryBlock());
+    sysexBlock.writeBytes(data, sizeof(data));
+    sysexBlock.close();
+
+    MidiMessage message(sysexBlock);
+    sendMessage(interface, port, message);
+}
+
 void MidiOutput::sendUsbHostChanged(MidiInterface::Type interface, uint8_t port)
 {
     uint8_t data[7] = { 0xF0, 0x00, 0x21, 0x45, EVENT_MESSAGE, USB_HOST_CHANGE,

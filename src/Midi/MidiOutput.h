@@ -38,6 +38,7 @@
 #define CONTROL_SET_SWITCH 0x07
 #define PRESET_BANK_SWITCH 0x08
 #define USB_HOST_CHANGE 0x09
+#define POT_TOUCH 0x0A
 #define AVAILABLE 0x7F
 
 /*
@@ -97,6 +98,11 @@ public:
     static void sendControlSetSwitched(MidiInterface::Type interface,
                                        uint8_t port,
                                        uint8_t controlSetId);
+    static void sendPotTouchEvent(MidiInterface::Type interface,
+                                  uint8_t port,
+                                  uint8_t potId,
+                                  uint16_t controlId,
+                                  bool touched);
     static void sendUsbHostChanged(MidiInterface::Type interface, uint8_t port);
     static void sendAck(MidiInterface::Type interface, uint8_t port);
     static void sendNack(MidiInterface::Type interface, uint8_t port);
