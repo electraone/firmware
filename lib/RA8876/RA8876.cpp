@@ -722,7 +722,7 @@ void RA8876::saveState(void)
 {
     if (!savedState.locked) {
         savedState.locked = true;
-        //System::logger.write("Saving state");
+        //System::logger.write(ERROR, "Saving state");
         waitCompleted();
         savedState.CURH0 = readReg16(RA8876_REG_CURH0);
         savedState.CURV0 = readReg16(RA8876_REG_CURV0);
@@ -731,7 +731,7 @@ void RA8876::saveState(void)
 
 void RA8876::restoreState(void)
 {
-    //System::logger.write("Restoring state");
+    //System::logger.write(ERROR, "Restoring state");
     if (savedState.locked) {
         waitCompleted();
         writeReg16(RA8876_REG_CURH0, savedState.CURH0);
@@ -749,10 +749,10 @@ bool RA8876::isStateLocked(void)
 void RA8876::waitForStatus(uint8_t status)
 {
     while (readStatus() & status) {
-    //System::logger.write("gen status: %x", readStatus());
+    //System::logger.write(ERROR, "gen status: %x", readStatus());
         asm("nop");
     }
-    //System::logger.write("gen final status: %x", readStatus());
+    //System::logger.write(ERROR, "gen final status: %x", readStatus());
 }
 
 void RA8876::waitCompleted(void)
@@ -786,10 +786,10 @@ bool RA8876::waitSdramReady(void)
 {
 
 	while ((readStatus() & 0x04) == 0) {
-		//System::logger.write("sdrem status: %x", readStatus());
+		//System::logger.write(ERROR, "sdrem status: %x", readStatus());
 		asm("nop");
 	}
-	//System::logger.write("sdrem final status: %x", readStatus());
+	//System::logger.write(ERROR, "sdrem final status: %x", readStatus());
 	return (true);
 }
 

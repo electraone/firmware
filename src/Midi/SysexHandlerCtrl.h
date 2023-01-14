@@ -45,7 +45,7 @@ public:
                 // write preset directly to the current preset file
                 if (sysExData[5] == (uint8_t)ElectraCommand::Object::FileUi) {
                     System::logger.write(
-                        "handleSysEx: toolkit transfer initiated");
+                        ERROR, "handleSysEx: toolkit transfer initiated");
                     filename = UI_FILE;
                     fileType = ElectraCommand::Object::FileUi;
                 } else if (sysExData[5]
@@ -53,6 +53,7 @@ public:
                     filename = System::context.getCurrentLuaFile();
                     fileType = ElectraCommand::Object::FileLua;
                     System::logger.write(
+                        ERROR,
                         "handleSysEx: lua script transfer initiated: filename=%s",
                         filename);
                 } else if ((sysExData[5]
@@ -63,10 +64,12 @@ public:
                     filename = System::context.getCurrentPresetFile();
                     fileType = ElectraCommand::Object::FilePreset;
                     System::logger.write(
+                        ERROR,
                         "handleSysEx: preset transfer initiated: filename=%s",
                         filename);
                 } else {
-                    System::logger.write("handleSysEx: unknown filetype");
+                    System::logger.write(ERROR,
+                                         "handleSysEx: unknown filetype");
                     fileType = ElectraCommand::Object::Unknown;
                 }
 
@@ -92,8 +95,8 @@ public:
                         sysExSize -= 2;
                     }
                 } else {
-                    System::logger.write("handleSysEx: Read file failed: %s",
-                                         filename);
+                    System::logger.write(
+                        ERROR, "handleSysEx: Read file failed: %s", filename);
                     writeToFile = false;
                 }
             }

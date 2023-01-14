@@ -79,7 +79,7 @@ void luaLE_getModuleFunction(lua_State *L,
 void luaLE_handleNonexistentFunction(lua_State *L, const char *function)
 {
     lua_pop(L, 1);
-    System::logger.write("lua: function %s does not exist", function);
+    System::logger.write(WARNING, "lua: function %s does not exist", function);
 }
 
 void luaLE_addObjectMethods(lua_State *L, const luaL_Reg *l)
@@ -105,27 +105,28 @@ void luaLE_dumpstack(lua_State *L)
 {
     int top = lua_gettop(L);
 
-    System::logger.write("stack size: %d", top);
+    System::logger.write(ERROR, "stack size: %d", top);
 
     for (int i = 1; i <= top; i++) {
-        System::logger.write("%d -> %s   ", i, luaL_typename(L, i));
+        System::logger.write(ERROR, "%d -> %s   ", i, luaL_typename(L, i));
 
         switch (lua_type(L, i)) {
             case LUA_TNUMBER:
-                System::logger.write("number: %g", lua_tonumber(L, i));
+                System::logger.write(ERROR, "number: %g", lua_tonumber(L, i));
                 break;
             case LUA_TSTRING:
-                System::logger.write("string: %s", lua_tostring(L, i));
+                System::logger.write(ERROR, "string: %s", lua_tostring(L, i));
                 break;
             case LUA_TBOOLEAN:
-                System::logger.write("bool: %s",
+                System::logger.write(ERROR,
+                                     "bool: %s",
                                      (lua_toboolean(L, i) ? "true" : "false"));
                 break;
             case LUA_TNIL:
-                System::logger.write("nil: %s", "nil");
+                System::logger.write(ERROR, "nil: %s", "nil");
                 break;
             default:
-                System::logger.write("pointer: %p", lua_topointer(L, i));
+                System::logger.write(ERROR, "pointer: %p", lua_topointer(L, i));
                 break;
         }
     }

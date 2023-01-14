@@ -7,7 +7,7 @@
 
 #define _HELPERS_H
 
-void System::logger.write(const char *format, ...);
+void System::logger.write(ERROR, const char *format, ...);
 void logData(uint8_t *data, uint16_t length);
 void logData(uint8_t *data, uint16_t length, const char *prefix);
 void logData(std::vector<uint8_t> data, const char *prefix = "");

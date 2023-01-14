@@ -83,7 +83,7 @@ int16_t PotListener::decreaseRate(int16_t relativeChange)
             constrain((1 << std::max(0, __builtin_clz(numValues) - 27)), 1, 16);
     }
     /*
-    System::logger.write("threshold: %d, stepCount: %d: _b: %d",
+    System::logger.write(ERROR, "threshold: %d, stepCount: %d: _b: %d",
                threshold,
                stepCount,
                __builtin_clz(numValues));*/

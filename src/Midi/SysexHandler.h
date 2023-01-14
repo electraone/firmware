@@ -47,7 +47,8 @@ protected:
                                     uint8_t port,
                                     const SysexBlock &sysexBlock)
     {
-        System::logger.write("processGeneralSysex: manufacturer %X",
+        System::logger.write(ERROR,
+                             "processGeneralSysex: manufacturer %X",
                              sysexBlock.getManufacturerSysexId());
         MidiInput midiInput(midiInterface, port);
         MidiMessage midiMessage(sysexBlock);

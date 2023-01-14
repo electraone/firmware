@@ -65,14 +65,14 @@ void lua_compat_printf(char *format, ...)
     va_list ap;
 
     va_start(ap, format);
-    System::logger.write(buf, sizeof(buf), format, ap);
+    System::logger.write(ERROR, buf, sizeof(buf), format, ap);
     va_end(ap);
 }
 
 void lua_compat_print(const char *s)
 {
     if (s && (s[0] != '\n') && (s[0] != '\0')) {
-        System::logger.write("lua: %s", s);
+        System::logger.write(ERROR, "lua: %s", s);
     }
 }
 
@@ -120,13 +120,16 @@ void loadLuaModule(const char *filename)
 
     if (error) {
         System::logger.write(
+            ERROR,
             "loadLuaModule: error loading file: filename=%s, error=%s",
             filename,
             lua_tostring(L, -1));
         lua_pop(L, 1); /* pop error message from the stack */
     } else {
         System::logger.write(
-            "loadLuaModule: Lua extension file initialized: file=%s", filename);
+            ERROR,
+            "loadLuaModule: Lua extension file initialized: file=%s",
+            filename);
     }
 }
 
@@ -136,7 +139,8 @@ void runLuaFunction(const char *functionName)
 
     if (lua_isfunction(L, -1)) {
         if (lua_pcall(L, 0, 0, 0) != 0) {
-            System::logger.write("error running function '%s': %s",
+            System::logger.write(ERROR,
+                                 "error running function '%s': %s",
                                  functionName,
                                  lua_tostring(L, -1));
         }
@@ -150,7 +154,8 @@ void runLuaString(const char *commandText)
     int error = luaL_dostring(L, commandText);
 
     if (error) {
-        System::logger.write("runLuaString: error loading file: error=%s",
+        System::logger.write(ERROR,
+                             "runLuaString: error loading file: error=%s",
                              lua_tostring(L, -1));
         lua_pop(L, 1); /* pop error message from the stack */
     }
@@ -159,10 +164,10 @@ void runLuaString(const char *commandText)
 void executeElectraLua(const char *filename)
 {
     lua_windowRepaintEnabled = false;
-    System::logger.write("loadLua debug output:");
-    System::logger.write("---- START ----");
+    System::logger.write(ERROR, "loadLua debug output:");
+    System::logger.write(ERROR, "---- START ----");
     loadLuaModule(filename);
-    System::logger.write("----- END -----");
+    System::logger.write(ERROR, "----- END -----");
     lua_windowRepaintEnabled = true;
 }
 

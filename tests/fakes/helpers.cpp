@@ -12,7 +12,7 @@ using namespace std;
 
 #define LOG_MESSAGE_MAX_SIZE 1024 // Max size of the log message
 
-void System::logger.write(const char *format, ...)
+void System::logger.write(ERROR, const char *format, ...)
 {
 #ifdef DEBUG
     char buf[LOG_MESSAGE_MAX_SIZE];

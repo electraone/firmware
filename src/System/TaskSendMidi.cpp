@@ -43,6 +43,7 @@ void sendMidi(void)
 
 #ifdef DEBUG
         System::logger.write(
+            ERROR,
             "sendMidi: queued message (%d): interface:%d, port:%d, channel: %d,"
             " parameterNumber: %d, value=%d, type=%s",
             message.id,

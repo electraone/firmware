@@ -83,6 +83,7 @@ void readMidi(void)
 
 #ifdef DEBUG
         System::logger.write(
+            ERROR,
             "queueL1: received: interface=%d, port=%d, channel=%d, "
             " type=%d, data1=%d, data2=%d",
             message.getInterfaceType(),
@@ -98,7 +99,7 @@ void readMidi(void)
         // SysEx messages are handled in the SysexCallbacks.cpp
         if (message.getType() != MidiMessage::Type::SystemExclusive) {
             if (!runRouteMessageCallback(midiInput, message)) {
-                System::logger.write("skipping the message");
+                System::logger.write(ERROR, "skipping the message");
                 continue;
             }
         }
@@ -137,6 +138,7 @@ void processMidi(void)
 
 #ifdef DEBUG
         System::logger.write(
+            ERROR,
             "queueL2 [%d]: received: interface=%d, port=%d, channel=%d, "
             "type=%d, data1=%d, data2=%d",
             incomingQueueL2.size(),

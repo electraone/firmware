@@ -8,18 +8,18 @@ void Hardware::initialise(void)
     configureMux();
     setMuxAddress(0);
     MUX_DISABLE;
-    System::logger.write("Multiplexer: initialised");
+    System::logger.write(ERROR, "Multiplexer: initialised");
 
     // Configure AD convertors
     adc.adc0->setAveraging(8);
     adc.adc1->setAveraging(8);
     adc.adc0->setResolution(10);
     adc.adc1->setResolution(10);
-    System::logger.write("AD convertor: initialised");
+    System::logger.write(ERROR, "AD convertor: initialised");
 
     // Initialise RAM monitoring
     ram.initialize();
-    System::logger.write("SD RAM monitor: initialised");
+    System::logger.write(ERROR, "SD RAM monitor: initialised");
 
     // Clear Serial ports
     Serial1.clear();
@@ -27,15 +27,15 @@ void Hardware::initialise(void)
 
     // Initialise the LCD
     screen.initialise();
-    System::logger.write("LCD: initialised");
+    System::logger.write(ERROR, "LCD: initialised");
 
     // Initialise LCD touch interface
     touch.begin();
-    System::logger.write("LCD touch: initialided");
+    System::logger.write(ERROR, "LCD touch: initialided");
 
     // Initialise pots
     pots.initialise();
-    System::logger.write("Pots: initialised");
+    System::logger.write(ERROR, "Pots: initialised");
 
     // Mount the internal storage media
     Hardware::sdcard.mount();

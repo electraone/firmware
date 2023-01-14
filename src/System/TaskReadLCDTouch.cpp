@@ -30,6 +30,7 @@ void readLCDTouch(void)
 
 #ifdef DEBUG
     System::logger.write(
+        ERROR,
         "received touch from active window: address=%x, window=%s",
         originatingWindow,
         originatingWindow->getName());

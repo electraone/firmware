@@ -8,6 +8,7 @@ void monitorFreeMemory(void)
     //logMessage ("monitorFreeMemory");
     Hardware::ram.run();
     System::logger.write(
+        TRACE,
         "free RAM: total=%d, adj_free=%d, free=%d, heap=%d, collision=%d",
         Hardware::ram.total(),
         Hardware::ram.adj_free(),

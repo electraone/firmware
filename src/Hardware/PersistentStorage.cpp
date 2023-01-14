@@ -8,10 +8,11 @@ PersistentStorage::PersistentStorage()
 void PersistentStorage::mount(void)
 {
     while (!begin(SdioConfig(FIFO_SDIO))) {
-        System::logger.write("Waiting for internal storage to initialize");
+        System::logger.write(ERROR,
+                             "Waiting for internal storage to initialize");
         delay(200);
     }
-    System::logger.write("internal storage: Initialized");
+    System::logger.write(ERROR, "internal storage: Initialized");
 
     delay(100);
 }

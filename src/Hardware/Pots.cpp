@@ -64,9 +64,10 @@ void Pots::initialise(void)
     // Configure Pot Touch
     if (!Hardware::potTouch.init()) {
         System::logger.write(
+            ERROR,
             "capacitive sensing: cannot calibrate. Check input USB voltage");
     } else {
-        System::logger.write("capacitive sensing: Initialized");
+        System::logger.write(ERROR, "capacitive sensing: Initialized");
     }
 
     // Run the first scan of Pots to get them to known state

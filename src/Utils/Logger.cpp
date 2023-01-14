@@ -3,7 +3,7 @@
 #include <cstring>
 #include "Arduino.h"
 
-Logger::Logger() : level(0), port(2), enabled(true)
+Logger::Logger() : minimumLevel(ERROR), port(2), enabled(true)
 {
 }
 
@@ -17,7 +17,7 @@ void Logger::setPort(uint8_t newPort)
 void Logger::setLevel(uint8_t newLevel)
 {
     if ((0 <= newLevel) && (newLevel <= 3)) {
-        level = newLevel;
+        minimumLevel = newLevel;
     }
 }
 
@@ -36,9 +36,9 @@ void Logger::setStatus(bool newStatus)
     enabled = newStatus;
 }
 
-void Logger::write(const char *format, ...)
+void Logger::write(uint8_t level, const char *format, ...)
 {
-    if (!enabled) {
+    if (!enabled || (level > minimumLevel)) {
         return;
     }
 

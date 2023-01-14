@@ -29,7 +29,8 @@ public:
 
     void initialise(void) override
     {
-        System::logger.write("sqlite version: %s\n", sqlite3_libversion());
+        System::logger.write(
+            ERROR, "sqlite version: %s\n", sqlite3_libversion());
 
         model.attach("synth.db");
         model.create();
@@ -41,7 +42,7 @@ public:
         model.query();
         model.close();
 
-        System::logger.write("setup completed");
+        System::logger.write(ERROR, "setup completed");
         mainWindow.repaint();
     }
 
@@ -57,17 +58,17 @@ public:
 
     void onButtonDown(uint8_t buttonId) override
     {
-        System::logger.write("buttonDown: buttonId=%d", buttonId);
+        System::logger.write(ERROR, "buttonDown: buttonId=%d", buttonId);
     }
 
     void onButtonLongHold(uint8_t buttonId) override
     {
-        System::logger.write("buttonLongHold: buttonId=%d", buttonId);
+        System::logger.write(ERROR, "buttonLongHold: buttonId=%d", buttonId);
     }
 
     void onButtonUp(uint8_t buttonId) override
     {
-        System::logger.write("buttonUp: buttonId=%d", buttonId);
+        System::logger.write(ERROR, "buttonUp: buttonId=%d", buttonId);
     }
 
     void handleIncomingMidiMessage(const MidiInput &midiInput,
@@ -75,6 +76,7 @@ public:
     {
         if (midiMessage.isSysEx()) {
             System::logger.write(
+                ERROR,
                 "---< sysex start: interface=%s, port=%d >---",
                 MidiInterface::getName(midiInput.getInterfaceType()),
                 midiInput.getPort());
@@ -84,10 +86,11 @@ public:
 
             for (size_t i = 0; i < sysexLength; i++) {
                 byte sysexByte = sysexBlock.peek(i);
-                System::logger.write("%d> %X (%c)", i, sysexByte, sysexByte);
+                System::logger.write(
+                    ERROR, "%d> %X (%c)", i, sysexByte, sysexByte);
             }
 
-            System::logger.write("---------------------");
+            System::logger.write(ERROR, "---------------------");
         }
     }
 

@@ -2,6 +2,11 @@
 
 #include <cstdint>
 
+#define ERROR 0
+#define WARNING 1
+#define INFO 2
+#define TRACE 3
+
 /**
  * Logger class
  *
@@ -19,11 +24,11 @@ public:
     void enable(void);
     void disable(void);
     void setStatus(bool newStatus);
-    void write(const char *format, ...);
+    void write(uint8_t level, const char *format, ...);
 
 private:
     static constexpr uint16_t MaxLogMessageSize = 200;
-    uint8_t level;
+    uint8_t minimumLevel;
     uint8_t port;
     bool enabled;
 };

@@ -328,6 +328,7 @@ void MidiOutput::sendMidiLearn(MidiInterface::Type interface,
 
 #ifdef DEBUG
     System::logger.write(
+        ERROR,
         "sendMidiLearn: msg=%s, port=%d, channel=%d, parameter=%d, value=%d",
         msg,
         port,
@@ -419,7 +420,9 @@ bool MidiOutput::sendSysExFile(uint8_t port,
 
     if (!(file = Hardware::sdcard.createInputStream(filename))) {
         System::logger.write(
-            "sendSysexFile: the file does not exists: filename=%s", filename);
+            ERROR,
+            "sendSysexFile: the file does not exists: filename=%s",
+            filename);
         return (false);
     }
 
@@ -845,7 +848,7 @@ void MidiOutput::sendRpn(MidiInterface::Type interface,
                          uint16_t parameterNumber,
                          uint16_t midiValue)
 {
-    System::logger.write("sending RPN: %d", parameterNumber);
+    System::logger.write(ERROR, "sending RPN: %d", parameterNumber);
     sendControlChange(interface, port, channel, 101, parameterNumber >> 7);
     sendControlChange(interface, port, channel, 100, parameterNumber & 0x7F);
     sendControlChange(interface, port, channel, 6, midiValue >> 7);

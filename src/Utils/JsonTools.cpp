@@ -9,42 +9,45 @@ bool findElement(File &file,
     size_t startPosition = file.position();
     size_t range = endPosition - startPosition;
 
-    //System::logger.write("findElement (%s): start: %d, end: %d, length: %d", elementName, startPosition, endPosition, range);
+    //System::logger.write(ERROR, "findElement (%s): start: %d, end: %d, length: %d", elementName, startPosition, endPosition, range);
 
     if (endPosition == 0) {
         if (file.find(elementName) == false) {
 #ifdef DEBUG
-            System::logger.write("findElement: no %s defined", elementName);
+            System::logger.write(
+                ERROR, "findElement: no %s defined", elementName);
 #endif /* DEBUG */
             return (false);
         }
     } else {
         if (file.findConstrained(elementName, range) == false) {
 #ifdef DEBUG
-            System::logger.write("findElement: no %s defined", elementName);
+            System::logger.write(
+                ERROR, "findElement: no %s defined", elementName);
 #endif /* DEBUG */
             return (false);
         }
     }
     if (file.find(":") == false) {
 #ifdef DEBUG
-        System::logger.write("findElement: %s is not an element", elementName);
+        System::logger.write(
+            ERROR, "findElement: %s is not an element", elementName);
 #endif /* DEBUG */
         return (false);
     }
     if (elementType == ARRAY) {
         if (file.find("[") == false) {
 #ifdef DEBUG
-            System::logger.write("findElement: %s is not an array",
-                                 elementName);
+            System::logger.write(
+                ERROR, "findElement: %s is not an array", elementName);
 #endif /* DEBUG */
             return (false);
         }
     } else if (elementType == OBJECT) {
         if (file.find("{") == false) {
 #ifdef DEBUG
-            System::logger.write("findElement: %s is not an object",
-                                 elementName);
+            System::logger.write(
+                ERROR, "findElement: %s is not an object", elementName);
 #endif /* DEBUG */
             return (false);
         }
@@ -53,6 +56,7 @@ bool findElement(File &file,
     if ((endPosition != 0) && (file.position() > endPosition)) {
 #ifdef DEBUG
         System::logger.write(
+            ERROR,
             "findElement: not present in the range: element=%s, endPosition=%d",
             elementName,
             endPosition);
@@ -79,7 +83,7 @@ bool isElementEmpty(File &file)
 
     if (file.seek(pos) == false) {
         System::logger.write(
-            "Preset::isElementEmpty: rewind to original position");
+            ERROR, "Preset::isElementEmpty: rewind to original position");
     }
 
     return (rc);

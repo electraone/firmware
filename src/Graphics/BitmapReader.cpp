@@ -22,7 +22,7 @@ void BitmapReader::loadBMP(const char *filename,
     FileIoStream file;
 
     if ((file = Hardware::sdcard.createInputStream(filename)) == 0) {
-        System::logger.write("Unable to open BMP file: %s", filename);
+        System::logger.write(ERROR, "Unable to open BMP file: %s", filename);
         return;
     }
 
@@ -36,7 +36,7 @@ void BitmapReader::loadBMP(const char *filename,
     // Read the BMP info header
     if (file.read(&infoheader, sizeof(bmpInfoHeader))
         != sizeof(bmpInfoHeader)) {
-        System::logger.write("Failed to read BMP info header");
+        System::logger.write(ERROR, "Failed to read BMP info header");
         return;
     }
 
@@ -66,7 +66,7 @@ void BitmapReader::loadBMP(const char *filename,
 
     for (uint16_t y = 0; y < lines; y++) {
         if (file.read(&buffer, sizeof(buffer)) != sizeof(buffer)) {
-            System::logger.write("Image read failed");
+            System::logger.write(ERROR, "Image read failed");
             return;
         }
 

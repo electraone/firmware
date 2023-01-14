@@ -39,7 +39,8 @@ void initialise(void)
 
     // Load the UI toolkit
     if (Hardware::sdcard.exists(UI_FILE) == false) {
-        System::logger.write("UI asset file not found: file=%s", UI_FILE);
+        System::logger.write(
+            ERROR, "UI asset file not found: file=%s", UI_FILE);
     } else {
         Hardware::screen.loadEssentialFont();
         displaySplash(Hardware::screen,
@@ -48,13 +49,13 @@ void initialise(void)
                       System::runtimeInfo.getElectraInfoHwRevision());
         Hardware::screen.initUIToolkit();
     }
-    System::logger.write("UI assets: Loaded and initialised");
+    System::logger.write(INFO, "UI assets: Loaded and initialised");
 
     // Initialize MIDI interfaces
     MidiInterface::get(MidiInterface::Type::MidiIo)->initialise();
     MidiInterface::get(MidiInterface::Type::MidiUsbDev)->initialise();
     MidiInterface::get(MidiInterface::Type::MidiUsbHost)->initialise();
-    System::logger.write("MIDI interfaces: initialised");
+    System::logger.write(INFO, "MIDI interfaces: initialised");
 
     // Clear the repaint queue \todo does not beliong here
     System::tasks.clearRepaintGraphics();
@@ -68,11 +69,11 @@ void initialise(void)
 
     // Enable standard system tasks
     System::tasks.enableAll();
-    System::logger.write("kernel task manager: enable software tasks");
+    System::logger.write(INFO, "kernel task manager: enable software tasks");
 
     // Enable MIDI
     System::tasks.enableMidi();
-    System::logger.write("setup: enable readMidi task");
+    System::logger.write(INFO, "setup: enable readMidi task");
 
     // Get saved status of the logger (as saved in the RuntimeInfo)
     System::logger.setStatus(System::runtimeInfo.getLoggerStatus());

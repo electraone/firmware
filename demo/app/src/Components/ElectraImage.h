@@ -17,6 +17,6 @@ public:
 
     void onTouchDown(const TouchEvent &touchEvent) override
     {
-        System::logger.write("callback: electraImage");
+        System::logger.write(ERROR, "callback: electraImage");
     }
 };

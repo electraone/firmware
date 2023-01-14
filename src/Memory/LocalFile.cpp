@@ -62,8 +62,8 @@ bool LocalFile::writeAll(MemoryBlock &memoryBlock)
                                                FILE_WRITE | O_CREAT | O_TRUNC);
 
     if (!file) {
-        System::logger.write("Localfile: Cannot open file failed: %s",
-                             filepath);
+        System::logger.write(
+            ERROR, "Localfile: Cannot open file failed: %s", filepath);
         return (false);
     }
 

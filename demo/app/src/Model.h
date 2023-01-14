@@ -19,8 +19,8 @@ public:
         int rc = sqlite3_open(filename, &dbHandle);
 
         if (rc != SQLITE_OK) {
-            System::logger.write("Cannot open database: %s",
-                                 sqlite3_errmsg(dbHandle));
+            System::logger.write(
+                ERROR, "Cannot open database: %s", sqlite3_errmsg(dbHandle));
             sqlite3_close(dbHandle);
         }
     }
@@ -34,7 +34,7 @@ public:
         int rc = sqlite3_exec(dbHandle, sql, 0, 0, &errorMessage);
 
         if (rc != SQLITE_OK) {
-            System::logger.write("SQL error: %s", errorMessage);
+            System::logger.write(ERROR, "SQL error: %s", errorMessage);
             sqlite3_free(errorMessage);
         }
     }
@@ -49,7 +49,7 @@ public:
         int rc = sqlite3_exec(dbHandle, sql, 0, 0, &errorMessage);
 
         if (rc != SQLITE_OK) {
-            System::logger.write("SQL error: %s", errorMessage);
+            System::logger.write(ERROR, "SQL error: %s", errorMessage);
             sqlite3_free(errorMessage);
         }
     }
@@ -66,8 +66,8 @@ public:
                                0);
 
         if (rc != SQLITE_OK) {
-            System::logger.write("Failed to fetch data: %s",
-                                 sqlite3_errmsg(dbHandle));
+            System::logger.write(
+                ERROR, "Failed to fetch data: %s", sqlite3_errmsg(dbHandle));
             return;
         }
 
@@ -76,8 +76,11 @@ public:
             const unsigned char *manufacturer = sqlite3_column_text(stmt, 1);
             const unsigned char *model = sqlite3_column_text(stmt, 2);
 
-            System::logger.write(
-                "id: %d, manufacturer: %s model: %s", id, manufacturer, model);
+            System::logger.write(ERROR,
+                                 "id: %d, manufacturer: %s model: %s",
+                                 id,
+                                 manufacturer,
+                                 model);
         }
 
         sqlite3_finalize(stmt);
@@ -92,8 +95,8 @@ public:
             dbHandle, "SELECT count(1) from synths", -1, &stmt, 0);
 
         if (rc != SQLITE_OK) {
-            System::logger.write("Failed to fetch count: %s",
-                                 sqlite3_errmsg(dbHandle));
+            System::logger.write(
+                ERROR, "Failed to fetch count: %s", sqlite3_errmsg(dbHandle));
             return (-1);
         }
 
@@ -114,7 +117,7 @@ public:
         int rc = sqlite3_exec(dbHandle, sql, 0, 0, &errorMessage);
 
         if (rc != SQLITE_OK) {
-            System::logger.write("SQL error: %s", errorMessage);
+            System::logger.write(ERROR, "SQL error: %s", errorMessage);
             sqlite3_free(errorMessage);
         }
     }
@@ -127,7 +130,7 @@ public:
         int rc = sqlite3_exec(dbHandle, sql, 0, 0, &errorMessage);
 
         if (rc != SQLITE_OK) {
-            System::logger.write("SQL error: %s", errorMessage);
+            System::logger.write(ERROR, "SQL error: %s", errorMessage);
             sqlite3_free(errorMessage);
         }
     }

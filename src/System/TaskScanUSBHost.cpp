@@ -30,6 +30,7 @@ void scanUSBHost(void)
                 driverActive[i] = false;
 
                 System::logger.write(
+                    ERROR,
                     "scanUSBHost: device %s %x:%x: disconnected",
                     driverNames[i],
                     drivers[i]->idVendor(),
@@ -43,7 +44,8 @@ void scanUSBHost(void)
                 }
                 app->statusBar.indicateUsbHostChange();
             } else {
-                System::logger.write("scanUSBHost: device %s %x:%x: connected",
+                System::logger.write(ERROR,
+                                     "scanUSBHost: device %s %x:%x: connected",
                                      driverNames[i],
                                      drivers[i]->idVendor(),
                                      drivers[i]->idProduct());
@@ -52,24 +54,27 @@ void scanUSBHost(void)
                 char *manufacturer = (char *)drivers[i]->manufacturer();
 
                 if (manufacturer && *manufacturer) {
-                    System::logger.write("- manufacturer: %s", manufacturer);
+                    System::logger.write(
+                        ERROR, "- manufacturer: %s", manufacturer);
                 }
 
                 char *product = (char *)drivers[i]->product();
                 if (product && *product) {
-                    System::logger.write("- product: %s", product);
+                    System::logger.write(ERROR, "- product: %s", product);
                 }
 
                 char *serial = (char *)drivers[i]->serialNumber();
                 if (serial && *serial) {
-                    System::logger.write("- serialNumber: %s", serial);
+                    System::logger.write(ERROR, "- serialNumber: %s", serial);
                 }
 
                 uint8_t port = App::get()->getUsbHostPortAssigment(product);
 
                 if (drivers[i] == &midiDevice1) {
                     System::logger.write(
-                        "Assigning new MIDI1 device to midiBus 0: %s", product);
+                        ERROR,
+                        "Assigning new MIDI1 device to midiBus 0: %s",
+                        product);
                     USBDevices[0].set(drivers[i]->idVendor(),
                                       drivers[i]->idProduct(),
                                       driverNames[i],
@@ -83,7 +88,9 @@ void scanUSBHost(void)
                 }
                 if (drivers[i] == &midiDevice2) {
                     System::logger.write(
-                        "Assigning new MIDI2 device to midiBus 0: %s", product);
+                        ERROR,
+                        "Assigning new MIDI2 device to midiBus 0: %s",
+                        product);
                     USBDevices[1].set(drivers[i]->idVendor(),
                                       drivers[i]->idProduct(),
                                       driverNames[i],
@@ -98,7 +105,7 @@ void scanUSBHost(void)
 
                 if ((drivers[i]->idVendor() == 0x1FC9)
                     && (drivers[i]->idProduct() == 0x82CF)) {
-                    System::logger.write("electra is connected");
+                    System::logger.write(ERROR, "electra is connected");
                 }
             }
 

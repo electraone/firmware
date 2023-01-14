@@ -16,7 +16,7 @@ void Pot::process(void)
     B = Hardware::adc.adc1->analogRead(A16);
     MUX_DISABLE;
 
-    //System::logger.write("A=%d B=%d", A, B);
+    //System::logger.write(ERROR, "A=%d B=%d", A, B);
 
     uint16_t move = max(abs(B - pB), abs(A - pA));
 

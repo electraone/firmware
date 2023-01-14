@@ -30,6 +30,6 @@ public:
 
     void onTouchDown(const TouchEvent &touchEvent) override
     {
-        System::logger.write("callback: indicator");
+        System::logger.write(ERROR, "callback: indicator");
     }
 };
