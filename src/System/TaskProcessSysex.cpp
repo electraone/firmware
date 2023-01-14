@@ -164,19 +164,31 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                 System::context.formatPresetFilename(
                     filename, MAX_FILENAME_LENGTH, fileNumber);
                 fileToRemove = filename;
+                if (Hardware::sdcard.exists(fileToRemove)) {
+                    int status = Hardware::sdcard.deleteFile(fileToRemove);
+                    System::logger.write(
+                        ERROR,
+                        "processElectraSysex: removing file %s: %s",
+                        fileToRemove,
+                        (status == true) ? "OK" : "fail");
+                }
+                System::context.formatLuaFilename(
+                    filename, MAX_FILENAME_LENGTH, fileNumber);
+                fileToRemove = filename;
+                if (Hardware::sdcard.exists(fileToRemove)) {
+                    int status = Hardware::sdcard.deleteFile(fileToRemove);
+                    System::logger.write(
+                        ERROR,
+                        "processElectraSysex: removing file %s: %s",
+                        fileToRemove,
+                        (status == true) ? "OK" : "fail");
+                }
+                MidiOutput::sendPresetSlotChanged(
+                    MidiInterface::Type::MidiUsbDev, port);
             } else if (object == ElectraCommand::Object::FileLua) {
                 System::context.formatLuaFilename(
                     filename, MAX_FILENAME_LENGTH, fileNumber);
                 fileToRemove = filename;
-            } else {
-                System::logger.write(
-                    ERROR,
-                    "processElectraSysex: "
-                    "file type not handled by the base firmware");
-                fileToRemove = nullptr;
-            }
-
-            if (fileToRemove) {
                 if (Hardware::sdcard.exists(fileToRemove)) {
                     int status = Hardware::sdcard.deleteFile(fileToRemove);
                     System::logger.write(
@@ -187,6 +199,15 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                     MidiOutput::sendPresetSlotChanged(
                         MidiInterface::Type::MidiUsbDev, port);
                 }
+            } else {
+                System::logger.write(
+                    ERROR,
+                    "processElectraSysex: "
+                    "file type not handled by the base firmware");
+                fileToRemove = nullptr;
+            }
+
+            if (fileToRemove) {
                 if (App::get()->handleCtrlFileRemoved(bankNumber, slot, object)
                     == true) {
                     System::logger.write(
