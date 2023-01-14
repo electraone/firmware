@@ -346,6 +346,7 @@ void loadGlobalVariables(lua_State *L)
     lua_pushnumber(L, 2);
     lua_setglobal(L, "USB_HOST");
 
+    // Bounds
     lua_pushnumber(L, 1);
     lua_setglobal(L, "X");
     lua_pushnumber(L, 2);
@@ -355,10 +356,25 @@ void loadGlobalVariables(lua_State *L)
     lua_pushnumber(L, 4);
     lua_setglobal(L, "HEIGHT");
 
+    // Control sets
     lua_pushnumber(L, 1);
     lua_setglobal(L, "CONTROL_SET_1");
     lua_pushnumber(L, 2);
     lua_setglobal(L, "CONTROL_SET_2");
     lua_pushnumber(L, 3);
     lua_setglobal(L, "CONTROL_SET_3");
+
+    // Events
+    lua_pushnumber(L, 0);
+    lua_setglobal(L, "NONE");
+    lua_pushnumber(L, 1);
+    lua_setglobal(L, "PAGES");
+    lua_pushnumber(L, 2);
+    lua_setglobal(L, "CONTROL_SETS");
+    lua_pushnumber(L, 4);
+    lua_setglobal(L, "USB_HOST");
+    lua_pushnumber(L, 8);
+    lua_setglobal(L, "POTS");
+    lua_pushnumber(L, 16);
+    lua_setglobal(L, "TOUCH");
 }
