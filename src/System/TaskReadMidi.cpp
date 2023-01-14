@@ -28,6 +28,12 @@ void readMidi(void)
         return;
     }
 
+    // Skip when major outgoing SysEx is being sent out
+    if (System::sysExBusy) {
+        return;
+    }
+
+    // Skip if the interface unifying queue is not empty
     if (incomingQueueL1.isEmpty() != true) {
         return;
     }

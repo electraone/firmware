@@ -28,4 +28,5 @@ public:
     static lua_State *L;
 
     static bool repaintActive;
+    static bool sysExBusy;
 };

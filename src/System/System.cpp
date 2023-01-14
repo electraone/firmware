@@ -33,7 +33,7 @@ void System::initialise(void)
     }
 
     usb_init(keyboardEnabled, mouseEnabled, keymediaEnabled);
-    logMessage("USB device ports: initialised");
+    System::logger.write(INFO, "USB device ports: initialised");
 }
 
 SystemTasks System::tasks;
@@ -44,3 +44,4 @@ Logger System::logger;
 lua_State *System::L = nullptr;
 
 bool System::repaintActive = false;
+bool System::sysExBusy = false;
