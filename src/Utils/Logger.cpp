@@ -3,7 +3,7 @@
 #include <cstring>
 #include "Arduino.h"
 
-Logger::Logger() : minimumLevel(ERROR), port(2), enabled(true)
+Logger::Logger() : minimumLevel(TRACE), port(2), enabled(true)
 {
 }
 

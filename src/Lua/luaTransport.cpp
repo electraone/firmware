@@ -13,7 +13,7 @@ int transport_enable(lua_State *L)
 {
     lua_settop(L, 0);
 
-    System::logger.write(ERROR, "lua: transport enabled");
+    System::logger.write(INFO, "lua: transport enabled");
 
     MidiInputCallback::onMidiClockCallback = &transport_onMidiClock;
     MidiInputCallback::onMidiStartCallback = &transport_onMidiStart;
@@ -30,7 +30,7 @@ int transport_disable(lua_State *L)
 {
     lua_settop(L, 0);
 
-    System::logger.write(ERROR, "lua: transport disabled");
+    System::logger.write(INFO, "lua: transport disabled");
 
     MidiInputCallback::onMidiClockCallback = nullptr;
     MidiInputCallback::onMidiStartCallback = nullptr;
