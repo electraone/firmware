@@ -80,8 +80,7 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                     "processElectraSysex::handleElectraSysex: sending NACK");
                 MidiOutput::sendNack(MidiInterface::Type::MidiUsbDev, port);
             }
-        }
-        if (cmd.isFileRequest()) {
+        } else if (cmd.isFileRequest()) {
             if (object == ElectraCommand::Object::FilePreset) {
                 if (MidiOutput::sendSysExFile(
                         port, System::context.getCurrentPresetFile(), object)) {
@@ -235,6 +234,8 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                     "processElectraSysex: : switch logger port to: %d",
                     port);
                 System::logger.setPort(port);
+            } else {
+                App::get()->handleElectraSysex(port, sysexBlock);
             }
         } else if (cmd.isSystemCall()) {
             if ((uint8_t)object == 0x7F) {
