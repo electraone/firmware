@@ -382,4 +382,8 @@ void loadGlobalVariables(lua_State *L)
     lua_setglobal(L, "POTS");
     lua_pushnumber(L, 16);
     lua_setglobal(L, "TOUCH");
+    lua_pushnumber(L, 32);
+    lua_setglobal(L, "BUTTONS");
+    lua_pushnumber(L, 64);
+    lua_setglobal(L, "WINDOWS");
 }
