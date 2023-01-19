@@ -41,6 +41,7 @@ public:
         FileLua = 0x0C,
         Function = 0x0D,
         Value = 0x0E,
+        EventSubscription = 0x79,
         FileUi = 0x70,
         Window = 0x7A,
         ControlPort = 0x7B,
@@ -110,6 +111,8 @@ public:
             return (Object::Value);
         } else if (objectByte == 0x70) {
             return (Object::FileUi);
+        } else if (objectByte == 0x79) {
+            return (Object::EventSubscription);
         } else if (objectByte == 0x7A) {
             return (Object::Window);
         } else if (objectByte == 0x7B) {
