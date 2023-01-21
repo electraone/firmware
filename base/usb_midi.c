@@ -127,12 +127,13 @@ void usb_midi_send_sysex_buffer_partial (const uint8_t *data, uint32_t length, u
 {
 	stopFlush = 1;
 	cable = (cable & 0x0F) << 4;
-	while (length > 0)
+  int remainingLength = length;
+	while (remainingLength > 0)
 	{
 		//System::logger.write(ERROR, "%08X", 0x04 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
 		usb_midi_write_packed (0x04 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
 		data += 3;
-		length -= 3;
+		remainingLength -= 3;
 	}
 	stopFlush = 0;
 }
@@ -141,24 +142,25 @@ void usb_midi_send_sysex_buffer_has_term (const uint8_t *data, uint32_t length, 
 {
 	stopFlush = 1;
 	cable = (cable & 0x0F) << 4;
-	while (length > 3)
+  int remainingLength = length;
+	while (remainingLength > 3)
 	{
 		//System::logger.write(ERROR, "%08X", 0x04 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
 		usb_midi_write_packed (0x04 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
 		data += 3;
-		length -= 3;
+		remainingLength -= 3;
 	}
-	if (length == 3)
+	if (remainingLength == 3)
 	{
 		//System::logger.write(ERROR, "%08X", 0x07 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
 		usb_midi_write_packed (0x07 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
 	}
-	else if (length == 2)
+	else if (remainingLength == 2)
 	{
 		//System::logger.write(ERROR, "%08X", 0x06 | cable | (data[0] << 8) | (data[1] << 16));
 		usb_midi_write_packed (0x06 | cable | (data[0] << 8) | (data[1] << 16));
 	}
-	else if (length == 1)
+	else if (remainingLength == 1)
 	{
 		//System::logger.write(ERROR, "%08X", 0x05 | cable | (data[0] << 8));
 		usb_midi_write_packed (0x05 | cable | (data[0] << 8));
@@ -170,13 +172,13 @@ void usb_midi_send_sysex_add_term_bytes (const uint8_t *data, uint32_t length, u
 {
 	stopFlush = 1;
 	cable = (cable & 0x0F) << 4;
-
-	if (length == 0)
+  int remainingLength = length;
+	if (remainingLength == 0)
 	{
 		usb_midi_write_packed (0x06 | cable | (0xF0 << 8) | (0xF7 << 16));
 		return;
 	}
-	else if (length == 1)
+	else if (remainingLength == 1)
 	{
 		usb_midi_write_packed (0x07 | cable | (0xF0 << 8) | (data[0] << 16) | (0xF7 << 24));
 		return;
@@ -185,19 +187,19 @@ void usb_midi_send_sysex_add_term_bytes (const uint8_t *data, uint32_t length, u
 	{
 		usb_midi_write_packed (0x04 | cable | (0xF0 << 8) | (data[0] << 16) | (data[1] << 24));
 		data += 2;
-		length -= 2;
+		remainingLength -= 2;
 	}
-	while (length >= 3)
+	while (remainingLength >= 3)
 	{
 		usb_midi_write_packed (0x04 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
 		data += 3;
-		length -= 3;
+		remainingLength -= 3;
 	}
-	if (length == 2)
+	if (remainingLength == 2)
 	{
 		usb_midi_write_packed (0x07 | cable | (data[0] << 8) | (data[1] << 16) | (0xF7 << 24));
 	}
-	else if (length == 1)
+	else if (remainingLength == 1)
 	{
 		usb_midi_write_packed (0x06 | cable | (data[0] << 8) | (0xF7 << 16));
 	}
