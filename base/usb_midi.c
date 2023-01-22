@@ -585,6 +585,20 @@ int usb_midi_read_sysex (void)
 	b1 = (n >> 8) & 0xFF;
 	usb_midi_msg_cable = (n >> 4) & 15;
 
+	if (type1 >= 0x08 && type1 <= 0x0E)
+	{
+    rxIsrDisabled = 0;
+    __enable_irq ();
+    return (0);
+  }
+
+	if (type1 == 0x02 || type1 == 0x03 || (type1 == 0x05 && b1 >= 0xF1 && b1 != 0xF7))
+	{
+    rxIsrDisabled = 0;
+    __enable_irq ();
+    return (0);
+  }
+
 	if (type1 == 0x04)
 	{
 		sysex_byte (n >> 8);
@@ -623,11 +637,14 @@ int usb_midi_read_sysex (void)
 
   if (type1 == 0x0F)
 	{
+		if (b1 >= 0xF8)
+		{
+        rxIsrDisabled = 0;
+        __enable_irq ();
+      return (0);
+		}
 		if (b1 == 0xF0 || usb_midi_msg_sysex_len > 0)
 		{
-			// From David Sorlien, dsorlien at gmail.com, http://axe4live.wordpress.com
-			// OSX sometimes uses Single Byte Unparsed to
-			// send bytes in the middle of a SYSEX message.
 			sysex_byte (b1);
 		}
 	}
