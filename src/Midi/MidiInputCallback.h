@@ -10,7 +10,7 @@ class MidiInputCallback
 {
 public:
     MidiInputCallback();
-    ~MidiInputCallback() = default;
+    virtual ~MidiInputCallback() = default;
 
     /**
      * Gets called for all incoming MIDI messages besides Active sensing,
