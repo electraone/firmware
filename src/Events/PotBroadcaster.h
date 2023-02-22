@@ -20,6 +20,7 @@ public:
     void potChange(uint8_t potId, int16_t relativeChange);
     void potTouchDown(uint8_t potId);
     void potTouchUp(uint8_t potId);
+    void stopPropagation(void);
 
 private:
     void triggerCallbacks(PotEvent &pe, plFunction function);

@@ -36,6 +36,11 @@ void PotBroadcaster::potTouchUp(uint8_t potId)
     triggerCallbacks(potEvent, &PotListener::onPotTouchUp);
 }
 
+void PotBroadcaster::stopPropagation(void)
+{
+    iteratorInvalidated = true;
+}
+
 void PotBroadcaster::triggerCallbacks(PotEvent &potEvent, plFunction function)
 {
     Window *originatingWindow = System::windowManager.getActiveWindow();
@@ -59,7 +64,8 @@ void PotBroadcaster::triggerCallbacks(PotEvent &potEvent, plFunction function)
                 potEvent.setAcceleratedChange(potEvent.getRelativeChange());
             }
 
-            if (eventComponent->getWindow() == originatingWindow) {
+            if ((eventComponent->getWindow() == originatingWindow)
+                || eventComponent->isWindow()) {
                 for (Component *c = eventComponent; c;
                      c = c->getParentComponent()) {
                     if (PotListener *pl = dynamic_cast<PotListener *>(c)) {
@@ -72,6 +78,9 @@ void PotBroadcaster::triggerCallbacks(PotEvent &potEvent, plFunction function)
 
                     if (originatingWindow
                         != System::windowManager.getActiveWindow()) {
+                        break;
+                    }
+                    if (iteratorInvalidated) {
                         break;
                     }
                 }

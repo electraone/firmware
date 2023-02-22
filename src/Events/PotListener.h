@@ -55,6 +55,12 @@ public:
     }
 
     /**
+     * Stop further propagation of current event
+     *
+     */
+    void stopPropagation(void);
+
+    /**
      * Assigns the pot to the listener object.
      *
      * @param an identifier of the pot. It is a number in range 0 to 11, or

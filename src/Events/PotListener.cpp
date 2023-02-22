@@ -12,6 +12,11 @@ PotListener::PotListener()
 {
 }
 
+void PotListener::stopPropagation(void)
+{
+    potBroadcaster.stopPropagation();
+}
+
 void PotListener::assignPot(uint8_t newPotId, uint16_t newNumValues)
 {
     potId = newPotId;
