@@ -372,6 +372,12 @@ public:
      */
     Rectangle getLocalBounds(void) const;
 
+    /**
+     * Tells whether the component is a Window
+     *
+     */
+    bool isWindow(void);
+
 protected:
     static const int MaxNameLength = 15;
     char name[MaxNameLength + 1];

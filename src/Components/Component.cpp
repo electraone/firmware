@@ -389,3 +389,8 @@ void Component::repaintQueueItem(void)
         queueEntry = repaintQueue.last();
     }
 }
+
+bool Component::isWindow(void)
+{
+    return (dynamic_cast<Window *>(this));
+}
