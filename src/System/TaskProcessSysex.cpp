@@ -234,6 +234,7 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                     "processElectraSysex: : switch logger port to: %d",
                     port);
                 System::logger.setPort(port);
+                MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
             } else {
                 App::get()->handleElectraSysex(port, sysexBlock);
             }
@@ -242,6 +243,7 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                 System::logger.write(
                     ERROR, "processElectraSysex: : switch to the update mode");
                 System::tasks.displayUpdateModeScreen();
+                MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
                 delay(200);
                 _reboot_Teensyduino_();
             } else if (object == ElectraCommand::Object::Logger) {
