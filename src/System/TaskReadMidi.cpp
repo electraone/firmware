@@ -5,7 +5,7 @@
 #define USB_MIDI_PORT_CTRL 2
 
 CircularBuffer<MidiMessageTransport, 5> incomingQueueL1;
-CircularBuffer<MidiMessageTransport, 128> incomingQueueL2;
+CircularBuffer<MidiMessageTransport, 100> incomingQueueL2;
 
 /** This is used when reading of SysEx on CTRL port gets priority.
  */
