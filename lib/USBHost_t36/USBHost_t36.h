@@ -1272,7 +1272,7 @@ private:
 class MIDIDevice : public USBDriver
 {
 public:
-    enum { SYSEX_MAX_LEN = 1024 };
+    enum { SYSEX_MAX_LEN = 128 };
 
     // Message type names for compatibility with Arduino MIDI library 4.3.1
     enum MidiType {
@@ -1677,7 +1677,7 @@ private:
     Pipe_t *rxpipe;
     Pipe_t *txpipe;
     enum { MAX_PACKET_SIZE = 512 };
-    enum { RX_QUEUE_SIZE = 256 }; // must be more than MAX_PACKET_SIZE/4
+    enum { RX_QUEUE_SIZE = 128 }; // must be more than MAX_PACKET_SIZE/4
     uint32_t rx_buffer[MAX_PACKET_SIZE / 4];
     uint32_t tx_buffer1[MAX_PACKET_SIZE / 4];
     uint32_t tx_buffer2[MAX_PACKET_SIZE / 4];
