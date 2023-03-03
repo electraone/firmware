@@ -228,12 +228,12 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
             }
         } else if (cmd.isUpdateRuntime()) {
             if ((uint8_t)object == 0x7D) {
-                uint8_t port = cmd.getByte1();
+                uint8_t newLoggerPort = cmd.getByte1();
                 System::logger.write(
                     ERROR,
                     "processElectraSysex: : switch logger port to: %d",
-                    port);
-                System::logger.setPort(port);
+                    newLoggerPort);
+                System::logger.setPort(newLoggerPort);
                 MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
             } else {
                 App::get()->handleElectraSysex(port, sysexBlock);
