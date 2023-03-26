@@ -67,8 +67,8 @@ void printHex(uint8_t *data, uint8_t length);
 uint16_t getNextPowerOf2(uint16_t value);
 uint16_t getRange(uint8_t bitWidth);
 uint8_t reverse(uint8_t n);
-Rectangle slotToBounds(uint8_t slot);
-uint8_t boundsToSlot(Rectangle bounds);
+Rectangle controlSlotToBounds(uint8_t slot);
+uint8_t controlBoundsToSlot(Rectangle bounds);
 uint8_t getControlSetIdFromScreenY(uint16_t y);
 
 #endif /* _HELPERS_H */

@@ -7,13 +7,14 @@
 #include <cstring>
 #include "Arduino.h"
 #include "settings.h"
+#include "System.h"
 
 volatile bool loggerEnabled;
 
 #define LOG_MESSAGE_MAX_SIZE 200 // Max size of the log message
 
-static const int col_pos[6] = { 14, 181, 348, 515, 682, 849 };
-static const int row_pos[6] = { 6, 96, 186, 276, 366, 456 };
+static const int col_pos[6] = { 20, 187, 354, 521, 688, 855 };
+static const int row_pos[6] = { 28, 118, 208, 298, 388, 478 };
 
 const char *noteNames[] = {
     "c-1",  "c#-1", "d-1", "d#-1", "e-1", "f-1", "f#-1", "g-1", "g#-1", "a-1",
@@ -447,7 +448,7 @@ uint8_t reverse(uint8_t n)
     return ((lookup[n & 0b1111] << 4) | lookup[n >> 4]);
 }
 
-Rectangle slotToBounds(uint8_t slot)
+Rectangle controlSlotToBounds(uint8_t slot)
 {
     if (slot < 1 || slot > 36) {
         slot = 0;
@@ -458,10 +459,10 @@ Rectangle slotToBounds(uint8_t slot)
     int row = slot / 6;
     int col = slot % 6;
 
-    return (Rectangle(col_pos[col], row_pos[row], 158, 56));
+    return (Rectangle(col_pos[col] - 6, row_pos[row] - 22, 158, 56));
 }
 
-uint8_t boundsToSlot(Rectangle bounds)
+uint8_t controlBoundsToSlot(Rectangle bounds)
 {
     uint8_t row = 0;
     uint8_t col = 0;
@@ -470,13 +471,10 @@ uint8_t boundsToSlot(Rectangle bounds)
         if (col_pos[i] == bounds.getX()) {
             col = i;
         }
-        if (row_pos[i] == bounds.getX()) {
+        if (row_pos[i] == bounds.getY()) {
             row = i;
         }
     }
-
-    logMessage("row=%d, col=%d", row, col);
-
     return (row * 6 + col + 1);
 }
 
