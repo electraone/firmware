@@ -95,6 +95,13 @@ public:
     uint8_t getPotId(void);
 
     /**
+     * Set number of values to be associated with the pot
+     *
+     * @param a number of values to set the sensitivity
+     */
+    void setNumValues(uint16_t newNumValues);
+
+    /**
 	 * Returns number of distict values that the listener uses.
 	 */
     uint16_t getNumValues(void);

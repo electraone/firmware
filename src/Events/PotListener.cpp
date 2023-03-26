@@ -46,6 +46,11 @@ uint8_t PotListener::getPotId(void)
     return (potId);
 }
 
+void PotListener::setNumValues(uint16_t newNumValues)
+{
+    numValues = newNumValues;
+}
+
 uint16_t PotListener::getNumValues(void)
 {
     return (numValues);
