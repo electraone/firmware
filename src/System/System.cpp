@@ -33,7 +33,7 @@ void System::initialise(void)
     }
 
     usb_init(keyboardEnabled, mouseEnabled, keymediaEnabled);
-    System::logger.write(INFO, "USB device ports: initialised");
+    System::logger.write(LOG_INFO, "USB device ports: initialised");
 }
 
 SystemTasks System::tasks;

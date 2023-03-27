@@ -81,10 +81,10 @@ public:
 
     void print(void) const
     {
-        System::logger.write(ERROR, "id: %d", getId());
+        System::logger.write(LOG_ERROR, "id: %d", getId());
         for (const auto &item : items) {
             System::logger.write(
-                ERROR,
+                LOG_ERROR,
                 "    midiValue: %d, label: %s, bitmapEmpty: %d, address=%d",
                 item.getValue(),
                 item.getLabel(),

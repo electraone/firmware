@@ -130,7 +130,7 @@ void usb_midi_send_sysex_buffer_partial (const uint8_t *data, uint32_t length, u
   int remainingLength = length;
 	while (remainingLength > 0)
 	{
-		//System::logger.write(ERROR, "%08X", 0x04 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
+		//System::logger.write(LOG_ERROR, "%08X", 0x04 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
 		usb_midi_write_packed (0x04 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
 		data += 3;
 		remainingLength -= 3;
@@ -145,24 +145,24 @@ void usb_midi_send_sysex_buffer_has_term (const uint8_t *data, uint32_t length, 
   int remainingLength = length;
 	while (remainingLength > 3)
 	{
-		//System::logger.write(ERROR, "%08X", 0x04 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
+		//System::logger.write(LOG_ERROR, "%08X", 0x04 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
 		usb_midi_write_packed (0x04 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
 		data += 3;
 		remainingLength -= 3;
 	}
 	if (remainingLength == 3)
 	{
-		//System::logger.write(ERROR, "%08X", 0x07 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
+		//System::logger.write(LOG_ERROR, "%08X", 0x07 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
 		usb_midi_write_packed (0x07 | cable | (data[0] << 8) | (data[1] << 16) | (data[2] << 24));
 	}
 	else if (remainingLength == 2)
 	{
-		//System::logger.write(ERROR, "%08X", 0x06 | cable | (data[0] << 8) | (data[1] << 16));
+		//System::logger.write(LOG_ERROR, "%08X", 0x06 | cable | (data[0] << 8) | (data[1] << 16));
 		usb_midi_write_packed (0x06 | cable | (data[0] << 8) | (data[1] << 16));
 	}
 	else if (remainingLength == 1)
 	{
-		//System::logger.write(ERROR, "%08X", 0x05 | cable | (data[0] << 8));
+		//System::logger.write(LOG_ERROR, "%08X", 0x05 | cable | (data[0] << 8));
 		usb_midi_write_packed (0x05 | cable | (data[0] << 8));
 	}
 	stopFlush = 0;

@@ -27,7 +27,7 @@ public:
 
     void onTouchDown(const TouchEvent &touchEvent) override
     {
-        System::logger.write(ERROR, "callback: circle");
+        System::logger.write(LOG_ERROR, "callback: circle");
     }
 
 private:

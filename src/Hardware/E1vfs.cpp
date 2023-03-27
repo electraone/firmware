@@ -43,14 +43,14 @@ static int
     e1DirectWrite(E1File *p, const void *buffer, int size, sqlite_int64 offset)
 {
     if (!(p->file.seek(offset))) {
-        System::logger.write(ERROR, "e1DirectWrite: Seek error");
+        System::logger.write(LOG_ERROR, "e1DirectWrite: Seek error");
         return SQLITE_IOERR_WRITE;
     }
 
     int bytesWritten = p->file.write(buffer, size);
 
     if (bytesWritten != size) {
-        System::logger.write(ERROR, "e1DirectWrite: Write error");
+        System::logger.write(LOG_ERROR, "e1DirectWrite: Write error");
         return SQLITE_IOERR_WRITE;
     }
 
@@ -381,7 +381,7 @@ int registerFunctions(sqlite3 *db,
 void errorLogCallback(void *pArg, int errCode, const char *message)
 {
     System::logger.write(
-        ERROR, "e1VFS error: errcode=%d, msg=%s", errCode, message);
+        LOG_ERROR, "e1VFS error: errcode=%d, msg=%s", errCode, message);
 }
 
 int sqlite3_os_init(void)

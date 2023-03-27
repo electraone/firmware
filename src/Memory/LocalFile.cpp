@@ -63,7 +63,7 @@ bool LocalFile::writeAll(MemoryBlock &memoryBlock)
 
     if (!file) {
         System::logger.write(
-            ERROR, "Localfile: Cannot open file failed: %s", filepath);
+            LOG_ERROR, "Localfile: Cannot open file failed: %s", filepath);
         return (false);
     }
 

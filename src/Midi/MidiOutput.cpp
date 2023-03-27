@@ -420,7 +420,7 @@ bool MidiOutput::sendSysExFile(uint8_t port,
 
     if (!(file = Hardware::sdcard.createInputStream(filename))) {
         System::logger.write(
-            ERROR,
+            LOG_ERROR,
             "sendSysexFile: the file does not exists: filename=%s",
             filename);
         return (false);
@@ -848,7 +848,7 @@ void MidiOutput::sendRpn(MidiInterface::Type interface,
                          uint16_t parameterNumber,
                          uint16_t midiValue)
 {
-    System::logger.write(ERROR, "sending RPN: %d", parameterNumber);
+    System::logger.write(LOG_ERROR, "sending RPN: %d", parameterNumber);
     sendControlChange(interface, port, channel, 101, parameterNumber >> 7);
     sendControlChange(interface, port, channel, 100, parameterNumber & 0x7F);
     sendControlChange(interface, port, channel, 6, midiValue >> 7);

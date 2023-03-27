@@ -42,7 +42,7 @@ public:
         model.query();
         model.close();
 
-        System::logger.write(ERROR, "setup completed");
+        System::logger.write(LOG_ERROR, "setup completed");
         mainWindow.repaint();
     }
 
@@ -58,17 +58,18 @@ public:
 
     void onButtonDown(uint8_t buttonId) override
     {
-        System::logger.write(ERROR, "buttonDown: buttonId=%d", buttonId);
+        System::logger.write(LOG_ERROR, "buttonDown: buttonId=%d", buttonId);
     }
 
     void onButtonLongHold(uint8_t buttonId) override
     {
-        System::logger.write(ERROR, "buttonLongHold: buttonId=%d", buttonId);
+        System::logger.write(
+            LOG_ERROR, "buttonLongHold: buttonId=%d", buttonId);
     }
 
     void onButtonUp(uint8_t buttonId) override
     {
-        System::logger.write(ERROR, "buttonUp: buttonId=%d", buttonId);
+        System::logger.write(LOG_ERROR, "buttonUp: buttonId=%d", buttonId);
     }
 
     void handleIncomingMidiMessage(const MidiInput &midiInput,
@@ -90,7 +91,7 @@ public:
                     ERROR, "%d> %X (%c)", i, sysexByte, sysexByte);
             }
 
-            System::logger.write(ERROR, "---------------------");
+            System::logger.write(LOG_ERROR, "---------------------");
         }
     }
 

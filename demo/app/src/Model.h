@@ -34,7 +34,7 @@ public:
         int rc = sqlite3_exec(dbHandle, sql, 0, 0, &errorMessage);
 
         if (rc != SQLITE_OK) {
-            System::logger.write(ERROR, "SQL error: %s", errorMessage);
+            System::logger.write(LOG_ERROR, "SQL error: %s", errorMessage);
             sqlite3_free(errorMessage);
         }
     }
@@ -49,7 +49,7 @@ public:
         int rc = sqlite3_exec(dbHandle, sql, 0, 0, &errorMessage);
 
         if (rc != SQLITE_OK) {
-            System::logger.write(ERROR, "SQL error: %s", errorMessage);
+            System::logger.write(LOG_ERROR, "SQL error: %s", errorMessage);
             sqlite3_free(errorMessage);
         }
     }
@@ -76,7 +76,7 @@ public:
             const unsigned char *manufacturer = sqlite3_column_text(stmt, 1);
             const unsigned char *model = sqlite3_column_text(stmt, 2);
 
-            System::logger.write(ERROR,
+            System::logger.write(LOG_ERROR,
                                  "id: %d, manufacturer: %s model: %s",
                                  id,
                                  manufacturer,
@@ -117,7 +117,7 @@ public:
         int rc = sqlite3_exec(dbHandle, sql, 0, 0, &errorMessage);
 
         if (rc != SQLITE_OK) {
-            System::logger.write(ERROR, "SQL error: %s", errorMessage);
+            System::logger.write(LOG_ERROR, "SQL error: %s", errorMessage);
             sqlite3_free(errorMessage);
         }
     }
@@ -130,7 +130,7 @@ public:
         int rc = sqlite3_exec(dbHandle, sql, 0, 0, &errorMessage);
 
         if (rc != SQLITE_OK) {
-            System::logger.write(ERROR, "SQL error: %s", errorMessage);
+            System::logger.write(LOG_ERROR, "SQL error: %s", errorMessage);
             sqlite3_free(errorMessage);
         }
     }

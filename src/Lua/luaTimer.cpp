@@ -82,7 +82,7 @@ void timer_runCallback(void)
 
     if (lua_isfunction(L, -1)) {
         if (lua_pcall(L, 0, 0, 0) != 0) {
-            System::logger.write(ERROR,
+            System::logger.write(LOG_ERROR,
                                  "error running function 'timer.callback': %s",
                                  lua_tostring(L, -1));
         }

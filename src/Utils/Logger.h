@@ -2,10 +2,10 @@
 
 #include <cstdint>
 
-#define ERROR 0
-#define WARNING 1
-#define INFO 2
-#define TRACE 3
+#define LOG_ERROR 0
+#define LOG_WARNING 1
+#define LOG_INFO 2
+#define LOG_TRACE 3
 
 /**
  * Logger class

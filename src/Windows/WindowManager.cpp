@@ -128,7 +128,7 @@ void WindowManager::repaintAll(void)
 
     for (const auto &window : windows) {
         System::logger.write(
-            ERROR,
+            LOG_ERROR,
             "repainting window: index=%d, name=%s, address=%x, active=%d, visible=%d",
             index,
             window->getName(),
@@ -151,7 +151,7 @@ void WindowManager::listWindows(void)
 
     for (const auto &window : windows) {
         System::logger.write(
-            ERROR,
+            LOG_ERROR,
             "listWindows: index=%d, name=%s, address=%x, active=%d",
             index,
             window->getName(),

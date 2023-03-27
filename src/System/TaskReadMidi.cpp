@@ -105,7 +105,7 @@ void readMidi(void)
         // SysEx messages are handled in the SysexCallbacks.cpp
         if (message.getType() != MidiMessage::Type::SystemExclusive) {
             if (!runRouteMessageCallback(midiInput, message)) {
-                System::logger.write(ERROR, "skipping the message");
+                System::logger.write(LOG_ERROR, "skipping the message");
                 continue;
             }
         }

@@ -221,7 +221,7 @@ public:
     void print(void) const
     {
         /*
-        System::logger.write(ERROR,
+        System::logger.write(LOG_ERROR,
             "bounds: [%d %d %d %d]", getX(), getY(), getWidth(), getHeight());
        */
     }

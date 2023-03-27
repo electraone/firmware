@@ -90,7 +90,7 @@ uint32_t VideoRam::readRam32(uint32_t address)
 void VideoRam::readRamData(uint32_t address, uint8_t *data, uint16_t size)
 {
 #ifdef DEBUG
-    System::logger.write(ERROR, "readRamData: address=%d", address);
+    System::logger.write(LOG_ERROR, "readRamData: address=%d", address);
 #endif
 
     saveState();
@@ -114,7 +114,7 @@ void VideoRam::writeRamData(uint32_t address,
                             uint16_t size)
 {
 #ifdef DEBUG
-    System::logger.write(ERROR, "writeRamData: address=%d", address);
+    System::logger.write(LOG_ERROR, "writeRamData: address=%d", address);
 #endif
 
     saveState();

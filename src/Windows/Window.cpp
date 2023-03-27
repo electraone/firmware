@@ -127,13 +127,15 @@ void Window::onTouchOutside(void)
 void Window::addChildComponent(Component *component)
 {
     System::logger.write(
-        ERROR, "window.addChildComponent() do use it. Use setOwnedContent()");
+        LOG_ERROR,
+        "window.addChildComponent() do use it. Use setOwnedContent()");
 }
 
 void Window::addAndMakeVisible(Component *component)
 {
     System::logger.write(
-        ERROR, "window.addChildComponent() do use it. Use setOwnedContent()");
+        LOG_ERROR,
+        "window.addChildComponent() do use it. Use setOwnedContent()");
 }
 
 void Window::setOwnedContent(Component *newComponent)

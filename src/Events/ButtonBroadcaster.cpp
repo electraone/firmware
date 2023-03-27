@@ -38,7 +38,7 @@ void ButtonBroadcaster::listListeners(void)
 {
     for (auto i = listeners.begin(); i != listeners.end(); i++) {
         auto listener = i->first;
-        System::logger.write(ERROR,
+        System::logger.write(LOG_ERROR,
                              "listListeners: buttonListener: %x is active: %d",
                              listener,
                              listeners[listener]);
