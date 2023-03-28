@@ -16,9 +16,7 @@ void Logger::setPort(uint8_t newPort)
 
 void Logger::setLevel(uint8_t newLevel)
 {
-    if ((0 <= newLevel) && (newLevel <= 3)) {
-        minimumLevel = newLevel;
-    }
+    minimumLevel = ((0 <= newLevel) && (newLevel <= 3)) ? newLevel : 3;
 }
 
 void Logger::enable(void)

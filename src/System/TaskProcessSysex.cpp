@@ -253,9 +253,13 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                         LOG_ERROR, "processElectraSysex::logger disabled");
                     System::logger.disable();
                 } else {
+                    uint8_t logLevel = cmd.getByte2();
                     System::logger.enable();
+                    System::logger.setLevel(logLevel);
                     System::logger.write(LOG_ERROR,
-                                         "processElectraSysex::logger enabled");
+                                         "processElectraSysex::logger enabled: "
+                                         "logLevel=%d",
+                                         logLevel);
                 }
                 System::runtimeInfo.setLoggerStatus(loggerEnabled);
                 MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
