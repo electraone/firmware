@@ -25,7 +25,7 @@ TARGET = firmware
 APPPATH = demo/app
 
 # Location of the low-level firmware functionality
-BASEPATH = base
+BASEPATH = bsp
 
 # Location own and 3rd party libraries
 LIBRARYPATH = lib
