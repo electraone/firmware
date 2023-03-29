@@ -254,6 +254,9 @@ void LookAndFeel::paintSet(Graphics &g,
     uint16_t textWidth =
         g.getTextWidth(labelAdjusted, TextStyle::smallTransparent);
 
+    g.setColour(LookAndFeel::backgroundColour);
+    g.fillRect(0, 0, width, 15);
+
     if (!isHighligted || height > 20) {
         g.setColour(Colours565::darker(colour, 0.3));
         for (uint16_t i = 0; i <= (width / 2) - (textWidth / 2) - 3; i += 3) {
