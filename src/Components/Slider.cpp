@@ -19,6 +19,9 @@ Slider::ValueBoxPosition Slider::getValueBoxPosition(void) const
 void Slider::setMinimum(int16_t newMin)
 {
     value.setMin(newMin);
+    if (getValue() < newMin) {
+        setValue(newMin);
+    }
     repaint();
 }
 
@@ -30,6 +33,9 @@ int16_t Slider::getMinimum(void) const
 void Slider::setMaximum(int16_t newMax)
 {
     value.setMax(newMax);
+    if (getValue() > newMax) {
+        setValue(newMax);
+    }
     repaint();
 }
 

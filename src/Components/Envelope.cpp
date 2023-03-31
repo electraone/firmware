@@ -38,11 +38,17 @@ float Envelope::getValue(uint8_t handle)
 
 void Envelope::setMin(uint8_t handle, float newMin)
 {
+    if (values[handle].get() < newMin) {
+        values[handle].set(newMin);
+    }
     values[handle].setMin(newMin);
 }
 
 void Envelope::setMax(uint8_t handle, float newMax)
 {
+    if (values[handle].get() > newMax) {
+        values[handle].set(newMax);
+    }
     values[handle].setMax(newMax);
 }
 
