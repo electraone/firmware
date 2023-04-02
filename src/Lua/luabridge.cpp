@@ -386,4 +386,10 @@ void loadGlobalVariables(lua_State *L)
     lua_setglobal(L, "BUTTONS");
     lua_pushnumber(L, 64);
     lua_setglobal(L, "WINDOWS");
+
+    // variants
+    lua_pushnumber(L, 0);
+    lua_setglobal(L, "VT_DEFAULT");
+    lua_pushnumber(L, 1);
+    lua_setglobal(L, "VT_HIGHLIGHTED");
 }
