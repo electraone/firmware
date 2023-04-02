@@ -218,12 +218,12 @@ public:
     /**
      * Prints information about bounds
      */
-    void print(void) const
+    void print(uint8_t logLevel) const
     {
-        /*
+    	/*
         System::logger.write(LOG_ERROR,
             "bounds: [%d %d %d %d]", getX(), getY(), getWidth(), getHeight());
-       */
+         */
     }
 
 private:
