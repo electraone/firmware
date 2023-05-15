@@ -20,7 +20,7 @@ public:
 
         if (rc != SQLITE_OK) {
             System::logger.write(
-                ERROR, "Cannot open database: %s", sqlite3_errmsg(dbHandle));
+                LOG_ERROR, "Cannot open database: %s", sqlite3_errmsg(dbHandle));
             sqlite3_close(dbHandle);
         }
     }
@@ -67,7 +67,7 @@ public:
 
         if (rc != SQLITE_OK) {
             System::logger.write(
-                ERROR, "Failed to fetch data: %s", sqlite3_errmsg(dbHandle));
+                LOG_ERROR, "Failed to fetch data: %s", sqlite3_errmsg(dbHandle));
             return;
         }
 
@@ -96,7 +96,7 @@ public:
 
         if (rc != SQLITE_OK) {
             System::logger.write(
-                ERROR, "Failed to fetch count: %s", sqlite3_errmsg(dbHandle));
+                LOG_ERROR, "Failed to fetch count: %s", sqlite3_errmsg(dbHandle));
             return (-1);
         }
 

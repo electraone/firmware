@@ -30,7 +30,7 @@ public:
     void initialise(void) override
     {
         System::logger.write(
-            ERROR, "sqlite version: %s\n", sqlite3_libversion());
+            LOG_ERROR, "sqlite version: %s\n", sqlite3_libversion());
 
         model.attach("synth.db");
         model.create();
@@ -77,7 +77,7 @@ public:
     {
         if (midiMessage.isSysEx()) {
             System::logger.write(
-                ERROR,
+                LOG_ERROR,
                 "---< sysex start: interface=%s, port=%d >---",
                 MidiInterface::getName(midiInput.getInterfaceType()),
                 midiInput.getPort());
@@ -88,7 +88,7 @@ public:
             for (size_t i = 0; i < sysexLength; i++) {
                 byte sysexByte = sysexBlock.peek(i);
                 System::logger.write(
-                    ERROR, "%d> %X (%c)", i, sysexByte, sysexByte);
+                    LOG_ERROR, "%d> %X (%c)", i, sysexByte, sysexByte);
             }
 
             System::logger.write(LOG_ERROR, "---------------------");
