@@ -10,7 +10,7 @@
 #define SERIAL1_TX_BUFFER_SIZE     256 // number of outgoing bytes to buffer
 #endif
 #ifndef SERIAL1_RX_BUFFER_SIZE
-#define SERIAL1_RX_BUFFER_SIZE     256 // number of incoming bytes to buffer
+#define SERIAL1_RX_BUFFER_SIZE     1024 // number of incoming bytes to buffer
 #endif
 #define RTS_HIGH_WATERMARK (SERIAL1_RX_BUFFER_SIZE-24) // RTS requests sender to pause
 #define RTS_LOW_WATERMARK  (SERIAL1_RX_BUFFER_SIZE-38) // RTS allows sender to resume
@@ -529,7 +529,9 @@ void uart0_status_isr(void)
 				int avail;
 				if (head >= tail) avail = head - tail;
 				else avail = SERIAL1_RX_BUFFER_SIZE + head - tail;
-				if (avail >= RTS_HIGH_WATERMARK) rts_deassert();
+				if (avail >= RTS_HIGH_WATERMARK) {
+					rts_deassert();
+				}
 			}
 		}
 	}

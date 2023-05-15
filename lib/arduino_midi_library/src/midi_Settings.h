@@ -64,7 +64,7 @@ struct DefaultSettings
     call when data is available. This can speed up your application if receiving
     a lot of traffic, but might induce MIDI Thru and treatment latency.
     */
-    static const bool Use1ByteParsing = true;
+    static const bool Use1ByteParsing = false;
 
     /*! Override the default MIDI baudrate to transmit over USB serial, to
     a decoding program such as Hairless MIDI (set baudrate to 115200)\n
@@ -83,7 +83,7 @@ struct DefaultSettings
 
     /*! Max size of sysex message stored in RAM
     */
-    static const unsigned SysExMaxRamSize = 512;
+    static const unsigned SysExMaxRamSize = 4300;
 };
 
 END_MIDI_NAMESPACE
