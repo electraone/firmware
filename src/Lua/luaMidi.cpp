@@ -244,10 +244,10 @@ int midi_sendPitchBend(lua_State *L)
     checkInterface(interface);
     checkPort(port);
     checkChannel(channel);
-    check14bit(value, "value");
+    checkPitchBend(value, "value");
 
     MidiOutput::sendPitchBend(
-        static_cast<MidiInterface::Type>(interface), port, channel, value);
+        static_cast<MidiInterface::Type>(interface), port, channel, value + 8191);
 
     return (0);
 }
