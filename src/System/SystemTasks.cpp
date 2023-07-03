@@ -100,6 +100,11 @@ void SystemTasks::disableMidi(void)
     timerReadMidi.end();
 }
 
+void SystemTasks::flushMidi(void)
+{
+    sendMidi();
+}
+
 void SystemTasks::enableTimer(void)
 {
     taskRunTimer.enable();

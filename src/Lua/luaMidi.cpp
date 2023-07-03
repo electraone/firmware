@@ -671,6 +671,14 @@ int midi_sendControlChange14Bit(lua_State *L)
     return (0);
 }
 
+int midi_flush(lua_State *L)
+{
+    lua_settop(L, 0);
+    System::tasks.flushMidi();
+
+    return (0);
+}
+
 void midi_onSingleByte(const char *module,
                        const char *function,
                        MidiInput midiInput)

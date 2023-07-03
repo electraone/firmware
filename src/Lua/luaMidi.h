@@ -58,6 +58,7 @@ int midi_sendSysEx(lua_State *L);
 int midi_sendNrpn(lua_State *L);
 int midi_sendRpn(lua_State *L);
 int midi_sendControlChange14Bit(lua_State *L);
+int midi_flush(lua_State *L);
 void midi_onSingleByte(const char *module,
                        const char *function,
                        MidiInput midiInput);
@@ -99,6 +100,7 @@ static const luaL_Reg midi_functions[] = {
     { "sendNrpn", midi_sendNrpn },
     { "sendRpn", midi_sendRpn },
     { "sendControlChange14Bit", midi_sendControlChange14Bit },
+    { "flush", midi_flush },
     { NULL, NULL }
 };
 

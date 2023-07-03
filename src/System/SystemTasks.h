@@ -32,6 +32,7 @@ public:
     void enableMidi(void);
     void enableCtrlMidi(void);
     void disableMidi(void);
+    void flushMidi(void);
     void enableTimer(void);
     void disableTimer(void);
     bool isTimerEnabled(void);
