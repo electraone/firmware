@@ -14,10 +14,10 @@ void SliderHorizontal::onTouchMove(const TouchEvent &touchEvent)
         constrain(ceil(touchEvent.getX() / step + min), min, max);
 
     setValue(newValue);
-    /*
+
     if (onValueChange) {
         onValueChange(value.get());
-    }*/
+    }
 }
 
 void SliderHorizontal::onTouchDown(const TouchEvent &touchEvent)

@@ -16,10 +16,10 @@ void SliderVertical::onTouchMove(const TouchEvent &touchEvent)
                   max);
 
     setValue(newValue);
-    /*
+
     if (onValueChange) {
         onValueChange(value.get());
-    }*/
+    }
 }
 
 void SliderVertical::onTouchDown(const TouchEvent &touchEvent)

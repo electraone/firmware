@@ -14,11 +14,10 @@ void BarHorizontal::onTouchMove(const TouchEvent &touchEvent)
         constrain(ceil(touchEvent.getX() / step + min), min, max);
 
     setValue(newValue);
-    /*
+
     if (onValueChange) {
         onValueChange(value.get());
     }
-    */
 }
 
 void BarHorizontal::onTouchDown(const TouchEvent &touchEvent)

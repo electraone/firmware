@@ -16,10 +16,10 @@ void BarVertical::onTouchMove(const TouchEvent &touchEvent)
                   max);
 
     setValue(newValue);
-    /*
+
     if (onValueChange) {
         onValueChange(value.get());
-    }*/
+    }
 }
 
 void BarVertical::onTouchDown(const TouchEvent &touchEvent)

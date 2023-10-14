@@ -41,9 +41,11 @@ public:
     virtual void onPotTouchDown(const PotEvent &potEvent) override;
     virtual void onPotTouchUp(const PotEvent &potEvent) override;
 
-    //std::function<void(int16_t value)> onValueChange;
-    //std::function<void(int16_t value)> onDragStart;
-    //std::function<void(int16_t value)> onDragEnd;
+    std::function<void(int16_t value)> onValueChange;
+
+    /* \todo commented out on purpose */
+    std::function<void(int16_t value)> onDragStart;
+    std::function<void(int16_t value)> onDragEnd;
 
 protected:
     virtual void paintValueBox(Graphics &g);
