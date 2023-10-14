@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [[ ! $1 ]]; then
+  echo "format: directory not specified" 1>&2
+  exit 1
+fi
+
+TARGET_DIR="$1"
+
+CLANGFORMAT=$(command -v clang-format 2>/dev/null)
+
+if [[ "$CLANGFORMAT" = "" ]]; then
+  echo "format: clang-format not found; install with 'brew install clang-format'" 1>&2
+  exit 1
+fi
+
+for file in $(find "$TARGET_DIR" -type f \( -iname '*.h' -o -iname '*.cpp' \)); do
+  "$CLANGFORMAT" --verbose -i "$file";
+done
