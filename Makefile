@@ -3,10 +3,11 @@
 #
 
 # Path locations for firmware Loader, firmware image tools, etc
-TOOLSPATH = .bin
-HEX2IMAGE = $(TOOLSPATH)/hex2k66img
-SENDMIDI  = $(TOOLSPATH)/sendmidi
-LOADER    = $(TOOLSPATH)/firmwareloader
+TOOLSPATH   = .bin
+HEX2IMAGE   = $(TOOLSPATH)/hex2k66img
+SENDMIDI    = $(TOOLSPATH)/sendmidi
+LOADER      = $(TOOLSPATH)/firmwareloader
+JLINKLOADER = $(TOOLCHAINPATH)/bin/JLinkExe
 
 TOOLCHAINPATH = /usr/local
 DOXYGEN = $(TOOLCHAINPATH)/doxygen/doxygen
@@ -17,12 +18,14 @@ COMPILERPATH = $(TOOLCHAINPATH)/arm/bin
 # Location of project scripts
 SCRIPTSPATH = scripts
 
+# Target CPU
+CPUDEVICE = MK66FX1M0XXX18
 
 # The name of your project
 TARGET = firmware
 
 # Path location of Electra app
-APPPATH = demo/app
+APPPATH = apps/demo
 
 # Location of the low-level firmware functionality
 BASEPATH = bsp
@@ -38,6 +41,9 @@ TESTDIR = tests
 
 # Path where the generated documentation will be stored
 DOCS = docs
+
+# JLink command files
+JLINKSCRIPTPATH = jlink
 
 # Optional compiler parameters
 OPTIONS = -Wno-deprecated-declarations
@@ -62,7 +68,7 @@ endif
 
 
 # CPPFLAGS = compiler options for C and C++
-CPPFLAGS = -Wall -Os -mthumb -ffunction-sections -fdata-sections \
+CPPFLAGS = -Wall -Os -ggdb -mthumb -ffunction-sections -fdata-sections \
       -fshort-enums $(OPTIONS) -nostdlib -MMD -DF_CPU=$(CPU_SPEED) \
 			-Isrc -I$(BASEPATH)
 
@@ -70,29 +76,18 @@ CPPFLAGS = -Wall -Os -mthumb -ffunction-sections -fdata-sections \
 CXXFLAGS = -std=gnu++17 -felide-constructors -fexceptions \
       -fshort-enums -Wno-reorder
 
-# sqlite options
-CFLAGS_SQLITE= -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=0 -DHAVE_SYS_STAT_H=0 \
-	-DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 \
-	-DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=0 \
-	-DLT_OBJDIR=\".libs/\" -DHAVE_FDATASYNC=0 -DHAVE_USLEEP=0 \
-	-DHAVE_LOCALTIME_R=0 -DHAVE_GMTIME_R=0 -DHAVE_DECL_STRERROR_R=1 \
-	-DHAVE_STRERROR_R=1 -DHAVE_ZLIB_H=0 -DSQLITE_THREADSAFE=0 \
-	-DSQLITE_OMIT_LOAD_EXTENSION=1 -DSQLITE_OMIT_WAL=1 -DSQLITE_OS_OTHER=1
-
-# compiler options for C only
-CFLAGS = -ggdb $(CFLAGS_SQLITE)
-
 # linker options
-LDFLAGS = -Os -Wl,--gc-sections -mthumb
+LDFLAGS = -Wl,--gc-sections -mthumb
 
 # additional libraries to link
-LIBS = -lstdc++ -lm #lib/sqlite/sqlite3.o
+LIBS = -lstdc++ -lm
 
 # compiler options
 CPPFLAGS += -D__MK66FX1M0__ -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
 		-DARDUINO=182 -DTEENSYDUINO # Required to compile Arduino / Teensy libs
 LDSCRIPT = $(BASEPATH)/mk66fx1m0.ld
-LDFLAGS += -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -T$(LDSCRIPT)
+LDFLAGS += -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fno-use-linker-plugin \
+	-T$(LDSCRIPT)
 
 
 # names for the compiler programs
@@ -142,7 +137,8 @@ INC := $(foreach x,$(filter %/, $(wildcard src/**/)), -I$(x))
 
 # include paths for Electra application
 L_APP_INC := $(foreach x,$(filter %/, $(wildcard $(APPPATH)/**/*/)), -I$(x)) \
-		 $(foreach x,$(filter %/, $(wildcard $(APPPATH)/**/)), -I$(x))
+		 $(foreach x,$(filter %/, $(wildcard $(APPPATH)/**/)), -I$(x)) \
+		 -I$(APPPATH)
 
 
 SOURCES := $(C_FILES:.c=.o) $(CPP_FILES:.cpp=.o) \
@@ -175,13 +171,17 @@ upload: $(BUILDDIR)/$(TARGET).hex
 	$(SENDMIDI) dev $(CTRL_PORT) syx 00h 21h 45h 7fh 7fh
 	$(LOADER) $<
 
+upload-jlink: $(BUILDDIR)/$(TARGET).hex
+	$(JLINKLOADER) -nogui 1 -device $(CPUDEVICE) -CommandFile $(JLINKSCRIPTPATH)/erase.jlink
+	$(JLINKLOADER) -nogui 1 -device $(CPUDEVICE) -CommandFile $(JLINKSCRIPTPATH)/download.jlink
+
 docs: $(OBJS)
 	@$(DOXYGEN)
 
 $(BUILDDIR)/%.o: %.c
 	@echo -e "[CC] \t$<"
 	@mkdir -p "$(dir $@)"
-	@$(CC) $(CPPFLAGS) $(CFLAGS) $(INC) $(L_INC) $(L_APP_INC) -o "$@" -c "$<"
+	@$(CC) $(CPPFLAGS) $(INC) $(L_INC) $(L_APP_INC) -o "$@" -c "$<"
 
 $(BUILDDIR)/%.o: %.cpp
 	@echo -e "[CXX]\t$<"

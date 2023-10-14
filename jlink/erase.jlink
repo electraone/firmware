@@ -1,0 +1,5 @@
+SelectInterface SWD
+Speed 1000
+connect
+erase
+quit
