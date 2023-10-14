@@ -131,10 +131,10 @@ static const luaL_Reg midi_functions[] = {
             luaL_error(L, "%s is out of 14bit range: value=%d", var, number)); \
     }
 
-#define checkPitchBend(number, var)                                           \
-    if ((number < -8191) || (number > 8192)) {                                \
-        return (                                                              \
-            luaL_error(L, "%s is out of pitchBend range: value=%d", var, number)); \
+#define checkPitchBend(number, var)                                            \
+    if ((number < -8191) || (number > 8192)) {                                 \
+        return (luaL_error(                                                    \
+            L, "%s is out of pitchBend range: value=%d", var, number));        \
     }
 
 #define checkBoolean(number, var)                                              \
