@@ -51,8 +51,6 @@ void BitmapReader::loadBMP(const char *filename,
     // Seek to the start of the image data
     file.seek(header.offset);
 
-    uint16_t buffer[1024];
-
     setCanvasAddress(FRAME_UI_TOOLKIT);
     clearScreen(Colours565::black);
 
@@ -64,6 +62,8 @@ void BitmapReader::loadBMP(const char *filename,
     }
 
     setAddress(0, 0);
+
+    uint8_t buffer[2048] = { 0 };
 
     for (uint16_t y = 0; y < lines; y++) {
         if (file.read(&buffer, sizeof(buffer)) != sizeof(buffer)) {
@@ -90,9 +90,11 @@ void BitmapReader::loadBMP(const char *filename,
 
         setCanvasAddress(FRAME_UI_TOOLKIT);
 
-        for (uint16_t x = 0; x < 1024; x++) {
-            writeRAM16(buffer[x]);
-        }
+        waitWriteFifo();
+
+        setAddress(0, y);
+        armMemoryWrite();
+        writeData(buffer, sizeof(buffer));
     }
 
     // Enable interrupts again

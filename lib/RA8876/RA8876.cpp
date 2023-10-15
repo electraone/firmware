@@ -1375,6 +1375,27 @@ void RA8876::writeCmd(uint8_t x)
     digitalWriteFast(m_csPin, HIGH);
 }
 
+void RA8876::armMemoryWrite(void)
+{
+    writeCmd(RA8876_REG_MRWDP);
+}
+
+void RA8876::writeData(uint8_t *p_src, size_t length)
+{
+    digitalWriteFast(m_csPin, LOW);
+    SPI.transfer(RA8876_DATA_WRITE);
+
+    for (uint32_t i = 0; i < length; i += 16) {
+        for (uint8_t a = 0; a < 4; a++) {
+            uint8_t *p_x = (((uint8_t *)p_src) + (i + (a * 4)));
+            SPI.transfer(p_x, 4);
+        }
+    }
+    
+    digitalWriteFast(m_csPin, HIGH);    
+    waitWriteFifo();
+}
+
 void RA8876::writeData(uint8_t x)
 {
     digitalWriteFast(m_csPin, LOW);

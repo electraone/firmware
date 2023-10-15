@@ -515,6 +515,10 @@ public:
     void restoreState(void);
     bool isStateLocked(void);
 
+    // Support for bulk data transfers
+    void armMemoryWrite(void);
+    void writeData(uint8_t *p_src, size_t length);
+
 private:
     void waitForStatus(uint8_t status);
 
