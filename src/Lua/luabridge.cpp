@@ -44,6 +44,11 @@ clock_t _times(struct tms *buffer)
     return (0);
 }
 
+int lua_compat_exists(const char *filename)
+{
+    return (Hardware::sdcard.exists(filename) ? 1 : 0);
+}
+
 int lua_compat_fopen(const char *filename)
 {
     // Serial << "-- sd fopen: " << filename << "\n";
