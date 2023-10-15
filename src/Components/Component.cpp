@@ -1,35 +1,49 @@
+/*
+* Electra One MIDI Controller Firmware
+* See COPYRIGHT file at the top of the source tree.
+*
+* This product includes software developed by the
+* Electra One Project (http://electra.one/).
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.
+*/
+
+/**
+ * @file Component.cpp
+ *
+ * @brief A base class for all components.
+ */
+
 #include "Component.h"
-#include "Window.h"
 #include "System.h"
-#include "RepaintQueue.h"
+#include "Window.h"
 #include "helpers.h"
 
 Component::Component()
-    : id(0),
-      parentComponent(nullptr),
-      visible(false),
-      dimmed(false),
-      queueEntry(nullptr)
+    : id(0), parentComponent(nullptr), visible(false), dimmed(false)
 {
     copyString(name, "", MaxNameLength);
 }
 
 Component::Component(Component *newParent)
-    : id(0),
-      parentComponent(newParent),
-      visible(false),
-      dimmed(false),
-      queueEntry(nullptr)
+    : id(0), parentComponent(newParent), visible(false), dimmed(false)
 {
     copyString(name, "", MaxNameLength);
 }
 
 Component::Component(const char *newName)
-    : id(0),
-      parentComponent(nullptr),
-      visible(false),
-      dimmed(false),
-      queueEntry(nullptr)
+    : id(0), parentComponent(nullptr), visible(false), dimmed(false)
 {
     copyString(name, newName, MaxNameLength);
 }
@@ -180,16 +194,17 @@ bool Component::isDimmed(void) const
     return (dimmed);
 }
 
+/** @todo: Get rid of using global System::repaintManager. */
 void Component::repaint(void)
 {
     if (shouldBeDisplayed()) {
-        repaintQueueItem();
+        System::repaintManager.scheduleRepaint(this);
     }
 }
 
-void Component::painted(void)
+void Component::clear(void)
 {
-    queueEntry = nullptr;
+    System::repaintManager.scheduleClear(getScreenBounds());
 }
 
 uint16_t Component::getScreenX(void) const
@@ -249,13 +264,30 @@ void Component::addAndMakeVisible(Component *component)
     component->setVisible(true);
 }
 
+void Component::removeComponent(Component *component)
+{
+    auto it = std::find(components.begin(), components.end(), component);
+
+    if (it != components.end()) {
+        components.erase(it);
+    }
+}
+
+void Component::deleteComponent(Component *component)
+{
+    auto it = std::find(components.begin(), components.end(), component);
+
+    if (it != components.end()) {
+        delete *it;
+        components.erase(it);
+    }
+}
+
 void Component::removeAllChildren(void)
 {
     while (!components.empty()) {
-        components.pop_back();
+        components.clear();
     }
-
-    components = std::vector<Component *>();
 }
 
 void Component::deleteAllChildren(void)
@@ -267,27 +299,6 @@ void Component::deleteAllChildren(void)
     }
 
     components = std::vector<Component *>();
-}
-
-void Component::paintWithChildren(Graphics &g)
-{
-    if (isVisible()) {
-        g.setActiveWindowPosition(getScreenX(), getScreenY());
-        g.setActiveWindowSize(getWidth(), getHeight());
-        paint(g);
-
-        for (auto &component : components) {
-            component->paintWithChildren(g);
-        }
-        if (dimmed == true) {
-            g.dim(0, 0, getWidth(), getHeight(), Colours565::black);
-        }
-
-        if (false) { // Display component bounding box
-            g.setColour(Colours565::white);
-            g.drawRect(0, 0, getWidth(), getHeight());
-        }
-    }
 }
 
 const std::vector<Component *> &Component::getChildren(void)
@@ -322,6 +333,11 @@ int Component::getNumChildComponents(void) const
 Rectangle Component::getLocalBounds(void) const
 {
     return (Rectangle(0, 0, getWidth(), getHeight()));
+}
+
+Rectangle Component::getScreenBounds(void) const
+{
+    return (Rectangle(getScreenX(), getScreenY(), getWidth(), getHeight()));
 }
 
 void Component::setParentComponent(Component *newParent)
@@ -371,23 +387,6 @@ bool Component::isOverlaping(Component *first, Component *second)
     }
 
     return (true);
-}
-
-void Component::repaintQueueItem(void)
-{
-    if (queueEntry == nullptr) {
-        repaintQueue.push(this);
-        queueEntry = repaintQueue.last();
-    } else {
-        if (!repaintQueue.isEmpty()) {
-            if (repaintQueue.first() == this) {
-                repaintQueue.shift();
-            }
-        }
-
-        repaintQueue.push(this);
-        queueEntry = repaintQueue.last();
-    }
 }
 
 bool Component::isWindow(void)

@@ -1,12 +1,39 @@
+/*
+* Electra One MIDI Controller Firmware
+* See COPYRIGHT file at the top of the source tree.
+*
+* This product includes software developed by the
+* Electra One Project (http://electra.one/).
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.
+*/
+
+/**
+ * @file Component.h
+ *
+ * @brief A base class for all components.
+ */
+
 #pragma once
 
-#include <vector>
-#include <functional>
 #include "Graphics.h"
-#include "TouchCallback.h"
 #include "PotListener.h"
+#include "TouchCallback.h"
 #include "Value.h"
 #include "helpers.h"
+#include <functional>
+#include <vector>
 
 class Window;
 
@@ -16,7 +43,8 @@ class Window;
 class Component : public Rectangle, public TouchCallback, public PotListener
 {
 public:
-    /** Constructor.
+    /**
+     * Constructor.
      *
      * Creates an empty instance of the component.
      *
@@ -27,8 +55,9 @@ public:
     /** Constructor. */
     Component(Component *newParent);
 
-    /** Construstor.
-     *
+    /** 
+     * Construstor.
+     * 
      * Creates component and sets its name.
      *
      * @param newName a name of the conponent.
@@ -82,7 +111,7 @@ public:
      * @param rect position and location given by Rectangle object.
      *
      * @see moved, resized
-     */
+    */
     void setBounds(const Rectangle &rect);
 
     /**
@@ -204,19 +233,20 @@ public:
     void repaint(void);
 
     /**
-     * Marks graphic object as (re)painted. The function is used by the
-     * internal tasks to manage graphic object repainting.
+     * Clears area used by the component.
      */
-    void painted(void);
+    void clear(void);
 
-    /** Gets components absolute X position on the screen.
-     *
+    /**
+     * Gets components absolute X position on the screen.
+     * 
      * @see getScreenY, getX
      */
     uint16_t getScreenX(void) const;
 
-    /** Gets components absolute Y position on the screen.
-     *
+    /** 
+     * Gets components absolute Y position on the screen.
+     * 
      * @see getScreenX, getY
      */
     uint16_t getScreenY(void) const;
@@ -325,6 +355,20 @@ public:
     virtual void addAndMakeVisible(Component *component);
 
     /**
+     * @brief  Remove child component from the component.
+     * 
+     * @param component a component to remove.
+     */
+    void removeComponent(Component *component);
+
+    /**
+     * @brief  Remove child component from the component and delete it.
+     * 
+     * @param component a component to delete.
+     */
+    void deleteComponent(Component *component);
+
+    /**
      * Removes all component's children components. The child components are
      * not deleted. It is responsibility of the calling function to take care
      * of that.
@@ -335,8 +379,6 @@ public:
      * Removes all component's children components and deletes them.
      */
     void deleteAllChildren(void);
-
-    void paintWithChildren(Graphics &g);
 
     // Getters
 
@@ -373,6 +415,13 @@ public:
     Rectangle getLocalBounds(void) const;
 
     /**
+     * @brief Gets the bounds of the component relative to the screen.
+     * 
+     * @return Rectangle of the area used by the component on the screen.
+     */
+    Rectangle getScreenBounds(void) const;
+
+    /**
      * Tells whether the component is a Window
      *
      */
@@ -388,7 +437,6 @@ protected:
         bool dimmed : 1;
     };
 
-    Component *queueEntry;
     std::vector<Component *> components;
 
     void setParentComponent(Component *newParent);
@@ -396,6 +444,5 @@ protected:
 private:
     Component *parentComponent;
     friend class Window;
-    void repaintQueueItem(void);
     bool shouldBeDisplayed(void) const;
 };

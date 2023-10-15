@@ -3,6 +3,7 @@
 #include "Hardware.h"
 #include "SystemTasks.h"
 #include "WindowManager.h"
+#include "RepaintManager.h"
 #include "Context.h"
 #include "RuntimeInfo.h"
 #include "Logger.h"
@@ -22,6 +23,7 @@ public:
 
     static SystemTasks tasks;
     static WindowManager windowManager;
+    static RepaintManager repaintManager;
     static Context context;
     static RuntimeInfo runtimeInfo;
     static Logger logger;

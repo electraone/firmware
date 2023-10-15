@@ -1,7 +1,6 @@
 #include "SystemTasks.h"
 #include "TaskScheduler.h"
 #include "System.h"
-#include "RepaintQueue.h"
 #include "UpdateModeScreen.h"
 
 SystemTasks::SystemTasks()
@@ -142,12 +141,12 @@ void SystemTasks::disableRepaintGraphics(void)
 
 void SystemTasks::flushRepaintGraphics(void)
 {
-    repaintGraphics();
+    System::repaintManager.processRepaintQueue();
 }
 
 void SystemTasks::clearRepaintGraphics(void)
 {
-    repaintQueue.clear();
+    System::repaintManager.clearRepaintQueue();
 }
 
 void SystemTasks::doNotUsePotTouch(void)

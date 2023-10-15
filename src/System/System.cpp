@@ -38,6 +38,7 @@ void System::initialise(void)
 
 SystemTasks System::tasks;
 WindowManager System::windowManager;
+RepaintManager System::repaintManager(Hardware::screen, System::windowManager);
 Context System::context;
 RuntimeInfo System::runtimeInfo;
 Logger System::logger;

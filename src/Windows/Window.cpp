@@ -1,3 +1,31 @@
+/*
+* Electra One MIDI Controller Firmware
+* See COPYRIGHT file at the top of the source tree.
+*
+* This product includes software developed by the
+* Electra One Project (http://electra.one/).
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.
+*/
+
+/**
+ * @file Window.cpp
+ *
+ * @brief A base class for implementing Window objects to process
+ *  users interactions.
+ */
+
 #include "Window.h"
 #include "System.h"
 
@@ -73,9 +101,11 @@ std::vector<TouchEvent> Window::processTouch(const TouchPoint &touchPoint)
 
 void Window::resetActiveTouch(void)
 {
+#ifdef TODO // \todo why this is disabled?
     for (auto &component : contentComponent->getChildren()) {
-        component->repaint();
+        //        component->repaint();
     }
+#endif
     for (uint8_t i = 0; i < numActiveComponents; i++) {
         activeComponent[i] = nullptr;
     }
@@ -98,23 +128,19 @@ Component *Window::getActiveComponent(uint8_t touchId)
     return activeComponent[touchId];
 }
 
-void Window::paint(Graphics &g)
+void Window::paint([[maybe_unused]] Graphics &g)
 {
-    if (isVisible() && contentComponent) {
-        contentComponent->paintWithChildren(g);
-    }
 }
 
 void Window::setVisible(bool shouldBeVisible)
 {
     Component *c = getOwnedContent();
 
+    Component::setVisible(shouldBeVisible);
+
     if (c) {
         c->setVisible(shouldBeVisible);
     }
-
-    Component::setVisible(shouldBeVisible);
-
     if (!shouldBeVisible) {
         System::windowManager.repaintAll();
     }
@@ -124,14 +150,14 @@ void Window::onTouchOutside(void)
 {
 }
 
-void Window::addChildComponent(Component *component)
+void Window::addChildComponent([[maybe_unused]] Component *component)
 {
     System::logger.write(
         LOG_ERROR,
         "window.addChildComponent() do use it. Use setOwnedContent()");
 }
 
-void Window::addAndMakeVisible(Component *component)
+void Window::addAndMakeVisible([[maybe_unused]] Component *component)
 {
     System::logger.write(
         LOG_ERROR,

@@ -122,6 +122,17 @@ public:
     }
 
     /**
+     * @brief Fills a rectangular shape.
+     * 
+     * @param rect a rectangular area to fill.
+     */
+    void fillRect(const Rectangle &rect)
+    {
+        FrameBuffer::fillRect(
+            rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+    }
+
+    /**
      * Draws a rectangular shape with rounded corners.
      *
      * @param x X coordinate of the top-left corner.
