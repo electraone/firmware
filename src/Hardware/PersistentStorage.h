@@ -11,6 +11,7 @@ public:
     void mount(void);
     bool createDirectory(const char *path, bool pFlag = true);
     bool exists(const char *path);
+    bool directoryExists(const char *path);
     FileIoStream createInputStream(const char *path);
     FileIoStream createOutputStream(const char *path, oflag_t oflag = O_RDONLY);
     bool deleteFile(const char *path);

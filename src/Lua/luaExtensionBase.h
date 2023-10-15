@@ -20,27 +20,43 @@
 */
 
 /**
- * @file BarVertical.h
+ * @file luaExtension.h
  *
- * @brief A Vertical Bar component.
+ * @brief A collection of E1 specific Lua functions.
  */
 
 #pragma once
 
-#include "LookAndFeel.h"
-#include "Slider.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-class BarVertical : public Slider
-{
-public:
-    BarVertical();
-    ~BarVertical() override = default;
+#include "lauxlib.h"
+#include "lua.h"
+#include "lualib.h"
 
-    virtual void onTouchMove(const TouchEvent &touchEvent) override;
-    virtual void onTouchDown(const TouchEvent &touchEvent) override;
-    virtual void onTouchUp(const TouchEvent &touchEvent) override;
+#ifdef __cplusplus
+}
+#endif
 
-    void paint(Graphics &g) override;
+#include "luaIntegrationBase.h"
+#include "luaSysexBlock.h"
+#include "luaMidi.h"
+#include "luaWindow.h"
+#include "luaController.h"
+#include "luaTimer.h"
+#include "luaTransport.h"
 
-private:
-};
+extern lua_State *L;
+
+void luaLE_openEoslibs(lua_State *L, const luaL_Reg *libs);
+void loadLuaModule(const char *filename);
+void runLuaFunction(const char *functionName);
+void runLuaString(const char *commandText);
+
+lua_State *initLua(void);
+void closeLua(void);
+void executeElectraLua(const char *filename);
+bool isLuaValid(const char *filename);
+
+void loadGlobalVariables(lua_State *L);

@@ -1,4 +1,32 @@
+/*
+* Electra One MIDI Controller Firmware
+* See COPYRIGHT file at the top of the source tree.
+*
+* This product includes software developed by the
+* Electra One Project (http://electra.one/).
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.
+*/
+
+/**
+ * @file Slider.cpp
+ *
+ * @brief A base class for slider style components.
+ */
+
 #include "Slider.h"
+#include <cstdio>
 
 Slider::Slider()
     : colour(Colours565::red), formatString("%d"), valueBoxPosition(NoValueBox)
@@ -84,15 +112,15 @@ void Slider::resized(void)
     repaint();
 }
 
-void Slider::onTouchMove(const TouchEvent &touchEvent)
+void Slider::onTouchMove([[maybe_unused]] const TouchEvent &touchEvent)
 {
 }
 
-void Slider::onTouchDown(const TouchEvent &touchEvent)
+void Slider::onTouchDown([[maybe_unused]] const TouchEvent &touchEvent)
 {
 }
 
-void Slider::onTouchUp(const TouchEvent &touchEvent)
+void Slider::onTouchUp([[maybe_unused]] const TouchEvent &touchEvent)
 {
 }
 
@@ -103,11 +131,11 @@ void Slider::onPotChange(const PotEvent &potEvent)
     }
 }
 
-void Slider::onPotTouchDown(const PotEvent &potEvent)
+void Slider::onPotTouchDown([[maybe_unused]] const PotEvent &potEvent)
 {
 }
 
-void Slider::onPotTouchUp(const PotEvent &potEvent)
+void Slider::onPotTouchUp([[maybe_unused]] const PotEvent &potEvent)
 {
 }
 

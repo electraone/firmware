@@ -3,5 +3,5 @@
 
 void runTimer(void)
 {
-    timer_runCallback();
+    timer_runCallback(L);
 }

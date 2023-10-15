@@ -1,8 +1,35 @@
+/*
+* Electra One MIDI Controller Firmware
+* See COPYRIGHT file at the top of the source tree.
+*
+* This product includes software developed by the
+* Electra One Project (http://electra.one/).
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.
+*/
+
+/**
+ * @file luaMidi.h
+ *
+ * @brief An implementation of E1 Lua MIDI library. 
+ */
+
 #pragma once
 
-#include "helpers.h"
-#include "MidiMessage.h"
 #include "MidiInterface.h"
+#include "MidiMessage.h"
+#include "helpers.h"
 
 extern "C" {
 #include "lauxlib.h"
@@ -10,10 +37,10 @@ extern "C" {
 #include "lualib.h"
 }
 
-#define LUA_MAX_SYSEX_SIZE 256
-#define LUA_NR_OF_MIDI_INTERFACES 4 // includes MidiAll
+#define LUA_MAX_SYSEX_SIZE 60 // must be a multiply of 3
+#define LUA_NR_OF_MIDI_INTERFACES 5 // includes MidiAll
 #define LUA_NR_OF_MIDI_PORTS 3
-#define LUA_MIDI_INTERFACE_MIDI_ALL 3
+#define LUA_MIDI_INTERFACE_MIDI_ALL 4 // MidiAll
 
 /*
  * midiMessage format
@@ -59,24 +86,37 @@ int midi_sendNrpn(lua_State *L);
 int midi_sendRpn(lua_State *L);
 int midi_sendControlChange14Bit(lua_State *L);
 int midi_flush(lua_State *L);
-void midi_onSingleByte(const char *module,
+void midi_onSingleByte(lua_State *L,
+                       const char *module,
                        const char *function,
                        MidiInput midiInput);
-void midi_onTwoBytes(const char *module,
+void midi_onTwoBytes(lua_State *L,
+                     const char *module,
                      const char *function,
                      MidiInput midiInput,
                      int data1);
-void midi_onTwoBytesWithChannel(const char *module,
+void midi_onTwoBytesWithChannel(lua_State *L,
+                                const char *module,
                                 const char *function,
                                 MidiInput midiInput,
                                 uint8_t channel,
                                 int data1);
-void midi_onThreeBytesWithChannel(const char *module,
+void midi_onThreeBytesWithChannel(lua_State *L,
+                                  const char *module,
                                   const char *function,
                                   MidiInput midiInput,
                                   uint8_t channel,
                                   uint8_t data1,
                                   uint8_t data2);
+void midi_onPitchBend(lua_State *L,
+                      const char *module,
+                      const char *function,
+                      MidiInput midiInput,
+                      uint8_t channel,
+                      int data1);
+void midi_onMidiSysex(lua_State *L,
+                      MidiInput &midiInput,
+                      SysexBlock &sysexBlock);
 
 static const luaL_Reg midi_functions[] = {
     { "sendMessage", midi_sendMessage },

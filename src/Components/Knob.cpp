@@ -1,3 +1,30 @@
+/*
+* Electra One MIDI Controller Firmware
+* See COPYRIGHT file at the top of the source tree.
+*
+* This product includes software developed by the
+* Electra One Project (http://electra.one/).
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.
+*/
+
+/**
+ * @file Knob.cpp
+ *
+ * @brief A round Dial-style Knob component.
+ */
+
 #include "Knob.h"
 #include "LookAndFeel.h"
 
@@ -23,11 +50,11 @@ void Knob::onTouchMove(const TouchEvent &touchEvent)
     }
 }
 
-void Knob::onTouchDown(const TouchEvent &touchEvent)
+void Knob::onTouchDown([[maybe_unused]] const TouchEvent &touchEvent)
 {
 }
 
-void Knob::onTouchUp(const TouchEvent &touchEvent)
+void Knob::onTouchUp([[maybe_unused]] const TouchEvent &touchEvent)
 {
 }
 
@@ -57,7 +84,7 @@ void Knob::paint(Graphics &g)
     // Clear the component area
     g.fillAll(LookAndFeel::backgroundColour);
 
-    //Paint the track
+    // Paint the track
     g.setColour(colourTrack);
     g.fillCircle(xCentre, yCentre, radius);
 

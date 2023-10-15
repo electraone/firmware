@@ -14,9 +14,6 @@ void initialise(void)
 {
     createApplication();
 
-    // \todo Lua will go to its own class
-    L = nullptr;
-
     // Initialise hardware components
     Hardware::initialise();
 

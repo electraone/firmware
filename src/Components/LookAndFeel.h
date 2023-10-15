@@ -1,3 +1,30 @@
+/*
+* Electra One MIDI Controller Firmware
+* See COPYRIGHT file at the top of the source tree.
+*
+* This product includes software developed by the
+* Electra One Project (http://electra.one/).
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.
+*/
+
+/**
+ * @file LookAndFeel.h
+ *
+ * @brief An implementation of visual style for common components.
+ */
+
 #pragma once
 
 #include "Graphics.h"
@@ -65,12 +92,6 @@ public:
                                 uint16_t activeIndex,
                                 bool active);
 
-    static void paintSet(Graphics &g,
-                         const Rectangle &bounds,
-                         uint32_t colour,
-                         const char *label,
-                         bool isHighligted);
-
     static void paintEnvelope(Graphics &g,
                               const Rectangle &bounds,
                               uint32_t colour,
@@ -124,7 +145,4 @@ private:
     // Slider
     static constexpr uint8_t indicatorSize = 22;
     static constexpr uint8_t indicatorRadius = indicatorSize / 2;
-
-    // Set
-    static constexpr uint8_t MaxSetLabelLength = 40;
 };

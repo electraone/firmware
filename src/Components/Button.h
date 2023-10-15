@@ -1,3 +1,30 @@
+/*
+* Electra One MIDI Controller Firmware
+* See COPYRIGHT file at the top of the source tree.
+*
+* This product includes software developed by the
+* Electra One Project (http://electra.one/).
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.
+*/
+
+/**
+ * @file Button.h
+ *
+ * @brief A Button component.
+ */
+
 #pragma once
 
 #include "Component.h"
@@ -10,6 +37,7 @@ public:
         : highlighted(false),
           disabled(false),
           selected(false),
+          longTouched(false),
           colour(0x0001),
           selectedColour(0x0004),
           radius(5)
@@ -34,6 +62,7 @@ public:
     virtual ~Button() = default;
 
     std::function<void(void)> onClick;
+    std::function<void(void)> onHold;
     std::function<bool(void)> onRelease;
 
     void setLabel(const char *newLabel)
@@ -134,36 +163,46 @@ public:
         return (highlighted);
     }
 
-    void onTouchDown(const TouchEvent &touchEvent) override
+    void onTouchDown([[maybe_unused]] const TouchEvent &touchEvent) override
     {
         if (onClick) {
             setHighlighted(true);
         }
     }
 
-    void onTouchUp(const TouchEvent &touchEvent) override
+    void onTouchLongHold([[maybe_unused]] const TouchEvent &touchEvent) override
+    {
+        if (onHold) {
+            onHold();
+        }
+        longTouched = true;
+    }
+
+    void onTouchUp([[maybe_unused]] const TouchEvent &touchEvent) override
     {
         if (highlighted) {
             setHighlighted(false);
         }
 
-        if (onClick) {
+        if (!longTouched && onClick) {
             onClick();
         }
 
         if (onRelease) {
             onRelease();
         }
+
+        longTouched = false;
     }
 
-    void onPotTouchDown(const PotEvent &potEvent) override
+    void onPotTouchDown([[maybe_unused]] const PotEvent &potEvent) override
     {
         if (onClick) {
             setHighlighted(true);
         }
     }
 
-    void onPotTouchUp(const PotEvent &potEvent) override
+    void onPotTouchUp([[maybe_unused]] const PotEvent &potEvent) override
     {
         if (highlighted) {
             setHighlighted(false);
@@ -213,6 +252,7 @@ private:
         bool highlighted : 1;
         bool disabled : 1;
         bool selected : 1;
+        bool longTouched : 1;
         uint32_t colour : 24;
         uint32_t selectedColour : 24;
     };

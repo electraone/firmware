@@ -20,27 +20,24 @@
 */
 
 /**
- * @file BarVertical.h
+ * @file luaController.h
  *
- * @brief A Vertical Bar component.
+ * @brief An implementation of library to access information about the
+ *  hardware controller. 
  */
 
 #pragma once
 
-#include "LookAndFeel.h"
-#include "Slider.h"
+extern "C" {
+#include "lauxlib.h"
+#include "lua.h"
+#include "lualib.h"
+}
 
-class BarVertical : public Slider
-{
-public:
-    BarVertical();
-    ~BarVertical() override = default;
+int luaopen_controller(lua_State *L);
 
-    virtual void onTouchMove(const TouchEvent &touchEvent) override;
-    virtual void onTouchDown(const TouchEvent &touchEvent) override;
-    virtual void onTouchUp(const TouchEvent &touchEvent) override;
+int controller_uptime(lua_State *L);
 
-    void paint(Graphics &g) override;
-
-private:
-};
+static const luaL_Reg controller_functions[] = { { "uptime",
+                                                   controller_uptime },
+                                                 { NULL, NULL } };

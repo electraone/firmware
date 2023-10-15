@@ -19,28 +19,18 @@
 * along with this program.
 */
 
-/**
- * @file BarVertical.h
- *
- * @brief A Vertical Bar component.
- */
+#include "luaController.h"
+#include "compat.h"
 
-#pragma once
-
-#include "LookAndFeel.h"
-#include "Slider.h"
-
-class BarVertical : public Slider
+int luaopen_controller(lua_State *L)
 {
-public:
-    BarVertical();
-    ~BarVertical() override = default;
+    luaL_newlib(L, controller_functions);
+    return (1);
+}
 
-    virtual void onTouchMove(const TouchEvent &touchEvent) override;
-    virtual void onTouchDown(const TouchEvent &touchEvent) override;
-    virtual void onTouchUp(const TouchEvent &touchEvent) override;
-
-    void paint(Graphics &g) override;
-
-private:
-};
+int controller_uptime(lua_State *L)
+{
+    lua_settop(L, 0);
+    lua_pushnumber(L, millis());
+    return (1);
+}

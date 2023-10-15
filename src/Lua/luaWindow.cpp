@@ -1,6 +1,35 @@
+/*
+* Electra One MIDI Controller Firmware
+* See COPYRIGHT file at the top of the source tree.
+*
+* This product includes software developed by the
+* Electra One Project (http://electra.one/).
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.
+*/
+
+/**
+ * @file luaWindow.cpp
+ *
+ * @brief An implementation of the Window object for E1 Lua. 
+ */
+
 #include "luaWindow.h"
-#include "System.h"
 #include "Button.h"
+#include "System.h"
+
+bool lua_windowRepaintEnabled;
 
 int luaopen_window(lua_State *L)
 {
@@ -23,28 +52,29 @@ int window_addAndMakeVisible(lua_State *L)
     return (0);
 }
 
-int window_repaint(lua_State *L)
+int window_repaint([[maybe_unused]] lua_State *L)
 {
     System::windowManager.repaintActive();
     return (0);
 }
 
-int window_clear(lua_State *L)
+int window_clear([[maybe_unused]] lua_State *L)
 {
     return (0);
 }
 
-int window_stop(lua_State *L)
+int window_stop([[maybe_unused]] lua_State *L)
 {
     System::tasks.disableRepaintGraphics();
+    System::tasks.clearRepaintGraphics();
     return (0);
 }
 
-int window_resume(lua_State *L)
+int window_resume([[maybe_unused]] lua_State *L)
 {
     System::tasks.clearRepaintGraphics();
-    System::windowManager.repaintActive();
     System::tasks.enableRepaintGraphics();
+    System::windowManager.repaintActive();
     return (0);
 }
 

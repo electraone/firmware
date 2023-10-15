@@ -1,7 +1,34 @@
+/*
+* Electra One MIDI Controller Firmware
+* See COPYRIGHT file at the top of the source tree.
+*
+* This product includes software developed by the
+* Electra One Project (http://electra.one/).
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.
+*/
+
+/**
+ * @file ListData.h
+ *
+ * @brief A container to hold Selection Lists.
+ */
+
 #pragma once
 
-#include "System.h"
 #include "ListDataItem.h"
+#include "System.h"
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -79,9 +106,9 @@ public:
         return (items.empty());
     }
 
-    void print(void) const
+    void print(uint8_t logLevel = LOG_TRACE) const
     {
-        System::logger.write(LOG_ERROR, "id: %d", getId());
+        System::logger.write(logLevel, "id: %d", getId());
         for (const auto &item : items) {
             System::logger.write(
                 LOG_ERROR,

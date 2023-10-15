@@ -6,6 +6,7 @@
 #define LOG_WARNING 1
 #define LOG_INFO 2
 #define LOG_TRACE 3
+#define LOG_LUA 4
 
 /**
  * Logger class

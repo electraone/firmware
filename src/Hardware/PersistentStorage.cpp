@@ -27,6 +27,11 @@ bool PersistentStorage::exists(const char *path)
     return (SdFs::exists(path));
 }
 
+bool PersistentStorage::directoryExists(const char *path)
+{
+    return (SdFs::exists(path));
+}
+
 FileIoStream PersistentStorage::createInputStream(const char *path)
 {
     return (SdFs::open(path, O_RDONLY));

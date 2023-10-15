@@ -20,27 +20,37 @@
 */
 
 /**
- * @file BarVertical.h
+ * @file DebugMessage.cpp
  *
- * @brief A Vertical Bar component.
+ * @brief A simple text component to display debug messages.
  */
 
 #pragma once
 
-#include "LookAndFeel.h"
-#include "Slider.h"
+#include "Component.h"
 
-class BarVertical : public Slider
+class DebugMessage : public Component
 {
 public:
-    BarVertical();
-    ~BarVertical() override = default;
+    DebugMessage(char *newBuf) : buf(newBuf)
+    {
+    }
 
-    virtual void onTouchMove(const TouchEvent &touchEvent) override;
-    virtual void onTouchDown(const TouchEvent &touchEvent) override;
-    virtual void onTouchUp(const TouchEvent &touchEvent) override;
+    ~DebugMessage()
+    {
+    }
 
-    void paint(Graphics &g) override;
+    void paint(Graphics &g)
+    {
+        g.fillAll(Colours565::black);
+        g.printText(0,
+                    0,
+                    buf,
+                    TextStyle::smallWhiteOnBlack,
+                    getWidth(),
+                    TextAlign::left);
+    }
 
 private:
+    char *buf;
 };

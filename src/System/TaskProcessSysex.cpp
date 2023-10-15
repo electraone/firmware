@@ -1,6 +1,7 @@
 #include "TaskProcessSysex.h"
 #include "helpers.h"
 #include "MidiOutput.h"
+#include "luaExtensionBase.h"
 #include "App.h"
 
 CircularBuffer<SysexTransport, SYSEX_QUEUE_SIZE> sysexQueue;

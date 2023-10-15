@@ -133,7 +133,8 @@ L_INC := $(foreach x,$(filter %/, $(wildcard $(LIBRARYPATH)/**/)), -I$(x)) \
 		 $(foreach x,$(filter %/, $(wildcard $(LIBRARYPATH)/**/src/)), -I$(x))
 
 # include paths for the sources
-INC := $(foreach x,$(filter %/, $(wildcard src/**/)), -I$(x))
+INC := $(foreach x,$(filter %/, $(wildcard src/Hardware/**/)), -I$(x)) \
+	$(foreach x,$(filter %/, $(wildcard src/**/)), -I$(x))
 
 # include paths for Electra application
 L_APP_INC := $(foreach x,$(filter %/, $(wildcard $(APPPATH)/**/*/)), -I$(x)) \

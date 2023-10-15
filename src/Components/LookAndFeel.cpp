@@ -1,3 +1,30 @@
+/*
+* Electra One MIDI Controller Firmware
+* See COPYRIGHT file at the top of the source tree.
+*
+* This product includes software developed by the
+* Electra One Project (http://electra.one/).
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.
+*/
+
+/**
+ * @file LookAndFeel.cpp
+ *
+ * @brief An implementation of visual style for common components.
+ */
+
 #include "LookAndFeel.h"
 
 uint32_t LookAndFeel::backgroundColour = Colours565::black;
@@ -231,84 +258,6 @@ void LookAndFeel::paintButtonList(Graphics &g,
     }
 }
 
-void LookAndFeel::paintSet(Graphics &g,
-                           const Rectangle &bounds,
-                           uint32_t colour,
-                           const char *label,
-                           bool isHighligted)
-{
-    uint16_t width = bounds.getWidth();
-    uint16_t height = bounds.getHeight();
-
-    // This is just a relaxed approximation
-    uint16_t nameLength = width / 8;
-
-    if (nameLength > MaxSetLabelLength) {
-        nameLength = MaxSetLabelLength;
-    }
-
-    char labelAdjusted[MaxSetLabelLength + 1];
-
-    copyString(labelAdjusted, label, MaxSetLabelLength);
-
-    uint16_t textWidth =
-        g.getTextWidth(labelAdjusted, TextStyle::smallTransparent);
-
-    g.setColour(LookAndFeel::backgroundColour);
-    g.fillRect(0, 0, width, 15);
-
-    if (!isHighligted || height > 20) {
-        g.setColour(Colours565::darker(colour, 0.3));
-        for (uint16_t i = 0; i <= (width / 2) - (textWidth / 2) - 3; i += 3) {
-            g.drawPixel(i, 7);
-        }
-        for (uint16_t i = width; i >= (width / 2) + (textWidth / 2) + 3;
-             i -= 3) {
-            g.drawPixel(i, 7);
-        }
-    }
-
-    if (isHighligted) {
-        g.setColour(Colours565::darker(colour, 0.25));
-        g.fillRect(5, 0, width - 10, 15);
-        g.setColour(Colours565::black);
-        g.drawPixel(5, 0);
-        g.drawPixel(5, 14);
-        g.drawPixel(width - 5 - 1, 0);
-        g.drawPixel(width - 5 - 1, 14);
-    }
-
-    g.setColour(Colours565::darker(colour, 0.3));
-
-    if (height < 20) {
-        if (!isHighligted) {
-            g.drawPixel(0, 10);
-            g.drawPixel(width, 10);
-        }
-    } else {
-        for (uint16_t i = 7; i < height; i += 3) {
-            g.drawPixel(0, i);
-            g.drawPixel(width, i);
-        }
-
-        for (uint16_t i = 0; i <= (width / 2); i += 3) {
-            g.drawPixel(i, height);
-        }
-        for (uint16_t i = width; i >= (width / 2); i -= 3) {
-            g.drawPixel(i, height);
-        }
-    }
-
-    if (strlen(labelAdjusted) > 0) {
-        g.printText(0,
-                    2,
-                    labelAdjusted,
-                    TextStyle::smallTransparent,
-                    width,
-                    TextAlign::center);
-    }
-}
-
 // Envelope -----------------------------------------------------------------
 
 void LookAndFeel::paintEnvelope(Graphics &g,
@@ -327,7 +276,7 @@ void LookAndFeel::paintEnvelope(Graphics &g,
 }
 
 void LookAndFeel::paintEnvelopeContour(Graphics &g,
-                                       const Rectangle &bounds,
+                                       [[maybe_unused]] const Rectangle &bounds,
                                        uint32_t colour,
                                        const std::vector<Point> &points)
 {
@@ -340,7 +289,7 @@ void LookAndFeel::paintEnvelopeContour(Graphics &g,
 
 void LookAndFeel::paintEnvelopeBaseline(Graphics &g,
                                         const Rectangle &bounds,
-                                        uint32_t colour,
+                                        [[maybe_unused]] uint32_t colour,
                                         uint16_t baselineY)
 {
     g.setColour(Colours565::black);
@@ -350,8 +299,8 @@ void LookAndFeel::paintEnvelopeBaseline(Graphics &g,
 }
 
 void LookAndFeel::paintEnvelopeMarkers(Graphics &g,
-                                       const Rectangle &bounds,
-                                       uint32_t colour,
+                                       [[maybe_unused]] const Rectangle &bounds,
+                                       [[maybe_unused]] uint32_t colour,
                                        uint16_t baselineY,
                                        const std::vector<Point> &points)
 {
@@ -363,7 +312,7 @@ void LookAndFeel::paintEnvelopeMarkers(Graphics &g,
 }
 
 void LookAndFeel::paintEnvelopeFills(Graphics &g,
-                                     const Rectangle &bounds,
+                                     [[maybe_unused]] const Rectangle &bounds,
                                      uint32_t colour,
                                      uint16_t baselineY,
                                      const std::vector<Point> &points,
@@ -386,7 +335,7 @@ void LookAndFeel::paintEnvelopeFills(Graphics &g,
                 baselineY, points[i], points[i + 1], intersection)) {
             // The segment intersects with the baseline
 
-            //g.setColour(darker);
+            // g.setColour(darker);
 
             // Paint two wedges
             g.fillTriangle(points[i].x,
@@ -416,7 +365,7 @@ void LookAndFeel::paintEnvelopeFills(Graphics &g,
                 yi = (points[i].y > points[i + 1].y) ? i + 1 : i;
             }
 
-            //g.setColour(darker);
+            // g.setColour(darker);
 
             // Paint the wedge
             g.fillTriangle(points[i].x,
