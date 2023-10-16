@@ -89,3 +89,29 @@ bool PersistentStorage::format(void)
 {
     return SdFs::format();
 }
+
+bool PersistentStorage::copyFile(const char *src, const char *dest)
+{
+    File srcFile = createInputStream(src);
+    File destFile = createOutputStream(dest, FILE_WRITE | O_CREAT | O_TRUNC);
+    bool success = false;
+    constexpr size_t bufferSize = 512;
+
+    if (srcFile) {
+        if (destFile) {
+            char buffer[bufferSize];
+            size_t bytesRead = 0;
+
+            while ((bytesRead = srcFile.read(buffer, bufferSize)) > 0) {
+                if (destFile.write(buffer, bytesRead) != bytesRead) {
+                    break;
+                }
+            }
+            success = true;
+            destFile.close();
+        }
+        srcFile.close();
+    }
+
+    return (success);
+}

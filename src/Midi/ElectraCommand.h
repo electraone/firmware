@@ -26,9 +26,9 @@
  */
 
 #pragma once
-#include <stdint.h>
-#include <inttypes.h>
 #include "helpers.h"
+#include <inttypes.h>
+#include <stdint.h>
 
 class ElectraCommand
 {
@@ -226,8 +226,8 @@ public:
     {
         type = translateType(commandByte);
         if (type
-            == Type::
-                MidiLearnSwitch) // TODO: ugly fix because the MIDI learn sysx is not ok
+            == Type::MidiLearnSwitch) // TODO: ugly fix because the MIDI learn
+        // sysx is not ok
         {
             if (objectByte == 1) {
                 object = Object::MidiLearnOn;

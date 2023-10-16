@@ -20,7 +20,7 @@
 */
 
 /**
- * @file Context.h
+ * @file Context.cpp
  *
  * @brief A collection of attributes important for the System.
  * 
@@ -29,9 +29,9 @@
 
 #pragma once
 
-#include <cstdio>
-#include "settings.h"
 #include "helpers.h"
+#include "settings.h"
+#include <cstdio>
 
 class Context
 {
@@ -50,7 +50,8 @@ public:
         appName = newAppName;
         snprintf(
             currentConfigFile, MAX_FILENAME_LENGTH, "%s/setup.cfg", appName);
-        snprintf(currentTempFile, MAX_FILENAME_LENGTH, "%s/file.tmp", appName);
+        snprintf(
+            currentTempFile, MAX_FILENAME_LENGTH, "%s/tmp/file.tmp", appName);
     }
 
     void setPresetName(const char *newPresetName)
@@ -130,12 +131,25 @@ public:
 
     void formatPresetFilename(char *buffer, size_t maxSize, uint16_t fileNumber)
     {
-        snprintf(buffer, maxSize - 1, "%s/p%03d.epr", appName, fileNumber);
+        snprintf(buffer, maxSize - 1, "/%s/p%03d.epr", appName, fileNumber);
     }
 
     void formatLuaFilename(char *buffer, size_t maxSize, uint16_t fileNumber)
     {
         snprintf(buffer, maxSize - 1, "%s/p%03d.lua", appName, fileNumber);
+    }
+
+    void formatPreloadedFilename(char *buffer,
+                                 size_t maxSize,
+                                 const char *preloadedPath,
+                                 const char *extension)
+    {
+        snprintf(buffer,
+                 maxSize - 1,
+                 "%s/presets/%s.%s",
+                 appName,
+                 preloadedPath,
+                 extension);
     }
 
 private:

@@ -28,8 +28,6 @@
  */
 void readLCDTouch(void)
 {
-    //logMessage ("readLCDTouch");
-
     static Window *previousWindow = System::windowManager.getActiveWindow();
     static bool waitingForStart = false;
 

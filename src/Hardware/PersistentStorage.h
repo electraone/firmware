@@ -45,6 +45,7 @@ public:
     bool deleteRecursively(const char *path);
     bool renameFile(const char *src, const char *dest);
     bool format(void);
+    bool copyFile(const char *src, const char *dest);
 
 private:
 };

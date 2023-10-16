@@ -102,6 +102,8 @@ bool isElementEmpty(File &file)
     uint8_t c;
     bool rc = false;
 
+    while ((c = file.read()) && (c <= 32)) {}
+
     if ((c == ']') || (c == '}')) {
         rc = true;
     }
