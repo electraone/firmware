@@ -3,8 +3,18 @@
 #include "Pot.h"
 #include "Mux.h"
 
+/** @todo: extract platform specific code to a ADC driver. */
+
 Pot::Pot(uint8_t newId)
-    : id(newId), step(0), address(newId), active(false), touched(false)
+    : id(newId),
+      step(0),
+      active(false),
+      touched(false),
+      A(0),
+      B(0),
+      pA(0),
+      pB(0),
+      address(newId)
 {
 }
 
@@ -23,20 +33,12 @@ void Pot::process(void)
     if (move > sensitivity) {
         move /= sensitivity;
 
-        if (A == 0) {
+        if (A <= 1) {
             step = ((B - pB) > 0) ? -move : move;
         } else if (A == 1023) {
             step = ((B - pB) > 0) ? move : -move;
-        } else if ((B < 512) && (pB >= 512) && (A < 512)) {
-            step = move;
-        } else if ((B < 512) && (pB >= 512) && (A >= 512)) {
-            step = -move;
         } else if (B < 512) {
             step = ((A - pA) > 0) ? move : -move;
-        } else if ((B > 512) && (pB <= 512) && (A < 512)) {
-            step = -move;
-        } else if ((B > 512) && (pB <= 512) && (A >= 512)) {
-            step = move;
         } else if (B > 512) {
             step = ((A - pA) > 0) ? -move : move;
         } else {
