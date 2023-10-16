@@ -102,8 +102,10 @@ void luaLE_addObjectMethods(lua_State *L, const luaL_Reg *l)
 
 void luaLE_postFunctionCleanUp(lua_State *L)
 {
-    // luaLE_dumpstack(L);
-
+    /** @attention: trigger the garbage collection.
+     * For now, after each function call. This needs to be improved.
+     */
+    lua_gc(L, LUA_GCCOLLECT, 0);
     lua_settop(L, 0);
 }
 
