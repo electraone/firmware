@@ -26,9 +26,12 @@
  */
 
 #include "Logger.h"
+#include "MidiOutput.h"
 #include <cstdarg>
+#include <cstdio>
 #include <cstring>
-#include "Arduino.h"
+
+volatile bool loggerEnabled;
 
 Logger::Logger() : minimumLevel(LOG_ERROR), port(2), enabled(true)
 {
@@ -36,14 +39,14 @@ Logger::Logger() : minimumLevel(LOG_ERROR), port(2), enabled(true)
 
 void Logger::setPort(uint8_t newPort)
 {
-    if ((0 <= newPort) && (newPort <= 2)) {
+    if (newPort <= 2) {
         port = newPort;
     }
 }
 
 void Logger::setLevel(uint8_t newLevel)
 {
-    minimumLevel = ((0 <= newLevel) && (newLevel <= 3)) ? newLevel : 3;
+    minimumLevel = (newLevel <= 3) ? newLevel : 3;
 }
 
 void Logger::enable(void)

@@ -194,7 +194,6 @@ public:
 
     void setDisabled(bool shouldBeDisabled)
     {
-        // logMessage ("setting disabled %d", shouldBeDisabled);
         isDisabled = shouldBeDisabled;
     }
 

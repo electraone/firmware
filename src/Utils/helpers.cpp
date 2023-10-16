@@ -33,10 +33,6 @@
 #include "settings.h"
 #include "System.h"
 
-volatile bool loggerEnabled;
-
-#define LOG_MESSAGE_MAX_SIZE 200 // Max size of the log message
-
 static const int col_pos[6] = { 20, 187, 354, 521, 688, 855 };
 static const int row_pos[6] = { 28, 118, 208, 298, 388, 478 };
 
@@ -59,34 +55,6 @@ const char *noteNames[] = {
 const char *getNoteName(uint8_t noteNr)
 {
     return (noteNames[noteNr]);
-}
-
-void logMessage(const char *format, ...)
-{
-    if (!loggerEnabled) {
-        return;
-    }
-
-    char buf[LOG_MESSAGE_MAX_SIZE];
-    va_list ap;
-
-    va_start(ap, format);
-    vsnprintf(buf + 5, sizeof(buf) - 5, format, ap);
-    va_end(ap);
-
-    buf[0] = 0x00;
-    buf[1] = 0x21;
-    buf[2] = 0x45;
-    buf[3] = 0x7f;
-    buf[4] = 0x00;
-
-    for (uint16_t i = 5; (i < (sizeof(buf) - 5)) && (buf[i] != '\0'); i++) {
-        if ((buf[i] < 32) || (buf[i] > 126)) {
-            buf[i] = '#';
-        }
-    }
-
-    usbMIDI.sendSysEx(strlen(buf + 5) + 5, (const uint8_t *)buf, false, 2);
 }
 
 int approxRollingAverage(int avg, int input)
@@ -340,17 +308,6 @@ void logSysex(uint8_t *data,
         }
     }
     Serial.println("]");
-}
-
-void logChars(uint8_t *data, uint16_t length)
-{
-    if (!loggerEnabled) {
-        return;
-    }
-
-    for (uint16_t i = 0; i < length; i++) {
-        logMessage("%c", (char)data[i]);
-    }
 }
 
 uint8_t getShift(uint8_t value)

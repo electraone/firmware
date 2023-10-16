@@ -206,33 +206,6 @@ bool MemoryBlock::isAllocatedInPool(void) const
     return (memoryPool != nullptr ? true : false);
 }
 
-void MemoryBlock::print(MemoryBlockOutputType outputType)
-{
-    if (memoryPool == nullptr) {
-        return;
-    }
-
-    uint8_t buffer[200];
-    uint16_t bytesRead = 0;
-
-    seek(0);
-
-    // logMessage ("Extram header: startAddress=%d, length=%d", startAddress, length);
-    while ((bytesRead = readBytes(buffer, sizeof(buffer))) > 0) {
-        // logMessage ("Bytes read %d", bytesRead);
-        if (outputType == MemoryBlockOutputType::Chars) {
-            logChars((uint8_t *)buffer, bytesRead);
-        } else {
-            logData((uint8_t *)buffer, bytesRead);
-        }
-    }
-
-    if (outputType == MemoryBlockOutputType::Chars) {
-        Serial.print("\n");
-    }
-    seek(0);
-}
-
 int MemoryBlock::peek(size_t position) const
 {
     uint8_t byte = -1;

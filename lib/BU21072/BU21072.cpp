@@ -36,12 +36,7 @@ uint8_t BU21072::readRegister (uint8_t regAddress)
 	// Read from Slave (string len unknown, request full buffer)
 	Wire.requestFrom (BU21078MUV_ADDRESS, 1);
 
-	if (Wire.getError ())
-	{
-		logMessage ("FAIL");
-	}
-	else
-	{
+	if (!Wire.getError ()) {
 		Wire.read (data, Wire.available ());
 	}
 
@@ -60,11 +55,9 @@ bool BU21072::init (void)
 
 	while (readRegister (REG_INTERRUPT) != 1)
 	{
-		logMessage ("BU21072::init: waiting for touch to initialize");
 		delay (10);
 		if (attemptNum > 50)
 		{
-			logMessage ("BU21072::init: failed to initialize touch");
 			return (false);
 		}
 		attemptNum++;
@@ -136,14 +129,6 @@ bool BU21072::init (void)
 	 */
 	writeRegister (REG_CLR_INTERRUPT, 0x00);
 	delay (10);
-
-/*
-    if (readRegister (REG_INTERRUPT) != 1)
-    {
-        logMessage ("BU21072::init: failed to calibrate touch");
-        return (false);
-    }
- */
 
 	return (true);
 }

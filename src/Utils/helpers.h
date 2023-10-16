@@ -30,7 +30,6 @@
 
 // \todo this really needs to be reworked and cleaned up!!!!!
 // many CTRLV2 functions are present here
-// logMessage should go to its own class
 // JSON related functions belong to JSON parser domain
 // colour handling belongs to Colours
 
@@ -67,9 +66,6 @@ extern volatile bool loggerEnabled;
     !((value >= lowBound) && (value <= highBound))
 
 const char *getNoteName(uint8_t noteNr);
-extern "C" {
-void logMessage(const char *format, ...);
-}
 int approxRollingAverage(int avg, int input);
 void copyString(char *dest, const char *src, uint16_t maxLength);
 void toUpperCase(char *str);
@@ -85,7 +81,6 @@ void logSysex(uint8_t *data,
               uint16_t length,
               const char *prefix = "",
               uint16_t offset = 0);
-void logChars(uint8_t *data, uint16_t length);
 uint8_t getShift(uint8_t value);
 uint16_t createMask(uint8_t pos, uint8_t size);
 uint16_t getBackgroudColor(uint16_t fgColor);

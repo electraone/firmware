@@ -29,8 +29,6 @@
  */
 void readPots(void)
 {
-    //logMessage ("readPots");
-
     Pot *pot = NULL;
 
     if (System::context.getTouchEnabled() == false) {

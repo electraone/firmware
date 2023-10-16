@@ -89,15 +89,6 @@ void logSysex(uint8_t *data, uint16_t length, const char *prefix)
 #endif
 }
 
-void logChars(uint8_t *data, uint8_t length)
-{
-#ifdef DEBUG
-    for (uint8_t i = 0; i < length; i++) {
-        cout << (char)data[i];
-    }
-#endif
-}
-
 void printHex(uint8_t *data, uint8_t length)
 {
     char tmp[length * 2 + 1];

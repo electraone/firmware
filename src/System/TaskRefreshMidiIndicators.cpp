@@ -27,8 +27,6 @@
  */
 void refreshMidiIndicators(void)
 {
-    //logMessage ("refreshMidiIndicators");
-
     App *app = App::get();
 
     if (app->statusBar.repaintIsNeeded()) {

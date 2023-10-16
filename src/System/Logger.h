@@ -35,6 +35,8 @@
 #define LOG_TRACE 3
 #define LOG_LUA 4
 
+extern volatile bool loggerEnabled;
+
 /**
  * Logger class
  *
@@ -45,7 +47,7 @@ class Logger
 {
 public:
     Logger();
-    ~Logger() = default;
+    virtual ~Logger() = default;
 
     void setPort(uint8_t newPort);
     void setLevel(uint8_t newLevel);

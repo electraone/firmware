@@ -52,7 +52,6 @@ public:
     bool isEmpty(void) const;
     size_t getLength(void) const;
     MemoryBlock getRange(uint32_t rangeStart, uint32_t rangeLength) const;
-    void print(MemoryBlockOutputType outputType);
     int peek(size_t position) const;
 
     // The size of the header must be divisible by 4

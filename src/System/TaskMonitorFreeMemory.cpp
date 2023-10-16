@@ -26,7 +26,6 @@
 
 void monitorFreeMemory(void)
 {
-    //logMessage ("monitorFreeMemory");
     Hardware::ram.run();
     System::logger.write(
         LOG_TRACE,

@@ -39,8 +39,6 @@ extern USBDevice USBDevices[NR_OF_MIDI_INTERFACES];
  */
 void scanUSBHost(void)
 {
-    //logMessage ("scanUSBHost");
-
     usbHost.Task();
 
     App *app = App::get();
