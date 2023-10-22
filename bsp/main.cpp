@@ -26,9 +26,11 @@
  * @brief Firmware entry function.
  */
 
-#include <Arduino.h>
+#include "HardwareSerial.h"
 
-void yield (void) __attribute__ ((weak));
+void initialise(void);
+void processEvents(void);
+extern "C" void yield (void) __attribute__ ((weak));
 
 extern "C" volatile uint32_t systick_millis_count;
 

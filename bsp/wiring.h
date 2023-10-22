@@ -146,9 +146,6 @@ typedef uint8_t byte;
 uint32_t pulseIn(uint8_t pin, uint8_t state, uint32_t timeout);
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, byte val);
 
-void initialise(void);
-void processEvents(void);
-
 #ifdef __cplusplus
 } // extern "C"
 #endif
