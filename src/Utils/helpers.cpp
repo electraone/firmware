@@ -29,6 +29,7 @@
 #include <cstdio>
 #include <cstdarg>
 #include <cstring>
+#include <ctype.h>
 #include "Arduino.h"
 #include "settings.h"
 #include "System.h"

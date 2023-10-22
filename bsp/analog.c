@@ -451,7 +451,6 @@ startADC0:
 		// be restarted.
 		if (!analogReadBusyADC0) goto startADC0;
 		__enable_irq();
-		yield();
 	}
 
 #ifdef HAS_KINETIS_ADC1
@@ -482,7 +481,6 @@ startADC1:
 		// be restarted.
 		if (!analogReadBusyADC1) goto startADC1;
 		__enable_irq();
-		yield();
 	}
 #endif
 }

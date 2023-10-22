@@ -600,7 +600,6 @@ int usb_keyboard_send(void)
             transmit_previous_timeout = 1;
             return -1;
         }
-        yield();
     }
     *(tx_packet->buf) = keyboard_modifier_keys;
     *(tx_packet->buf + 1) = 0;
@@ -718,7 +717,6 @@ static int usb_keymedia_send(void)
             transmit_previous_timeout = 1;
             return -1;
         }
-        yield();
     }
     // 44444444 44333333 33332222 22222211 11111111
     // 98765432 10987654 32109876 54321098 76543210

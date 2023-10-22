@@ -1191,7 +1191,6 @@ void delay(uint32_t ms)
 				if (ms == 0) return;
 				start += 1000;
 			}
-			yield();
 		}
 	}
 }

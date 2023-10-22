@@ -181,7 +181,6 @@ public:
 	operator bool()			{ return true; }
 };
 extern HardwareSerial Serial1;
-extern void serialEvent1(void);
 
 class HardwareSerial2 : public HardwareSerial
 {
@@ -218,7 +217,6 @@ public:
 	operator bool()			{ return true; }
 };
 extern HardwareSerial2 Serial2;
-extern void serialEvent2(void);
 
 #endif
 #endif

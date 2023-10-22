@@ -167,7 +167,7 @@ void serial_format(uint32_t format)
 void serial_end(void)
 {
 	if (!(SIM_SCGC4 & SIM_SCGC4_UART0)) return;
-	while (transmitting) yield();  // wait for buffered data to send
+	while (transmitting) {}
 	NVIC_DISABLE_IRQ(IRQ_UART0_STATUS);
 	UART0_C2 = 0;
 	switch (rx_pin_num) {
@@ -346,8 +346,6 @@ void serial_putchar(uint32_t c)
 				UART0_D = n;
 				tx_buffer_tail = tail;
 			}
-		} else if (priority >= 256) {
-			yield();
 		}
 	}
 	tx_buffer[head] = c;
@@ -381,8 +379,6 @@ void serial_write(const void *buf, unsigned int count)
 						UART0_D = n;
 						tx_buffer_tail = tail;
 					}
-				} else if (priority >= 256) {
-					yield();
 				}
 			} while (tx_buffer_tail == head);
 		}
@@ -402,7 +398,7 @@ void serial_write(const void *buf, unsigned int count)
 
 void serial_flush(void)
 {
-	while (transmitting) yield(); // wait
+	while (transmitting) {}
 }
 
 int serial_write_buffer_free(void)

@@ -174,7 +174,6 @@ int usb_mouse_move(int8_t x, int8_t y, int8_t wheel, int8_t horiz)
             transmit_previous_timeout = 1;
             return -1;
         }
-        yield();
     }
     transmit_previous_timeout = 0;
     *(tx_packet->buf + 0) = 1;
@@ -213,7 +212,6 @@ int usb_mouse_position(uint16_t x, uint16_t y)
             transmit_previous_timeout = 1;
             return -1;
         }
-        yield();
     }
     transmit_previous_timeout = 0;
     *(tx_packet->buf + 0) = 2;

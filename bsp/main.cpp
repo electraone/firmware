@@ -30,8 +30,8 @@
 
 void initialise(void);
 void processEvents(void);
-extern "C" void yield (void) __attribute__ ((weak));
 
+extern "C" void yield (void) __attribute__ ((weak));
 extern "C" volatile uint32_t systick_millis_count;
 
 extern "C" int main (void)
@@ -40,7 +40,6 @@ extern "C" int main (void)
 	while (1)
 	{
 		processEvents ();
-		yield ();
 	}
 }
 
@@ -51,22 +50,4 @@ void systick_isr (void)
 
 void yield (void)
 {
-	static uint8_t running = 0;
-
-	if (running)
-	{
-		return;
-	}
-	running = 1;
-
-	if (Serial1.available ())
-	{
-		serialEvent1 ();
-	}
-	if (Serial2.available ())
-	{
-		serialEvent2 ();
-	}
-
-	running = 0;
-};
+}

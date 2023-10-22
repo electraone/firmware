@@ -167,7 +167,7 @@ void serial2_format(uint32_t format)
 void serial2_end(void)
 {
 	if (!(SIM_SCGC4 & SIM_SCGC4_UART1)) return;
-	while (transmitting) yield();  // wait for buffered data to send
+	while (transmitting) {}
 	NVIC_DISABLE_IRQ(IRQ_UART1_STATUS);
 	UART1_C2 = 0;
 #if defined(KINETISK)
@@ -336,8 +336,6 @@ void serial2_putchar(uint32_t c)
 				UART1_D = n;
 				tx_buffer_tail = tail;
 			}
-		} else if (priority >= 256) {
-			yield(); // wait
 		}
 	}
 	tx_buffer[head] = c;
@@ -371,8 +369,6 @@ void serial2_write(const void *buf, unsigned int count)
 						UART1_D = n;
 						tx_buffer_tail = tail;
 					}
-				} else if (priority >= 256) {
-					yield();
 				}
 			} while (tx_buffer_tail == head);
 		}
@@ -392,7 +388,7 @@ void serial2_write(const void *buf, unsigned int count)
 
 void serial2_flush(void)
 {
-	while (transmitting) yield(); // wait
+	while (transmitting) {}
 }
 
 int serial2_write_buffer_free(void)
