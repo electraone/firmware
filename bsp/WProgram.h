@@ -22,7 +22,6 @@
 #include "usb_mouse.h"
 #include "usb_undef.h" // do not allow usb_desc.h stuff to leak to user programs
 
-#include "WCharacter.h"
 #include "WString.h"
 #include "elapsedMillis.h"
 #include "IntervalTimer.h"
