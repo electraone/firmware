@@ -424,7 +424,6 @@ bool RA8876::init(void)
     }
 
     SPI.begin();
-    SPI.usingInterrupt(255);
 
     m_spiSettings = SPISettings(RA8876_SPI_SPEED, MSBFIRST, SPI_MODE3);
     SPI.beginTransaction(m_spiSettings);

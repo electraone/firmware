@@ -30,7 +30,7 @@
 
 #include "compat.h"
 #include "pins_electra.h"
-#include "SPCR.h"
+#include "SPI.h"
 #include "Print.h"
 
 #endif // ARDUINO_H
