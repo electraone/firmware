@@ -1,4 +1,4 @@
-#include <stdint.h>
+#include "Random.h"
 
 static uint32_t seed;
 
@@ -53,13 +53,4 @@ int32_t random (int32_t howsmall, int32_t howbig)
 	}
 	int32_t diff = howbig - howsmall;
 	return (random (diff) + howsmall);
-}
-
-unsigned int makeWord (unsigned int w)
-{
-	return (w);
-}
-unsigned int makeWord (unsigned char h, unsigned char l)
-{
-	return ((h << 8) | l);
 }

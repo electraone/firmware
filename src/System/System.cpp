@@ -27,6 +27,7 @@
  */
 
 #include "System.h"
+#include "Random.h"
 #include "helpers.h"
 
 void System::initialise(void)
