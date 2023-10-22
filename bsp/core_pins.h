@@ -19,51 +19,6 @@
 #define FALLING		2
 #define RISING		3
 
-// Pin				Arduino
-//  0	B16			RXD
-//  1	B17			TXD
-//  2	D0
-//  3	A12	FTM1_CH0
-//  4	A13	FTM1_CH1
-//  5	D7	FTM0_CH7	OC0B/T1
-//  6	D4	FTM0_CH4	OC0A
-//  7	D2
-//  8	D3			ICP1
-//  9	C3	FTM0_CH2	OC1A
-// 10	C4	FTM0_CH3	SS/OC1B
-// 11	C6			MOSI/OC2A
-// 12	C7			MISO
-// 13	C5			SCK
-// 14	D1
-// 15	C0
-// 16	B0	(FTM1_CH0)
-// 17	B1	(FTM1_CH1)
-// 18	B3			SDA
-// 19	B2			SCL
-// 20	D5	FTM0_CH5
-// 21	D6	FTM0_CH6
-// 22	C1	FTM0_CH0
-// 23	C2	FTM0_CH1
-// 24	A5	(FTM0_CH2)
-// 25	B19
-// 26	E1
-// 27	C9
-// 28	C8
-// 29	C10
-// 30	C11
-// 31	E0
-// 32	B18
-// 33	A4	(FTM0_CH1)
-// (34)	analog only
-// (35)	analog only
-// (36)	analog only
-// (37)	analog only
-
-// not available to user:
-//	A0	FTM0_CH5	SWD Clock
-//	A1	FTM0_CH6	USB ID
-//	A2	FTM0_CH7	SWD Trace
-//	A3	FTM0_CH0	SWD Data
 #define CORE_NUM_TOTAL_PINS     64
 #define CORE_NUM_DIGITAL        64
 #define CORE_NUM_INTERRUPT      64
@@ -1197,54 +1152,11 @@ void analogReadAveraging(unsigned int num);
 void analog_init(void);
 
 
-#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 #define DEFAULT         0
 #define INTERNAL        2
 #define INTERNAL1V2     2
 #define INTERNAL1V1     2
 #define EXTERNAL        0
-
-#elif defined(__MKL26Z64__)
-#define DEFAULT         0
-#define INTERNAL        0
-#define EXTERNAL        1
-#endif
-
-static inline void shiftOut(uint8_t, uint8_t, uint8_t, uint8_t) __attribute__((always_inline, unused));
-extern void _shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value) __attribute__((noinline));
-extern void shiftOut_lsbFirst(uint8_t dataPin, uint8_t clockPin, uint8_t value) __attribute__((noinline));
-extern void shiftOut_msbFirst(uint8_t dataPin, uint8_t clockPin, uint8_t value) __attribute__((noinline));
-
-static inline void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value)
-{
-        if (__builtin_constant_p(bitOrder)) {
-                if (bitOrder == LSBFIRST) {
-                        shiftOut_lsbFirst(dataPin, clockPin, value);
-                } else {
-                        shiftOut_msbFirst(dataPin, clockPin, value);
-                }
-        } else {
-                _shiftOut(dataPin, clockPin, bitOrder, value);
-        }
-}
-
-static inline uint8_t shiftIn(uint8_t, uint8_t, uint8_t) __attribute__((always_inline, unused));
-extern uint8_t _shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder) __attribute__((noinline));
-extern uint8_t shiftIn_lsbFirst(uint8_t dataPin, uint8_t clockPin) __attribute__((noinline));
-extern uint8_t shiftIn_msbFirst(uint8_t dataPin, uint8_t clockPin) __attribute__((noinline));
-
-static inline uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder)
-{
-        if (__builtin_constant_p(bitOrder)) {
-                if (bitOrder == LSBFIRST) {
-                        return shiftIn_lsbFirst(dataPin, clockPin);
-                } else {
-                        return shiftIn_msbFirst(dataPin, clockPin);
-                }
-        } else {
-                return _shiftIn(dataPin, clockPin, bitOrder);
-        }
-}
 
 void _reboot_Teensyduino_(void) __attribute__((noreturn));
 void _restart_Teensyduino_(void) __attribute__((noreturn));
@@ -1276,51 +1188,14 @@ uint32_t micros(void);
 static inline void delayMicroseconds(uint32_t) __attribute__((always_inline, unused));
 static inline void delayMicroseconds(uint32_t usec)
 {
-#if F_CPU == 256000000
-	uint32_t n = usec * 85;
-#elif F_CPU == 240000000
-	uint32_t n = usec * 80;
-#elif F_CPU == 216000000
-	uint32_t n = usec * 72;
-#elif F_CPU == 192000000
-	uint32_t n = usec * 64;
-#elif F_CPU == 180000000
+
 	uint32_t n = usec * 60;
-#elif F_CPU == 168000000
-	uint32_t n = usec * 56;
-#elif F_CPU == 144000000
-	uint32_t n = usec * 48;
-#elif F_CPU == 120000000
-	uint32_t n = usec * 40;
-#elif F_CPU == 96000000
-	uint32_t n = usec << 5;
-#elif F_CPU == 72000000
-	uint32_t n = usec * 24;
-#elif F_CPU == 48000000
-	uint32_t n = usec << 4;
-#elif F_CPU == 24000000
-	uint32_t n = usec << 3;
-#elif F_CPU == 16000000
-	uint32_t n = usec << 2;
-#elif F_CPU == 8000000
-	uint32_t n = usec << 1;
-#elif F_CPU == 4000000
-	uint32_t n = usec;
-#elif F_CPU == 2000000
-	uint32_t n = usec >> 1;
-#endif
+
     // changed because a delay of 1 micro Sec @ 2MHz will be 0
 	if (n == 0) return;
 	__asm__ volatile(
 		"L_%=_delayMicroseconds:"		"\n\t"
-#if F_CPU < 24000000
-		"nop"					"\n\t"
-#endif
-#ifdef KINETISL
-		"sub    %0, #1"				"\n\t"
-#else
 		"subs   %0, #1"				"\n\t"
-#endif
 		"bne    L_%=_delayMicroseconds"		"\n"
 		: "+r" (n) :
 	);
@@ -1329,33 +1204,5 @@ static inline void delayMicroseconds(uint32_t usec)
 #ifdef __cplusplus
 }
 #endif
-
-
-
-
-
-
-
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-unsigned long rtc_get(void);
-void rtc_set(unsigned long t);
-void rtc_compensate(int adjust);
-#ifdef __cplusplus
-}
-class teensy3_clock_class
-{
-public:
-	static unsigned long get(void) __attribute__((always_inline)) { return rtc_get(); }
-	static void set(unsigned long t) __attribute__((always_inline)) { rtc_set(t); }
-	static void compensate(int adj) __attribute__((always_inline)) { rtc_compensate(adj); }
-};
-extern teensy3_clock_class Teensy3Clock;
-#endif
-
-
-
 
 #endif

@@ -31,9 +31,11 @@
 
 void Hardware::initialise(void)
 {
-    // Configure and initialise internal signal multiplexer
-    configureMux();
-    setMuxAddress(0);
+    // Configure input/output pins
+    configurePins();
+
+    // Initialise internal signal multiplexer
+    MUX_SET_ADDRESS(0);
     MUX_DISABLE;
     System::logger.write(LOG_ERROR, "Multiplexer: initialised");
 

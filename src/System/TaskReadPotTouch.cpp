@@ -28,7 +28,7 @@
  */
 void readPotTouch(void)
 {
-    if (digitalRead(CAP_INT_PIN) == HIGH) {
+    if (GET_POT_TOUCH_INT == HIGH) {
         uint16_t sensors = Hardware::potTouch.readSensors();
 
         for (uint8_t potId = 0; potId < MAX_POT_ID; potId++) {

@@ -1,4 +1,5 @@
 #include "RA8876.h"
+#include "pins_electra.h"
 
 RA8876::SdramInfo defaultSdramInfo = {
     120, // 120 MHz
@@ -48,9 +49,9 @@ void RA8876::hardReset(void)
 {
     noInterrupts();
     delay(5);
-    digitalWriteFast(m_resetPin, LOW);
+    LCD_RESET_CLEAR;
     delay(50);
-    digitalWriteFast(m_resetPin, HIGH);
+    LCD_RESET_SET;
     delay(5);
     interrupts();
 
@@ -407,17 +408,10 @@ bool RA8876::init(void)
     m_height = m_displayInfo->height;
     m_memoryMode = DEFAULT_BPP;
 
-    // Set up chip select pin
-    pinMode(m_csPin, OUTPUT);
-    digitalWriteFast(m_csPin, HIGH);
-
-    // Set up reset pin, if provided
-    if (m_resetPin >= 0) {
-        pinMode(m_resetPin, OUTPUT);
-        digitalWriteFast(m_resetPin, HIGH);
-
-        hardReset();
-    }
+    LCD_CS_SET;
+    LCD_RESET_SET;
+    
+    hardReset();
 
     if (!calcClocks()) {
         return (false);
@@ -427,7 +421,6 @@ bool RA8876::init(void)
 
     m_spiSettings = SPISettings(RA8876_SPI_SPEED, MSBFIRST, SPI_MODE3);
     SPI.beginTransaction(m_spiSettings);
-    digitalWriteFast(m_csPin, LOW);
 
     // SPI is now up, so we can do a soft reset if no hard reset was
     // possible earlier
@@ -1364,10 +1357,10 @@ uint16_t RA8876::getActiveWindowHeight(void)
 
 void RA8876::writeCmd(uint8_t x)
 {
-    digitalWriteFast(m_csPin, LOW);
+    LCD_CS_CLEAR;
     SPI.transfer(RA8876_CMD_WRITE);
     SPI.transfer(x);
-    digitalWriteFast(m_csPin, HIGH);
+    LCD_CS_SET;
 }
 
 void RA8876::armMemoryWrite(void)
@@ -1377,7 +1370,7 @@ void RA8876::armMemoryWrite(void)
 
 void RA8876::writeData(uint8_t *p_src, size_t length)
 {
-    digitalWriteFast(m_csPin, LOW);
+    LCD_CS_CLEAR;
     SPI.transfer(RA8876_DATA_WRITE);
 
     for (uint32_t i = 0; i < length; i += 16) {
@@ -1387,24 +1380,24 @@ void RA8876::writeData(uint8_t *p_src, size_t length)
         }
     }
     
-    digitalWriteFast(m_csPin, HIGH);    
+    LCD_CS_SET;
     waitWriteFifo();
 }
 
 void RA8876::writeData(uint8_t x)
 {
-    digitalWriteFast(m_csPin, LOW);
+    LCD_CS_CLEAR;
     SPI.transfer(RA8876_DATA_WRITE);
     SPI.transfer(x);
-    digitalWriteFast(m_csPin, HIGH);
+    LCD_CS_SET;
 }
 
 uint8_t RA8876::readData(void)
 {
-    digitalWriteFast(m_csPin, LOW);
+    LCD_CS_CLEAR;
     SPI.transfer(RA8876_DATA_READ);
     uint8_t x = SPI.transfer(0);
-    digitalWriteFast(m_csPin, HIGH);
+    LCD_CS_SET;
     return (x);
 }
 
@@ -1414,10 +1407,10 @@ uint8_t RA8876::readData(void)
 uint8_t RA8876::readStatus(void)
 {
     noInterrupts();
-    digitalWriteFast(m_csPin, LOW);
+    LCD_CS_CLEAR;
     SPI.transfer(RA8876_STATUS_READ);
     uint8_t x = SPI.transfer(0);
-    digitalWriteFast(m_csPin, HIGH);
+    LCD_CS_SET;
     interrupts();
 
     return (x);

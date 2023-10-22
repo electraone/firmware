@@ -41,7 +41,7 @@
 #define REG_MSK_SW_MTRX3        0xD5
 #define REG_MSK_SW_MTRX4        0xD6
 #define REG_MSK_INTERRUPT       0xDF
-#define REG_LED_CAL							0xEF
+#define REG_LED_CAL				0xEF
 #define REG_CLR_INTERRUPT       0xF0
 #define REG_CLR_DETECT_ON0      0xF1
 #define REG_CLR_DETECT_ON1      0xF2
@@ -87,12 +87,6 @@
 #define CTRL_ACT            0x01
 #define CTRL_CAL            0x02
 #define CTRL_CFG            0x04
-
-/*
- * Pin configuration
- */
-#define CAP_INT_PIN         42
-
 
 class BU21072
 {

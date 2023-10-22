@@ -22,7 +22,7 @@
 #include "Hardware.h"
 #include "System.h"
 #include "Pot.h"
-#include "Mux.h"
+#include "pins_electra.h"
 
 /** @todo: extract platform specific code to a ADC driver. */
 
@@ -41,10 +41,10 @@ Pot::Pot(uint8_t newId)
 
 void Pot::process(void)
 {
-    setMuxAddress(this->address);
+    MUX_SET_ADDRESS(this->address);
     MUX_ENABLE;
-    A = Hardware::adc.adc0->analogRead(A0);
-    B = Hardware::adc.adc1->analogRead(A16);
+    A = Hardware::adc.adc0->analogRead(14);
+    B = Hardware::adc.adc1->analogRead(35);
     MUX_DISABLE;
 
     //System::logger.write(LOG_ERROR, "A=%d B=%d", A, B);
@@ -75,12 +75,12 @@ void Pot::process(void)
 
 void Pot::initialise(void)
 {
-    setMuxAddress(this->address);
+    MUX_SET_ADDRESS(this->address);
     MUX_ENABLE;
-    A = Hardware::adc.adc0->analogRead(A0);
-    B = Hardware::adc.adc1->analogRead(A16);
+    A = Hardware::adc.adc0->analogRead(14);
+    B = Hardware::adc.adc1->analogRead(35);
     MUX_DISABLE;
-    pA = this->A;
-    pB = this->B;
+    pA = A;
+    pB = B;
     active = false;
 }

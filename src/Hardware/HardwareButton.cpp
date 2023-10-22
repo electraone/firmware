@@ -28,7 +28,7 @@
 #include "core_pins.h"
 #include "helpers.h"
 #include "HardwareButton.h"
-#include "Mux.h"
+#include "pins_electra.h"
 
 HardwareButton::HardwareButton(uint8_t newId)
     : id(newId), pressed(false), pinState(1), longHold(false), pressStart(0)
@@ -39,9 +39,9 @@ HardwareButton::Event HardwareButton::process(void)
 {
     Event eventDetected = none;
 
-    setMuxAddress(id);
+    MUX_SET_ADDRESS(id);
     MUX_ENABLE;
-    pinState = digitalReadFast(41);
+    pinState = GET_BUTTON_STATE;
 
     if ((pinState == 0) && (pressed == false)) {
         eventDetected = press;

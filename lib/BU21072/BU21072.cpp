@@ -9,11 +9,8 @@ BU21072::BU21072 () :
 
 void BU21072::begin ()
 {
-	pinMode (55, OUTPUT);
-	digitalWriteFast (55, 1);
+	POT_TOUCH_ENABLE;
 	delay (50);
-
-	pinMode (CAP_INT_PIN, INPUT_PULLUP);
 	Wire.begin (I2C_MASTER, 0x00, I2C_PINS_47_48, I2C_PULLUP_EXT, 400000);
 }
 
