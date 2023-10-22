@@ -29,7 +29,7 @@
  */
 
 #include "core_pins.h"
-#include "pins_arduino.h"
+#include "pins_electra.h"
 #include "HardwareSerial.h"
 
 

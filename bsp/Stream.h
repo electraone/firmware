@@ -21,18 +21,10 @@ class Stream : public Print
 		{
 			return (find ((const char *) target));
 		}
-		bool find (const String &target)
-		{
-			return (find (target.c_str ()));
-		}
 		bool find (const char *target, size_t length);
 		bool find (const uint8_t *target, size_t length)
 		{
 			return (find ((const char *) target, length));
-		}
-		bool find (const String &target, size_t length)
-		{
-			return (find (target.c_str (), length));
 		}
 		bool findUntil (const char *target, const char *terminator);
 		bool findUntil (const char *target, const char *terminator, size_t maxLen);
@@ -40,26 +32,11 @@ class Stream : public Print
 		{
 			return (findUntil ((const char *) target, terminator, maxLen));
 		}
-		bool findUntil (const String &target, const char *terminator, size_t maxLen)
-		{
-			return (findUntil (target.c_str (), terminator, maxLen));
-		}
-		bool findUntil (const char *target, const String &terminator, size_t maxLen)
-		{
-			return (findUntil (target, terminator.c_str (), maxLen));
-		}
-		bool findUntil (const String &target, const String &terminator, size_t maxLen)
-		{
-			return (findUntil (target.c_str (), terminator.c_str (), maxLen));
-		}
 		bool findUntil (const char *target, size_t targetLen, const char *terminate, size_t termLen, size_t maxLen);
 		bool findUntil (const uint8_t *target, size_t targetLen, const char *terminate, size_t termLen, size_t maxLen)
 		{
 			return (findUntil ((const char *) target, targetLen, terminate, termLen, maxLen));
 		}
-		bool findUntil (const String &target, size_t targetLen, const char *terminate, size_t termLen, size_t maxLen);
-		bool findUntil (const char *target, size_t targetLen, const String &terminate, size_t termLen, size_t maxLen);
-		bool findUntil (const String &target, size_t targetLen, const String &terminate, size_t termLen, size_t maxLen);
 		long parseInt ();
 		long parseInt (char skipChar);
 		float parseFloat ();
@@ -74,8 +51,6 @@ class Stream : public Print
 		{
 			return (readBytesUntil (terminator, (char *) buffer, length));
 		}
-		String readString (size_t max = 120);
-		String readStringUntil (char terminator, size_t max = 120);
 		int getReadError ()
 		{
 			return (read_error);

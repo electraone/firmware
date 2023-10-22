@@ -74,18 +74,10 @@ uint8_t translateColorToId(uint16_t colorRGB);
 void byteToString(char *buff, uint8_t val);
 void wordToString(char *buff, uint8_t val);
 char nibbleToHex(uint8_t nibble);
-void logData(uint8_t *data, uint16_t length, const char *prefix = "");
-void logData(std::vector<uint8_t> data, const char *prefix = "");
-void logSysex(std::vector<uint8_t> data, const char *prefix = "");
-void logSysex(uint8_t *data,
-              uint16_t length,
-              const char *prefix = "",
-              uint16_t offset = 0);
 uint8_t getShift(uint8_t value);
 uint16_t createMask(uint8_t pos, uint8_t size);
 uint16_t getBackgroudColor(uint16_t fgColor);
 void convertToHex(uint8_t data, char *outString);
-void printHex(uint8_t *data, uint8_t length);
 uint16_t getNextPowerOf2(uint16_t value);
 uint16_t getRange(uint8_t bitWidth);
 uint8_t reverse(uint8_t n);

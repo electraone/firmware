@@ -31,7 +31,7 @@
 #include <cstdlib>
 #include <math.h>
 #include "core_pins.h"
-#include "wiring.h"
+#include "compat.h"
 #include "PotBroadcaster.h"
 #include "PotEvent.h"
 

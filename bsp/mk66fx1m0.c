@@ -30,7 +30,6 @@
 
 #include "kinetis.h"
 #include "core_pins.h" // testing only
-#include "ser_print.h" // testing only
 #include <errno.h>
 
 

@@ -29,6 +29,7 @@
 
 #include "MidiBase.h"
 #include "USBDevice.h"
+#include "usb/usb_midi.h"
 
 // \todo Move to the class as static members.
 extern USBDevice USBDevices[];

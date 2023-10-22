@@ -1,6 +1,5 @@
 #include "usb_dev.h"
 #include "usb_midi.h"
-#include "core_pins.h" // for yield()
 #include "HardwareSerial.h"
 
 #ifdef MIDI_INTERFACE // defined by usb_dev.h -> usb_desc.h
@@ -104,7 +103,6 @@ void usb_midi_write_packed (uint32_t n)
 				//serial_print("error2\n");
 				return;
 			}
-			yield ();
 		}
 	}
 	transmit_previous_timeout = 0;
@@ -658,3 +656,7 @@ int usb_midi_read_sysex (void)
 
 #endif  // F_CPU
 #endif  // MIDI_INTERFACE
+
+#ifdef __cplusplus
+usb_midi_class usbMIDI;
+#endif

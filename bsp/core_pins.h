@@ -2,7 +2,7 @@
 #define _core_pins_h_
 
 #include "kinetis.h"
-#include "pins_arduino.h"
+#include "pins_electra.h"
 
 #define HIGH		1
 #define LOW		0

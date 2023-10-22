@@ -30,7 +30,7 @@
 
 #pragma once
 
-#include <Arduino.h>
+#include "eeprom.h"
 
 class RuntimeInfo
 {

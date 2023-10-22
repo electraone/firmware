@@ -101,26 +101,6 @@ bool LocalFile::writeAll(MemoryBlock &memoryBlock)
     return (true);
 }
 
-bool LocalFile::printToConsole(void)
-{
-    File file;
-
-    file = Hardware::sdcard.createInputStream(filepath);
-
-    if (!file) {
-        Serial.print("Read file failed: ");
-        Serial.println(filepath);
-        return (false);
-    }
-
-    while (file.available()) {
-        //Serial.write(file.read());
-    }
-    file.close();
-
-    return (true);
-}
-
 bool LocalFile::rename(const char *newFilepath)
 {
     File file = Hardware::sdcard.createOutputStream(filepath);

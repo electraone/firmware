@@ -1,6 +1,5 @@
 #include "usb_desc.h"
 #include "kinetis.h"
-#include "avr_functions.h"
 
 uint8_t NUM_INTERFACE = 2;
 uint8_t NUM_ENDPOINTS = 3;

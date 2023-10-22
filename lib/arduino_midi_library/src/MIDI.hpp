@@ -901,7 +901,6 @@ bool MidiInterface<SerialPort, Settings>::parse ()
 					mMessage.valid = true;
 					if (mSystemExclusivePartialCallback != 0)
 					{
-						logSysex (sysexBuffer, mPendingMessageIndex % DefaultSettings::SysExChunkSize, "complete: ");
 						mSystemExclusivePartialCallback ((const byte *) sysexBuffer, mPendingMessageIndex % DefaultSettings::SysExChunkSize, true);
 					}
 					resetInput ();
@@ -930,7 +929,6 @@ bool MidiInterface<SerialPort, Settings>::parse ()
 			{
 				if ((mPendingMessageIndex % DefaultSettings::SysExChunkSize) == 0)
 				{
-					logSysex (sysexBuffer, DefaultSettings::SysExChunkSize, "partial: ");
 					mSystemExclusivePartialCallback ((const byte *) sysexBuffer, DefaultSettings::SysExChunkSize, false);
 				}
 			}

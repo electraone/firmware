@@ -1,9 +1,8 @@
-#ifndef Wiring_h
-#define Wiring_h
+#ifndef COMPAT_H
+#define COMPAT_H
 
 #include <stdint.h>
 #include <stdlib.h>
-#include "binary.h"
 #include "core_id.h"
 #include "core_pins.h"
 
@@ -92,10 +91,6 @@ constexpr auto max(A&& a, B&& b) -> decltype(a < b ? std::forward<A>(a) : std::f
   typeof(high) _high = (high); \
   (_amt < _low) ? _low : ((_amt > _high) ? _high : _amt); \
 })
-#define round(x) ({ \
-  typeof(x) _x = (x); \
-  (_x>=0) ? (long)(_x+0.5) : (long)(_x-0.5); \
-})
 #define radians(deg) ((deg)*DEG_TO_RAD)
 #define degrees(rad) ((rad)*RAD_TO_DEG)
 #define sq(x) ({ \
@@ -160,4 +155,52 @@ typedef uint8_t boolean;
 #define true (!false)
 #endif
 
+
+#include <math.h>
+#include "HardwareSerial.h"
+
+#define DMAMEM __attribute__ ((section(".dmabuffers"), used))
+#define FASTRUN __attribute__ ((section(".fastrun"), noinline, noclone ))
+
+#ifdef __cplusplus
+
+#include "String.h"
+#include "elapsedMillis.h"
+#include "IntervalTimer.h"
+
+unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout = 1000000L);
+#endif // __cplusplus
+
+
+// Fast memcpy
+#ifdef __cplusplus
+extern "C" {
+extern void *memcpy (void *dst, const void *src, size_t count);
+}
 #endif
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+char * ultoa(unsigned long val, char *buf, int radix);
+char * ltoa(long val, char *buf, int radix);
+
+char * dtostrf(float val, int width, unsigned int precision, char *buf);
+
+#ifdef __cplusplus
+}
+#endif
+
+
+#ifndef cbi
+#define cbi(sfr, bit) ((sfr) &= ~_BV(bit))
+#endif
+#ifndef sbi
+#define sbi(sfr, bit) ((sfr) |= _BV(bit))
+#endif
+
+typedef void (*voidFuncPtr)(void);
+
+#endif // COMPAT_H

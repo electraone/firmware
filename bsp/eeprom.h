@@ -20,22 +20,25 @@
  * THE SOFTWARE.
  */
 
-#ifndef _AVR_EEPROM_H_
-#define _AVR_EEPROM_H_ 1
+#ifndef EEPROM_H_
+#define EEPROM_H_
 
 #include <stddef.h>
 #include <stdint.h>
 
-#include "avr_functions.h"
-
-#if defined(__MK20DX128__) || defined(__MK20DX256__)
-  #define E2END 0x7FF
-#elif defined(__MK64FX512__) || defined(__MK66FX1M0__)
-  #define E2END 0xFFF
-#elif defined(__MKL26Z64__)
-  #define E2END 0x7F
-#else
-  #define E2END 0
+#ifdef __cplusplus
+extern "C" {
 #endif
 
+void eeprom_initialize(void);
+uint8_t eeprom_read_byte(const uint8_t *addr) __attribute__ ((pure));
+void eeprom_write_byte(uint8_t *addr, uint8_t value);
+
+#ifdef __cplusplus
+}
 #endif
+
+#define E2END 0xFFF
+
+
+#endif // EEPROM_H_

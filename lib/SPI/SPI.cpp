@@ -9,9 +9,6 @@
  */
 
 #include "SPI.h"
-#include "pins_arduino.h"
-
-
 
 /**********************************************************/
 /*     8 bit AVR-based boards				  */

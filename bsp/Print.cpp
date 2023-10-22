@@ -44,25 +44,6 @@ size_t Print::write(const uint8_t *buffer, size_t size)
 	return count;
 }
 
-
-size_t Print::print(const String &s)
-{
-	uint8_t buffer[33];
-	size_t count = 0;
-	unsigned int index = 0;
-	unsigned int len = s.length();
-	while (len > 0) {
-		s.getBytes(buffer, sizeof(buffer), index);
-		unsigned int nbytes = len;
-		if (nbytes > sizeof(buffer)-1) nbytes = sizeof(buffer)-1;
-		index += nbytes;
-		len -= nbytes;
-		count += write(buffer, nbytes);
-	}
-	return count;
-}
-
-
 size_t Print::print(long n)
 {
 	uint8_t sign=0;

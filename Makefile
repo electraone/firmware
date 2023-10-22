@@ -84,6 +84,7 @@ LIBS = -lstdc++ -lm
 
 # compiler options
 CPPFLAGS += -D__MK66FX1M0__ -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
+		-DARDUINOJSON_ENABLE_STD_STRING -DARDUINOJSON_ENABLE_ARDUINO_STRING=0 \
 		-DARDUINO=182 -DTEENSYDUINO # Required to compile Arduino / Teensy libs
 LDSCRIPT = $(BASEPATH)/mk66fx1m0.ld
 LDFLAGS += -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fno-use-linker-plugin \
@@ -108,8 +109,10 @@ LCPP_FILES := $(wildcard $(LIBRARYPATH)/**/*.cpp) \
 			  $(wildcard $(LIBRARYPATH)/*/src/SdCard/*.cpp) \
 			  $(wildcard $(LIBRARYPATH)/*/src/SpiDriver/*.cpp) \
 			  $(wildcard $(LIBRARYPATH)/*/src/*.cpp)
-TC_FILES := $(wildcard $(BASEPATH)/*.c)
-TCPP_FILES := $(wildcard $(BASEPATH)/*.cpp)
+TC_FILES := $(wildcard $(BASEPATH)/*.c) \
+				$(wildcard $(BASEPATH)/**/*.c)
+TCPP_FILES := $(wildcard $(BASEPATH)/*.cpp) \
+				$(wildcard $(BASEPATH)/**/*.cpp)
 C_FILES := $(wildcard src/*.c)
 CPP_FILES := $(wildcard src/*.cpp) \
 				$(wildcard src/**/*.cpp)

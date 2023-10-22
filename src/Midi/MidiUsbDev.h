@@ -28,7 +28,7 @@
 #pragma once
 
 #include "MidiBase.h"
-#include <usb_midi.h>
+#include "usb/usb_midi.h"
 
 // \todo Move to the class as static members. If possible.
 extern usb_midi_class usbMIDI;

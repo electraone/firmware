@@ -22,7 +22,7 @@
 #include "TaskMonitorFreeMemory.h"
 #include "Hardware.h"
 #include "System.h"
-#include "wiring.h"
+#include "compat.h"
 
 void monitorFreeMemory(void)
 {

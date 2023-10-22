@@ -35,7 +35,6 @@
 #include <stdio.h> // for size_t - gives sprintf and other stuff to all sketches & libs
 #include <stdarg.h>
 #include "core_id.h"
-#include "WString.h"
 
 #define DEC 10
 #define HEX 16
@@ -60,7 +59,6 @@ class Print
 	virtual int availableForWrite(void)		{ return 0; }
 	virtual void flush()				{ }
 	size_t write(const char *buffer, size_t size)	{ return write((const uint8_t *)buffer, size); }
-	size_t print(const String &s);
 	size_t print(char c)				{ return write((uint8_t)c); }
 	size_t print(const char s[])			{ return write(s); }
 	size_t print(const __FlashStringHelper *f)	{ return write((const char *)f); }
@@ -79,7 +77,6 @@ class Print
 
 	size_t print(double n, int digits = 2)		{ return printFloat(n, digits); }
 	size_t println(void);
-	size_t println(const String &s)			{ return print(s) + println(); }
 	size_t println(char c)				{ return print(c) + println(); }
 	size_t println(const char s[])			{ return print(s) + println(); }
 	size_t println(const __FlashStringHelper *f)	{ return print(f) + println(); }

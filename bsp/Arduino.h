@@ -1,9 +1,11 @@
-// This header file is in the public domain.
+#ifndef ARDUINO_H
+#define ARDUINO_H
 
-#ifndef Arduino_h
-#define Arduino_h
+#include "compat.h"
+#include "pins_electra.h"
+#include "SPCR.h"
+#include <string>
+typedef std::string String;
+#include "Print.h"
 
-#include "WProgram.h"
-#include "pins_arduino.h"
-
-#endif
+#endif // ARDUINO_H

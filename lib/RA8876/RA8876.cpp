@@ -420,7 +420,6 @@ bool RA8876::init(void)
     }
 
     if (!calcClocks()) {
-        Serial.println("calcClocks failed");
         return (false);
     }
 
@@ -436,17 +435,14 @@ bool RA8876::init(void)
     softReset();
 
     if (!initPLL()) {
-        Serial.println("initPLL failed");
         return (false);
     }
 
     if (!initMemory(m_sdramInfo)) {
-        Serial.println("initMemory failed");
         return (false);
     }
 
     if (!initDisplay()) {
-        Serial.println("initDisplay failed");
         return (false);
     }
 

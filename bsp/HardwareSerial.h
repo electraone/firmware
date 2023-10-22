@@ -2,6 +2,7 @@
 #define HardwareSerial_h
 
 #include "kinetis.h"
+#include "string.h"
 
 // Uncomment to enable 9 bit formats.  These are default disabled to save memory.
 //#define SERIAL_9BIT_SUPPORT
