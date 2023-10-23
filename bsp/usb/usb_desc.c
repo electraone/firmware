@@ -1,5 +1,5 @@
 #include "usb_desc.h"
-#include "kinetis.h"
+#include "mk66fx1m0.h"
 
 uint8_t NUM_INTERFACE = 2;
 uint8_t NUM_ENDPOINTS = 3;

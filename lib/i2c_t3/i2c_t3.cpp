@@ -1768,7 +1768,7 @@ i2c_t3 Wire  = i2c_t3(0);       // I2C0
         - fixed bug in Slave Range code whereby onRequest() callback occurred prior to updating rxAddr
           instead of after
         - fixed bug in arbitration, was missing from Master Tx mode
-        - removed I2C1 defines (now included in kinetis.h)
+        - removed I2C1 defines (now included in mk66fx1m0.h)
         - removed all debug code (eliminates rbuf dependency)
 
     - (v6) Modified 16Jan14 by Brian (nox771 at gmail.com)

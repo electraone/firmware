@@ -1,6 +1,6 @@
 #include "usb_dev.h"
 #include "usb_midi.h"
-#include "kinetis.h"
+#include "mk66fx1m0.h"
 
 #ifdef MIDI_INTERFACE // defined by usb_dev.h -> usb_desc.h
 #if F_CPU >= 20000000

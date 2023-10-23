@@ -36,7 +36,7 @@
 #include "Arduino.h"
 #include <DMAChannel.h>
 
-// TODO missing kinetis.h defs
+// TODO missing mk66fx1m0.h defs
 #ifndef I2C_F_DIV52
     #define I2C_F_DIV52  ((uint8_t)0x43)
     #define I2C_F_DIV60  ((uint8_t)0x45)
@@ -1099,7 +1099,7 @@ extern i2c_t3 Wire;
             - uint8_t requestFrom(uint8_t addr, uint8_t len, uint8_t sendStop)
         - fixed bug in Slave Range code whereby onRequest() callback occurred prior to updating rxAddr instead of after
         - fixed bug in arbitration, was missing from Master Tx mode
-        - removed I2C1 defines (now included in kinetis.h)
+        - removed I2C1 defines (now included in mk66fx1m0.h)
         - removed all debug code (eliminates rbuf dependency)
 
     - (v6) Modified 16Jan14 by Brian (nox771 at gmail.com)

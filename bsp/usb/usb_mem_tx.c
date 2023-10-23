@@ -1,6 +1,6 @@
 #include "usb_dev.h"
 
-#include "kinetis.h"
+#include "mk66fx1m0.h"
 #include "usb_mem_tx.h"
 
 __attribute__ ((section(".usbbuffers"), used))

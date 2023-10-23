@@ -1,4 +1,4 @@
-#include "kinetis.h"
+#include "mk66fx1m0.h"
 #include <eeprom.h>
 
 #if F_CPU > 120000000 && defined(__MK66FX1M0__)

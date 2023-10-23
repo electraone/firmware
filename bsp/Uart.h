@@ -1,6 +1,6 @@
 #pragma once
 
-#include "kinetis.h"
+#include "mk66fx1m0.h"
 #include "Stream.h"
 
 #define SERIAL_TX_BUFFER_SIZE 256

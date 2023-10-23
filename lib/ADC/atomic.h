@@ -1,7 +1,7 @@
 #ifndef ATOMIC_H
 #define ATOMIC_H
 
-// kinetis.h has the following types for addresses: uint32_t, uint16_t, uint8_t, int32_t, int16_t
+// mk66fx1m0.h has the following types for addresses: uint32_t, uint16_t, uint8_t, int32_t, int16_t
 
 //! Atomic set, clear, change, or get bit in a register
 namespace atomic

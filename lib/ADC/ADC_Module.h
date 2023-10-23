@@ -263,7 +263,7 @@ Divide by   ADC_CFG1_ADIV   ADC_CFG1_ADICLK TOTAL   VALUE
 (Other combinations are possible)
 */
 
-// Redefine from kinetis.h to remove (uint32_t) casts that the preprocessor doesn't understand
+// Redefine from mk66fx1m0.h to remove (uint32_t) casts that the preprocessor doesn't understand
 // so we can do arithmetic with them when defining ADC_CFG1_MED_SPEED
 #define ADC_LIB_CFG1_ADIV(n)		(((n) & 3) << 5)
 #define ADC_LIB_CFG1_ADICLK(n)		(((n) & 3) << 0)

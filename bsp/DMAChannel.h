@@ -1,7 +1,7 @@
 #ifndef DMAChannel_h_
 #define DMAChannel_h_
 
-#include "kinetis.h"
+#include "mk66fx1m0.h"
 
 // Discussion about DMAChannel is here:
 // http://forum.pjrc.com/threads/25778-Could-there-be-something-like-an-ISR-template-function/page3

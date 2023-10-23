@@ -1,7 +1,7 @@
 #ifndef _core_pins_h_
 #define _core_pins_h_
 
-#include "kinetis.h"
+#include "mk66fx1m0.h"
 #include "pins_electra.h"
 
 #define HIGH		1

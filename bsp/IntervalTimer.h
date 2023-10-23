@@ -1,7 +1,7 @@
 #ifndef __INTERVALTIMER_H__
 #define __INTERVALTIMER_H__
 
-#include "kinetis.h"
+#include "mk66fx1m0.h"
 
 #ifdef __cplusplus
 extern "C" {

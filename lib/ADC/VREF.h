@@ -13,7 +13,7 @@ namespace VREF
     /** This is called automatically by ADC_Module::setReference(ADC_REFERENCE::REF_1V2)
     *   Use it to switch on the internal reference on the VREF_OUT pin.
     *   You can measure it with adc->analogRead(ADC_INTERNAL_SOURCE::VREF_OUT).
-    *   \param mode can be (these are defined in kinetis.h)
+    *   \param mode can be (these are defined in mk66fx1m0.h)
     *    VREF_SC_MODE_LV_BANDGAPONLY (0) for stand-by
     *    VREF_SC_MODE_LV_HIGHPOWERBUF (1) for high power buffer and
     *    VREF_SC_MODE_LV_LOWPOWERBUF (2) for low power buffer.

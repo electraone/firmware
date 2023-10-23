@@ -28,7 +28,7 @@
  * SOFTWARE.
  */
 
-#include "kinetis.h"
+#include "mk66fx1m0.h"
 #include "core_pins.h" // testing only
 
 #include <errno.h>
