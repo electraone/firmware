@@ -26,13 +26,14 @@
  * @brief Firmware entry function.
  */
 
-#include "HardwareSerial.h"
+#include <stdint.h>
 
 void initialise(void);
 void processEvents(void);
 
 extern "C" void yield (void) __attribute__ ((weak));
 extern "C" volatile uint32_t systick_millis_count;
+extern "C" void systick_isr (void);
 
 extern "C" int main (void)
 {

@@ -31,10 +31,12 @@
 #ifndef Print_h
 #define Print_h
 
+
 #include <inttypes.h>
 #include <stdio.h> // for size_t - gives sprintf and other stuff to all sketches & libs
 #include <stdarg.h>
 #include "core_id.h"
+#include <string.h>
 
 #define DEC 10
 #define HEX 16
@@ -103,23 +105,7 @@ class Print
   private:
 	char write_error;
 	size_t printFloat(double n, uint8_t digits);
-#ifdef __MKL26Z64__
-	size_t printNumberDec(unsigned long n, uint8_t sign);
-	size_t printNumberHex(unsigned long n);
-	size_t printNumberBin(unsigned long n);
-	size_t printNumberAny(unsigned long n, uint8_t base);
-	inline size_t printNumber(unsigned long n, uint8_t base, uint8_t sign) __attribute__((always_inline)) {
-		// when "base" is a constant (pretty much always), the
-		// compiler optimizes this to a single function call.
-		if (base == 0) return write((uint8_t)n);
-		if (base == 10 || base < 2) return printNumberDec(n, sign);
-		if (base == 16) return printNumberHex(n);
-		if (base == 2) return printNumberBin(n);
-		return printNumberAny(n, base);
-	}
-#else
 	size_t printNumber(unsigned long n, uint8_t base, uint8_t sign);
-#endif
 };
 
 

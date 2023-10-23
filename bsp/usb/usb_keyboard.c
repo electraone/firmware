@@ -61,7 +61,6 @@ const KEYCODE_TYPE keycodes_ascii[] = {
 
 #include "core_pins.h" // for yield()
 
-//#include "HardwareSerial.h"
 #include <string.h> // for memcpy()
 
 // which modifier keys are currently pressed
@@ -572,18 +571,6 @@ static uint8_t transmit_previous_timeout = 0;
 // send the contents of keyboard_keys and keyboard_modifier_keys
 int usb_keyboard_send(void)
 {
-#if 0
-	serial_print("Send:");
-	serial_phex(keyboard_modifier_keys);
-	serial_phex(keyboard_keys[0]);
-	serial_phex(keyboard_keys[1]);
-	serial_phex(keyboard_keys[2]);
-	serial_phex(keyboard_keys[3]);
-	serial_phex(keyboard_keys[4]);
-	serial_phex(keyboard_keys[5]);
-	serial_print("\n");
-#endif
-#if 1
     uint32_t wait_count = 0;
     usb_packet_t *tx_packet;
 
@@ -606,7 +593,6 @@ int usb_keyboard_send(void)
     memcpy(tx_packet->buf + 2, keyboard_keys, 6);
     tx_packet->len = 8;
     usb_tx(KEYBOARD_ENDPOINT, tx_packet);
-#endif
     return 0;
 }
 

@@ -150,8 +150,6 @@ int usb_mouse_move(int8_t x, int8_t y, int8_t wheel, int8_t horiz)
     uint32_t wait_count = 0;
     usb_packet_t *tx_packet;
 
-    //serial_print("move");
-    //serial_print("\n");
     if (x == -128)
         x = -127;
     if (y == -128)
@@ -216,18 +214,11 @@ int usb_mouse_position(uint16_t x, uint16_t y)
     transmit_previous_timeout = 0;
     *(tx_packet->buf + 0) = 2;
     val32 = usb_mouse_position_x * usb_mouse_scale_x + usb_mouse_offset_x;
-    //serial_print("position:");
-    //serial_phex16(usb_mouse_position_x);
-    //serial_print("->");
-    //serial_phex32(val32);
+
     *(tx_packet->buf + 1) = val32 >> 16;
     *(tx_packet->buf + 2) = val32 >> 24;
     val32 = usb_mouse_position_y * usb_mouse_scale_y + usb_mouse_offset_y;
-    //serial_print(",");
-    //serial_phex16(usb_mouse_position_y);
-    //serial_print("->");
-    //serial_phex32(val32);
-    //serial_print("\n");
+
     *(tx_packet->buf + 3) = val32 >> 16;
     *(tx_packet->buf + 4) = val32 >> 24;
     tx_packet->len = 5;

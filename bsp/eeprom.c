@@ -1,6 +1,6 @@
 #include "kinetis.h"
 #include <eeprom.h>
-//#include "HardwareSerial.h"
+
 #if F_CPU > 120000000 && defined(__MK66FX1M0__)
 #include "core_pins.h"	// delayMicroseconds()
 #endif

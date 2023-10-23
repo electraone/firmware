@@ -36,7 +36,6 @@
 
 #include <Arduino.h>
 
-
 size_t Print::write(const uint8_t *buffer, size_t size)
 {
 	size_t count = 0;

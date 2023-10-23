@@ -157,7 +157,7 @@ typedef uint8_t boolean;
 
 
 #include <math.h>
-#include "HardwareSerial.h"
+#include "Uart.h"
 
 #define DMAMEM __attribute__ ((section(".dmabuffers"), used))
 #define FASTRUN __attribute__ ((section(".fastrun"), noinline, noclone ))

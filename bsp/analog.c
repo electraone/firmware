@@ -1,5 +1,4 @@
 #include "core_pins.h"
-//#include "HardwareSerial.h"
 
 static uint8_t calibrating;
 static uint8_t analog_right_shift = 0;
@@ -199,7 +198,6 @@ static void wait_for_cal(void)
 {
 	uint16_t sum;
 
-	//serial_print("wait_for_cal\n");
 #if defined(HAS_KINETIS_ADC0) && defined(HAS_KINETIS_ADC1)
 	while ((ADC0_SC3 & ADC_SC3_CAL) || (ADC1_SC3 & ADC_SC3_CAL)) {
 		// wait
@@ -211,19 +209,12 @@ static void wait_for_cal(void)
 #endif
 	__disable_irq();
 	if (calibrating) {
-		//serial_print("\n");
 		sum = ADC0_CLPS + ADC0_CLP4 + ADC0_CLP3 + ADC0_CLP2 + ADC0_CLP1 + ADC0_CLP0;
 		sum = (sum / 2) | 0x8000;
 		ADC0_PG = sum;
-		//serial_print("ADC0_PG = ");
-		//serial_phex16(sum);
-		//serial_print("\n");
 		sum = ADC0_CLMS + ADC0_CLM4 + ADC0_CLM3 + ADC0_CLM2 + ADC0_CLM1 + ADC0_CLM0;
 		sum = (sum / 2) | 0x8000;
 		ADC0_MG = sum;
-		//serial_print("ADC0_MG = ");
-		//serial_phex16(sum);
-		//serial_print("\n");
 #ifdef HAS_KINETIS_ADC1
 		sum = ADC1_CLPS + ADC1_CLP4 + ADC1_CLP3 + ADC1_CLP2 + ADC1_CLP1 + ADC1_CLP0;
 		sum = (sum / 2) | 0x8000;
@@ -410,9 +401,6 @@ int analogRead(uint8_t pin)
 	int result;
 	uint8_t channel;
 
-	//serial_phex(pin);
-	//serial_print(" ");
-
 	if (pin >= sizeof(pin2sc1a)) return 0;
 	channel = pin2sc1a[pin];
 	if (channel == 255) return 0;
@@ -425,18 +413,11 @@ int analogRead(uint8_t pin)
 
 	__disable_irq();
 startADC0:
-	//serial_print("startADC0\n");
-#if defined(__MKL26Z64__)
-	if (channel & 0x40) {
-		ADC0_CFG2 &= ~ADC_CFG2_MUXSEL;
-		channel &= 0x3F;
-	} else {
-		ADC0_CFG2 |= ADC_CFG2_MUXSEL;
-	}
-#endif
+
 	ADC0_SC1A = channel;
 	analogReadBusyADC0 = 1;
 	__enable_irq();
+
 	while (1) {
 		__disable_irq();
 		if ((ADC0_SC1A & ADC_SC1_COCO)) {
@@ -457,7 +438,6 @@ startADC0:
 beginADC1:
 	__disable_irq();
 startADC1:
-	//serial_print("startADC1\n");
 	// ADC1_CFG2[MUXSEL] bit selects between ADCx_SEn channels a and b.
 	if (channel & 0x40) {
 		ADC1_CFG2 &= ~ADC_CFG2_MUXSEL;
@@ -489,7 +469,6 @@ typedef int16_t __attribute__((__may_alias__)) aliased_int16_t;
 
 void analogWriteDAC0(int val)
 {
-#if defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 	SIM_SCGC2 |= SIM_SCGC2_DAC0;
 	if (analog_reference_internal) {
 		DAC0_C0 = DAC_C0_DACEN;  // 1.2V ref is DACREF_1
@@ -499,24 +478,8 @@ void analogWriteDAC0(int val)
 	__asm__ ("usat    %[value], #12, %[value]\n\t" : [value] "+r" (val));  // 0 <= val <= 4095
 
 	*(volatile aliased_int16_t *)&(DAC0_DAT0L) = val;
-#elif defined(__MKL26Z64__)
-	SIM_SCGC6 |= SIM_SCGC6_DAC0;
-	if (analog_reference_internal == 0) {
-		// use 3.3V VDDA power as the reference (this is the default)
-		DAC0_C0 = DAC_C0_DACEN | DAC_C0_DACRFS | DAC_C0_DACSWTRG; // 3.3V VDDA
-	} else {
-		// use whatever voltage is on the AREF pin
-		DAC0_C0 = DAC_C0_DACEN | DAC_C0_DACSWTRG; // 3.3V VDDA
-	}
-	if (val < 0) val = 0;
-	else if (val > 4095) val = 4095;
-
-	*(volatile aliased_int16_t *)&(DAC0_DAT0L) = val;
-#endif
 }
 
-
-#if defined(__MK64FX512__) || defined(__MK66FX1M0__)
 void analogWriteDAC1(int val)
 {
 	SIM_SCGC2 |= SIM_SCGC2_DAC1;
@@ -529,4 +492,4 @@ void analogWriteDAC1(int val)
 
 	*(volatile aliased_int16_t *)&(DAC1_DAT0L) = val;
 }
-#endif
+

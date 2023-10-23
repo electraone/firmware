@@ -31,8 +31,8 @@
 #include <MIDI.h>
 
 // \todo Move to the class as static members.
-extern midi::MidiInterface<HardwareSerial> MIDI1;
-extern midi::MidiInterface<HardwareSerial> MIDI2;
+extern midi::MidiInterface<Uart> MIDI1;
+extern midi::MidiInterface<Uart> MIDI2;
 
 void handleMidiIoSysExPort0(const uint8_t *sysExData,
                             uint16_t sysExSize,
@@ -265,6 +265,6 @@ public:
 
 private:
     uint8_t activePort;
-    static constexpr midi::MidiInterface<HardwareSerial>
+    static constexpr midi::MidiInterface<Uart>
         *midiDINInterfaces[2] = { &MIDI1, &MIDI2 };
 };

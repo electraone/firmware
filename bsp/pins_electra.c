@@ -30,8 +30,6 @@
 
 #include "core_pins.h"
 #include "pins_electra.h"
-#include "HardwareSerial.h"
-
 
 void configurePins(void)
 {
@@ -54,6 +52,19 @@ void configurePins(void)
     pinMode(19, OUTPUT); // A3
     pinMode(49, OUTPUT); // CS
     pinMode(41, INPUT);  // button_scan
+
+	// Serial (UART pins) for MIDI IO
+	
+	// Serial 1 RX pin
+	CORE_PIN0_CONFIG = PORT_PCR_PE | PORT_PCR_PS | PORT_PCR_PFE | PORT_PCR_MUX(3);
+
+	// Serial 1 TX pin
+	CORE_PIN1_CONFIG = PORT_PCR_DSE | PORT_PCR_SRE | PORT_PCR_MUX(3);
+
+	// Serial 2 RX pin
+	CORE_PIN9_CONFIG = PORT_PCR_PE | PORT_PCR_PS | PORT_PCR_PFE | PORT_PCR_MUX(3);
+	// Serial 2 TX pin
+	CORE_PIN10_CONFIG = PORT_PCR_DSE | PORT_PCR_SRE | PORT_PCR_MUX(3);
 }
 
 #define GPIO_BITBAND_ADDR(reg, bit) (((uint32_t)&(reg) - 0x40000000) * 32 + (bit) * 4 + 0x42000000)
@@ -423,12 +434,6 @@ void analogWriteFrequency(uint8_t pin, float frequency)
 	uint32_t prescale, mod, ftmClock, ftmClockSource;
 	float minfreq;
 
-	//serial_print("analogWriteFrequency: pin = ");
-	//serial_phex(pin);
-	//serial_print(", freq = ");
-	//serial_phex32((uint32_t)frequency);
-	//serial_print("\n");
-
 #ifdef TPM1_CH0_PIN
 	if (pin == TPM1_CH0_PIN || pin == TPM1_CH1_PIN) {
 		ftmClockSource = 1;
@@ -449,17 +454,10 @@ void analogWriteFrequency(uint8_t pin, float frequency)
 		minfreq = (float)(ftmClock >> prescale) / 65536.0f;	//Use ftmClock instead of F_TIMER
 		if (frequency >= minfreq) break;
 	}
-	//serial_print("F_TIMER/ftm_Clock = ");
-	//serial_phex32(ftmClock >> prescale);
-	//serial_print("\n");
-	//serial_print("prescale = ");
-	//serial_phex(prescale);
-	//serial_print("\n");
+
 	mod = (float)(ftmClock >> prescale) / frequency - 0.5f;	//Use ftmClock instead of F_TIMER
 	if (mod > 65535) mod = 65535;
-	//serial_print("mod = ");
-	//serial_phex32(mod);
-	//serial_print("\n");
+
 	if (pin == FTM1_CH0_PIN || pin == FTM1_CH1_PIN) {
 		FTM1_SC = 0;
 		FTM1_CNT = 0;

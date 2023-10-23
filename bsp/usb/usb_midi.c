@@ -1,6 +1,6 @@
 #include "usb_dev.h"
 #include "usb_midi.h"
-#include "HardwareSerial.h"
+#include "kinetis.h"
 
 #ifdef MIDI_INTERFACE // defined by usb_dev.h -> usb_desc.h
 #if F_CPU >= 20000000
@@ -85,7 +85,6 @@ void usb_midi_write_packed (uint32_t n)
 		{
 			if (!usb_configuration)
 			{
-				//serial_print("error1\n");
 				return;
 			}
 			if (usb_tx_packet_count (MIDI_TX_ENDPOINT) < TX_PACKET_LIMIT)
@@ -93,14 +92,12 @@ void usb_midi_write_packed (uint32_t n)
 				tx_packet = usb_malloc_tx ();
 				if (tx_packet)
 				{
-          // printText ("error");
 					break;
 				}
 			}
 			if (++wait_count > TX_TIMEOUT || transmit_previous_timeout)
 			{
 				transmit_previous_timeout = 1;
-				//serial_print("error2\n");
 				return;
 			}
 		}
@@ -214,7 +211,6 @@ void usb_midi_flush_output (void)
 	{
 		if (tx_noautoflush == 0 && tx_packet && tx_packet->index > 0)
 		{
-      // printText ("AF");
 			tx_packet->len = tx_packet->index * 4;
 			usb_tx (MIDI_TX_ENDPOINT, tx_packet);
 			tx_packet = NULL;
@@ -262,18 +258,9 @@ int usb_midi_read (uint32_t channel)
 		}
 	}
 
-/*
-  serial_putchar(0xf0);
-  serial_putchar(0x01);
-  serial_print("a");
-  serial_putchar(0xf7);
-  */
-
 	index = rx_packet->index;
 	n = ((uint32_t *) rx_packet->buf)[index / 4];
-	//serial_print("midi rx, n=");
-	//serial_phex32(n);
-	//serial_print("\n");
+
 	index += 4;
 	if (index < rx_packet->len)
 	{

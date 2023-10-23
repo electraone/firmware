@@ -4,9 +4,6 @@
 #include "usb_mem.h"
 #include <string.h> // for memset
 
-extern void printText(const char *format, ...);
-extern void printChar(char c);
-
 /*
  * Interrupt status
  */
@@ -148,15 +145,11 @@ static void usb_setup(void)
     const uint8_t *cfg;
     int i;
 
-    // printText ("wRequestAndType: %04X, wVaulue: %04X", setup.wRequestAndType, setup.wValue);
-
     switch (setup.wRequestAndType) {
         case 0x0500: // SET_ADDRESS
-            // printText ("SET ADDRESS: %d", setup.wValue);
             break;
 
         case 0x0900: // SET_CONFIGURATION
-            // printText ("SET CONFIGURATION: %d", setup.wValue);
             usb_configuration = setup.wValue;
             reg = &USB0_ENDPT1;
             cfg = usb_endpoint_config_table;
@@ -292,7 +285,6 @@ static void usb_setup(void)
 
         case 0x0680: // GET_DESCRIPTOR
         case 0x0681:
-            // printText ("GET DESC: wValue=%04X, wIndex=%04X", setup.wValue, setup.wIndex);
 
             for (list = usb_descriptor_list; 1; list++) {
                 if (list->addr == NULL) {
@@ -313,7 +305,6 @@ static void usb_setup(void)
                 }
             }
 
-            //serial_print("desc: not found\n");
             endpoint0_stall();
             return;
 
@@ -323,9 +314,6 @@ static void usb_setup(void)
     }
 
 send:
-
-    //printText ("GET DESC: setup.wRequestAndType=%04X, wValue=%04X, wIndex=%04X, request.length=%d, data.length=%d", setup.wRequestAndType, setup.wValue, setup.wIndex, setup.wLength, datalen);
-
     if (datalen > setup.wLength) {
         datalen = setup.wLength;
     }
@@ -335,12 +323,10 @@ send:
         size = EP0_SIZE;
     }
 
-    //printText("1 to send: %d, sending=%d", datalen, size);
     endpoint0_transmit(data, size);
     data += size;
     datalen -= size;
     if ((datalen == 0) && (size < EP0_SIZE)) {
-        //printText ("leaving 1: size: %d", size);
         return;
     }
 
@@ -349,16 +335,12 @@ send:
         size = EP0_SIZE;
     }
 
-    //printText("2 to send: %d, sending=%d", datalen, size);
     endpoint0_transmit(data, size);
     data += size;
     datalen -= size;
     if ((datalen == 0) && (size < EP0_SIZE)) {
-        //printText ("leaving 2: size: %d", size);
         return;
     }
-
-    //printText("leftover: %d", datalen);
 
     ep0_tx_ptr = data;
     ep0_tx_len = datalen;
@@ -389,12 +371,6 @@ static void usb_control(uint32_t stat)
             ep0_tx_ptr = NULL;
 
             if (ep0_tx_data_toggle) {}
-            //if (table[index(0, TX, EVEN)].desc & 0x80) {
-            //serial_print("leftover tx even\n");
-            //}
-            //if (table[index(0, TX, ODD)].desc & 0x80) {
-            //serial_print("leftover tx odd\n");
-            //}
             table[index(0, TX, EVEN)].desc = 0;
             table[index(0, TX, ODD)].desc = 0;
             // first IN after Setup is always DATA1
@@ -514,8 +490,6 @@ void usb_rx_memory(usb_packet_t *packet)
 
     __disable_irq();
 
-    //printText ("freeing: %d", usb_rx_byte_count_data);
-
     for (i = 1; i <= NUM_ENDPOINTS; i++) {
         if (*cfg++ & USB_ENDPT_EPRXEN) {
             if (table[index(i, RX, EVEN)].desc == 0) {
@@ -559,7 +533,6 @@ void usb_rx_memory(usb_packet_t *packet)
 
 void usb_tx(uint32_t endpoint, usb_packet_t *packet)
 {
-    //printText ("end: %d len: %d, index: %d [%02x %d %d %d]", endpoint, packet->len, packet->index, packet->buf[0], packet->buf[1], packet->buf[2], packet->buf[3]);
     bdt_t *b = &table[index(endpoint, TX, EVEN)];
     uint8_t next;
 
@@ -571,29 +544,23 @@ void usb_tx(uint32_t endpoint, usb_packet_t *packet)
 
     switch (tx_state[endpoint]) {
         case TX_STATE_BOTH_FREE_EVEN_FIRST:
-            //printText ("1");
             next = TX_STATE_ODD_FREE;
             break;
         case TX_STATE_BOTH_FREE_ODD_FIRST:
-            //printText ("2");
             b++;
             next = TX_STATE_EVEN_FREE;
             break;
         case TX_STATE_EVEN_FREE:
-            //printText ("3");
             next = TX_STATE_NONE_FREE_ODD_FIRST;
             break;
         case TX_STATE_ODD_FREE:
-            //printText ("4");
             b++;
             next = TX_STATE_NONE_FREE_EVEN_FIRST;
             break;
         default:
             if (tx_first[endpoint] == NULL) {
-                //printText ("F");
                 tx_first[endpoint] = packet;
             } else {
-                //printText ("N");
                 tx_last[endpoint]->next = packet;
             }
             tx_last[endpoint] = packet;
@@ -602,7 +569,6 @@ void usb_tx(uint32_t endpoint, usb_packet_t *packet)
 
             return;
     }
-    //printText ("X");
     tx_state[endpoint] = next;
     b->addr = packet->buf;
     b->desc = BDT_DESC(packet->len, ((uint32_t)b & 8) ? DATA1 : DATA0);
@@ -661,8 +627,6 @@ restart:
 		 * Interface data transfer
 		 */
         else {
-            //printText ("isr: ep: %d", endpoint - 1);
-
             bdt_t *b = stat2bufferdescriptor(stat);
             usb_packet_t *packet = (usb_packet_t *)((uint8_t *)(b->addr) - 8);
 
@@ -676,8 +640,6 @@ restart:
                 usb_free_tx(packet);
                 packet = tx_first[endpoint];
                 if (packet) {
-                    //printText ("Y");
-                    //serial_print("tx packet\n");
                     tx_first[endpoint] = packet->next;
                     b->addr = packet->buf;
                     switch (tx_state[endpoint]) {
@@ -699,8 +661,6 @@ restart:
                     b->desc = BDT_DESC(packet->len,
                                        ((uint32_t)b & 8) ? DATA1 : DATA0);
                 } else {
-                    //serial_print("tx no packet\n");
-                    //printText ("N");
                     switch (tx_state[endpoint]) {
                         case TX_STATE_BOTH_FREE_EVEN_FIRST:
                         case TX_STATE_BOTH_FREE_ODD_FIRST:
@@ -725,7 +685,6 @@ restart:
 			 */
             else // receive
             {
-                //printText ("rec: %d", endpoint);
                 packet->len = b->desc >> 16;
 
                 if (packet->len > 0) {
@@ -810,9 +769,6 @@ restart:
     if ((status & USB_ISTAT_ERROR /* 02 */)) {
         uint8_t err = USB0_ERRSTAT;
         USB0_ERRSTAT = err;
-        //serial_print("err:");
-        //serial_phex(err);
-        //serial_print("\n");
         USB0_ISTAT = USB_ISTAT_ERROR;
     }
 
@@ -820,7 +776,6 @@ restart:
 	 * USB sleep
 	 */
     if ((status & USB_ISTAT_SLEEP /* 10 */)) {
-        //serial_print("sleep\n");
         USB0_ISTAT = USB_ISTAT_SLEEP;
     }
 }
