@@ -211,3 +211,16 @@ void SystemTasks::displayUpdateModeScreen(void)
     ums.repaint();
     flushRepaintGraphics();
 }
+
+void SystemTasks::stopWindowRepaint(void)
+{
+    disableRepaintGraphics();
+    clearRepaintGraphics();
+}
+
+void SystemTasks::resumeWindowRepaint(void)
+{
+    clearRepaintGraphics();
+    System::windowManager.repaintActive();
+    enableRepaintGraphics();
+}

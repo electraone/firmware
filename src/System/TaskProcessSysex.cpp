@@ -293,14 +293,12 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                 MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
             } else if (object == ElectraCommand::Object::Window) {
                 if (cmd.getByte1() == 0) {
-                    System::tasks.disableRepaintGraphics();
+                    System::tasks.stopWindowRepaint();
                     System::logger.write(
                         LOG_ERROR,
                         "processElectraSysex::Window repaint stopped");
                 } else {
-                    System::tasks.clearRepaintGraphics();
-                    System::windowManager.repaintActive();
-                    System::tasks.enableRepaintGraphics();
+                    System::tasks.resumeWindowRepaint();
                     System::logger.write(
                         LOG_ERROR,
                         "processElectraSysex::Window repaint resumed");

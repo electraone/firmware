@@ -65,16 +65,13 @@ int window_clear([[maybe_unused]] lua_State *L)
 
 int window_stop([[maybe_unused]] lua_State *L)
 {
-    System::tasks.disableRepaintGraphics();
-    System::tasks.clearRepaintGraphics();
+    System::tasks.stopWindowRepaint();
     return (0);
 }
 
 int window_resume([[maybe_unused]] lua_State *L)
 {
-    System::tasks.clearRepaintGraphics();
-    System::tasks.enableRepaintGraphics();
-    System::windowManager.repaintActive();
+    System::tasks.resumeWindowRepaint();
     return (0);
 }
 

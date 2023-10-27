@@ -74,6 +74,8 @@ public:
     void enableSpinner(void);
     void disableSpinner(void);
     void displayUpdateModeScreen(void);
+    void stopWindowRepaint(void);
+    void resumeWindowRepaint(void);
 
 private:
     IntervalTimer timerReadMidi;
