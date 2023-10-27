@@ -4,6 +4,7 @@
 #include "MidiInterface.h"
 #include "MidiMessageTransport.h"
 #include "MidiMessage.h"
+#include "MidiUsbHost.h"
 
 extern USBDevice USBDevices[];
 
