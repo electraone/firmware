@@ -37,7 +37,7 @@ extern "C" {
 #include "lualib.h"
 }
 
-#define LUA_MAX_SYSEX_SIZE 256
+#define LUA_MAX_SYSEX_SIZE 60 // must be a multiply of 3
 #define LUA_NR_OF_MIDI_INTERFACES 4 // includes MidiAll
 #define LUA_NR_OF_MIDI_PORTS 3
 #define LUA_MIDI_INTERFACE_MIDI_ALL 3
