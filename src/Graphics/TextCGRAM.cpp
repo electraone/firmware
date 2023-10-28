@@ -54,12 +54,19 @@ int TextCGRAM::getStringWidth(const char *text)
 {
     size_t numCharacters = strlen(text);
     int stringWidth = 0;
+    uint8_t characterWidth = 0;
 
     for (size_t i = 0; i < numCharacters; i++) {
-        stringWidth += font9ptBoldCharWidth[text[i] - 32];
+        characterWidth = font9ptBoldCharWidth[text[i] - 32];
+        stringWidth += characterWidth;
     }
 
-    return (stringWidth);
+    // Add extra padding for the last character
+    // This is required to make sure the text will fit in the
+    // bounding box.
+    uint8_t extraPadding = (16 - characterWidth);
+
+    return (stringWidth + extraPadding);
 }
 
 void TextCGRAM::print(uint16_t x,
