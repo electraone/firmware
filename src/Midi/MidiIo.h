@@ -265,6 +265,8 @@ public:
 
 private:
     uint8_t activePort;
-    static constexpr midi::MidiInterface<Uart>
-        *midiDINInterfaces[2] = { &MIDI1, &MIDI2 };
+    static constexpr midi::MidiInterface<Uart> *midiDINInterfaces[2] = {
+        &MIDI1,
+        &MIDI2
+    };
 };
