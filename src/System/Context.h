@@ -50,8 +50,7 @@ public:
         appName = newAppName;
         snprintf(
             currentConfigFile, MAX_FILENAME_LENGTH, "%s/setup.cfg", appName);
-        snprintf(
-            currentTempFile, MAX_FILENAME_LENGTH, "%s/tmp/file.tmp", appName);
+        snprintf(currentTempFile, MAX_FILENAME_LENGTH, "%s/file.tmp", appName);
     }
 
     void setPresetName(const char *newPresetName)
