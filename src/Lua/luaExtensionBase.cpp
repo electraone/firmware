@@ -62,7 +62,7 @@ lua_State *initLua(void)
     sysexBlock_register(lua);
 
     // register global variables
-    loadGlobalVariables(lua);
+    loadBaseGlobalVariables(lua);
 
     return (lua);
 }
@@ -141,31 +141,17 @@ bool isLuaValid(const char *filename)
     return (Hardware::sdcard.exists(filename));
 }
 
-void loadGlobalVariables(lua_State *L)
+void loadBaseGlobalVariables(lua_State *L)
 {
-    // colours
-    lua_pushnumber(L, 0xffffff);
-    lua_setglobal(L, "WHITE");
-    lua_pushnumber(L, 0xF45C51);
-    lua_setglobal(L, "RED");
-    lua_pushnumber(L, 0xF49500);
-    lua_setglobal(L, "ORANGE");
-    lua_pushnumber(L, 0x529DEC);
-    lua_setglobal(L, "BLUE");
-    lua_pushnumber(L, 0x03A598);
-    lua_setglobal(L, "GREEN");
-    lua_pushnumber(L, 0xC44795);
-    lua_setglobal(L, "PURPLE");
-
-    // midi interfaces
+    // MIDI interfaces
     lua_pushnumber(L, 0);
-    lua_setglobal(L, "MIDIIO");
+    lua_setglobal(L, "MIDI_IO");
     lua_pushnumber(L, 1);
-    lua_setglobal(L, "USBDEV");
+    lua_setglobal(L, "USB_DEV");
     lua_pushnumber(L, 2);
-    lua_setglobal(L, "USBHOST");
+    lua_setglobal(L, "USB_HOST");
 
-    // midi ports
+    // MIDI ports
     lua_pushnumber(L, 0);
     lua_setglobal(L, "PORT_1");
     lua_pushnumber(L, 1);
@@ -181,7 +167,7 @@ void loadGlobalVariables(lua_State *L)
     lua_pushnumber(L, 2);
     lua_setglobal(L, "LUA");
 
-    // hardware buttons
+    // Hardware buttons
     lua_pushnumber(L, 1);
     lua_setglobal(L, "BUTTON_1");
     lua_pushnumber(L, 2);
@@ -195,7 +181,7 @@ void loadGlobalVariables(lua_State *L)
     lua_pushnumber(L, 6);
     lua_setglobal(L, "BUTTON_6");
 
-    // pots
+    // Pots
     lua_pushnumber(L, 1);
     lua_setglobal(L, "POT_1");
     lua_pushnumber(L, 2);
@@ -221,7 +207,7 @@ void loadGlobalVariables(lua_State *L)
     lua_pushnumber(L, 12);
     lua_setglobal(L, "POT_12");
 
-    // touch points
+    // Touch points
     lua_pushnumber(L, 1);
     lua_setglobal(L, "TOUCH_POINT_1");
     lua_pushnumber(L, 2);
@@ -271,50 +257,6 @@ void loadGlobalVariables(lua_State *L)
     lua_pushnumber(L, 240);
     lua_setglobal(L, "SYSEX");
 
-    // Electra Parameter types
-    lua_pushnumber(L, 0);
-    lua_setglobal(L, "PT_VIRTUAL");
-    lua_pushnumber(L, 1);
-    lua_setglobal(L, "PT_CC7");
-    lua_pushnumber(L, 2);
-    lua_setglobal(L, "PT_CC14");
-    lua_pushnumber(L, 3);
-    lua_setglobal(L, "PT_NRPN");
-    lua_pushnumber(L, 4);
-    lua_setglobal(L, "PT_RPN");
-    lua_pushnumber(L, 5);
-    lua_setglobal(L, "PT_NOTE");
-    lua_pushnumber(L, 6);
-    lua_setglobal(L, "PT_PROGRAM");
-    lua_pushnumber(L, 7);
-    lua_setglobal(L, "PT_SYSEX");
-    lua_pushnumber(L, 8);
-    lua_setglobal(L, "PT_START");
-    lua_pushnumber(L, 9);
-    lua_setglobal(L, "PT_STOP");
-    lua_pushnumber(L, 10);
-    lua_setglobal(L, "PT_TUNE");
-    lua_pushnumber(L, 11);
-    lua_setglobal(L, "PT_ATPOLY");
-    lua_pushnumber(L, 12);
-    lua_setglobal(L, "PT_ATCHANNEL");
-    lua_pushnumber(L, 13);
-    lua_setglobal(L, "PT_PITCHBEND");
-    lua_pushnumber(L, 14);
-    lua_setglobal(L, "PT_SPP");
-    lua_pushnumber(L, 15);
-    lua_setglobal(L, "PT_RELCC");
-    lua_pushnumber(L, 16);
-    lua_setglobal(L, "PT_NONE");
-
-    // MIDI interfaces
-    lua_pushnumber(L, 0);
-    lua_setglobal(L, "MIDI_IO");
-    lua_pushnumber(L, 1);
-    lua_setglobal(L, "USB_DEV");
-    lua_pushnumber(L, 2);
-    lua_setglobal(L, "USB_HOST");
-
     // Bounds
     lua_pushnumber(L, 1);
     lua_setglobal(L, "X");
@@ -325,21 +267,9 @@ void loadGlobalVariables(lua_State *L)
     lua_pushnumber(L, 4);
     lua_setglobal(L, "HEIGHT");
 
-    // Control sets
-    lua_pushnumber(L, 1);
-    lua_setglobal(L, "CONTROL_SET_1");
-    lua_pushnumber(L, 2);
-    lua_setglobal(L, "CONTROL_SET_2");
-    lua_pushnumber(L, 3);
-    lua_setglobal(L, "CONTROL_SET_3");
-
     // Events
     lua_pushnumber(L, 0);
     lua_setglobal(L, "NONE");
-    lua_pushnumber(L, 1);
-    lua_setglobal(L, "PAGES");
-    lua_pushnumber(L, 2);
-    lua_setglobal(L, "CONTROL_SETS");
     lua_pushnumber(L, 4);
     lua_setglobal(L, "USB_HOST");
     lua_pushnumber(L, 8);
@@ -350,10 +280,4 @@ void loadGlobalVariables(lua_State *L)
     lua_setglobal(L, "BUTTONS");
     lua_pushnumber(L, 64);
     lua_setglobal(L, "WINDOWS");
-
-    // Variants
-    lua_pushnumber(L, 0);
-    lua_setglobal(L, "VT_DEFAULT");
-    lua_pushnumber(L, 1);
-    lua_setglobal(L, "VT_HIGHLIGHTED");
 }

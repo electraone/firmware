@@ -59,4 +59,4 @@ void closeLua(void);
 void executeElectraLua(const char *filename);
 bool isLuaValid(const char *filename);
 
-void loadGlobalVariables(lua_State *L);
+void loadBaseGlobalVariables(lua_State *L);
