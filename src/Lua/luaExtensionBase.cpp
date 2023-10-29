@@ -295,9 +295,17 @@ void loadGlobalVariables(lua_State *L)
     lua_pushnumber(L, 10);
     lua_setglobal(L, "PT_TUNE");
     lua_pushnumber(L, 11);
-    lua_setglobal(L, "PT_NONE");
+    lua_setglobal(L, "PT_ATPOLY");
     lua_pushnumber(L, 12);
-    lua_setglobal(L, "PT_UNKNOWN");
+    lua_setglobal(L, "PT_ATCHANNEL");
+    lua_pushnumber(L, 13);
+    lua_setglobal(L, "PT_PITCHBEND");
+    lua_pushnumber(L, 14);
+    lua_setglobal(L, "PT_SPP");
+    lua_pushnumber(L, 15);
+    lua_setglobal(L, "PT_RELCC");
+    lua_pushnumber(L, 16);
+    lua_setglobal(L, "PT_NONE");
 
     // MIDI interfaces
     lua_pushnumber(L, 0);
