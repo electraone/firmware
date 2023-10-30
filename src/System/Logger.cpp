@@ -66,28 +66,27 @@ void Logger::setStatus(bool newStatus)
 
 void Logger::write(uint8_t level, const char *format, ...)
 {
-    if (!enabled || (level > minimumLevel)) {
-        return;
-    }
+    if ((enabled && (level < minimumLevel)) || (level == LOG_LUA)) {
+        char buf[MaxLogMessageSize];
+        va_list ap;
 
-    char buf[MaxLogMessageSize];
-    va_list ap;
+        va_start(ap, format);
+        vsnprintf(buf + 5, sizeof(buf) - 5, format, ap);
+        va_end(ap);
 
-    va_start(ap, format);
-    vsnprintf(buf + 5, sizeof(buf) - 5, format, ap);
-    va_end(ap);
+        buf[0] = 0x00;
+        buf[1] = 0x21;
+        buf[2] = 0x45;
+        buf[3] = 0x7f;
+        buf[4] = 0x00;
 
-    buf[0] = 0x00;
-    buf[1] = 0x21;
-    buf[2] = 0x45;
-    buf[3] = 0x7f;
-    buf[4] = 0x00;
-
-    for (uint16_t i = 5; (i < (sizeof(buf) - 5)) && (buf[i] != '\0'); i++) {
-        if ((buf[i] < 32) || (buf[i] > 126)) {
-            buf[i] = '#';
+        for (uint16_t i = 5; (i < (sizeof(buf) - 5)) && (buf[i] != '\0'); i++) {
+            if ((buf[i] < 32) || (buf[i] > 126)) {
+                buf[i] = '#';
+            }
         }
-    }
 
-    usbMIDI.sendSysEx(strlen(buf + 5) + 5, (const uint8_t *)buf, false, port);
+        usbMIDI.sendSysEx(
+            strlen(buf + 5) + 5, (const uint8_t *)buf, false, port);
+    }
 }

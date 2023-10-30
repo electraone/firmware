@@ -91,14 +91,14 @@ void lua_compat_printf(char *format, ...)
     va_list ap;
 
     va_start(ap, format);
-    System::logger.write(LOG_ERROR, buf, sizeof(buf), format, ap);
+    System::logger.write(LOG_LUA, buf, sizeof(buf), format, ap);
     va_end(ap);
 }
 
 void lua_compat_print(const char *s)
 {
     if (s && (s[0] != '\n') && (s[0] != '\0')) {
-        System::logger.write(LOG_ERROR, "lua: %s", s);
+        System::logger.write(LOG_LUA, "lua: %s", s);
     }
 }
 
