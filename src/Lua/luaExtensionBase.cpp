@@ -271,7 +271,7 @@ void loadBaseGlobalVariables(lua_State *L)
     lua_pushnumber(L, 0);
     lua_setglobal(L, "NONE");
     lua_pushnumber(L, 4);
-    lua_setglobal(L, "USB_HOST");
+    lua_setglobal(L, "USB_HOST_PORT");
     lua_pushnumber(L, 8);
     lua_setglobal(L, "POTS");
     lua_pushnumber(L, 16);
