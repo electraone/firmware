@@ -100,8 +100,8 @@ void initialise(void)
     System::tasks.enableMidi();
     System::logger.write(LOG_INFO, "setup: enable readMidi task");
 
-    // Get saved status of the logger (as saved in the RuntimeInfo)
-    System::logger.setStatus(System::runtimeInfo.getLoggerStatus());
+    // Disable logger by default
+    System::logger.setStatus(false);
 
     App::get()->enableMidi = true;
     MidiOutput::sendAvailable(MidiInterface::Type::MidiUsbDev, 2);
