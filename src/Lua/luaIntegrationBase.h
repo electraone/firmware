@@ -39,7 +39,10 @@ extern lua_State *L;
 
 void luaLE_pushTableString(lua_State *L, const char *key, const char *value);
 void luaLE_pushTableInteger(lua_State *L, const char *key, int value);
-void luaLE_pushTableObject(lua_State *L, const char *key, const void *object);
+void luaLE_pushTableObject(lua_State *L,
+                           const char *reference,
+                           const char *key,
+                           const void *object);
 void luaLE_pushArrayInteger(lua_State *L, int key, int value);
 void luaLE_pushArrayString(lua_State *L, int key, const char *value);
 void luaLE_pushArrayObject(lua_State *L,
