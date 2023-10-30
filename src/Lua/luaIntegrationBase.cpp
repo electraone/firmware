@@ -38,12 +38,12 @@ void luaLE_pushTableInteger(lua_State *L, const char *key, int value)
 }
 
 void luaLE_pushTableObject(lua_State *L,
-                           const char *reference,
                            const char *key,
+                           const char *objectName,
                            const void *object)
 {
-    lua_pushstring(L, reference);
-    luaLE_pushObject(L, key, object);
+    lua_pushstring(L, key);
+    luaLE_pushObject(L, objectName, object);
     lua_settable(L, -3);
 }
 
