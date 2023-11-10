@@ -429,7 +429,7 @@ public:
 
 protected:
     static const int MaxNameLength = 15;
-    char name[MaxNameLength + 1];
+    const char *name;
 
     struct {
         uint16_t id : 9;

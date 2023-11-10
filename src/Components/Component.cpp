@@ -31,21 +31,22 @@
 #include "helpers.h"
 
 Component::Component()
-    : id(0), parentComponent(nullptr), visible(false), dimmed(false)
+    : name(""), id(0), parentComponent(nullptr), visible(false), dimmed(false)
 {
-    copyString(name, "", MaxNameLength);
 }
 
 Component::Component(Component *newParent)
-    : id(0), parentComponent(newParent), visible(false), dimmed(false)
+    : name(""), id(0), parentComponent(newParent), visible(false), dimmed(false)
 {
-    copyString(name, "", MaxNameLength);
 }
 
 Component::Component(const char *newName)
-    : id(0), parentComponent(nullptr), visible(false), dimmed(false)
+    : name(newName),
+      id(0),
+      parentComponent(nullptr),
+      visible(false),
+      dimmed(false)
 {
-    copyString(name, newName, MaxNameLength);
 }
 
 Component::~Component()
@@ -67,7 +68,7 @@ uint16_t Component::getId(void) const
 
 void Component::setName(const char *newName)
 {
-    copyString(name, newName, MaxNameLength);
+    name = newName;
 }
 
 const char *Component::getName(void) const
