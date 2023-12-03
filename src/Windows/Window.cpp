@@ -109,6 +109,7 @@ void Window::resetActiveTouch(void)
     for (uint8_t i = 0; i < numActiveComponents; i++) {
         activeComponent[i] = nullptr;
     }
+    resetAllActivePotComponents();
 }
 
 void Window::setActiveComponent(Component *component, uint8_t touchId)
