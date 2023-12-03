@@ -82,7 +82,7 @@ void SystemTasks::enableAll()
     }
 
     taskRepaintGraphics.enable();
-    taskUserTask.disable();
+    taskUserTask.enable();
     taskRunTimer.disable();
     taskSendMidi.enable();
     taskProcessMidi.enable();
