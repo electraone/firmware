@@ -29,6 +29,7 @@
 
 #include "FrameBuffer.h"
 #include "TextBase.h"
+#include "Colours.h"
 
 class TextBTE : public virtual FrameBuffer
 {
@@ -44,11 +45,12 @@ public:
                    TextAlign align = TextAlign::left,
                    uint8_t color = 0);
     void paintTextPlaceHolder(uint16_t x,
-                         uint16_t y,
-                         const char *text,
-                         TextStyle style,
-                         uint16_t width,
-                         TextAlign align);
+                              uint16_t y,
+                              const char *text,
+                              TextStyle style,
+                              uint16_t width,
+                              TextAlign align,
+                              uint32_t backgroundColor = Colours565::black);
     static uint16_t getTextWidth(const char *text, TextStyle textStyle);
 
 private:

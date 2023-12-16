@@ -26,7 +26,6 @@
  */
 
 #include "TextBTE.h"
-#include "Colours.h"
 
 static const uint16_t lookupSmall[] = {
     0,   4,   10,  19,  27,  38,  49,  53,  58,  63,  71,  79,  84,
@@ -357,11 +356,12 @@ uint16_t TextBTE::getTextWidth(const char *text, TextStyle textStyle)
 }
 
 void TextBTE::paintTextPlaceHolder(uint16_t x,
-                              uint16_t y,
-                              const char *text,
-                              TextStyle style,
-                              uint16_t width,
-                              TextAlign align)
+                                   uint16_t y,
+                                   const char *text,
+                                   TextStyle style,
+                                   uint16_t width,
+                                   TextAlign align,
+                                   uint32_t backgroundColor)
 {
     uint16_t xPosition;
     uint16_t textWidth = getTextWidth(text, style);
@@ -375,7 +375,7 @@ void TextBTE::paintTextPlaceHolder(uint16_t x,
         xPosition = 0;
     }
 
-    setForegroundColor(Colours565::black);
+    setForegroundColor(backgroundColor);
     fillRect(x + xPosition - 2, y - 1, textWidth + 2, charHeight + 1);
 }
 

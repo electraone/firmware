@@ -38,7 +38,6 @@
 #include "Knob.h"
 #include "List.h"
 #include "Pad.h"
-#include "Set.h"
 #include "SliderHorizontal.h"
 #include "SliderVertical.h"
 #include "VoidSpace.h"
