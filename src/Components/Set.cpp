@@ -66,6 +66,8 @@ void Set::paint(Graphics &g)
         paintHighligted(g, width, height, colour);
     } else {
         paintDefault(g, width, height, colour);
+        g.paintTextPlaceHolder(
+            0, 2, label, TextStyle::smallTransparent, width, TextAlign::center);
     }
 
     if (strlen(label) > 0) {
@@ -98,4 +100,6 @@ void Set::paintDefault(Graphics &g,
     } else {
         g.drawRoundRect(0, 7, width, height - 7, 2);
     }
+    //    g.setColour(Colours565::yellow);
+    //    g.fillRect(50, 0, width/2, 15);
 }

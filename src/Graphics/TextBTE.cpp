@@ -356,7 +356,7 @@ uint16_t TextBTE::getTextWidth(const char *text, TextStyle textStyle)
     return (width);
 }
 
-void TextBTE::textPlaceHolder(uint16_t x,
+void TextBTE::paintTextPlaceHolder(uint16_t x,
                               uint16_t y,
                               const char *text,
                               TextStyle style,

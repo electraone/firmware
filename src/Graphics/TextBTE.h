@@ -43,7 +43,7 @@ public:
                    uint16_t width,
                    TextAlign align = TextAlign::left,
                    uint8_t color = 0);
-    void textPlaceHolder(uint16_t x,
+    void paintTextPlaceHolder(uint16_t x,
                          uint16_t y,
                          const char *text,
                          TextStyle style,
