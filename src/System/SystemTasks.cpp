@@ -33,7 +33,7 @@
 SystemTasks::SystemTasks()
     : taskMonitorFreeMemory(10000000, TASK_FOREVER, &monitorFreeMemory),
       taskCollectGarbage(10000000, TASK_FOREVER, &collectGarbage),
-      taskReadPots(25000, TASK_FOREVER, &readPots),
+      taskReadPots(15000, TASK_FOREVER, &readPots),
       taskReadButtons(15000, TASK_FOREVER, &readButtons),
       taskReadPotTouch(100000, TASK_FOREVER, &readPotTouch),
       taskReadLCDTouch(40000, TASK_FOREVER, &readLCDTouch),
