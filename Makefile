@@ -13,7 +13,7 @@ TOOLCHAINPATH = /usr/local
 DOXYGEN = $(TOOLCHAINPATH)/doxygen/doxygen
 
 # Location of the arm-none-eabi compiler
-COMPILERPATH = $(TOOLCHAINPATH)/arm/bin
+COMPILERPATH = /Applications/ARM/bin
 
 # Location of project scripts
 SCRIPTSPATH = scripts

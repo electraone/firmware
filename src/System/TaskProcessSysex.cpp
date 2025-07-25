@@ -254,6 +254,32 @@ void processSysexMemory(uint8_t port, const SysexBlock &sysexBlock)
                     "processElectraSysex: removed command passed to the app");
                 App::get()->handleElectraSysex(port, sysexBlock);
             }
+        } else if (cmd.isUpdate()) {
+            if (object == ElectraCommand::Object::ElectraInfo) {
+                // Handle brightness update for ElectraInfo
+                uint16_t brightness = (cmd.getByte1() << 8) | cmd.getByte2();
+                System::logger.write(
+                    LOG_ERROR,
+                    "processElectraSysex: setting brightness to %d",
+                    brightness);
+                
+                // Set the brightness value in runtime info
+                System::runtimeInfo.setElectraInfoBrightness(brightness);
+                
+                // Apply brightness immediately to the display
+                Hardware::screen.setBacklightbrightness(brightness);
+                
+                System::logger.write(
+                    LOG_ERROR,
+                    "processElectraSysex: brightness set successfully");
+                
+                MidiOutput::sendAck(MidiInterface::Type::MidiUsbDev, port);
+            } else {
+                System::logger.write(
+                    LOG_ERROR,
+                    "processElectraSysex: update command passed to the app");
+                App::get()->handleElectraSysex(port, sysexBlock);
+            }
         } else if (cmd.isUpdateRuntime()) {
             if ((uint8_t)object == 0x7D) {
                 uint8_t newLoggerPort = cmd.getByte1();
